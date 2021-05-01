@@ -15,9 +15,21 @@ protocol Equipment {
     var checkLog: [Check] { get set }
 }
 
-struct Check: Codable, Identifiable {
+struct Check: Identifiable {
     var id = UUID()
     var date: Date
+}
+
+extension Check {
+    func toPersistence() -> PersistedCheck {
+        return PersistedCheck(id: id, date: date)
+    }
+}
+
+extension PersistedCheck {
+    func toModel() -> Check {
+        return Check(id: id, date: date)
+    }
 }
 
 extension Equipment {

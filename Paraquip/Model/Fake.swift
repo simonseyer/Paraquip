@@ -10,6 +10,7 @@ import Foundation
 extension Profile {
     static func fake() -> Profile {
         Profile(
+            id: UUID(uuidString: "F760B7A7-FEFB-40DD-B890-BDA75093DF03")!,
             name: "Equipment",
             equipment: [
                 Paraglider(brand: "Gin",

@@ -9,10 +9,17 @@ import Foundation
 
 class ProfileStore: ObservableObject {
 
-    @Published var profile: Profile
+    @Published var profile: Profile {
+        didSet {
+            persistence.save(profile: profile.toPersistence())
+        }
+    }
 
-    init(profile: Profile) {
-        self.profile = profile
+    private let persistence: ProfilePersistence
+
+    init(profile: Profile, persistence: ProfilePersistence = .init()) {
+        self.profile = persistence.load(with: profile.id)?.toModel() ?? profile
+        self.persistence = persistence
     }
 
     func update(name: String) {
