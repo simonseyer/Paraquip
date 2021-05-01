@@ -12,16 +12,16 @@ struct EditEquipmentView: View {
     @EnvironmentObject var store: ProfileStore
 
     @State var equipment: Equipment
-    private let dismiss: () -> Void
-
     @State var sizeIndex: Int = 4
     @State var checkCycle: Double = 12
+
+    private let dismiss: () -> Void
 
     let sizeOptions = ["XXS", "XS", "S", "SM", "M", "L", "XL", "XXL"]
 
     var title: String {
         if !equipment.brand.isEmpty && !equipment.name.isEmpty {
-            return "\(equipment.brand) \(equipment.name) \(equipment.localizedType)"
+            return "\(equipment.brand) \(equipment.localizedType)"
         } else {
             return "New \(equipment.localizedType)"
         }

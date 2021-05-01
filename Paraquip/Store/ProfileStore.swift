@@ -19,6 +19,10 @@ class ProfileStore: ObservableObject {
         profile.name = name
     }
 
+    func equipment(with id: UUID) -> Equipment? {
+        return profile.equipment.first { $0.id == id }
+    }
+
     func store(equipment: Equipment) {
         if let index = profile.equipment.firstIndex(where: { $0.id == equipment.id }) {
             profile.equipment[index] = equipment

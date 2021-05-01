@@ -67,7 +67,7 @@ struct ProfileView: View {
         }
         .sheet(item: $newEquipment) { equipment in
             NavigationView {
-                EditEquipmentView(equipment: equipment.equipment) {
+                EditEquipmentView(equipment: equipment.wrappedValue) {
                     newEquipment = nil
                 }
             }
@@ -76,12 +76,13 @@ struct ProfileView: View {
 }
 
 struct AnyEquipment: Identifiable {
-    let equipment: Equipment
+    
+    let wrappedValue: Equipment
 
-    var id: UUID { equipment.id }
+    var id: UUID { wrappedValue.id }
 
     init(_ equipment: Equipment) {
-        self.equipment = equipment
+        self.wrappedValue = equipment
     }
 }
 

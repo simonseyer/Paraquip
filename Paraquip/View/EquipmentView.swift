@@ -9,19 +9,16 @@ import SwiftUI
 
 struct EquipmentView: View {
 
-    var equipmentId: UUID
-
     @EnvironmentObject var store: ProfileStore
-    @State private var showingAddEquipment = false
-    @State private var editMode: EditMode = .inactive
+    let equipmentId: UUID
 
-    var equipment: Equipment {
-        store.profile.equipment.first(where: { (equipment) -> Bool in
-            equipment.id == equipmentId
-        }) ?? Paraglider(brand: "", name: "", size: "", checkCycle: 0)
+    private var equipment: Equipment {
+        store.equipment(with: equipmentId)!
     }
 
-    @State var newCheckDate = Date()
+    @State private var showingAddEquipment = false
+    @State private var editMode: EditMode = .inactive
+    @State private var newCheckDate = Date()
 
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
