@@ -17,31 +17,6 @@ struct Paraglider: Equipment, Identifiable {
 }
 
 extension Paraglider {
-    func toPersistence() -> PersistedParaglider {
-        return PersistedParaglider(
-            id: id,
-            brand: brand,
-            name: name,
-            size: size,
-            checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toPersistence() }
-        )
-    }
-}
-
-extension PersistedParaglider {
-    func toModel() -> Paraglider {
-        return Paraglider(
-            id: id,
-            brand: brand,
-            name: name,
-            size: size,
-            checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toModel() } )
-    }
-}
-
-extension Paraglider {
     static func new() -> Paraglider {
         return Paraglider(brand: "", name: "", size: "M", checkCycle: 6)
     }

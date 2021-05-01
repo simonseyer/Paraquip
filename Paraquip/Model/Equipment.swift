@@ -20,18 +20,6 @@ struct Check: Identifiable {
     var date: Date
 }
 
-extension Check {
-    func toPersistence() -> PersistedCheck {
-        return PersistedCheck(id: id, date: date)
-    }
-}
-
-extension PersistedCheck {
-    func toModel() -> Check {
-        return Check(id: id, date: date)
-    }
-}
-
 extension Equipment {
     var nextCheck: Date {
         guard let lastCheck = checkLog.last?.date else {

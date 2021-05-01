@@ -16,29 +16,6 @@ struct Reserve: Equipment, Identifiable {
 }
 
 extension Reserve {
-    func toPersistence() -> PersistedReserve {
-        return PersistedReserve(
-            id: id,
-            brand: brand,
-            name: name,
-            checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toPersistence() }
-        )
-    }
-}
-
-extension PersistedReserve {
-    func toModel() -> Reserve {
-        return Reserve(
-            id: id,
-            brand: brand,
-            name: name,
-            checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toModel() } )
-    }
-}
-
-extension Reserve {
     static func new() -> Reserve {
         return Reserve(brand: "", name: "", checkCycle: 3)
     }
