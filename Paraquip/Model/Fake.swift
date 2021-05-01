@@ -11,7 +11,7 @@ extension Profile {
     static func fake() -> Profile {
         Profile(
             name: "Equipment",
-            paragliders: [
+            equipment: [
                 Paraglider(brand: "Gin",
                            name: "Atlas 2",
                            size: "M",
@@ -32,9 +32,7 @@ extension Profile {
                            checkCycle: 12,
                            checkLog: [
                             Check(date: Date(timeIntervalSinceNow: -182 * 60 * 60 * 24))
-                           ])
-            ],
-            reserves: [
+                           ]),
                 Reserve(brand: "Gin",
                         name: "Yeti",
                         checkCycle: 3)

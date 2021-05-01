@@ -104,7 +104,7 @@ struct EditEquipmentView: View {
 struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            EditEquipmentView(equipment:Profile.fake().paragliders.first!,
+            EditEquipmentView(equipment:Profile.fake().equipment.first!,
                              dismiss: {})
                 .environmentObject(ProfileStore(profile: Profile.fake()))
         }
@@ -116,7 +116,7 @@ struct AddEquipmentView_Previews: PreviewProvider {
         }
 
         NavigationView {
-            EditEquipmentView(equipment:Profile.fake().reserves.first!,
+            EditEquipmentView(equipment:Profile.fake().equipment.last!,
                               dismiss: {})
                 .environmentObject(ProfileStore(profile: Profile.fake()))
         }

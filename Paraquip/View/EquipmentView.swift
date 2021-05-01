@@ -140,12 +140,12 @@ struct EquipmentView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-            EquipmentView(equipmentId: profile.paragliders.first!.id)
+            EquipmentView(equipmentId: profile.equipment.first!.id)
                 .environmentObject(ProfileStore(profile: profile))
         }
 
         NavigationView {
-            EquipmentView(equipmentId: profile.reserves.first!.id)
+            EquipmentView(equipmentId: profile.equipment.last!.id)
                 .environmentObject(ProfileStore(profile: profile))
         }
     }
