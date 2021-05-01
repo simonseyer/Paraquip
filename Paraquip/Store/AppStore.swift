@@ -1,5 +1,5 @@
 //
-//  Store.swift
+//  AppStore.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 09.04.21.
@@ -22,15 +22,41 @@ struct ProfileIdentifier: Identifiable, Hashable {
     }
 }
 
-class Store: ObservableObject {
+class AppStore: ObservableObject {
+
+    private let persistence: AppPersistence
 
     private var storedProfiles: [ProfileIdentifier: ProfileStore] = [:] {
         didSet {
             profiles = Array(storedProfiles.keys)
+            save()
         }
     }
 
     @Published var profiles: [ProfileIdentifier] = []
+
+    init(persistence: AppPersistence = .init()) {
+        self.persistence = persistence
+
+        let profileStores = persistence
+            .load()?
+            .compactMap { ProfileStore(id: $0) }
+            ?? [ProfileStore(profile: Profile.fake())]
+
+        storedProfiles = profileStores.reduce(into: [ProfileIdentifier: ProfileStore]()) {
+            $0[ProfileIdentifier(profile: $1.profile)] = $1
+        }
+        profiles = Array(storedProfiles.keys)
+        save()
+    }
+
+    private func save() {
+        persistence.save(profiles: storedProfiles.keys.map { $0.id })
+    }
+
+    func profileStore(for identifier: ProfileIdentifier) -> ProfileStore? {
+        return storedProfiles[identifier]
+    }
 
     func createProfile(name: String) -> ProfileStore {
         let newProfile = Profile(name: name)

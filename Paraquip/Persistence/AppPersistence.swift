@@ -1,5 +1,5 @@
 //
-//  ProfilePersistence.swift
+//  AppPersistence.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 01.05.21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProfilePersistence {
+class AppPersistence {
 
     private let basePath: URL
     private let fileManager: FileManager
@@ -15,28 +15,30 @@ class ProfilePersistence {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
+    private var url: URL {
+        basePath.appendingPathComponent("app").appendingPathExtension("json")
+    }
+
     init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
         self.basePath = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
-    func save(profile: PersistedProfile) {
+    func save(profiles: [UUID]) {
         do {
-            let url = url(for: profile.id)
-            let data = try encoder.encode(profile)
+            let data = try encoder.encode(profiles)
             try data.write(to: url, options: .atomic)
         } catch {
-            print("Failed to write profile: \(error)")
+            print("Failed to write app data: \(error)")
         }
     }
 
-    func load(with id: UUID) -> PersistedProfile? {
+    func load() -> [UUID]? {
         do {
-            let url = url(for: id)
             let data = try Data(contentsOf: url)
-            return try decoder.decode(PersistedProfile.self, from: data)
+            return try decoder.decode([UUID].self, from: data)
         } catch {
-            print("Failed to load profile: \(error)")
+            print("Failed to load app data: \(error)")
             return nil
         }
     }

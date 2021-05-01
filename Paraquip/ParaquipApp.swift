@@ -12,6 +12,7 @@ struct ParaquipApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(AppStore())
         }
     }
 }

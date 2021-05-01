@@ -11,15 +11,28 @@ class ProfileStore: ObservableObject {
 
     @Published var profile: Profile {
         didSet {
-            persistence.save(profile: profile.toPersistence())
+            save()
         }
     }
 
     private let persistence: ProfilePersistence
 
     init(profile: Profile, persistence: ProfilePersistence = .init()) {
-        self.profile = persistence.load(with: profile.id)?.toModel() ?? profile
+        self.profile = profile
         self.persistence = persistence
+        save()
+    }
+
+    init?(id: UUID, persistence: ProfilePersistence = .init()) {
+        guard let profile = persistence.load(with: id)?.toModel() else {
+            return nil
+        }
+        self.profile = profile
+        self.persistence = persistence
+    }
+
+    private func save() {
+        persistence.save(profile: profile.toPersistence())
     }
 
     func update(name: String) {

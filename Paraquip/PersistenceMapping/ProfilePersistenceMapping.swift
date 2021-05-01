@@ -21,7 +21,7 @@ extension Profile {
 extension Collection {
     func filter<T>(by: T.Type) -> [T] {
         return self
-            .filter { $0 is Paraglider }
+            .filter { $0 is T }
             .map { $0 as! T }
     }
 }

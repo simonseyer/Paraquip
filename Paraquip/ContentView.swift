@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @EnvironmentObject var store: AppStore
+
     var body: some View {
         NavigationView {
             ProfileView()
         }
-        .environmentObject(ProfileStore(profile: Profile.fake()))
+        .environmentObject(store.profileStore(for: store.profiles.first!)!)
     }
 }
 
