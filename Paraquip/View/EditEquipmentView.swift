@@ -1,5 +1,5 @@
 //
-//  AddEquipmentView.swift
+//  EditEquipmentView.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 18.04.21.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct AddEquipmentView: View {
+struct EditEquipmentView: View {
 
     @EnvironmentObject var store: ProfileStore
 
-    @State var equipment: Paraglider
-    @Binding var isPresented: Bool
+    @State var equipment: Equipment
+    private let dismiss: () -> Void
 
     @State var sizeIndex: Int = 4
     @State var checkCycle: Double = 12
@@ -21,26 +21,22 @@ struct AddEquipmentView: View {
 
     var title: String {
         if !equipment.brand.isEmpty && !equipment.name.isEmpty {
-            return "\(equipment.brand) \(equipment.name)"
+            return "\(equipment.brand) \(equipment.name) \(equipment.localizedType)"
         } else {
-            return "New Equipment"
+            return "New \(equipment.localizedType)"
         }
     }
 
-    init(equipment: Paraglider? = nil, isPresented: Binding<Bool>) {
-        self._isPresented = isPresented
-        if let equipment = equipment {
-            self._equipment = State(initialValue: equipment)
+    init(equipment: Equipment, dismiss: @escaping () -> Void ) {
+        self.dismiss = dismiss
+
+        self._equipment = State(initialValue: equipment)
+        if let paraglider = equipment as? Paraglider {
             self._sizeIndex = State(initialValue: sizeOptions.firstIndex(where: { (size) -> Bool in
-                size == equipment.size
+                size == paraglider.size
             }) ?? 4)
-            self._checkCycle = State(initialValue: Double(equipment.checkCycle))
-        } else {
-            self._equipment = State(initialValue: Paraglider(brand: "",
-                                                             name: "",
-                                                             size: "",
-                                                             checkCycle: 180))
         }
+        self._checkCycle = State(initialValue: Double(equipment.checkCycle))
     }
 
     var body: some View {
@@ -59,10 +55,12 @@ struct AddEquipmentView: View {
                         .multilineTextAlignment(.trailing)
                 }
             }
-            Section(header: Text("Attributes")) {
-                Picker(selection: $sizeIndex, label: Text("Size")) {
-                    ForEach(0 ..< sizeOptions.count) {
-                        Text(self.sizeOptions[$0])
+            if equipment is Paraglider {
+                Section(header: Text("Attributes")) {
+                    Picker(selection: $sizeIndex, label: Text("Size")) {
+                        ForEach(0 ..< sizeOptions.count) {
+                            Text(self.sizeOptions[$0])
+                        }
                     }
                 }
             }
@@ -81,17 +79,21 @@ struct AddEquipmentView: View {
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
-                    isPresented = false
+                    dismiss()
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    equipment.checkCycle = Int(checkCycle)
-                    equipment.size = sizeOptions[sizeIndex]
+                    if var paraglider = equipment as? Paraglider {
+                        paraglider.checkCycle = Int(checkCycle)
+                        paraglider.size = sizeOptions[sizeIndex]
+                        store.store(equipment: paraglider)
+                    } else if var reserve = equipment as? Reserve {
+                        reserve.checkCycle = Int(checkCycle)
+                        store.store(equipment: reserve)
+                    }
 
-                    store.store(paraglider: equipment)
-
-                    isPresented = false
+                    dismiss()
                 }
             }
         }
@@ -102,8 +104,20 @@ struct AddEquipmentView: View {
 struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            AddEquipmentView(equipment:Profile.fake().paragliders.first!,
-                             isPresented: .constant(true))
+            EditEquipmentView(equipment:Profile.fake().paragliders.first!,
+                             dismiss: {})
+                .environmentObject(ProfileStore(profile: Profile.fake()))
+        }
+
+        NavigationView {
+            EditEquipmentView(equipment: Paraglider.new(),
+                              dismiss: {})
+                .environmentObject(ProfileStore(profile: Profile.fake()))
+        }
+
+        NavigationView {
+            EditEquipmentView(equipment:Profile.fake().reserves.first!,
+                              dismiss: {})
                 .environmentObject(ProfileStore(profile: Profile.fake()))
         }
     }

@@ -15,8 +15,8 @@ struct EquipmentView: View {
     @State private var showingAddEquipment = false
     @State private var editMode: EditMode = .inactive
 
-    var equipment: Paraglider {
-        store.profile.paragliders.first(where: { (equipment) -> Bool in
+    var equipment: Equipment {
+        store.profile.equipment.first(where: { (equipment) -> Bool in
             equipment.id == equipmentId
         }) ?? Paraglider(brand: "", name: "", size: "", checkCycle: 0)
     }
@@ -33,6 +33,11 @@ struct EquipmentView: View {
         List {
             Section(header: Text("Equipment")) {
                 HStack {
+                    Text("Type")
+                    Spacer()
+                    Text(equipment.localizedType)
+                }
+                HStack {
                     Text("Brand")
                     Spacer()
                     Text(equipment.brand)
@@ -42,10 +47,12 @@ struct EquipmentView: View {
                     Spacer()
                     Text(equipment.name)
                 }
-                HStack {
-                    Text("Size")
-                    Spacer()
-                    Text(equipment.size)
+                if let paraglider = equipment as? Paraglider {
+                    HStack {
+                        Text("Size")
+                        Spacer()
+                        Text(paraglider.size)
+                    }
                 }
             }
             Section(header: Text("Check")) {
@@ -106,9 +113,23 @@ struct EquipmentView: View {
         .navigationTitle("\(equipment.brand) \(equipment.name)")
         .sheet(isPresented: $showingAddEquipment) {
             NavigationView {
-                AddEquipmentView(equipment: equipment,
-                                 isPresented: $showingAddEquipment)
+                EditEquipmentView(equipment: equipment) {
+                    showingAddEquipment = false
+                }
             }
+        }
+    }
+}
+
+extension Equipment {
+    var localizedType: String {
+        switch self {
+        case is Paraglider:
+            return "Paraglider"
+        case is Reserve:
+            return "Reserve"
+        default:
+            preconditionFailure("Unknown equipment type")
         }
     }
 }
@@ -120,6 +141,11 @@ struct EquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             EquipmentView(equipmentId: profile.paragliders.first!.id)
+                .environmentObject(ProfileStore(profile: profile))
+        }
+
+        NavigationView {
+            EquipmentView(equipmentId: profile.reserves.first!.id)
                 .environmentObject(ProfileStore(profile: profile))
         }
     }

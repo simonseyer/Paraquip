@@ -33,6 +33,11 @@ extension Profile {
                            checkLog: [
                             Check(date: Date(timeIntervalSinceNow: -182 * 60 * 60 * 24))
                            ])
+            ],
+            reserves: [
+                Reserve(brand: "Gin",
+                        name: "Yeti",
+                        checkCycle: 3)
             ])
     }
 }

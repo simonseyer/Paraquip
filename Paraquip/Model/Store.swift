@@ -60,31 +60,60 @@ class ProfileStore: ObservableObject {
         profile.name = name
     }
 
-    func removeParaglider(atOffsets indexSet: IndexSet) {
-        profile.paragliders.remove(atOffsets: indexSet)
-    }
-
-    func logCheck(for paraglider: Paraglider, date: Date) {
-        guard let index = profile.paragliders.firstIndex(of: paraglider) else {
-            return
+    func store(equipment: Equipment) {
+        if let paraglider = equipment as? Paraglider {
+            profile.paragliders.updateOrInsert(paraglider)
+        } else if let reserve = equipment as? Reserve {
+            profile.reserves.updateOrInsert(reserve)
         }
-
-        profile.paragliders[index].checkLog.append(Check(date: date))
     }
 
-    func removeChecks(for paraglider: Paraglider, atOffsets indexSet: IndexSet) {
-        guard let index = profile.paragliders.firstIndex(of: paraglider) else {
-            return
+    func removeEquipment(atOffsets indexSet: IndexSet) {
+        for equipmentIndex in indexSet {
+            let equipment = profile.equipment[equipmentIndex]
+
+            switch equipment {
+            case is Paraglider:
+                if let index = profile.paragliders.firstIndex(where: { $0.id == equipment.id }) {
+                    profile.paragliders.remove(at: index)
+                }
+            case is Reserve:
+                if let index = profile.reserves.firstIndex(where: { $0.id == equipment.id }) {
+                    profile.reserves.remove(at: index)
+                }
+            default:
+                break
+            }
         }
-
-        profile.paragliders[index].checkLog.remove(atOffsets: indexSet)
     }
 
-    func store(paraglider: Paraglider) {
-        if let index = profile.paragliders.firstIndex(of: paraglider) {
-            profile.paragliders[index] = paraglider
-        } else {
-            profile.paragliders.append(paraglider)
+    func logCheck(for equipment: Equipment, date: Date) {
+        switch equipment {
+        case is Paraglider:
+            if let index = profile.paragliders.firstIndex(where: { $0.id == equipment.id }) {
+                profile.paragliders[index].checkLog.append(Check(date: date))
+            }
+        case is Reserve:
+            if let index = profile.reserves.firstIndex(where: { $0.id == equipment.id }) {
+                profile.reserves[index].checkLog.append(Check(date: date))
+            }
+        default:
+            break
+        }
+    }
+
+    func removeChecks(for equipment: Equipment, atOffsets indexSet: IndexSet) {
+        switch equipment {
+        case is Paraglider:
+            if let index = profile.paragliders.firstIndex(where: { $0.id == equipment.id }) {
+                profile.paragliders[index].checkLog.remove(atOffsets: indexSet)
+            }
+        case is Reserve:
+            if let index = profile.reserves.firstIndex(where: { $0.id == equipment.id }) {
+                profile.reserves[index].checkLog.remove(atOffsets: indexSet)
+            }
+        default:
+            break
         }
     }
 }
@@ -169,10 +198,18 @@ class ProfileStore: ObservableObject {
 //    }
 //}
 
-extension Collection where Element: Identifiable {
+extension Array where Element: Identifiable {
     func firstIndex(of element: Element) -> Self.Index? {
         return firstIndex { (otherElement) -> Bool in
             element.id == otherElement.id
+        }
+    }
+
+    mutating func updateOrInsert(_ element: Element) {
+        if let index = self.firstIndex(of: element) {
+            self[index] = element
+        } else {
+            self.append(element)
         }
     }
 }

@@ -10,41 +10,34 @@ import SwiftUI
 struct ProfileView: View {
 
     @EnvironmentObject var store: ProfileStore
-    @State private var showingAddEquipment = false
+    @State private var newEquipment: AnyEquipment?
 
     var body: some View {
         List {
-            ForEach(store.profile.paragliders) { paraglider in
-                HStack {
-                    NavigationLink(destination: EquipmentView(equipmentId: paraglider.id)) {
-                        paraglider.icon
+            ForEach(store.profile.equipment, id: \.id) { equipment in
+                NavigationLink(destination: EquipmentView(equipmentId: equipment.id)) {
+                    HStack {
+                        equipment.icon
                             .resizable()
                             .scaledToFit()
-
                             .frame(width: 60, height: 80, alignment: .center)
                             .padding([.trailing])
 
                         VStack(alignment: .leading) {
-                            Text(paraglider.name)
+                            Text(equipment.name)
                                 .font(.headline)
                             Spacer()
                             HStack {
-                                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                                    .foregroundColor(.gray)
-                                Text(paraglider.size)
-                            }
-
-                            HStack {
                                 Image(systemName: "text.badge.checkmark")
                                     .foregroundColor(Color(UIColor.systemGray))
-                                Text(paraglider.formattedCheckInterval)
+                                Text(equipment.formattedCheckInterval)
                             }
                         }.padding([.top, .bottom])
                     }
                 }
             }
             .onDelete(perform: { indexSet in
-                store.removeParaglider(atOffsets: indexSet)
+                store.removeEquipment(atOffsets: indexSet)
             })
         }
         .listStyle(PlainListStyle())
@@ -54,18 +47,41 @@ struct ProfileView: View {
                 EditButton()
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    showingAddEquipment = true
-                }) {
+                Menu(content: {
+                    Button(action: {
+                        newEquipment = AnyEquipment(Paraglider.new())
+                    }) {
+                        Text("Paraglider")
+                    }
+                    Button(action: {
+                        newEquipment = AnyEquipment(Reserve.new())
+                    }) {
+                        Text("Reserve")
+                    }
+                },
+                label: {
                     Image(systemName: "plus")
+
+                })
+            }
+        }
+        .sheet(item: $newEquipment) { equipment in
+            NavigationView {
+                EditEquipmentView(equipment: equipment.equipment) {
+                    newEquipment = nil
                 }
             }
         }
-        .sheet(isPresented: $showingAddEquipment) {
-            NavigationView {
-                AddEquipmentView(isPresented: $showingAddEquipment)
-            }
-        }
+    }
+}
+
+struct AnyEquipment: Identifiable {
+    let equipment: Equipment
+
+    var id: UUID { equipment.id }
+
+    init(_ equipment: Equipment) {
+        self.equipment = equipment
     }
 }
 
