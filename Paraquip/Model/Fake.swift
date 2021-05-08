@@ -33,6 +33,9 @@ extension Profile {
                            checkLog: [
                             Check(date: Date(timeIntervalSinceNow: -182 * 60 * 60 * 24))
                            ]),
+                Harness(brand: Brand(name: "Gin", id: "gin"),
+                        name: "Verso 3",
+                        checkCycle: 12),
                 Reserve(brand: Brand(name: "Gin", id: "gin"),
                         name: "Yeti",
                         checkCycle: 3)

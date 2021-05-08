@@ -66,6 +66,11 @@ struct ProfileView: View {
                         Text("Paraglider")
                     }
                     Button(action: {
+                        newEquipment = AnyEquipment(Harness.new())
+                    }) {
+                        Text("Harness")
+                    }
+                    Button(action: {
                         newEquipment = AnyEquipment(Reserve.new())
                     }) {
                         Text("Reserve")

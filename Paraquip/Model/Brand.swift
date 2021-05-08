@@ -13,14 +13,19 @@ struct Brand {
 }
 
 extension Brand {
+
     // Add harness brands
     static var allBrands: [Brand] = [
         Brand(name: "Advance", id: "advance"),
         Brand(name: "Air G", id: "air-g"),
+        Brand(name: "Aeros", id: "aeros"),
         Brand(name: "Air Cross", id: "aircross"),
         Brand(name: "Airdesign", id: "airdesign"),
         Brand(name: "Axis", id: "axis"),
+        Brand(name: "Basisrausch", id: "basisrausch"),
+        Brand(name: "Charly", id: "charly"),
         Brand(name: "Dudek", id: "dudek"),
+        Brand(name: "Fly Products", id: "fly-products"),
         Brand(name: "Gin", id: "gin"),
         Brand(name: "Icaro", id: "icaro"),
         Brand(name: "Independence", id: "independence"),
@@ -41,6 +46,7 @@ extension Brand {
         Brand(name: "Skyline", id: "skyline"),
         Brand(name: "Skywalk", id: "skywalk"),
         Brand(name: "SOL Paragliders", id: "sol"),
+        Brand(name: "Squirrel", id: "squirrel"),
         Brand(name: "Supair", id: "supair"),
         Brand(name: "Swing", id: "swing"),
         Brand(name: "Trekking Parapentes", id: "trekking-parapentes"),
@@ -48,5 +54,6 @@ extension Brand {
         Brand(name: "U-Turn", id: "u-turn"),
         Brand(name: "Up", id: "up"),
         Brand(name: "Windtech", id: "windtech"),
+        Brand(name: "Woody Valley", id: "woody-valley"),
     ]
 }

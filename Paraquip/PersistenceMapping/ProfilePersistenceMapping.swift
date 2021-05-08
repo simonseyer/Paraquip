@@ -13,7 +13,8 @@ extension Profile {
             id: id,
             name: name,
             paraglider: equipment.lazy.filter(by: Paraglider.self).map { $0.toPersistence() },
-            reserves: equipment.lazy.filter(by: Reserve.self).map { $0.toPersistence() }
+            reserves: equipment.lazy.filter(by: Reserve.self).map { $0.toPersistence() },
+            harnesses: equipment.lazy.filter(by: Harness.self).map { $0.toPersistence() }
         )
     }
 }
@@ -28,9 +29,11 @@ extension Collection {
 
 extension PersistedProfile {
     func toModel() -> Profile {
-        return Profile(id: id,
-                       name: name,
-                       equipment: paraglider.map { $0.toModel() } + reserves.map { $0.toModel() }
-        )
+        var equipment: [Equipment] = []
+        equipment.append(contentsOf: paraglider.map { $0.toModel() })
+        equipment.append(contentsOf: reserves.map { $0.toModel() })
+        equipment.append(contentsOf: harnesses.map { $0.toModel() })
+
+        return Profile(id: id, name: name, equipment: equipment)
     }
 }

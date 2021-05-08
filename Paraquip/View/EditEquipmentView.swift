@@ -152,17 +152,16 @@ struct EditEquipmentView: View {
                     }
 
                     equipment.brand = brand
+                    equipment.checkCycle = Int(checkCycle)
                     if equipment.checkLog.isEmpty {
                         equipment.checkLog.append(Check(date: lastCheckDate))
                     }
 
                     if var paraglider = equipment as? Paraglider {
-                        paraglider.checkCycle = Int(checkCycle)
                         paraglider.size = sizeOptions[sizeIndex]
                         store.store(equipment: paraglider)
-                    } else if var reserve = equipment as? Reserve {
-                        reserve.checkCycle = Int(checkCycle)
-                        store.store(equipment: reserve)
+                    } else {
+                        store.store(equipment: equipment)
                     }
 
                     dismiss()

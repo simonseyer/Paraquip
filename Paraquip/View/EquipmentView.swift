@@ -140,6 +140,8 @@ extension Equipment {
             return "Paraglider"
         case is Reserve:
             return "Reserve"
+        case is Harness:
+            return "Harness"
         case is PlaceholderEquipment:
             return ""
         default:

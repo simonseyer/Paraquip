@@ -12,6 +12,7 @@ struct PersistedProfile: Codable {
     var name: String
     var paraglider: [PersistedParaglider]
     var reserves: [PersistedReserve]
+    var harnesses: [PersistedHarness]
 }
 
 struct PersistedParaglider: Codable {
@@ -25,6 +26,15 @@ struct PersistedParaglider: Codable {
 }
 
 struct PersistedReserve: Codable {
+    var id: UUID
+    var brand: String
+    var brandId: String?
+    var name: String
+    var checkCycle: Int
+    var checkLog: [PersistedCheck]
+}
+
+struct PersistedHarness: Codable {
     var id: UUID
     var brand: String
     var brandId: String?
