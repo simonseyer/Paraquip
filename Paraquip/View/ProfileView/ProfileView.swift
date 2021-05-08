@@ -8,44 +8,41 @@
 import SwiftUI
 
 struct ProfileView: View {
-    
+
     @EnvironmentObject var store: ProfileStore
     @State private var newEquipment: AnyEquipment?
-    
+
     var body: some View {
-        List {
-            ForEach(store.profile.equipment, id: \.id) { equipment in
-                NavigationLink(destination: EquipmentView(equipmentId: equipment.id)) {
-                    HStack {
-                        equipment.icon
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 60, height: 80, alignment: .center)
-                            .padding([.trailing])
-                        
-                        VStack(alignment: .leading) {
-                            Text(equipment.name)
-                                .font(.headline)
-                            Spacer()
-                            HStack {
-                                Image(systemName: "text.badge.checkmark")
-                                
-                                Text(equipment.formattedCheckInterval)
-                                
-                            }.foregroundColor(equipment.checkIntervalColor)
-                        }.padding([.top, .bottom])
-                    }
+        HStack {
+            if store.profile.equipment.isEmpty {
+                VStack {
+                    Image(systemName: "paperplane")
+                        .font(.system(size: 80))
+
+                    Text("Add your first equipment by tapping the + in the top right")
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: 250)
+                        .padding()
                 }
+
+            } else {
+                List {
+                    ForEach(store.profile.equipment, id: \.id) { equipment in
+                        EquipmentRow(equipment: equipment)
+                    }
+                    .onDelete(perform: { indexSet in
+                        store.removeEquipment(atOffsets: indexSet)
+                    })
+                }
+                .listStyle(PlainListStyle())
             }
-            .onDelete(perform: { indexSet in
-                store.removeEquipment(atOffsets: indexSet)
-            })
         }
-        .listStyle(PlainListStyle())
         .navigationTitle(store.profile.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 EditButton()
+                    .disabled(store.profile.equipment.isEmpty)
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
@@ -62,7 +59,7 @@ struct ProfileView: View {
                 },
                 label: {
                     Image(systemName: "plus")
-                    
+
                 })
             }
         }
@@ -79,9 +76,9 @@ struct ProfileView: View {
 struct AnyEquipment: Identifiable {
     
     let wrappedValue: Equipment
-    
+
     var id: UUID { wrappedValue.id }
-    
+
     init(_ equipment: Equipment) {
         self.wrappedValue = equipment
     }
@@ -92,7 +89,7 @@ enum CheckUrgency {
 }
 
 extension Equipment {
-    
+
     var icon: Image {
         switch brand {
         case "Gin":
@@ -103,24 +100,24 @@ extension Equipment {
             return Image("gin-gliders")
         }
     }
-    
+
     var formattedCheckInterval: String {
         if checkUrgency == .now {
-            return "Now"
+            return "Check now"
         }
-        
+
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .full
         formatter.maximumUnitCount = 1
         formatter.allowedUnits = [.month, .day]
         formatter.includesTimeRemainingPhrase = true
-        
+
         return formatter.string(from: Date(), to: nextCheck) ?? "???"
     }
-    
+
     var checkUrgency: CheckUrgency {
         let months = Calendar.current.dateComponents([.month], from: Date(), to: nextCheck).month ?? 0
-        
+
         if Calendar.current.isDateInToday(nextCheck) ||
             nextCheck < Date() {
             return .now
@@ -130,7 +127,7 @@ extension Equipment {
             return .later
         }
     }
-    
+
     var checkIntervalColor: Color {
         switch checkUrgency {
         case .now:
@@ -144,13 +141,18 @@ extension Equipment {
 }
 
 struct ProfileView_Previews: PreviewProvider {
-    
+
     private static let profileStore = ProfileStore(profile: Profile.fake())
-    
+
     static var previews: some View {
         NavigationView {
             ProfileView()
                 .environmentObject(profileStore)
+        }
+
+        NavigationView {
+            ProfileView()
+                .environmentObject(ProfileStore(profile: Profile(name: "Empty")))
         }
     }
 }
