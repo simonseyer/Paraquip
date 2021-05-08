@@ -9,19 +9,48 @@ import SwiftUI
 
 struct EditEquipmentView: View {
 
+    enum BrandSelection {
+        case known(_: Brand)
+        case custom
+        case none
+
+        var isSelected: Bool {
+            if case .none = self {
+                return false
+            }
+            return true
+        }
+    }
+
     @EnvironmentObject var store: ProfileStore
 
     @State var equipment: Equipment
     @State var sizeIndex: Int = 4
+    @State var brandIndex: Int = 0
+    @State var customBrandName: String = ""
     @State var checkCycle: Double = 12
+
+    private var brand: Brand? {
+        switch brandOptions[brandIndex] {
+        case .none:
+            return nil
+        case .custom:
+            return Brand(name: customBrandName, id: nil)
+        case .known(let selectedBrand):
+            return selectedBrand
+        }
+    }
 
     private let dismiss: () -> Void
 
     let sizeOptions = ["XXS", "XS", "S", "SM", "M", "L", "XL", "XXL"]
+    let brandOptions: [BrandSelection] = {
+        return [.none, .custom] + Brand.allBrands.map { .known($0) }
+    }()
 
     var title: String {
-        if !equipment.brand.isEmpty && !equipment.name.isEmpty {
-            return "\(equipment.brand) \(equipment.localizedType)"
+        if let brand = brand, !brand.name.isEmpty {
+            return "\(brand.name) \(equipment.localizedType)"
         } else {
             return "New \(equipment.localizedType)"
         }
@@ -31,6 +60,20 @@ struct EditEquipmentView: View {
         self.dismiss = dismiss
 
         self._equipment = State(initialValue: equipment)
+
+        if let brandId = equipment.brand.id {
+            let brandIndex = brandOptions.firstIndex { brandSelection in
+                if case .known(let brand) = brandSelection {
+                    return brand.id == brandId
+                }
+                return false
+            } ?? 0
+            _brandIndex = State(initialValue: brandIndex)
+        } else if !equipment.brand.name.isEmpty {
+            _brandIndex = State(initialValue: 1) // .custom
+            _customBrandName = State(initialValue: equipment.brand.name)
+        }
+
         if let paraglider = equipment as? Paraglider {
             self._sizeIndex = State(initialValue: sizeOptions.firstIndex(where: { (size) -> Bool in
                 size == paraglider.size
@@ -42,11 +85,25 @@ struct EditEquipmentView: View {
     var body: some View {
         Form {
             Section(header: Text("Equipment")) {
-                HStack {
-                    Text("Brand")
-                    Spacer()
-                    TextField("Brand", text: $equipment.brand)
-                        .multilineTextAlignment(.trailing)
+                Picker(selection: $brandIndex, label: Text("Brand")) {
+                    ForEach(0 ..< brandOptions.count) { index in
+                        switch self.brandOptions[index] {
+                        case .none:
+                            Text("None")
+                        case .custom:
+                            Text("Custom")
+                        case .known(let brand):
+                            BrandRow(brand: brand)
+                        }
+                    }
+                }
+                if case .custom = brandOptions[brandIndex] {
+                    HStack {
+                        Text("Custom Brand")
+                        Spacer()
+                        TextField("Brand", text: $customBrandName)
+                            .multilineTextAlignment(.trailing)
+                    }
                 }
                 HStack {
                     Text("Name")
@@ -84,17 +141,24 @@ struct EditEquipmentView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
+                    guard let brand = brand else {
+                        preconditionFailure("No brand selected")
+                    }
+
                     if var paraglider = equipment as? Paraglider {
+                        paraglider.brand = brand
                         paraglider.checkCycle = Int(checkCycle)
                         paraglider.size = sizeOptions[sizeIndex]
                         store.store(equipment: paraglider)
                     } else if var reserve = equipment as? Reserve {
+                        reserve.brand = brand
                         reserve.checkCycle = Int(checkCycle)
                         store.store(equipment: reserve)
                     }
 
                     dismiss()
                 }
+                .disabled(!brandOptions[brandIndex].isSelected)
             }
         }
 
@@ -105,12 +169,18 @@ struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             EditEquipmentView(equipment:Profile.fake().equipment.first!,
-                             dismiss: {})
+                              dismiss: {})
                 .environmentObject(ProfileStore(profile: Profile.fake()))
         }
 
         NavigationView {
             EditEquipmentView(equipment: Paraglider.new(),
+                              dismiss: {})
+                .environmentObject(ProfileStore(profile: Profile.fake()))
+        }
+
+        NavigationView {
+            EditEquipmentView(equipment: Paraglider(brand: Brand(name: "Heyho"), name: "Test", size: "M", checkCycle: 6),
                               dismiss: {})
                 .environmentObject(ProfileStore(profile: Profile.fake()))
         }

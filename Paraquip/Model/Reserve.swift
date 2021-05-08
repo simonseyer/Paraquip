@@ -9,7 +9,7 @@ import Foundation
 
 struct Reserve: Equipment, Identifiable {
     var id = UUID()
-    var brand: String
+    var brand: Brand
     var name: String
     var checkCycle: Int
     var checkLog: [Check] = []
@@ -17,6 +17,6 @@ struct Reserve: Equipment, Identifiable {
 
 extension Reserve {
     static func new() -> Reserve {
-        return Reserve(brand: "", name: "", checkCycle: 3)
+        return Reserve(brand: Brand(name: ""), name: "", checkCycle: 3)
     }
 }

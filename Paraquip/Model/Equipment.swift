@@ -9,7 +9,7 @@ import Foundation
 
 protocol Equipment {
     var id: UUID { get set }
-    var brand: String { get set }
+    var brand: Brand { get set }
     var name: String { get set }
     var checkCycle: Int { get set }
     var checkLog: [Check] { get set }

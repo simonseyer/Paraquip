@@ -11,7 +11,8 @@ extension Reserve {
     func toPersistence() -> PersistedReserve {
         return PersistedReserve(
             id: id,
-            brand: brand,
+            brand: brand.name,
+            brandId: brand.id,
             name: name,
             checkCycle: checkCycle,
             checkLog: checkLog.map { $0.toPersistence() }
@@ -23,7 +24,7 @@ extension PersistedReserve {
     func toModel() -> Reserve {
         return Reserve(
             id: id,
-            brand: brand,
+            brand: Brand(name: brand, id: brandId),
             name: name,
             checkCycle: checkCycle,
             checkLog: checkLog.map { $0.toModel() } )

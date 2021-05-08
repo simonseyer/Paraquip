@@ -11,7 +11,8 @@ extension Paraglider {
     func toPersistence() -> PersistedParaglider {
         return PersistedParaglider(
             id: id,
-            brand: brand,
+            brand: brand.name,
+            brandId: brand.id,
             name: name,
             size: size,
             checkCycle: checkCycle,
@@ -24,7 +25,7 @@ extension PersistedParaglider {
     func toModel() -> Paraglider {
         return Paraglider(
             id: id,
-            brand: brand,
+            brand: Brand(name: brand, id: brandId),
             name: name,
             size: size,
             checkCycle: checkCycle,

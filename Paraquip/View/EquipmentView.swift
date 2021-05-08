@@ -37,7 +37,7 @@ struct EquipmentView: View {
                 HStack {
                     Text("Brand")
                     Spacer()
-                    Text(equipment.brand)
+                    BrandRow(brand: equipment.brand)
                 }
                 HStack {
                     Text("Name")
@@ -108,7 +108,7 @@ struct EquipmentView: View {
                 showingAddEquipment = true
             }
         })
-        .navigationTitle("\(equipment.brand) \(equipment.name)")
+        .navigationTitle("\(equipment.brand.name) \(equipment.name)")
         .sheet(isPresented: $showingAddEquipment) {
             NavigationView {
                 EditEquipmentView(equipment: equipment) {

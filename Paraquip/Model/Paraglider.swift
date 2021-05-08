@@ -9,7 +9,7 @@ import Foundation
 
 struct Paraglider: Equipment, Identifiable {
     var id = UUID()
-    var brand: String
+    var brand: Brand
     var name: String
     var size: String
     var checkCycle: Int
@@ -18,6 +18,6 @@ struct Paraglider: Equipment, Identifiable {
 
 extension Paraglider {
     static func new() -> Paraglider {
-        return Paraglider(brand: "", name: "", size: "M", checkCycle: 6)
+        return Paraglider(brand: Brand(name: ""), name: "", size: "M", checkCycle: 6)
     }
 }

@@ -13,7 +13,7 @@ struct ProfileView: View {
     @State private var newEquipment: AnyEquipment?
 
     var body: some View {
-        HStack {
+        Group {
             if store.profile.equipment.isEmpty {
                 VStack {
                     Image(systemName: "paperplane")
@@ -25,11 +25,12 @@ struct ProfileView: View {
                         .frame(maxWidth: 250)
                         .padding()
                 }
-
             } else {
                 List {
                     ForEach(store.profile.equipment, id: \.id) { equipment in
-                        EquipmentRow(equipment: equipment)
+                        NavigationLink(destination: EquipmentView(equipmentId: equipment.id)) {
+                            EquipmentRow(equipment: equipment)
+                        }
                     }
                     .onDelete(perform: { indexSet in
                         store.removeEquipment(atOffsets: indexSet)
@@ -90,15 +91,11 @@ enum CheckUrgency {
 
 extension Equipment {
 
-    var icon: Image {
-        switch brand {
-        case "Gin":
-            return Image("gin-gliders")
-        case "U-Turn":
-            return Image("u-turn")
-        default:
-            return Image("gin-gliders")
+    var icon: Image? {
+        guard let logo = brand.id else {
+            return nil
         }
+        return Image(logo)
     }
 
     var formattedCheckInterval: String {
