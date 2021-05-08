@@ -13,7 +13,7 @@ struct EquipmentView: View {
     let equipmentId: UUID
 
     private var equipment: Equipment {
-        store.equipment(with: equipmentId)!
+        store.equipment(with: equipmentId) ?? PlaceholderEquipment()
     }
 
     @State private var showingAddEquipment = false
@@ -125,6 +125,14 @@ struct EquipmentView: View {
     }
 }
 
+struct PlaceholderEquipment: Equipment {
+    var id: UUID = .init()
+    var brand: Brand = .init(name: "")
+    var name: String = ""
+    var checkCycle: Int = 0
+    var checkLog: [Check] = []
+}
+
 extension Equipment {
     var localizedType: String {
         switch self {
@@ -132,6 +140,8 @@ extension Equipment {
             return "Paraglider"
         case is Reserve:
             return "Reserve"
+        case is PlaceholderEquipment:
+            return ""
         default:
             preconditionFailure("Unknown equipment type")
         }
