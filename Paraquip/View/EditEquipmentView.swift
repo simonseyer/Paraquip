@@ -29,6 +29,7 @@ struct EditEquipmentView: View {
     @State var brandIndex: Int = 0
     @State var customBrandName: String = ""
     @State var checkCycle: Double = 12
+    @State var lastCheckDate: Date = Date()
 
     private var brand: Brand? {
         switch brandOptions[brandIndex] {
@@ -128,6 +129,11 @@ struct EditEquipmentView: View {
                     }
                     Text("\(Int(checkCycle)) months")
                 }
+                if equipment.checkLog.isEmpty {
+                    HStack {
+                        DatePicker("Last check", selection: $lastCheckDate, displayedComponents: .date)
+                    }
+                }
             }
         }
         
@@ -145,13 +151,16 @@ struct EditEquipmentView: View {
                         preconditionFailure("No brand selected")
                     }
 
+                    equipment.brand = brand
+                    if equipment.checkLog.isEmpty {
+                        equipment.checkLog.append(Check(date: lastCheckDate))
+                    }
+
                     if var paraglider = equipment as? Paraglider {
-                        paraglider.brand = brand
                         paraglider.checkCycle = Int(checkCycle)
                         paraglider.size = sizeOptions[sizeIndex]
                         store.store(equipment: paraglider)
                     } else if var reserve = equipment as? Reserve {
-                        reserve.brand = brand
                         reserve.checkCycle = Int(checkCycle)
                         store.store(equipment: reserve)
                     }

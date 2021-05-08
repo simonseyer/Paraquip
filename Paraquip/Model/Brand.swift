@@ -13,6 +13,7 @@ struct Brand {
 }
 
 extension Brand {
+    // Add harness brands
     static var allBrands: [Brand] = [
         Brand(name: "Advance", id: "advance"),
         Brand(name: "Air G", id: "air-g"),
