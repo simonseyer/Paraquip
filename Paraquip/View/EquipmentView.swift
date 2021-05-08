@@ -74,15 +74,19 @@ struct EquipmentView: View {
                     }, label: {
                         Image(systemName: "plus.circle.fill")
                     })
+                    .disabled(editMode == .active)
                 }
 
             }
             Section(header: HStack {
                 Text("Check Log")
                 Spacer()
-                Button(self.editMode == .inactive ? "Edit" : "Done") {
-                    self.editMode = self.editMode == .active ? .inactive : .active
+                Button(editMode == .inactive ? "Edit" : "Done") {
+                    withAnimation {
+                        editMode.toggle()
+                    }
                 }
+                .animation(.none)
                 .disabled(equipment.checkLog.isEmpty)
             }) {
                 if equipment.checkLog.isEmpty {
@@ -95,14 +99,16 @@ struct EquipmentView: View {
                     .onDelete(perform: { indexSet in
                         store.removeChecks(for: equipment, atOffsets: indexSet)
                         if equipment.checkLog.isEmpty {
-                            editMode = .inactive
+                            withAnimation {
+                                editMode = .inactive
+                            }
                         }
                     })
                 }
             }
         }
         .listStyle(InsetGroupedListStyle())
-        .environment(\.editMode, self.$editMode)
+        .environment(\.editMode, $editMode)
         .toolbar(content: {
             Button("Edit") {
                 showingAddEquipment = true

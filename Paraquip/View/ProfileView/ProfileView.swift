@@ -11,6 +11,7 @@ struct ProfileView: View {
 
     @EnvironmentObject var store: ProfileStore
     @State private var newEquipment: AnyEquipment?
+    @State private var editMode: EditMode = .inactive
 
     var body: some View {
         Group {
@@ -34,17 +35,29 @@ struct ProfileView: View {
                     }
                     .onDelete(perform: { indexSet in
                         store.removeEquipment(atOffsets: indexSet)
+                        if store.profile.equipment.isEmpty {
+                            withAnimation {
+                                editMode = .inactive
+                            }
+                        }
                     })
                 }
                 .listStyle(PlainListStyle())
+                .environment(\.editMode, $editMode)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(editMode == .inactive ? "Edit" : "Done") {
+                            withAnimation {
+                                editMode.toggle()
+                            }
+                        }
+                        .animation(.none)
+                    }
+                }
             }
         }
         .navigationTitle(store.profile.name)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                EditButton()
-                    .disabled(store.profile.equipment.isEmpty)
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
                     Button(action: {
