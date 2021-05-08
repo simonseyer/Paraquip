@@ -63,6 +63,7 @@ struct EquipmentView: View {
                     Text("Next check")
                     Spacer()
                     Text(equipment.formattedCheckInterval)
+                        .foregroundColor(equipment.checkIntervalColor)
                 }
 
                 HStack {
