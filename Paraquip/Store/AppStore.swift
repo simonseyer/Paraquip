@@ -41,7 +41,7 @@ class AppStore: ObservableObject {
         let profileStores = persistence
             .load()?
             .compactMap { ProfileStore(id: $0) }
-            ?? [ProfileStore(profile: Profile(name: "Equipment"))]
+            ?? [ProfileStore(profile: Profile(name: "Paraquip"))]
 
         storedProfiles = profileStores.reduce(into: [ProfileIdentifier: ProfileStore]()) {
             $0[ProfileIdentifier(profile: $1.profile)] = $1

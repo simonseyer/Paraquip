@@ -1,0 +1,42 @@
+/* 
+  Localizable.strings
+  Paraquip
+
+  Created by Simon Seyer on 09.05.21.
+  
+*/
+
+// Generic
+"Edit" = "Bearbeiten";
+"Done" = "Fertig";
+"Paraglider" = "Gleitschirm";
+"Harness" = "Gurtzeug";
+"Reserve" = "Rettung";
+
+// Profile View
+"Check now" = "Jetzt checken";
+"profile_empty_text" = "Füge mit dem + oben rechts deine erste Ausrüstung hinzu";
+
+// Equipment View
+"Equipment" = "Ausrüstung";
+"Type" = "Typ";
+"Brand" = "Marke";
+"Name" = "Name";
+"Size" = "Größe";
+"Check" = "Check";
+"Check cycle" = "Check Intervall";
+"Next check" = "Nächster Check";
+"Log check" = "Check eintragen";
+"Check Log" = "Check Buch";
+"No check logged" = "Noch kein Check";
+
+// Edit Equipment View
+"Cancel" = "Abbrechen";
+"Save" = "Speichern";
+"Attributes" = "Merkmale";
+"%lld months" = "%lld Monate";
+"Last check" = "Letzter Check";
+"Custom brand" = "Markennamen";
+"Custom" = "Andere";
+"None" = "Auswählen";
+"New" = "Neuer";

@@ -10,6 +10,7 @@ import SwiftUI
 struct EquipmentRow: View {
 
     let equipment: Equipment
+    @Environment(\.locale) var locale
 
     var body: some View {
         HStack {
@@ -34,7 +35,7 @@ struct EquipmentRow: View {
                 HStack {
                     Image(systemName: "text.badge.checkmark")
 
-                    Text(equipment.formattedCheckInterval)
+                    Text(equipment.formattedCheckInterval(locale: locale))
 
                 }.foregroundColor(equipment.checkIntervalColor)
             }.padding([.top, .bottom])

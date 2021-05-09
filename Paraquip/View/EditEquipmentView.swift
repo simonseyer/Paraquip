@@ -49,11 +49,11 @@ struct EditEquipmentView: View {
         return [.none, .custom] + Brand.allBrands.map { .known($0) }
     }()
 
-    var title: String {
+    var title: Text {
         if let brand = brand, !brand.name.isEmpty {
-            return "\(brand.name) \(equipment.localizedType)"
+            return Text("\(brand.name) \(NSLocalizedString(equipment.localizedType, comment: ""))")
         } else {
-            return "New \(equipment.localizedType)"
+            return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(equipment.localizedType, comment: ""))")
         }
     }
 
@@ -100,7 +100,7 @@ struct EditEquipmentView: View {
                 }
                 if case .custom = brandOptions[brandIndex] {
                     HStack {
-                        Text("Custom Brand")
+                        Text("Custom brand")
                         Spacer()
                         TextField("Brand", text: $customBrandName)
                             .multilineTextAlignment(.trailing)
@@ -122,7 +122,7 @@ struct EditEquipmentView: View {
                     }
                 }
             }
-            Section(header: Text("Check Cycle")) {
+            Section(header: Text("Check cycle")) {
                 HStack {
                     Slider(value: $checkCycle, in: 3...36, step: 1) {
                         EmptyView()
@@ -175,28 +175,30 @@ struct EditEquipmentView: View {
 
 struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            EditEquipmentView(equipment:Profile.fake().equipment.first!,
-                              dismiss: {})
-                .environmentObject(ProfileStore(profile: Profile.fake()))
-        }
+        Group {
+            NavigationView {
+                EditEquipmentView(equipment:Profile.fake().equipment.first!,
+                                  dismiss: {})
+                    .environmentObject(ProfileStore(profile: Profile.fake()))
+            }
 
-        NavigationView {
-            EditEquipmentView(equipment: Paraglider.new(),
-                              dismiss: {})
-                .environmentObject(ProfileStore(profile: Profile.fake()))
-        }
+            NavigationView {
+                EditEquipmentView(equipment: Paraglider.new(),
+                                  dismiss: {})
+                    .environmentObject(ProfileStore(profile: Profile.fake()))
+            }
 
-        NavigationView {
-            EditEquipmentView(equipment: Paraglider(brand: Brand(name: "Heyho"), name: "Test", size: "M", checkCycle: 6),
-                              dismiss: {})
-                .environmentObject(ProfileStore(profile: Profile.fake()))
-        }
+            NavigationView {
+                EditEquipmentView(equipment: Paraglider(brand: Brand(name: "Heyho"), name: "Test", size: "M", checkCycle: 6),
+                                  dismiss: {})
+                    .environmentObject(ProfileStore(profile: Profile.fake()))
+            }
 
-        NavigationView {
-            EditEquipmentView(equipment:Profile.fake().equipment.last!,
-                              dismiss: {})
-                .environmentObject(ProfileStore(profile: Profile.fake()))
-        }
+            NavigationView {
+                EditEquipmentView(equipment:Profile.fake().equipment.last!,
+                                  dismiss: {})
+                    .environmentObject(ProfileStore(profile: Profile.fake()))
+            }
+        }.environment(\.locale, .init(identifier: "de"))
     }
 }

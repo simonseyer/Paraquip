@@ -20,6 +20,8 @@ struct EquipmentView: View {
     @State private var editMode: EditMode = .inactive
     @State private var newCheckDate = Date()
 
+    @Environment(\.locale) var locale
+
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -32,7 +34,7 @@ struct EquipmentView: View {
                 HStack {
                     Text("Type")
                     Spacer()
-                    Text(equipment.localizedType)
+                    Text(LocalizedStringKey( equipment.localizedType))
                 }
                 HStack {
                     Text("Brand")
@@ -62,7 +64,7 @@ struct EquipmentView: View {
                 HStack {
                     Text("Next check")
                     Spacer()
-                    Text(equipment.formattedCheckInterval)
+                    Text(equipment.formattedCheckInterval(locale: locale))
                         .foregroundColor(equipment.checkIntervalColor)
                 }
 
@@ -155,14 +157,17 @@ struct EquipmentView_Previews: PreviewProvider {
     private static let profile = Profile.fake()
 
     static var previews: some View {
-        NavigationView {
-            EquipmentView(equipmentId: profile.equipment.first!.id)
-                .environmentObject(ProfileStore(profile: profile))
-        }
+        Group {
+            NavigationView {
+                EquipmentView(equipmentId: profile.equipment.first!.id)
+                    .environmentObject(ProfileStore(profile: profile))
+            }
 
-        NavigationView {
-            EquipmentView(equipmentId: profile.equipment.last!.id)
-                .environmentObject(ProfileStore(profile: profile))
+            NavigationView {
+                EquipmentView(equipmentId: profile.equipment.last!.id)
+                    .environmentObject(ProfileStore(profile: profile))
+            }
         }
+        .environment(\.locale, .init(identifier: "de"))
     }
 }

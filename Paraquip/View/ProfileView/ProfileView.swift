@@ -20,7 +20,7 @@ struct ProfileView: View {
                     Image(systemName: "paperplane")
                         .font(.system(size: 80))
 
-                    Text("Add your first equipment by tapping the + in the top right")
+                    Text("profile_empty_text")
                         .font(.title3)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: 250)
@@ -116,18 +116,22 @@ extension Equipment {
         return Image(logo)
     }
 
-    var formattedCheckInterval: String {
+    func formattedCheckInterval(locale: Locale = Locale.current) -> LocalizedStringKey {
         if checkUrgency == .now {
             return "Check now"
         }
 
+        var calendar = Calendar.current
+        calendar.locale = locale
+
         let formatter = DateComponentsFormatter()
+        formatter.calendar = calendar
         formatter.unitsStyle = .full
         formatter.maximumUnitCount = 1
         formatter.allowedUnits = [.month, .day]
         formatter.includesTimeRemainingPhrase = true
 
-        return formatter.string(from: Date(), to: nextCheck) ?? "???"
+        return "\(formatter.string(from: Date(), to: nextCheck) ?? "???")"
     }
 
     var checkUrgency: CheckUrgency {
@@ -160,14 +164,17 @@ struct ProfileView_Previews: PreviewProvider {
     private static let profileStore = ProfileStore(profile: Profile.fake())
 
     static var previews: some View {
-        NavigationView {
-            ProfileView()
-                .environmentObject(profileStore)
-        }
+        Group {
+            NavigationView {
+                ProfileView()
+                    .environmentObject(profileStore)
+            }
 
-        NavigationView {
-            ProfileView()
-                .environmentObject(ProfileStore(profile: Profile(name: "Empty")))
+            NavigationView {
+                ProfileView()
+                    .environmentObject(ProfileStore(profile: Profile(name: "Empty")))
+            }
         }
+        .environment(\.locale, .init(identifier: "de"))
     }
 }
