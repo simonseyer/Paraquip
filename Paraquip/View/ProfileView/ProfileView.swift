@@ -17,8 +17,10 @@ struct ProfileView: View {
         Group {
             if store.profile.equipment.isEmpty {
                 VStack {
-                    Image(systemName: "paperplane")
-                        .font(.system(size: 80))
+                    Image("icon")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 120)
 
                     Text("profile_empty_text")
                         .font(.title3)
