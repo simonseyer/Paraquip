@@ -49,6 +49,7 @@ class ProfileStore: ObservableObject {
         } else {
             profile.equipment.append(equipment)
         }
+        sortEquipment()
     }
 
     func removeEquipment(atOffsets indexSet: IndexSet) {
@@ -58,12 +59,25 @@ class ProfileStore: ObservableObject {
     func logCheck(for equipment: Equipment, date: Date) {
         if let index = profile.equipment.firstIndex(where: { $0.id == equipment.id }) {
             profile.equipment[index].checkLog.append(Check(date: date))
+            // TODO: optimise sorting
+            profile.equipment[index].checkLog.sort { check1, check2 in
+                return check1.date > check2.date
+            }
+            sortEquipment()
+        }
+    }
+
+    private func sortEquipment() {
+        // TODO: optimise sorting
+        profile.equipment.sort { equipment1, equipment2 in
+            return equipment1.nextCheck < equipment2.nextCheck
         }
     }
 
     func removeChecks(for equipment: Equipment, atOffsets indexSet: IndexSet) {
         if let index = profile.equipment.firstIndex(where: { $0.id == equipment.id }) {
             profile.equipment[index].checkLog.remove(atOffsets: indexSet)
+            sortEquipment()
         }
     }
 }
