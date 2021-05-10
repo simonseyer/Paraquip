@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,8 @@
 		0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* EquipmentView.swift */; };
 		0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1BA262C5BD800DA347B /* Fake.swift */; };
 		0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E7A53262C43270002A67B /* EditEquipmentView.swift */; };
+		0D61B2EB2649A7C200509C30 /* Versionable in Frameworks */ = {isa = PBXBuildFile; productRef = 0D61B2EA2649A7C200509C30 /* Versionable */; };
+		0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */; };
 		0DD7FC0E263DD2AD0038B25D /* ProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */; };
 		0DD7FC10263DD3060038B25D /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0F263DD3060038B25D /* Profile.swift */; };
 		0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC12263DD32A0038B25D /* Equipment.swift */; };
@@ -82,6 +84,7 @@
 		0D3EE1B5262C58A700DA347B /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
 		0D3EE1BA262C5BD800DA347B /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fake.swift; sourceTree = "<group>"; };
 		0D5E7A53262C43270002A67B /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
+		0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceVersions.swift; sourceTree = "<group>"; };
 		0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStore.swift; sourceTree = "<group>"; };
 		0DD7FC0F263DD3060038B25D /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0DD7FC12263DD32A0038B25D /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
@@ -101,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D61B2EB2649A7C200509C30 /* Versionable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +247,7 @@
 				0DD7FC19263DD7540038B25D /* PersistedProfile.swift */,
 				0DD7FC1B263DD8320038B25D /* ProfilePersistence.swift */,
 				0DD7FC26263DE1B60038B25D /* AppPersistence.swift */,
+				0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -275,6 +280,9 @@
 			dependencies = (
 			);
 			name = Paraquip;
+			packageProductDependencies = (
+				0D61B2EA2649A7C200509C30 /* Versionable */,
+			);
 			productName = Paraquip;
 			productReference = 0D11FB8E2620A5CF009D9349 /* Paraquip.app */;
 			productType = "com.apple.product-type.application";
@@ -347,6 +355,9 @@
 				de,
 			);
 			mainGroup = 0D11FB852620A5CE009D9349;
+			packageReferences = (
+				0D61B2E92649A7C200509C30 /* XCRemoteSwiftPackageReference "Versionable" */,
+			);
 			productRefGroup = 0D11FB8F2620A5CF009D9349 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -412,6 +423,7 @@
 				0DD7FC23263DDFC00038B25D /* ReservePersistenceMapping.swift in Sources */,
 				0D2B2D1F264700EA009873CE /* HarnessPersistenceMapping.swift in Sources */,
 				0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */,
+				0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */,
 				0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */,
 				0D11FBC62620A927009D9349 /* AppStore.swift in Sources */,
 				0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */,
@@ -746,6 +758,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0D61B2E92649A7C200509C30 /* XCRemoteSwiftPackageReference "Versionable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Versionable";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0D61B2EA2649A7C200509C30 /* Versionable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0D61B2E92649A7C200509C30 /* XCRemoteSwiftPackageReference "Versionable" */;
+			productName = Versionable;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0D11FB862620A5CE009D9349 /* Project object */;
 }

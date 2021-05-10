@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Versionable
 
 class ProfilePersistence {
 
@@ -23,7 +24,8 @@ class ProfilePersistence {
     func save(profile: PersistedProfile) {
         do {
             let url = url(for: profile.id)
-            let data = try encoder.encode(profile)
+            let container = VersionableContainer(instance: profile)
+            let data = try encoder.encode(container)
             try data.write(to: url, options: .atomic)
         } catch {
             print("Failed to write profile: \(error)")
@@ -34,7 +36,8 @@ class ProfilePersistence {
         do {
             let url = url(for: id)
             let data = try Data(contentsOf: url)
-            return try decoder.decode(PersistedProfile.self, from: data)
+            let container = try decoder.decode(VersionableContainer<PersistedProfile>.self, from: data)
+            return container.instance
         } catch {
             print("Failed to load profile: \(error)")
             return nil
