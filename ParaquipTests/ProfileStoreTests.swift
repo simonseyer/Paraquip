@@ -19,6 +19,7 @@ class ProfileStoreTests: XCTestCase {
     }()
 
     private let paragliderID = UUID()
+    private let reserveID = UUID()
 
     func date(offsetByDays days: Int) -> Date {
         return Calendar.current.date(byAdding: .day, value: days, to: Date())!
@@ -34,7 +35,7 @@ class ProfileStoreTests: XCTestCase {
                                            size: "M",
                                            checkCycle: 2,
                                            checkLog: [Check(date: date(offsetByDays: 0))]),
-                                Reserve(id: UUID(),
+                                Reserve(id: reserveID,
                                            brand: Brand(name: "Gin", id: "gin"),
                                            name: "Yeti",
                                            checkCycle: 1,
@@ -63,6 +64,11 @@ class ProfileStoreTests: XCTestCase {
 
         XCTAssertEqual(newEquipment.checkLog.count, 2)
         XCTAssert(Calendar.current.isDate(newEquipment.checkLog.first!.date, inSameDayAs: date))
+    }
+
+    func testEquipmentSortingWithNewCheck() {
+        let equipment = profileStore.equipment(with: paragliderID)!
+        profileStore.logCheck(for: equipment, date: date(offsetByDays: 1))
 
         // Check equipment sorted after insert
         XCTAssertLessThan(profileStore.profile.equipment.first!.nextCheck,
@@ -79,11 +85,42 @@ class ProfileStoreTests: XCTestCase {
 
         XCTAssertEqual(newEquipment.checkLog.count, 2)
         XCTAssert(Calendar.current.isDate(newEquipment.checkLog.last!.date, inSameDayAs: date))
+    }
+
+    func testEquipmentSortingWithOldCheck() {
+        let equipment = profileStore.equipment(with: paragliderID)!
+        profileStore.logCheck(for: equipment, date: date(offsetByDays: -1))
 
         // Check equipment sorted after insert
         XCTAssertLessThan(profileStore.profile.equipment.first!.nextCheck,
                           profileStore.profile.equipment.last!.nextCheck)
     }
 
+    func testNextCheck() {
+        let equipment = profileStore.equipment(with: reserveID)!
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: date(offsetByDays: -40))!
+        XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
+    }
 
+    func testNextCheckWithOldCheck() {
+        let equipment = profileStore.equipment(with: paragliderID)!
+
+        profileStore.logCheck(for: equipment, date: date(offsetByDays: -1))
+
+        let newEquipment = profileStore.equipment(with: paragliderID)!
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 2, to: date(offsetByDays: 0))!
+
+        XCTAssert(Calendar.current.isDate(newEquipment.nextCheck, inSameDayAs: nextCheck))
+    }
+
+    func testNextCheckWithNewCheck() {
+        let equipment = profileStore.equipment(with: reserveID)!
+
+        profileStore.logCheck(for: equipment, date: date(offsetByDays: 0))
+
+        let newEquipment = profileStore.equipment(with: reserveID)!
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: date(offsetByDays: 0))!
+        
+        XCTAssert(Calendar.current.isDate(newEquipment.nextCheck, inSameDayAs: nextCheck))
+    }
 }
