@@ -39,6 +39,7 @@
 		0DD7FC23263DDFC00038B25D /* ReservePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */; };
 		0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */; };
 		0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC26263DE1B60038B25D /* AppPersistence.swift */; };
+		0DE8DE23264C5BE40020B778 /* ProfileStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8DE22264C5BE40020B778 /* ProfileStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC26263DE1B60038B25D /* AppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistence.swift; sourceTree = "<group>"; };
+		0DE8DE22264C5BE40020B778 /* ProfileStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 			children = (
 				0D11FBA32620A5CF009D9349 /* ParaquipTests.swift */,
 				0D11FBA52620A5D0009D9349 /* Info.plist */,
+				0DE8DE22264C5BE40020B778 /* ProfileStoreTests.swift */,
 			);
 			path = ParaquipTests;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D11FBA42620A5CF009D9349 /* ParaquipTests.swift in Sources */,
+				0DE8DE23264C5BE40020B778 /* ProfileStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
