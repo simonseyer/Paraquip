@@ -38,10 +38,14 @@ class AppStore: ObservableObject {
     init(persistence: AppPersistence = .init()) {
         self.persistence = persistence
 
-        let profileStores = persistence
+        var profileStores = persistence
             .load()?
             .compactMap { ProfileStore(id: $0) }
-            ?? [ProfileStore(profile: Profile(name: "Paraquip"))]
+            ?? []
+
+        if profileStores.isEmpty {
+            profileStores.append(ProfileStore(profile: Profile(name: "Paraquip")))
+        }
 
         storedProfiles = profileStores.reduce(into: [ProfileIdentifier: ProfileStore]()) {
             $0[ProfileIdentifier(profile: $1.profile)] = $1
