@@ -86,6 +86,7 @@
 		0D3EE1BA262C5BD800DA347B /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fake.swift; sourceTree = "<group>"; };
 		0D5E7A53262C43270002A67B /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
 		0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceVersions.swift; sourceTree = "<group>"; };
+		0D6CBD4B264C9313003655C6 /* Paraquip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Paraquip.entitlements; sourceTree = "<group>"; };
 		0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStore.swift; sourceTree = "<group>"; };
 		0DD7FC0F263DD3060038B25D /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0DD7FC12263DD32A0038B25D /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
@@ -150,6 +151,7 @@
 		0D11FB902620A5CF009D9349 /* Paraquip */ = {
 			isa = PBXGroup;
 			children = (
+				0D6CBD4B264C9313003655C6 /* Paraquip.entitlements */,
 				0D5E7A52262C430E0002A67B /* View */,
 				0D11FBBF2620A5E2009D9349 /* Model */,
 				0DD7FC11263DD30F0038B25D /* Store */,
@@ -599,6 +601,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Paraquip/Paraquip.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Paraquip/Preview Content\"";
 				DEVELOPMENT_TEAM = J5G99NT894;
@@ -609,8 +612,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.simonseyer.Paraquip.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -621,9 +626,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Paraquip/Paraquip.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Paraquip/Preview Content\"";
-				DEVELOPMENT_TEAM = J5G99NT894;
+				DEVELOPMENT_TEAM = V8Y4ZV4958;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Paraquip/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -631,8 +637,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.simonseyer.Paraquip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
