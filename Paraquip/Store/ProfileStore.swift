@@ -20,6 +20,7 @@ class ProfileStore: ObservableObject {
     init(profile: Profile, persistence: ProfilePersistence = .init()) {
         self.profile = profile
         self.persistence = persistence
+        sortEquipment()
         save()
     }
 
