@@ -29,6 +29,7 @@ class ProfileStore: ObservableObject {
         }
         self.profile = profile
         self.persistence = persistence
+        sortEquipment()
     }
 
     private func save() {
