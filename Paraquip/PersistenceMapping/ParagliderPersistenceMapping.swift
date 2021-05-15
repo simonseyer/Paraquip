@@ -16,7 +16,8 @@ extension Paraglider {
             name: name,
             size: size,
             checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toPersistence() }
+            checkLog: checkLog.map { $0.toPersistence() },
+            purchaseDate: purchaseDate
         )
     }
 }
@@ -29,6 +30,8 @@ extension PersistedParaglider {
             name: name,
             size: size,
             checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toModel() } )
+            checkLog: checkLog.map { $0.toModel() },
+            purchaseDate: purchaseDate
+        )
     }
 }

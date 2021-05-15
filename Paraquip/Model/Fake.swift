@@ -18,7 +18,8 @@ extension Profile {
                            checkCycle: 6,
                            checkLog: [
                             Check(date: Date(timeIntervalSinceNow: -10000))
-                           ]),
+                           ],
+                           purchaseDate: Date(timeIntervalSinceNow: -1000000)),
                 Paraglider(brand: Brand(name: "U-Turn", id: "u-turn"),
                            name: "Infinity 5",
                            size: "M",

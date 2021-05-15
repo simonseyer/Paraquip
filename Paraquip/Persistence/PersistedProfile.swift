@@ -23,6 +23,7 @@ struct PersistedParaglider: Codable {
     var size: String
     var checkCycle: Int
     var checkLog: [PersistedCheck]
+    var purchaseDate: Date?
 }
 
 struct PersistedReserve: Codable {
@@ -32,6 +33,7 @@ struct PersistedReserve: Codable {
     var name: String
     var checkCycle: Int
     var checkLog: [PersistedCheck]
+    var purchaseDate: Date?
 }
 
 struct PersistedHarness: Codable {
@@ -41,6 +43,7 @@ struct PersistedHarness: Codable {
     var name: String
     var checkCycle: Int
     var checkLog: [PersistedCheck]
+    var purchaseDate: Date?
 }
 
 struct PersistedCheck: Codable {

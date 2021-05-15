@@ -13,6 +13,7 @@ protocol Equipment {
     var name: String { get set }
     var checkCycle: Int { get set }
     var checkLog: [Check] { get set }
+    var purchaseDate: Date? { get set }
 }
 
 struct Check: Identifiable {

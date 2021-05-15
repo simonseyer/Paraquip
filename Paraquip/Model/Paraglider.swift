@@ -14,6 +14,7 @@ struct Paraglider: Equipment, Identifiable {
     var size: String
     var checkCycle: Int
     var checkLog: [Check] = []
+    var purchaseDate: Date? = nil
 }
 
 extension Paraglider {

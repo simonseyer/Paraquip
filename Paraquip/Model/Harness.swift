@@ -13,6 +13,7 @@ struct Harness: Equipment, Identifiable {
     var name: String
     var checkCycle: Int
     var checkLog: [Check] = []
+    var purchaseDate: Date? = nil
 }
 
 extension Harness {

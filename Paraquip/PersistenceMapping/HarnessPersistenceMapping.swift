@@ -15,7 +15,8 @@ extension Harness {
             brandId: brand.id,
             name: name,
             checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toPersistence() }
+            checkLog: checkLog.map { $0.toPersistence() },
+            purchaseDate: purchaseDate
         )
     }
 }
@@ -27,6 +28,8 @@ extension PersistedHarness {
             brand: Brand(name: brand, id: brandId),
             name: name,
             checkCycle: checkCycle,
-            checkLog: checkLog.map { $0.toModel() } )
+            checkLog: checkLog.map { $0.toModel() },
+            purchaseDate: purchaseDate
+        )
     }
 }
