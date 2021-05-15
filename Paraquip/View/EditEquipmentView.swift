@@ -112,6 +112,8 @@ struct EditEquipmentView: View {
                     TextField("Name", text: $equipment.name)
                         .multilineTextAlignment(.trailing)
                 }
+                FormDatePicker(label: "Purchase Date",
+                               date: $equipment.purchaseDate)
             }
             if equipment is Paraglider {
                 Section(header: Text("Attributes")) {

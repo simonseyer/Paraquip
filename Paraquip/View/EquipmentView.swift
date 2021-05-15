@@ -53,6 +53,13 @@ struct EquipmentView: View {
                         Text(paraglider.size)
                     }
                 }
+                if let purchaseDate = equipment.purchaseDate {
+                    HStack {
+                        Text("Purchase Date")
+                        Spacer()
+                        Text(formatted(date: purchaseDate))
+                    }
+                }
             }
             Section(header: Text("Check")) {
                 HStack {
@@ -125,6 +132,14 @@ struct EquipmentView: View {
             }
         }
     }
+
+    private func formatted(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = locale
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        return dateFormatter.string(from: date)
+    }
 }
 
 struct PlaceholderEquipment: Equipment {
@@ -133,6 +148,7 @@ struct PlaceholderEquipment: Equipment {
     var name: String = ""
     var checkCycle: Int = 0
     var checkLog: [Check] = []
+    var purchaseDate: Date? = nil
 }
 
 extension Equipment {
