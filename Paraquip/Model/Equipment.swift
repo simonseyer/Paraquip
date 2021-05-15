@@ -23,7 +23,7 @@ struct Check: Identifiable {
 
 extension Equipment {
     var nextCheck: Date {
-        guard let lastCheck = checkLog.first?.date else {
+        guard let lastCheck = checkLog.first?.date ?? purchaseDate else {
             return Date()
         }
 
