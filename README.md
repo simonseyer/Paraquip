@@ -6,5 +6,4 @@ A simple app to keep track of your paragliding equipment and checks.
 
 ## Screenshots
 
-![](Screenshots/main_screen.png)
-
+<img width="250" src="Screenshots/main_screen.png">
