@@ -85,7 +85,7 @@ struct EditEquipmentView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Equipment")) {
+            Section(header: Text("")) {
                 Picker(selection: $brandIndex, label: Text("Brand")) {
                     ForEach(0 ..< brandOptions.count) { index in
                         switch self.brandOptions[index] {
