@@ -29,7 +29,7 @@ struct EditEquipmentView: View {
     @State var brandIndex: Int = 0
     @State var customBrandName: String = ""
     @State var checkCycle: Double = 12
-    @State var lastCheckDate: Date = Date()
+    @State var lastCheckDate: Date?
 
     private var brand: Brand? {
         switch brandOptions[brandIndex] {
@@ -130,9 +130,8 @@ struct EditEquipmentView: View {
                     Text("\(Int(checkCycle)) months")
                 }
                 if equipment.checkLog.isEmpty {
-                    HStack {
-                        DatePicker("Last check", selection: $lastCheckDate, displayedComponents: .date)
-                    }
+                    FormDatePicker(label: "Last check",
+                                   date: $lastCheckDate)
                 }
             }
         }
@@ -153,8 +152,8 @@ struct EditEquipmentView: View {
 
                     equipment.brand = brand
                     equipment.checkCycle = Int(checkCycle)
-                    if equipment.checkLog.isEmpty {
-                        equipment.checkLog.append(Check(date: lastCheckDate))
+                    if let checkDate = lastCheckDate {
+                        equipment.checkLog.append(Check(date: checkDate))
                     }
 
                     if var paraglider = equipment as? Paraglider {
