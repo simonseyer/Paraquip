@@ -7,49 +7,46 @@
 
 import SwiftUI
 
-struct NotificationEntryView: View {
+struct NotificationConfig: Identifiable, Hashable {
 
     enum Unit: Int {
         case days, months
     }
 
-    @Binding var unit: Unit
-    @Binding var multiplier: Int
+    let id = UUID()
+    var unit: Unit
+    var multiplier: Int
+}
 
-    @State private var unitOptions: [String]
-    @State private var multiplierOptions: [String]
+struct NotificationEntryView: View {
+
+    @Binding var config: NotificationConfig
+
+    @State private var unitOptions: [String] = []
+    @State private var multiplierOptions: [String] = []
 
     @State private var unitPickerVisible = false
     @State private var multiplierPickerVisible = false
 
-    @State private var unitIndex: Int
-    @State private var multiplierIndex: Int
+    @State private var unitIndex: Int = 0
+    @State private var multiplierIndex: Int = 0
 
-    init(unit: Binding<Unit>, multiplier: Binding<Int>) {
-        _unit = unit
-        _multiplier = multiplier
-        _unitIndex = State(initialValue: unit.wrappedValue.rawValue)
-        _multiplierIndex = State(initialValue: Self.safeMultiplierIndex(from: multiplier.wrappedValue))
-        _unitOptions = State(initialValue: Self.localizedUnits(plural: multiplier.wrappedValue != 1))
-        _multiplierOptions = State(initialValue: Self.multiplier(for:unit.wrappedValue))
-    }
+    init(config: Binding<NotificationConfig>) {
+        _config = config
 
-    private static func localizedUnits(plural: Bool) -> [String] {
-        let units = plural ? ["days", "months"] : ["day", "month"]
-        return units.map { NSLocalizedString($0, comment: "") }
-    }
+        let configValue = config.wrappedValue
 
-    private static func multiplier(for unit: Unit) -> [String] {
-        switch unit {
-        case .days:
-            return (0...31).map { "\($0)" }
-        case .months:
-            return (0...6).map { "\($0)" }
-        }
-    }
+        let unitOptions = Self.unitOptions(for: configValue.multiplier)
+        let multiplierOptions = Self.multiplierOptions(for: configValue.unit)
 
-    private static func safeMultiplierIndex(from value: Int) -> Int {
-        return min(max(0, value), 31)
+        let unitIndex = configValue.unit.rawValue
+        let multiplierIndex = min(max(configValue.multiplier, 0), multiplierOptions.count - 1)
+
+        _unitOptions = State(initialValue: unitOptions)
+        _multiplierOptions = State(initialValue: multiplierOptions)
+
+        _unitIndex = State(initialValue: unitIndex)
+        _multiplierIndex = State(initialValue: multiplierIndex)
     }
 
     var body: some View {
@@ -94,19 +91,37 @@ struct NotificationEntryView: View {
             multiplierPickerVisible = false
         }
         .onChange(of: multiplierIndex) { value in
-            multiplier = value
-            unitOptions = Self.localizedUnits(plural: value != 1)
-        }
-        .onChange(of: multiplier) { value in
-            multiplierIndex = Self.safeMultiplierIndex(from: value)
+            config.multiplier = value
+            updateState()
         }
         .onChange(of: unitIndex) { value in
-            unit = Unit(rawValue: value)!
-            multiplierOptions = Self.multiplier(for: unit)
-            multiplierIndex = min(multiplierIndex, multiplierOptions.count - 1)
+            config.unit = .init(rawValue: value)!
+            updateState()
         }
-        .onChange(of: unit) { value in
-            unitIndex = value.rawValue
+        .onChange(of: config) { value in
+            updateState()
+        }
+    }
+
+    private func updateState() {
+        unitOptions = Self.unitOptions(for: config.multiplier)
+        multiplierOptions = Self.multiplierOptions(for: config.unit)
+        unitIndex = config.unit.rawValue
+        multiplierIndex = min(max(multiplierIndex, 0), multiplierOptions.count - 1)
+    }
+
+    private static func unitOptions(for multiplier: Int) -> [String] {
+        let plural = multiplier != 1
+        let units = plural ? ["days", "months"] : ["day", "month"]
+        return units.map { NSLocalizedString($0, comment: "") }
+    }
+
+    private static func multiplierOptions(for unit: NotificationConfig.Unit) -> [String] {
+        switch unit {
+        case .days:
+            return (0...31).map { "\($0)" }
+        case .months:
+            return (0...6).map { "\($0)" }
         }
     }
 }
@@ -114,8 +129,7 @@ struct NotificationEntryView: View {
 struct NotificationEntryView_Previews: PreviewProvider {
     static var previews: some View {
         NotificationEntryView(
-            unit: .constant(.days),
-            multiplier: .constant(1)
+            config: .constant(.init(unit: .days, multiplier: 1))
         )
         .previewLayout(.fixed(width: 350, height: 60))
         .environment(\.locale, .init(identifier: "de"))

@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-struct NotificationConfig: Identifiable, Hashable {
-    let id = UUID()
-    var unit: NotificationEntryView.Unit
-    var multiplier: Int
-}
-
 class NotificationSettingsViewModel: ObservableObject {
 
     @Published var configuration: [NotificationConfig] = [
@@ -37,9 +31,9 @@ struct NotificationSettingsView: View {
 
             if notificationsOn {
                 Section {
-                    ForEach(Array(viewModel.configuration.enumerated()), id: \.0) { index, _ in
+                    ForEach(Array(viewModel.configuration.enumerated()), id: \.1.id) { index, _ in
                         NotificationEntryView(
-                            unit: $viewModel.configuration[index].unit, multiplier: $viewModel.configuration[index].multiplier
+                            config: $viewModel.configuration[index]
                         )
                         .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
                     }
