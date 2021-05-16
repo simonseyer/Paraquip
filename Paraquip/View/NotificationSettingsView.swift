@@ -45,27 +45,24 @@ struct NotificationSettingsView: View {
                             }
                         }
                     })
-                    if editMode == .inactive {
-                        Button(action: {
-                            withAnimation {
-                                viewModel.configuration.append(NotificationConfig(unit: .months, multiplier: 1))
+                    Button(action: {
+                        withAnimation {
+                            viewModel.configuration.append(NotificationConfig(unit: .months, multiplier: 1))
+                        }
+                    }) {
+                        HStack {
+                            ZStack {
+                                RoundedRectangle(cornerSize: CGSize(width: 6, height: 6))
+                                    .foregroundColor(Color(UIColor.systemGray2))
+                                    .frame(width: 30, height: 30)
+                                Image(systemName: "plus")
+                                    .foregroundColor(Color.white)
+                                    .font(.system(size: 18).bold())
                             }
-                        }) {
-                            HStack {
-                                ZStack {
-                                    RoundedRectangle(cornerSize: CGSize(width: 6, height: 6))
-                                        .foregroundColor(Color(UIColor.systemGray2))
-                                        .frame(width: 30, height: 30)
-                                    Image(systemName: "plus")
-                                        .foregroundColor(Color.white)
-                                        .font(.system(size: 18).bold())
-                                }
-                                
-                                Text("Add notification")
-                                    .padding([.leading], 5)
-                                    .foregroundColor(Color.primary)
-                                
-                            }
+
+                            Text("Add notification")
+                                .padding([.leading], 5)
+                                .disabled(editMode == .active)
                         }
                     }
                 }
