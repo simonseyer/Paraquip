@@ -19,12 +19,33 @@ struct PickerOverlay : UIViewRepresentable {
 
     func makeUIView(context: UIViewRepresentableContext<PickerOverlay>) -> PickerOverlayView {
         let view = PickerOverlayView()
+
         view.picker.delegate = context.coordinator
         view.picker.dataSource = context.coordinator
         view.picker.tintColor = UIColor(Color.accentColor)
+
         view.textField.inputView = view.picker
         view.textField.delegate = context.coordinator
         view.textField.layer.opacity = 0
+
+        let toolBar: UIToolbar = {
+            let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""),
+                                             style: .done,
+                                             target: context.coordinator,
+                                             action: #selector(Coordinator.dismiss))
+            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+            let toolBar = UIToolbar()
+            toolBar.sizeToFit()
+            toolBar.setItems([spaceButton, doneButton], animated: false)
+            toolBar.isUserInteractionEnabled = true
+
+            return toolBar
+        }()
+
+
+        view.textField.inputAccessoryView = toolBar
+
         return view
     }
 
@@ -80,6 +101,11 @@ struct PickerOverlay : UIViewRepresentable {
         }
 
         func textFieldDidEndEditing(_ textField: UITextField) {
+            dismiss()
+        }
+
+        @objc
+        func dismiss() {
             self.parent.$isVisible.wrappedValue = false
         }
     }
