@@ -37,7 +37,7 @@ struct FormDatePicker: View {
                     Text(label)
                     Spacer()
                     if date != nil {
-                        Text(formatted(date: selectedDate))
+                        Text(selectedDate, style: .date)
                         Button(action: deselectDate) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundColor(.secondary)
@@ -70,14 +70,6 @@ struct FormDatePicker: View {
                 deselectDate()
             }
         }
-    }
-
-    private func formatted(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = locale
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter.string(from: date)
     }
 
     private func deselectDate() {

@@ -57,7 +57,7 @@ struct EquipmentView: View {
                     HStack {
                         Text("Purchase Date")
                         Spacer()
-                        Text(formatted(date: purchaseDate))
+                        Text(purchaseDate, style: .date)
                     }
                 }
             }
@@ -131,14 +131,6 @@ struct EquipmentView: View {
                 }
             }
         }
-    }
-
-    private func formatted(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = locale
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        return dateFormatter.string(from: date)
     }
 }
 
