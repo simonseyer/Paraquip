@@ -12,13 +12,14 @@
 "Paraglider" = "Gleitschirm";
 "Harness" = "Gurtzeug";
 "Reserve" = "Rettung";
+"Equipment" = "Ausrüstung";
+"Notifications" = "Benachrichtungen";
 
 // Profile View
 "Check now" = "Jetzt checken";
 "profile_empty_text" = "Füge mit dem + oben rechts deine Ausrüstung hinzu";
 
 // Equipment View
-"Equipment" = "Ausrüstung";
 "Type" = "Typ";
 "Brand" = "Marke";
 "Name" = "Name";
@@ -41,3 +42,13 @@
 "None" = "Auswählen";
 "New" = "Neuer";
 "Purchase Date" = "Kaufdatum";
+
+// Notification View
+"Activate" = "Aktivieren";
+"notification_info" = "Aktiviere Benachrichtigungen, um nie wieder einen Check zu verpassen.";
+"day" = "Tag";
+"month" = "Monat";
+"days" = "Tage";
+"months" = "Monate";
+"before check" = "vor dem Check";
+"Add notification" = "Benachrichtung hinzufügen";

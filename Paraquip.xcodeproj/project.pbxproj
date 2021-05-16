@@ -28,6 +28,10 @@
 		0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */; };
 		0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE526503E47005AB7A7 /* FormDatePicker.swift */; };
 		0D919AE826504857005AB7A7 /* EquipmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE726504857005AB7A7 /* EquipmentTests.swift */; };
+		0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */; };
+		0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AEB2651220B005AB7A7 /* SelectableText.swift */; };
+		0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */; };
+		0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */; };
 		0DD7FC0E263DD2AD0038B25D /* ProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */; };
 		0DD7FC10263DD3060038B25D /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0F263DD3060038B25D /* Profile.swift */; };
 		0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC12263DD32A0038B25D /* Equipment.swift */; };
@@ -89,6 +93,10 @@
 		0D6CBD4B264C9313003655C6 /* Paraquip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Paraquip.entitlements; sourceTree = "<group>"; };
 		0D919AE526503E47005AB7A7 /* FormDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePicker.swift; sourceTree = "<group>"; };
 		0D919AE726504857005AB7A7 /* EquipmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentTests.swift; sourceTree = "<group>"; };
+		0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		0D919AEB2651220B005AB7A7 /* SelectableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableText.swift; sourceTree = "<group>"; };
+		0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerOverlay.swift; sourceTree = "<group>"; };
+		0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEntryView.swift; sourceTree = "<group>"; };
 		0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStore.swift; sourceTree = "<group>"; };
 		0DD7FC0F263DD3060038B25D /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0DD7FC12263DD32A0038B25D /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
@@ -236,6 +244,10 @@
 				0D2B2D182646BF5A009873CE /* BrandRow.swift */,
 				0D2B2D1A2646FCA0009873CE /* ViewUtils.swift */,
 				0D919AE526503E47005AB7A7 /* FormDatePicker.swift */,
+				0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */,
+				0D919AEB2651220B005AB7A7 /* SelectableText.swift */,
+				0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */,
+				0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -409,6 +421,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* PersistedProfile.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
@@ -418,6 +431,7 @@
 				0D11FB942620A5CF009D9349 /* ContentView.swift in Sources */,
 				0D11FBCB2620BF45009D9349 /* ProfileView.swift in Sources */,
 				0DD7FC1C263DD8320038B25D /* ProfilePersistence.swift in Sources */,
+				0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */,
 				0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */,
 				0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
@@ -434,6 +448,8 @@
 				0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */,
 				0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */,
 				0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */,
+				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
+				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
 				0D11FBC62620A927009D9349 /* AppStore.swift in Sources */,
 				0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */,
 			);

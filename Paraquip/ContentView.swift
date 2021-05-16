@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
     @EnvironmentObject var store: AppStore
-
+    
     var body: some View {
-        NavigationView {
-            ProfileView()
+        TabView {
+            NavigationView {
+                ProfileView()
+            }
+            .environmentObject(store.profileStore(for: store.profiles.first!)!)
+            .tabItem {
+                Label("Equipment", systemImage: "book.closed")
+            }
+            
+            NavigationView {
+                NotificationSettingsView()
+            }
+            .tabItem {
+                Label("Notifications", systemImage: "bell")
+            }
         }
-        .environmentObject(store.profileStore(for: store.profiles.first!)!)
     }
 }
 
