@@ -23,6 +23,7 @@ struct ContentView: View {
             
             NavigationView {
                 NotificationSettingsView()
+                    .environmentObject(NotificationsStore())
             }
             .tabItem {
                 Label("Notifications", systemImage: "bell")

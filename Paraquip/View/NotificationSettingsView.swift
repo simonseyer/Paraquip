@@ -17,19 +17,33 @@ class NotificationSettingsViewModel: ObservableObject {
 
 struct NotificationSettingsView: View {
     
-    @State var notificationsOn = false
+    @State private var notificationsOn = false
+    @State private var configurationSectionShown = false
     @State private var editMode: EditMode = .inactive
     
     @ObservedObject var viewModel = NotificationSettingsViewModel()
-    
+
+    @EnvironmentObject var store: NotificationsStore
+
+    var footer: some View {
+        return HStack {
+            if store.state.wasRequestRejected {
+                Label("notification_denied_info", systemImage: "exclamationmark.triangle.fill")
+            } else {
+                Text("notification_info")
+            }
+        }
+    }
+
     var body: some View {
         Form {
-            Section(header: Text(""), footer: Text("notification_info").padding([.leading, .trailing])) {
-                Toggle("Activate", isOn: $notificationsOn)
+            Section(header: Text(""), footer: footer.padding([.leading, .trailing])) {
+                Toggle("Enable", isOn: $notificationsOn.animation())
                     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                    .disabled(store.state.wasRequestRejected)
             }
             
-            if notificationsOn {
+            if configurationSectionShown {
                 Section {
                     ForEach(Array(viewModel.configuration.enumerated()), id: \.1.id) { index, _ in
                         NotificationEntryView(
@@ -66,20 +80,37 @@ struct NotificationSettingsView: View {
                         }
                     }
                 }
+                .animation(.default)
             }
         }
         .navigationTitle("Notifications")
         .ignoresSafeArea(.keyboard)
         .environment(\.editMode, $editMode)
+        .onChange(of: notificationsOn) { value in
+            if value {
+                store.enable {
+                    withAnimation {
+                        notificationsOn = store.state.isEnabled
+                    }
+                }
+            } else {
+                store.disable()
+            }
+        }
+        .onChange(of: store.state.isEnabled) { value in
+            withAnimation {
+                notificationsOn = value
+                configurationSectionShown = value
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if notificationsOn && !viewModel.configuration.isEmpty {
+                if store.state.isEnabled && !viewModel.configuration.isEmpty {
                     Button(editMode == .inactive ? "Edit" : "Done") {
                         withAnimation {
                             editMode.toggle()
                         }
                     }
-                    .animation(.none)
                 }
             }
         }
@@ -90,6 +121,12 @@ struct NotificationSettingsViwe_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             NotificationSettingsView()
+                .environmentObject(NotificationsStore(state: .init(isEnabled: true, wasRequestRejected: false)))
+        }
+
+        NavigationView {
+            NotificationSettingsView()
+                .environmentObject(NotificationsStore(state: .init(isEnabled: false, wasRequestRejected: true)))
         }
     }
 }

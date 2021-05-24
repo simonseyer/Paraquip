@@ -44,8 +44,9 @@
 "Purchase Date" = "Kaufdatum";
 
 // Notification View
-"Activate" = "Aktivieren";
+"Enable" = "Aktivieren";
 "notification_info" = "Aktiviere Benachrichtigungen, um nie wieder einen Check zu verpassen.";
+"notification_denied_info" = "Gehe in die Einstellungen App und aktiviere Benachrichtigungen für Paraquip.";
 "day" = "Tag";
 "month" = "Monat";
 "days" = "Tage";
