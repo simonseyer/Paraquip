@@ -9,7 +9,7 @@ import Foundation
 
 class ProfileStore: ObservableObject {
 
-    @Published var profile: Profile {
+    @Published private(set) var profile: Profile {
         didSet {
             save()
         }

@@ -33,7 +33,7 @@ class AppStore: ObservableObject {
         }
     }
 
-    @Published var profiles: [ProfileIdentifier] = []
+    @Published private(set) var profiles: [ProfileIdentifier] = []
 
     init(persistence: AppPersistence = .init()) {
         self.persistence = persistence
