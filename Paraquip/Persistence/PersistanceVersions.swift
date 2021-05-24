@@ -29,3 +29,24 @@ extension PersistedProfile: Versionable {
         }
     }
 }
+
+extension PersistedNotificationState: Versionable {
+    var version: Version {
+        .v1
+    }
+
+    static var mock: PersistedNotificationState {
+        PersistedNotificationState(isEnabled: false, configuration: [])
+    }
+
+    enum Version: Int, VersionType {
+        case v1
+    }
+
+    static func migrate(to: Version) -> Migration {
+        switch to {
+        case .v1:
+            return .none
+        }
+    }
+}

@@ -88,6 +88,11 @@ struct NotificationSettingsView: View {
                 store.disable()
             }
         }
+        .onAppear {
+            let isEnabled = store.state.isEnabled
+            notificationsOn = isEnabled
+            configurationSectionShown = isEnabled
+        }
         .onChange(of: store.state.isEnabled) { value in
             withAnimation {
                 notificationsOn = value

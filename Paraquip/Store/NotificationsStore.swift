@@ -18,6 +18,18 @@ struct NotificationState {
     var showNotificationSettings: Bool = false
 }
 
+fileprivate extension NotificationState {
+    static var `default`: NotificationState {
+        NotificationState(
+            isEnabled: false,
+            wasRequestRejected: false,
+            configuration: [
+                NotificationConfig(unit: .months, multiplier: 1)
+            ]
+        )
+    }
+}
+
 struct NotificationConfig: Identifiable, Hashable {
 
     enum Unit: Int {
@@ -31,17 +43,28 @@ struct NotificationConfig: Identifiable, Hashable {
 
 class NotificationsStore: ObservableObject {
 
+    private let persistence: NotificationPersistence
     private let center = UNUserNotificationCenter.current()
     private var notificationDelegateHandler: NotificationDelegateHandler?
 
-    @Published private(set) var state: NotificationState
+    @Published private(set) var state: NotificationState {
+        didSet {
+            persistence.save(notificationState: state.toPersistence())
+        }
+    }
 
-    init(state: NotificationState? = nil) {
-        self.state = state ?? NotificationState(
-            isEnabled: false,
-            wasRequestRejected: false,
-            configuration: [NotificationConfig(unit: .months, multiplier: 1)]
-        )
+    init(persistence: NotificationPersistence = .init()) {
+        self.persistence = persistence
+        self.state = persistence.load()?.toModel() ?? .default
+
+        setupNotificationHandler()
+        setupAuthorizationRefresh()
+        refreshNotificationAuthorization()
+    }
+
+    init(state: NotificationState, persistence: NotificationPersistence = .init()) {
+        self.persistence = persistence
+        self.state = state
 
         setupNotificationHandler()
         setupAuthorizationRefresh()
@@ -107,7 +130,7 @@ class NotificationsStore: ObservableObject {
     }
 
     func update(notificationConfig: NotificationConfig) {
-        guard let index = state.configuration.firstIndex(of: notificationConfig) else {
+        guard let index = state.configuration.firstIndex(where: { $0.id == notificationConfig.id }) else {
             return
         }
         state.configuration[index] = notificationConfig
