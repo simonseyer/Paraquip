@@ -10,9 +10,23 @@ import UserNotifications
 import UIKit
 
 struct NotificationState {
+
     var isEnabled: Bool
     var wasRequestRejected: Bool
+    var configuration: [NotificationConfig]
+
     var showNotificationSettings: Bool = false
+}
+
+struct NotificationConfig: Identifiable, Hashable {
+
+    enum Unit: Int {
+        case days, months
+    }
+
+    let id = UUID()
+    var unit: Unit
+    var multiplier: Int
 }
 
 class NotificationsStore: ObservableObject {
@@ -25,7 +39,8 @@ class NotificationsStore: ObservableObject {
     init(state: NotificationState? = nil) {
         self.state = state ?? NotificationState(
             isEnabled: false,
-            wasRequestRejected: false
+            wasRequestRejected: false,
+            configuration: [NotificationConfig(unit: .months, multiplier: 1)]
         )
 
         setupNotificationHandler()
@@ -81,6 +96,21 @@ class NotificationsStore: ObservableObject {
 
     func disable() {
         state.isEnabled = false
+    }
+
+    func addNotificationConfig() {
+        state.configuration.append(NotificationConfig(unit: .months, multiplier: 1))
+    }
+
+    func removeNotificationConfigs(atOffsets indexSet: IndexSet) {
+        state.configuration.remove(atOffsets: indexSet)
+    }
+
+    func update(notificationConfig: NotificationConfig) {
+        guard let index = state.configuration.firstIndex(of: notificationConfig) else {
+            return
+        }
+        state.configuration[index] = notificationConfig
     }
 
     func resetShowNotificationSettings() {

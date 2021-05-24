@@ -7,20 +7,10 @@
 
 import SwiftUI
 
-struct NotificationConfig: Identifiable, Hashable {
-
-    enum Unit: Int {
-        case days, months
-    }
-
-    let id = UUID()
-    var unit: Unit
-    var multiplier: Int
-}
-
 struct NotificationEntryView: View {
 
-    @Binding var config: NotificationConfig
+    @State private var config: NotificationConfig
+    private let onChange: (NotificationConfig) -> Void
 
     @State private var unitOptions: [String] = []
     @State private var multiplierOptions: [String] = []
@@ -31,16 +21,15 @@ struct NotificationEntryView: View {
     @State private var unitIndex: Int = 0
     @State private var multiplierIndex: Int = 0
 
-    init(config: Binding<NotificationConfig>) {
-        _config = config
+    init(config: NotificationConfig, onChange: @escaping ( NotificationConfig) -> Void) {
+        _config = State(initialValue: config)
+        self.onChange = onChange
 
-        let configValue = config.wrappedValue
+        let unitOptions = Self.unitOptions(for: config.multiplier)
+        let multiplierOptions = Self.multiplierOptions(for: config.unit)
 
-        let unitOptions = Self.unitOptions(for: configValue.multiplier)
-        let multiplierOptions = Self.multiplierOptions(for: configValue.unit)
-
-        let unitIndex = configValue.unit.rawValue
-        let multiplierIndex = min(max(configValue.multiplier, 0), multiplierOptions.count - 1)
+        let unitIndex = config.unit.rawValue
+        let multiplierIndex = min(max(config.multiplier, 0), multiplierOptions.count - 1)
 
         _unitOptions = State(initialValue: unitOptions)
         _multiplierOptions = State(initialValue: multiplierOptions)
@@ -99,7 +88,7 @@ struct NotificationEntryView: View {
             updateState()
         }
         .onChange(of: config) { value in
-            updateState()
+            onChange(value)
         }
     }
 
@@ -129,7 +118,8 @@ struct NotificationEntryView: View {
 struct NotificationEntryView_Previews: PreviewProvider {
     static var previews: some View {
         NotificationEntryView(
-            config: .constant(.init(unit: .days, multiplier: 1))
+            config: .init(unit: .days, multiplier: 1),
+            onChange: { _ in }
         )
         .previewLayout(.fixed(width: 350, height: 60))
         .environment(\.locale, .init(identifier: "de"))

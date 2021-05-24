@@ -7,21 +7,11 @@
 
 import SwiftUI
 
-class NotificationSettingsViewModel: ObservableObject {
-    
-    @Published var configuration: [NotificationConfig] = [
-        NotificationConfig(unit: .months, multiplier: 1),
-        //        NotificationConfig(unit: .days, multiplier: 15)
-    ]
-}
-
 struct NotificationSettingsView: View {
     
     @State private var notificationsOn = false
     @State private var configurationSectionShown = false
     @State private var editMode: EditMode = .inactive
-    
-    @ObservedObject var viewModel = NotificationSettingsViewModel()
 
     @EnvironmentObject var store: NotificationsStore
 
@@ -45,15 +35,17 @@ struct NotificationSettingsView: View {
             
             if configurationSectionShown {
                 Section {
-                    ForEach(Array(viewModel.configuration.enumerated()), id: \.1.id) { index, _ in
+                    ForEach(store.state.configuration) { config in
                         NotificationEntryView(
-                            config: $viewModel.configuration[index]
-                        )
+                            config: config
+                        ) { newConfig in
+                            store.update(notificationConfig: newConfig)
+                        }
                         .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
                     }
                     .onDelete(perform: { indexSet in
-                        viewModel.configuration.remove(atOffsets: indexSet)
-                        if viewModel.configuration.isEmpty {
+                        store.removeNotificationConfigs(atOffsets: indexSet)
+                        if store.state.configuration.isEmpty {
                             withAnimation {
                                 editMode = .inactive
                             }
@@ -61,7 +53,7 @@ struct NotificationSettingsView: View {
                     })
                     Button(action: {
                         withAnimation {
-                            viewModel.configuration.append(NotificationConfig(unit: .months, multiplier: 1))
+                            store.addNotificationConfig()
                         }
                     }) {
                         HStack {
@@ -80,7 +72,6 @@ struct NotificationSettingsView: View {
                         }
                     }
                 }
-                .animation(.default)
             }
         }
         .navigationTitle("Notifications")
@@ -105,7 +96,7 @@ struct NotificationSettingsView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if store.state.isEnabled && !viewModel.configuration.isEmpty {
+                if store.state.isEnabled && !store.state.configuration.isEmpty {
                     Button(editMode == .inactive ? "Edit" : "Done") {
                         withAnimation {
                             editMode.toggle()
@@ -121,12 +112,24 @@ struct NotificationSettingsViwe_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             NotificationSettingsView()
-                .environmentObject(NotificationsStore(state: .init(isEnabled: true, wasRequestRejected: false)))
+                .environmentObject(
+                    NotificationsStore(state: .init(
+                                        isEnabled: true,
+                                        wasRequestRejected: false,
+                                        configuration: [NotificationConfig(unit: .months, multiplier: 1)])
+                    )
+                )
         }
 
         NavigationView {
             NotificationSettingsView()
-                .environmentObject(NotificationsStore(state: .init(isEnabled: false, wasRequestRejected: true)))
+                .environmentObject(
+                    NotificationsStore(state: .init(
+                                        isEnabled: false,
+                                        wasRequestRejected: true,
+                                        configuration: [])
+                    )
+                )
         }
     }
 }
