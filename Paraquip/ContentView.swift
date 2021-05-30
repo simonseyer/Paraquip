@@ -16,12 +16,13 @@ struct ContentView: View {
     @EnvironmentObject var store: AppStore
 
     @State private var selectedTab: Tabs = .profile
+    @State private var selectedEquipment: UUID? = nil
     @ObservedObject private var notificationsStore = NotificationsStore(profileStore: AppStore.shared.profileStore(for: AppStore.shared.profiles.first!)!)
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                ProfileView()
+                ProfileView(selectedEquipment: $selectedEquipment)
             }
             .environmentObject(store.profileStore(for: store.profiles.first!)!)
             .tabItem {
@@ -41,6 +42,13 @@ struct ContentView: View {
         .onChange(of: notificationsStore.state.showNotificationSettings, perform: { value in
             if value {
                 selectedTab = .notifications
+                notificationsStore.resetShowState()
+            }
+        })
+        .onChange(of: notificationsStore.state.showEquipment, perform: { value in
+            if let equipmentId = value {
+                selectedTab = .profile
+                selectedEquipment = equipmentId
                 notificationsStore.resetShowState()
             }
         })

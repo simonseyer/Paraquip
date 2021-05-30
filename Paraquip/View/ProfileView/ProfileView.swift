@@ -13,6 +13,8 @@ struct ProfileView: View {
     @State private var newEquipment: AnyEquipment?
     @State private var editMode: EditMode = .inactive
 
+    @Binding var selectedEquipment: UUID?
+
     var body: some View {
         Group {
             if store.profile.equipment.isEmpty {
@@ -31,7 +33,9 @@ struct ProfileView: View {
             } else {
                 List {
                     ForEach(store.profile.equipment, id: \.id) { equipment in
-                        NavigationLink(destination: EquipmentView(equipmentId: equipment.id)) {
+                        NavigationLink(destination: EquipmentView(equipmentId: equipment.id),
+                                       tag: equipment.id,
+                                       selection: $selectedEquipment) {
                             EquipmentRow(equipment: equipment)
                         }
                     }
@@ -151,12 +155,12 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                ProfileView()
+                ProfileView(selectedEquipment: .constant(nil))
                     .environmentObject(profileStore)
             }
 
             NavigationView {
-                ProfileView()
+                ProfileView(selectedEquipment: .constant(nil))
                     .environmentObject(ProfileStore(profile: Profile(name: "Empty")))
             }
         }
