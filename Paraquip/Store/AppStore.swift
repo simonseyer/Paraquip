@@ -35,6 +35,8 @@ class AppStore: ObservableObject {
 
     @Published private(set) var profiles: [ProfileIdentifier] = []
 
+    static var shared = AppStore()
+
     init(persistence: AppPersistence = .init()) {
         self.persistence = persistence
 
