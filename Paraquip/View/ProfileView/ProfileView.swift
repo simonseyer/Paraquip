@@ -105,10 +105,6 @@ struct AnyEquipment: Identifiable {
     }
 }
 
-enum CheckUrgency {
-    case now, soon, later
-}
-
 extension Equipment {
 
     var icon: Image? {
@@ -134,19 +130,6 @@ extension Equipment {
         formatter.includesTimeRemainingPhrase = true
 
         return "\(formatter.string(from: Date(), to: nextCheck) ?? "???")"
-    }
-
-    var checkUrgency: CheckUrgency {
-        let months = Calendar.current.dateComponents([.month], from: Date(), to: nextCheck).month ?? 0
-
-        if Calendar.current.isDateInToday(nextCheck) ||
-            nextCheck < Date() {
-            return .now
-        } else if months == 0 {
-            return .soon
-        } else {
-            return .later
-        }
     }
 
     var checkIntervalColor: Color {
