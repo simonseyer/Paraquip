@@ -39,18 +39,17 @@ struct ContentView: View {
             }
             .tag(Tabs.notifications)
         }
-        .onChange(of: notificationsStore.state.showNotificationSettings, perform: { value in
-            if value {
+        .onChange(of: notificationsStore.navigationState, perform: { value in
+            switch value {
+            case .notificationSettings:
                 selectedTab = .notifications
-                notificationsStore.resetShowState()
-            }
-        })
-        .onChange(of: notificationsStore.state.showEquipment, perform: { value in
-            if let equipmentId = value {
+            case .equipment(let equipmentId):
                 selectedTab = .profile
                 selectedEquipment = equipmentId
-                notificationsStore.resetShowState()
+            case .none:
+                break
             }
+            notificationsStore.resetNavigationState()
         })
     }
 }

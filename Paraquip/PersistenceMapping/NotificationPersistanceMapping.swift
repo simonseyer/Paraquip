@@ -21,8 +21,7 @@ extension PersistedNotificationState {
         return NotificationState(
             isEnabled: isEnabled,
             wasRequestRejected: false,
-            configuration: configuration.map { $0.toModel() },
-            showNotificationSettings: false
+            configuration: configuration.map { $0.toModel() }
         )
     }
 }

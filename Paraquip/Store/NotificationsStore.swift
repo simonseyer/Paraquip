@@ -14,9 +14,12 @@ struct NotificationState {
     var isEnabled: Bool
     var wasRequestRejected: Bool
     var configuration: [NotificationConfig]
+}
 
-    var showNotificationSettings: Bool = false
-    var showEquipment: UUID?
+enum NavigationState: Equatable {
+    case none
+    case notificationSettings
+    case equipment(UUID)
 }
 
 fileprivate extension NotificationState {
@@ -59,6 +62,7 @@ class NotificationsStore: ObservableObject {
             persistence.save(notificationState: state.toPersistence())
         }
     }
+    @Published private(set) var navigationState = NavigationState.none
 
     init(profileStore: ProfileStore, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
         self.profileStore = profileStore
@@ -98,7 +102,7 @@ class NotificationsStore: ObservableObject {
             .openSettingsReceived
             .sink { [weak self] in
                 self?.logger.info("Handling open settings")
-                self?.state.showNotificationSettings = true
+                self?.navigationState = .notificationSettings
             }
             .store(in: &subscriptions)
 
@@ -107,7 +111,7 @@ class NotificationsStore: ObservableObject {
             .map { $0.equipmentId }
             .sink { [weak self] equipment in
                 self?.logger.info("Handling notification for equipment: \(equipment)")
-                self?.state.showEquipment = equipment
+                self?.navigationState = .equipment(equipment)
             }
             .store(in: &subscriptions)
     }
@@ -160,9 +164,8 @@ class NotificationsStore: ObservableObject {
         state.configuration[index] = notificationConfig
     }
 
-    func resetShowState() {
-        state.showNotificationSettings = false
-        state.showEquipment = nil
+    func resetNavigationState() {
+        navigationState = .none
     }
 
     private func scheduleNotifications(for profile: Profile, configuration: [NotificationConfig]) {
