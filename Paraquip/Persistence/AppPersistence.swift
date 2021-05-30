@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import OSLog
 
 class AppPersistence {
 
     private let basePath: URL
     private let fileManager: FileManager
+    private let logger = Logger(category: "AppPersistence")
 
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
@@ -29,7 +31,7 @@ class AppPersistence {
             let data = try encoder.encode(profiles)
             try data.write(to: url, options: .atomic)
         } catch {
-            print("Failed to write app data: \(error)")
+            logger.error("Failed to write app data: \(error.localizedDescription)")
         }
     }
 
@@ -38,7 +40,7 @@ class AppPersistence {
             let data = try Data(contentsOf: url)
             return try decoder.decode([UUID].self, from: data)
         } catch {
-            print("Failed to load app data: \(error)")
+            logger.error("Failed to load app data: \(error.localizedDescription)")
             return nil
         }
     }

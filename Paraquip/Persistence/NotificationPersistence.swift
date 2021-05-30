@@ -9,11 +9,13 @@ import Foundation
 
 import Foundation
 import Versionable
+import OSLog
 
 class NotificationPersistence {
 
     private let fileURL: URL
     private let fileManager: FileManager
+    private let logger = Logger(category: "NotificationPersistence")
 
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
@@ -32,7 +34,7 @@ class NotificationPersistence {
             let data = try encoder.encode(container)
             try data.write(to: fileURL, options: .atomic)
         } catch {
-            print("Failed to write notification state: \(error)")
+            logger.error("Failed to write notification state: \(error.localizedDescription)")
         }
     }
 
@@ -42,7 +44,7 @@ class NotificationPersistence {
             let container = try decoder.decode(VersionableContainer<PersistedNotificationState>.self, from: data)
             return container.instance
         } catch {
-            print("Failed to load profile: \(error)")
+            logger.error("Failed to load profile: \(error.localizedDescription)")
             return nil
         }
     }
