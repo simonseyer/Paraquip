@@ -53,3 +53,14 @@
 "months" = "Monate";
 "before check" = "vor dem Check";
 "Add notification" = "Benachrichtung hinzufügen";
+
+// Notifications
+"notification_check_due_title" = "Check fällig";
+"notification_check_due_months_body_zero" = "%@ %@ muss in weniger als einem Monat gecheckt werden";
+"notification_check_due_months_body_one" = "%@ %@ muss in einem Monat gecheckt werden";
+"notification_check_due_months_body_two" = "%@ %@ muss in zwei Monaten gecheckt werden";
+"notification_check_due_months_body_other" = "%@ %@ muss in %@ Monaten gecheckt werden";
+"notification_check_due_days_body_zero" = "%@ %@ muss jetzt gecheckt werden";
+"notification_check_due_days_body_one" = "%@ %@ muss in einem Tag gecheckt werden";
+"notification_check_due_days_body_two" = "%@ %@ muss in zwei Tagen gecheckt werden";
+"notification_check_due_days_body_other" = "%@ %@ muss in %@ Tagen gecheckt werden";

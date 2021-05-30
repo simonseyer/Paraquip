@@ -113,7 +113,10 @@ struct NotificationSettingsView: View {
     }
 }
 
-struct NotificationSettingsViwe_Previews: PreviewProvider {
+struct NotificationSettingsView_Previews: PreviewProvider {
+
+    private static let profileStore = ProfileStore(profile: .fake())
+
     static var previews: some View {
         NavigationView {
             NotificationSettingsView()
@@ -121,7 +124,8 @@ struct NotificationSettingsViwe_Previews: PreviewProvider {
                     NotificationsStore(state: .init(
                                         isEnabled: true,
                                         wasRequestRejected: false,
-                                        configuration: [NotificationConfig(unit: .months, multiplier: 1)])
+                                        configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
+                                       profileStore: profileStore
                     )
                 )
         }
@@ -132,7 +136,8 @@ struct NotificationSettingsViwe_Previews: PreviewProvider {
                     NotificationsStore(state: .init(
                                         isEnabled: false,
                                         wasRequestRejected: true,
-                                        configuration: [])
+                                        configuration: []),
+                                       profileStore: profileStore
                     )
                 )
         }

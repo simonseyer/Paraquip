@@ -31,6 +31,7 @@
 		0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1C72662B7A000305B23 /* FakeNotificationPlugin.swift */; };
 		0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1C92662B7C300305B23 /* AppleNotificationPlugin.swift */; };
 		0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1CC2662B7ED00305B23 /* LoggerExtensions.swift */; };
+		0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1D42663F49200305B23 /* ErrorExtensions.swift */; };
 		0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE526503E47005AB7A7 /* FormDatePicker.swift */; };
 		0D919AE826504857005AB7A7 /* EquipmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE726504857005AB7A7 /* EquipmentTests.swift */; };
 		0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */; };
@@ -104,6 +105,7 @@
 		0D80E1C72662B7A000305B23 /* FakeNotificationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationPlugin.swift; sourceTree = "<group>"; };
 		0D80E1C92662B7C300305B23 /* AppleNotificationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleNotificationPlugin.swift; sourceTree = "<group>"; };
 		0D80E1CC2662B7ED00305B23 /* LoggerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtensions.swift; sourceTree = "<group>"; };
+		0D80E1D42663F49200305B23 /* ErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorExtensions.swift; sourceTree = "<group>"; };
 		0D919AE526503E47005AB7A7 /* FormDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePicker.swift; sourceTree = "<group>"; };
 		0D919AE726504857005AB7A7 /* EquipmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentTests.swift; sourceTree = "<group>"; };
 		0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 				0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */,
 				0D4071922656CD12001385D7 /* NotificationsStore.swift in Sources */,
 				0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */,
+				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,

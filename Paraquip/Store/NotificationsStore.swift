@@ -6,8 +6,7 @@
 //
 
 import Foundation
-import UserNotifications
-import UIKit
+import Combine
 import OSLog
 
 struct NotificationState {
@@ -17,6 +16,7 @@ struct NotificationState {
     var configuration: [NotificationConfig]
 
     var showNotificationSettings: Bool = false
+    var showEquipment: UUID?
 }
 
 fileprivate extension NotificationState {
@@ -45,8 +45,14 @@ struct NotificationConfig: Identifiable, Hashable {
 class NotificationsStore: ObservableObject {
 
     private let persistence: NotificationPersistence
-    private let center = UNUserNotificationCenter.current()
-    private var notificationDelegateHandler: NotificationDelegateHandler?
+    private let notifications: NotificationPlugin
+    private let profileStore: ProfileStore // TODO: eliminate dependency
+    private let logger = Logger(category: "NotificationsStore")
+
+    private var subscriptions = Set<AnyCancellable>()
+
+    private static let notificationHour = 9
+    private static let notificationSchedulingDebounce: TimeInterval = 2
 
     @Published private(set) var state: NotificationState {
         didSet {
@@ -54,43 +60,73 @@ class NotificationsStore: ObservableObject {
         }
     }
 
-    init(persistence: NotificationPersistence = .init()) {
+    init(profileStore: ProfileStore, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
+        self.profileStore = profileStore
         self.persistence = persistence
+        self.notifications = notifications
         self.state = persistence.load()?.toModel() ?? .default
 
         setupNotificationHandler()
-        setupAuthorizationRefresh()
-        refreshNotificationAuthorization()
+        setupNotificationScheduling()
     }
 
-    init(state: NotificationState, persistence: NotificationPersistence = .init()) {
+    init(state: NotificationState, profileStore: ProfileStore, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
+        self.profileStore = profileStore
         self.persistence = persistence
+        self.notifications = notifications
         self.state = state
 
         setupNotificationHandler()
-        setupAuthorizationRefresh()
-        refreshNotificationAuthorization()
+        setupNotificationScheduling()
     }
 
     private func setupNotificationHandler() {
-        self.notificationDelegateHandler = NotificationDelegateHandler(openSettings: {
-            self.state.showNotificationSettings = true
-        })
-        center.delegate = self.notificationDelegateHandler
+        notifications
+            .authorizationStatus
+            .sink { [weak self] status in
+                self?.logger.info("Authorization status updated: \(status)")
+                if status == .denied {
+                    self?.state.isEnabled = false
+                    self?.state.wasRequestRejected = true
+                } else {
+                    self?.state.wasRequestRejected = false
+                }
+            }
+            .store(in: &subscriptions)
+
+        notifications
+            .openSettingsReceived
+            .sink { [weak self] in
+                self?.logger.info("Handling open settings")
+                self?.state.showNotificationSettings = true
+            }
+            .store(in: &subscriptions)
+
+        notifications
+            .notificationReceived
+            .map { $0.equipmentId }
+            .sink { [weak self] equipment in
+                self?.logger.info("Handling notification for equipment: \(equipment)")
+                self?.state.showEquipment = equipment
+            }
+            .store(in: &subscriptions)
     }
 
-    private func setupAuthorizationRefresh() {
-        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
-                                               object: nil,
-                                               queue: nil) {[weak self] _ in
-            self?.refreshNotificationAuthorization()
-        }
+    private func setupNotificationScheduling() {
+        profileStore
+            .$profile
+            .combineLatest($state)
+            .debounce(for: .init(Self.notificationSchedulingDebounce), scheduler: RunLoop.main)
+            .sink {[weak self] profile, notificationState in
+                self?.scheduleNotifications(for: profile, configuration: notificationState.configuration)
+            }
+            .store(in: &subscriptions)
     }
 
     func enable(completion: @escaping () -> Void)  {
-        center.requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings]) {[weak self] success, error in
+        notifications.requestAuthorization() {[weak self, logger] success, error in
             if let error = error {
-                print("Failed to enable notifications: \(error.localizedDescription)")
+                logger.error("Failed to enable notifications: \(error.localizedDescription)")
             }
 
             DispatchQueue.main.async {
@@ -101,19 +137,6 @@ class NotificationsStore: ObservableObject {
                 }
 
                 completion()
-            }
-        }
-    }
-
-    private func refreshNotificationAuthorization() {
-        center.getNotificationSettings {[weak self] settings in
-            DispatchQueue.main.async {
-                if settings.authorizationStatus == .denied {
-                    self?.state.isEnabled = false
-                    self?.state.wasRequestRejected = true
-                } else {
-                    self?.state.wasRequestRejected = false
-                }
             }
         }
     }
@@ -137,21 +160,120 @@ class NotificationsStore: ObservableObject {
         state.configuration[index] = notificationConfig
     }
 
-    func resetShowNotificationSettings() {
+    func resetShowState() {
         state.showNotificationSettings = false
+        state.showEquipment = nil
+    }
+
+    private func scheduleNotifications(for profile: Profile, configuration: [NotificationConfig]) {
+        notifications.reset()
+
+        guard state.isEnabled else {
+            return
+        }
+
+        logger.info("Updating notifications")
+
+        for equipment in profile.equipment {
+            for notificationConfig in configuration {
+                scheduleNotification(for: equipment, config: notificationConfig)
+            }
+        }
+
+        updateBadge(for: profile)
+    }
+
+    private func scheduleNotification(for equipment: Equipment, config: NotificationConfig) {
+        let date = Calendar.current.date(byAdding: config.dateComponents,
+                                         to: equipment.nextCheck.settingTimeTo(hour: Self.notificationHour))!
+
+        guard date > Date() else {
+            logger.info("Ignoring notification config because it lies in the past: \(config)")
+            return
+        }
+
+        let body = LocalizedNotificationString(
+            key: config.bodyLocalizationKey,
+            arguments: [equipment.brand.name, equipment.name, String(config.multiplier)]
+        )
+
+        let notification = Notification(
+            equipmentId: equipment.id,
+            notificationConfigId: config.id,
+            title: "notification_check_due_title",
+            body: body,
+            date: date
+        )
+
+        logger.info("Adding: \(notification)")
+        notifications.add(notification: notification) {[logger] error in
+            if let error = error {
+                logger.error("Failed to add notification \(notification.id): \(error.description)")
+            }
+        }
+    }
+
+    private func updateBadge(for profile: Profile) {
+        let badgeCount = profile.equipment.filter {
+            $0.checkUrgency == .now
+        }.count
+
+        notifications.setBadge(count: badgeCount)
+        logger.info("Set badge count: \(badgeCount)")
     }
 }
 
-private class NotificationDelegateHandler: NSObject, UNUserNotificationCenterDelegate {
+extension NotificationConfig: CustomStringConvertible {
+    var description: String {
+        "NotificationConfig(\(multiplier) \(unit))"
+    }
+}
 
-    private let openSettings: () -> Void
-
-    init(openSettings: @escaping () -> Void) {
-        self.openSettings = openSettings
+fileprivate extension NotificationConfig {
+    var bodyLocalizationKey: String {
+        switch unit {
+        case .days:
+            switch multiplier {
+            case 0:
+                return "notification_check_due_days_body_zero"
+            case 1:
+                return "notification_check_due_days_body_one"
+            case 2:
+                return "notification_check_due_days_body_two"
+            default:
+                return "notification_check_due_days_body_other"
+            }
+        case .months:
+            switch multiplier {
+            case 0:
+                return "notification_check_due_months_body_zero"
+            case 1:
+                return "notification_check_due_months_body_one"
+            case 2:
+                return "notification_check_due_months_body_two"
+            default:
+                return "notification_check_due_months_body_other"
+            }
+        }
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                openSettingsFor notification: UNNotification?) {
-        openSettings()
+    var dateComponents: DateComponents {
+        switch unit {
+        case .days:
+            return DateComponents(day: -multiplier)
+        case .months:
+            return DateComponents(month: -multiplier)
+        }
+    }
+}
+
+fileprivate extension Date {
+    func settingTimeTo(hour: Int) -> Date {
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: self)
+        dateComponents.hour = hour
+        guard let date = Calendar.current.date(from: dateComponents) else {
+            fatalError("Failed to strip time from Date object")
+        }
+        return date
     }
 }

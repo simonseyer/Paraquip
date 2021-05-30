@@ -6,6 +6,18 @@
   
 */
 
+// Notification View
 "profile_empty_text" = "Add your first equipment by tapping the + in the top right";
 "notification_info" = "Never forget a check again by enabling notifications for your equipment.";
 "notification_denied_info" = "Go to the Settings app and enable notifications for Paraquip.";
+
+// Notifications
+"notification_check_due_title" = "Check due";
+"notification_check_due_months_body_zero" = "%@ %@ needs to be checked in less than one month";
+"notification_check_due_months_body_one" = "%@ %@ needs to be checked in one month";
+"notification_check_due_months_body_two" = "%@ %@ needs to be checked in two months";
+"notification_check_due_months_body_other" = "%@ %@ needs to be checked in %@ months";
+"notification_check_due_days_body_zero" = "%@ %@ needs to be checked now";
+"notification_check_due_days_body_one" = "%@ %@ needs to be checked in one day";
+"notification_check_due_days_body_two" = "%@ %@ needs to be checked in two days";
+"notification_check_due_days_body_other" = "%@ %@ needs to be checked in %@ days";

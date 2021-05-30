@@ -16,7 +16,7 @@ struct ContentView: View {
     @EnvironmentObject var store: AppStore
 
     @State private var selectedTab: Tabs = .profile
-    @ObservedObject private var notificationsStore = NotificationsStore()
+    @ObservedObject private var notificationsStore = NotificationsStore(profileStore: AppStore.shared.profileStore(for: AppStore.shared.profiles.first!)!)
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -41,7 +41,7 @@ struct ContentView: View {
         .onChange(of: notificationsStore.state.showNotificationSettings, perform: { value in
             if value {
                 selectedTab = .notifications
-                notificationsStore.resetShowNotificationSettings()
+                notificationsStore.resetShowState()
             }
         })
     }
