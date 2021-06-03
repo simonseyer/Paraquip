@@ -48,7 +48,7 @@ struct ProfileView: View {
                         }
                     })
                 }
-                .listStyle(PlainListStyle())
+                .listStyle(InsetGroupedListStyle())
                 .environment(\.editMode, $editMode)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {

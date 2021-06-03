@@ -25,7 +25,7 @@ struct EquipmentRow: View {
                         .font(.system(size: 32))
                 }
             }
-            .frame(width: 60, height: 80, alignment: .center)
+            .frame(width: 50, height: 50, alignment: .center)
             .padding([.trailing])
 
             VStack(alignment: .leading) {
