@@ -52,7 +52,7 @@ struct SelectableText_Previews: PreviewProvider {
             SelectableText(text: "Test", isSelected: $isSelected)
             SelectableText(text: "Long test", isSelected: $isSelectedI)
         }
-                .padding(30)
-                .previewLayout(.sizeThatFits)
+        .padding(30)
+        .previewLayout(.sizeThatFits)
     }
 }
