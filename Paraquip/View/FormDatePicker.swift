@@ -22,7 +22,6 @@ struct FormDatePicker: View {
         self.label = label
         self._date = date
         self._selectedDate = State(initialValue: date.wrappedValue ?? Date())
-
     }
 
     var body: some View {
@@ -38,7 +37,7 @@ struct FormDatePicker: View {
                     Spacer()
                     if date != nil {
                         Text(selectedDate, style: .date)
-                        Button(action: deselectDate) {
+                        Button(action: { date = nil }) {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundColor(.secondary)
                                 .font(.system(size: 15))
@@ -67,15 +66,10 @@ struct FormDatePicker: View {
             if let date = value {
                 selectedDate = date
             } else {
-                deselectDate()
+                withAnimation {
+                    datePickerShown = false
+                }
             }
-        }
-    }
-
-    private func deselectDate() {
-        date = nil
-        withAnimation {
-            datePickerShown = false
         }
     }
 }
