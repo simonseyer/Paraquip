@@ -1,37 +1,18 @@
-## Welcome to GitHub Pages
+Paraquip is a simple iOS app to keep your paragliding equipment in check.
 
-You can use the [editor on GitHub](https://github.com/simonseyer/paraquip/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+With Paraquip you will never forget to check your paragliding equipment again.  
+Easily keep track and get notified about upcoming checks.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Simply set up your paraglider, harness and rescue in the app and enter your checks.  
+You right away see you when the next check is due.  
 
-### Markdown
+With the flexible notifications you will always be notified when it suits you.  
+So that even for spontaneous paragliding trips the equipment is always ready.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Contact
 
-```markdown
-Syntax highlighted code block
+For feedback, questions or issues, please reach me under [paraquip.app@gmail.com](mailto:paraquip.app@gmail.com).
 
-# Header 1
-## Header 2
-### Header 3
+## Privacy policy
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/simonseyer/paraquip/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Please find the privacy policy [here](privacy-policy.md).
