@@ -37,7 +37,7 @@ struct EquipmentRow: View {
 
                     Text(equipment.formattedCheckInterval(locale: locale))
 
-                }.foregroundColor(equipment.checkIntervalColor)
+                }.foregroundColor(equipment.checkUrgency.color)
             }.padding([.top, .bottom])
         }
     }

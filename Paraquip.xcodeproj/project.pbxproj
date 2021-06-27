@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D0DFF9F26887C4900AEB2AD /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0DFF9E26887C4900AEB2AD /* TimelineViewCell.swift */; };
+		0D0DFFA12688C49C00AEB2AD /* LogCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0DFFA02688C49C00AEB2AD /* LogCheckView.swift */; };
 		0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11FB912620A5CF009D9349 /* ParaquipApp.swift */; };
 		0D11FB942620A5CF009D9349 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11FB932620A5CF009D9349 /* ContentView.swift */; };
 		0D11FB962620A5CF009D9349 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D11FB952620A5CF009D9349 /* Assets.xcassets */; };
@@ -74,6 +76,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D0DFF9E26887C4900AEB2AD /* TimelineViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
+		0D0DFFA02688C49C00AEB2AD /* LogCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCheckView.swift; sourceTree = "<group>"; };
 		0D11FB8E2620A5CF009D9349 /* Paraquip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paraquip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D11FB912620A5CF009D9349 /* ParaquipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParaquipApp.swift; sourceTree = "<group>"; };
 		0D11FB932620A5CF009D9349 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -268,6 +272,8 @@
 				0D919AEB2651220B005AB7A7 /* SelectableText.swift */,
 				0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */,
 				0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */,
+				0D0DFF9E26887C4900AEB2AD /* TimelineViewCell.swift */,
+				0D0DFFA02688C49C00AEB2AD /* LogCheckView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -506,10 +512,12 @@
 				0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */,
 				0D4071922656CD12001385D7 /* NotificationsStore.swift in Sources */,
 				0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */,
+				0D0DFFA12688C49C00AEB2AD /* LogCheckView.swift in Sources */,
 				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
+				0D0DFF9F26887C4900AEB2AD /* TimelineViewCell.swift in Sources */,
 				0D11FBC62620A927009D9349 /* AppStore.swift in Sources */,
 				0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */,
 			);

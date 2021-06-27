@@ -30,6 +30,8 @@
 "Log check" = "Check eintragen";
 "Check Log" = "Check Buch";
 "No check logged" = "Noch kein Check";
+"by %@" = "von %@";
+"Size %@" = "Größe %@";
 
 // Edit Equipment View
 "Cancel" = "Abbrechen";

@@ -17,8 +17,8 @@ struct EquipmentView: View {
     }
 
     @State private var showingAddEquipment = false
+    @State private var showingLogCheck = false
     @State private var editMode: EditMode = .inactive
-    @State private var newCheckDate = Date()
 
     @Environment(\.locale) var locale
 
@@ -29,81 +29,39 @@ struct EquipmentView: View {
     }()
 
     var body: some View {
-        List {
-            Section(header: Text("Equipment")) {
-                HStack {
-                    Text("Type")
-                    Spacer()
-                    Text(LocalizedStringKey( equipment.localizedType))
-                }
-                HStack {
-                    Text("Brand")
-                    Spacer()
-                    BrandRow(brand: equipment.brand)
-                }
-                HStack {
-                    Text("Name")
-                    Spacer()
-                    Text(equipment.name)
-                }
-                if let paraglider = equipment as? Paraglider {
+        VStack(alignment: .leading) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading) {
+                    Text("by \(equipment.brand.name)")
+                        .font(.headline)
                     HStack {
-                        Text("Size")
-                        Spacer()
-                        Text(paraglider.size)
+                        PillLabel(LocalizedStringKey(equipment.localizedType))
+                        if let paraglider = equipment as? Paraglider {
+                            PillLabel("Size \(paraglider.size)")
+                        }
                     }
+                    .padding([.top, .bottom], 10)
                 }
-                if let purchaseDate = equipment.purchaseDate {
-                    HStack {
-                        Text("Purchase Date")
-                        Spacer()
-                        Text(purchaseDate, style: .date)
-                    }
-                }
-            }
-            Section(header: Text("Check")) {
-                HStack {
-                    Text("Check cycle")
-                    Spacer()
-                    Text("\(equipment.checkCycle) months")
-                }
-
-                HStack {
-                    Text("Next check")
-                    Spacer()
-                    Text(equipment.formattedCheckInterval(locale: locale))
-                        .foregroundColor(equipment.checkIntervalColor)
-                }
-
-                HStack {
-                    DatePicker("Log check", selection: $newCheckDate, displayedComponents: .date)
-                    Button(action: {
-                        store.logCheck(for: equipment, date: newCheckDate)
-                        newCheckDate = Date()
-                    }, label: {
-                        Image(systemName: "plus.circle.fill")
-                    })
-                    .disabled(editMode == .active)
-                }
-
-            }
-            Section(header: HStack {
-                Text("Check Log")
                 Spacer()
-                Button(editMode == .inactive ? "Edit" : "Done") {
-                    withAnimation {
-                        editMode.toggle()
-                    }
+                if let icon = equipment.icon {
+                    icon
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
                 }
-                .animation(.none)
-                .disabled(equipment.checkLog.isEmpty)
-            }) {
-                if equipment.checkLog.isEmpty {
+            }
+            .padding([.leading, .trailing])
+
+            List {
+                if equipment.timeline.isEmpty {
                     Text("No check logged")
                         .foregroundColor(Color(UIColor.systemGray))
                 } else {
-                    ForEach(equipment.checkLog) { check in
-                        Text(dateFormatter.string(from: check.date))
+                    ForEach(equipment.timeline) { entry in
+                        TimelineViewCell(timelineEntry: entry) {
+                            showingLogCheck = true
+                        }
+                        .deleteDisabled(!entry.isCheck)
                     }
                     .onDelete(perform: { indexSet in
                         store.removeChecks(for: equipment, atOffsets: indexSet)
@@ -115,19 +73,27 @@ struct EquipmentView: View {
                     })
                 }
             }
-        }
-        .listStyle(InsetGroupedListStyle())
-        .environment(\.editMode, $editMode)
-        .toolbar(content: {
-            Button("Edit") {
-                showingAddEquipment = true
+            .listStyle(InsetGroupedListStyle())
+            .environment(\.editMode, $editMode)
+            .toolbar(content: {
+                Button("Edit") {
+                    showingAddEquipment = true
+                }
+            })
+            .navigationTitle(equipment.name)
+            .sheet(isPresented: $showingAddEquipment) {
+                NavigationView {
+                    EditEquipmentView(equipment: equipment) {
+                        showingAddEquipment = false
+                    }
+                }
             }
-        })
-        .navigationTitle("\(equipment.brand.name) \(equipment.name)")
-        .sheet(isPresented: $showingAddEquipment) {
-            NavigationView {
-                EditEquipmentView(equipment: equipment) {
-                    showingAddEquipment = false
+            .sheet(isPresented: $showingLogCheck) {
+                LogCheckView() { date in
+                    if let checkDate = date {
+                        store.logCheck(for: equipment, date: checkDate)
+                    }
+                    showingLogCheck = false
                 }
             }
         }
@@ -158,6 +124,23 @@ extension Equipment {
             preconditionFailure("Unknown equipment type")
         }
     }
+
+    var timeline: [TimelineEntry] {
+        var timeline: [TimelineEntry] = []
+
+        timeline.append(.nextCheck(date: nextCheck,
+                                   urgency: checkUrgency))
+
+        timeline.append(contentsOf: checkLog.map {
+            .check(check: $0)
+        })
+
+        if let purchaseDate = purchaseDate {
+            timeline.append(.purchase(date: purchaseDate))
+        }
+
+        return timeline
+    }
 }
 
 struct EquipmentView_Previews: PreviewProvider {
@@ -177,5 +160,22 @@ struct EquipmentView_Previews: PreviewProvider {
             }
         }
         .environment(\.locale, .init(identifier: "de"))
+    }
+}
+
+struct PillLabel: View {
+
+    let content: LocalizedStringKey
+
+    init(_ content: LocalizedStringKey) {
+        self.content = content
+    }
+
+    var body: some View {
+        Text(content)
+            .font(.caption)
+            .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+            .background(Color(UIColor.secondarySystemBackground))
+            .cornerRadius(6)
     }
 }

@@ -119,25 +119,31 @@ extension Equipment {
     }
 
     func formattedCheckInterval(locale: Locale = Locale.current) -> LocalizedStringKey {
-        if checkUrgency == .now {
-            return "Check now"
-        }
+        return Paraquip.formattedCheckInterval(date: nextCheck, urgency: checkUrgency, locale: locale)
+    }
+}
 
-        var calendar = Calendar.current
-        calendar.locale = locale
-
-        let formatter = DateComponentsFormatter()
-        formatter.calendar = calendar
-        formatter.unitsStyle = .full
-        formatter.maximumUnitCount = 1
-        formatter.allowedUnits = [.month, .day]
-        formatter.includesTimeRemainingPhrase = true
-
-        return "\(formatter.string(from: Date(), to: nextCheck) ?? "???")"
+func formattedCheckInterval(date: Date, urgency: CheckUrgency, locale: Locale = Locale.current) -> LocalizedStringKey {
+    if urgency == .now {
+        return "Check now"
     }
 
-    var checkIntervalColor: Color {
-        switch checkUrgency {
+    var calendar = Calendar.current
+    calendar.locale = locale
+
+    let formatter = DateComponentsFormatter()
+    formatter.calendar = calendar
+    formatter.unitsStyle = .full
+    formatter.maximumUnitCount = 1
+    formatter.allowedUnits = [.month, .day]
+    formatter.includesTimeRemainingPhrase = true
+
+    return "\(formatter.string(from: Date(), to: date) ?? "???")"
+}
+
+extension CheckUrgency {
+    var color: Color {
+        switch self {
         case .now:
             return Color(UIColor.systemRed)
         case .soon:
