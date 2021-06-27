@@ -26,19 +26,28 @@ struct EquipmentRow: View {
                 }
             }
             .frame(width: 50, height: 50, alignment: .center)
-            .padding([.trailing])
+            .padding(.trailing, 12)
 
-            VStack(alignment: .leading) {
+            HStack {
                 Text(equipment.name)
-                    .font(.headline)
                 Spacer()
-                HStack {
-                    Image(systemName: "text.badge.checkmark")
+                equipment.checkUrgency.icon
+                    .foregroundColor(equipment.checkUrgency.color)
+            }
+            .padding([.top, .bottom], 25)
+        }
+    }
+}
 
-                    Text(equipment.formattedCheckInterval(locale: locale))
-
-                }.foregroundColor(equipment.checkUrgency.color)
-            }.padding([.top, .bottom])
+extension CheckUrgency {
+    var icon: Image {
+        switch self {
+        case .now:
+            return Image(systemName: "exclamationmark.circle.fill")
+        case .soon:
+            return Image(systemName: "exclamationmark.triangle.fill")
+        case .later:
+            return Image(systemName: "checkmark.circle.fill")
         }
     }
 }

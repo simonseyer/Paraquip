@@ -149,7 +149,7 @@ extension CheckUrgency {
         case .soon:
             return Color(UIColor.systemOrange)
         case .later:
-            return Color(UIColor.systemGray)
+            return Color(UIColor.systemGreen)
         }
     }
 }
