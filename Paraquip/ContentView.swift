@@ -26,7 +26,7 @@ struct ContentView: View {
             }
             .environmentObject(store.profileStore(for: store.profiles.first!)!)
             .tabItem {
-                Label("Equipment", systemImage: "book.closed")
+                Label("Equipment", systemImage: "book.closed.fill")
             }
             .tag(Tabs.profile)
             
@@ -35,7 +35,7 @@ struct ContentView: View {
                     .environmentObject(notificationsStore)
             }
             .tabItem {
-                Label("Notifications", systemImage: "bell")
+                Label("Notifications", systemImage: "bell.fill")
             }
             .tag(Tabs.notifications)
         }
