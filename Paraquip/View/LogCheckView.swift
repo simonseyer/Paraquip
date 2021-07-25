@@ -28,7 +28,7 @@ struct LogCheckView: View {
             .buttonStyle(PlainButtonStyle())
 
             Button("Cancel") { completion(nil) }
-                .padding(6)
+                .padding()
         }
         .padding()
         .navigationTitle("Log check")
