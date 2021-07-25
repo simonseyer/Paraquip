@@ -64,7 +64,8 @@ struct EquipmentView: View {
                         .deleteDisabled(!entry.isCheck)
                     }
                     .onDelete(perform: { indexSet in
-                        store.removeChecks(for: equipment, atOffsets: indexSet)
+                        let offsets = equipment.timeline.checkIndexSet(from: indexSet)
+                        store.removeChecks(for: equipment, atOffsets: offsets)
                         if equipment.checkLog.isEmpty {
                             withAnimation {
                                 editMode = .inactive
@@ -140,6 +141,18 @@ extension Equipment {
         }
 
         return timeline
+    }
+}
+
+extension Array where Element == TimelineEntry {
+    /// Returns an index set mapped back to the check log
+    func checkIndexSet(from indexSet: IndexSet) -> IndexSet {
+        guard let firstIndex = indexSet.first else {
+            return indexSet
+        }
+        var newIndexSet = indexSet
+        newIndexSet.shift(startingAt: firstIndex, by: -1)
+        return newIndexSet
     }
 }
 
