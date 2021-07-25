@@ -123,4 +123,13 @@ class ProfileStoreTests: XCTestCase {
         
         XCTAssert(Calendar.current.isDate(newEquipment.nextCheck, inSameDayAs: nextCheck))
     }
+
+    func testDeleteCheck() {
+        let equipment = profileStore.equipment(with: paragliderID)!
+
+        profileStore.removeChecks(for: equipment, atOffsets: [equipment.checkLog.startIndex])
+
+        let newEquipment = profileStore.equipment(with: paragliderID)!
+        XCTAssertEqual(newEquipment.checkLog.count, 0)
+    }
 }
