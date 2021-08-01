@@ -133,6 +133,7 @@
 		0DD7FC26263DE1B60038B25D /* AppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistence.swift; sourceTree = "<group>"; };
 		0DDA569826ADA45B004A46F8 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		0DDA569B26ADAB5F004A46F8 /* Snapshot.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Snapshot.xcappdata; sourceTree = "<group>"; };
+		0DDA569D26ADABA9004A46F8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedNotificationConfig.swift; sourceTree = "<group>"; };
 		0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistanceMapping.swift; sourceTree = "<group>"; };
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
@@ -171,6 +172,7 @@
 				0D11FB902620A5CF009D9349 /* Paraquip */,
 				0D11FBA22620A5CF009D9349 /* ParaquipTests */,
 				0D11FBAD2620A5D0009D9349 /* ParaquipUITests */,
+				0DDA569D26ADABA9004A46F8 /* README.md */,
 				0D11FB8F2620A5CF009D9349 /* Products */,
 			);
 			sourceTree = "<group>";

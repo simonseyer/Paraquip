@@ -4,6 +4,6 @@
 
 A simple app to keep track of your paragliding equipment and checks.
 
-## Screenshots
+## App Store
 
-<img width="250" src="Screenshots/main_screen.png">
+See the [App Store page](https://apps.apple.com/de/app/paraquip/id1566910450).
