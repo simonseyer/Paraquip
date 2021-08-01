@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LogCheckView: View {
 
-    @State private var date = Date()
+    @State private var date = Date.now
 
     let completion: (Date?) -> Void
 

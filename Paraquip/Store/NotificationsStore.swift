@@ -190,7 +190,7 @@ class NotificationsStore: ObservableObject {
         let date = Calendar.current.date(byAdding: config.dateComponents,
                                          to: equipment.nextCheck.settingTimeTo(hour: Self.notificationHour))!
 
-        guard date > Date() else {
+        guard date > Date.now else {
             logger.info("Ignoring notification config because it lies in the past: \(config)")
             return
         }

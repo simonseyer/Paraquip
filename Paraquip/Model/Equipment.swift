@@ -28,7 +28,7 @@ enum CheckUrgency {
 extension Equipment {
     var nextCheck: Date {
         guard let lastCheck = checkLog.first?.date ?? purchaseDate else {
-            return Date()
+            return Date.now
         }
 
         return Calendar.current.date(byAdding: .month,
@@ -37,10 +37,10 @@ extension Equipment {
     }
 
     var checkUrgency: CheckUrgency {
-        let months = Calendar.current.dateComponents([.month], from: Date(), to: nextCheck).month ?? 0
+        let months = Calendar.current.dateComponents([.month], from: Date.now, to: nextCheck).month ?? 0
 
-        if Calendar.current.isDateInToday(nextCheck) ||
-            nextCheck < Date() {
+        if Calendar.current.isDate(nextCheck, inSameDayAs: Date.now) ||
+            nextCheck < Date.now {
             return .now
         } else if months == 0 {
             return .soon

@@ -52,6 +52,7 @@
 		0DD7FC23263DDFC00038B25D /* ReservePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */; };
 		0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */; };
 		0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC26263DE1B60038B25D /* AppPersistence.swift */; };
+		0DDA569926ADA45B004A46F8 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA569826ADA45B004A46F8 /* Date.swift */; };
 		0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */; };
 		0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */; };
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
@@ -128,6 +129,7 @@
 		0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC26263DE1B60038B25D /* AppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistence.swift; sourceTree = "<group>"; };
+		0DDA569826ADA45B004A46F8 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedNotificationConfig.swift; sourceTree = "<group>"; };
 		0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistanceMapping.swift; sourceTree = "<group>"; };
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				0DD7FC16263DD34E0038B25D /* Reserve.swift */,
 				0D2B2D162646B1A9009873CE /* Brand.swift */,
 				0D2B2D1C2647009F009873CE /* Harness.swift */,
+				0DDA569826ADA45B004A46F8 /* Date.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */,
 				0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
+				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D2B2D1D2647009F009873CE /* Harness.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
 				0DD7FC0E263DD2AD0038B25D /* ProfileStore.swift in Sources */,

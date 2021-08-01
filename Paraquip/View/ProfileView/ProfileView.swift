@@ -138,7 +138,7 @@ func formattedCheckInterval(date: Date, urgency: CheckUrgency, locale: Locale = 
     formatter.allowedUnits = [.month, .day]
     formatter.includesTimeRemainingPhrase = true
 
-    return "\(formatter.string(from: Date(), to: date) ?? "???")"
+    return "\(formatter.string(from: Date.now, to: date) ?? "???")"
 }
 
 extension CheckUrgency {

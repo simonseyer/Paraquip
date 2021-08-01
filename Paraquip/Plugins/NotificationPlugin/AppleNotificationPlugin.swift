@@ -34,15 +34,6 @@ class AppleNotificationPlugin: NotificationPlugin {
     private let badgeIdentifier = "badge"
     private let logger = Logger(category: "NotificationPlugin")
 
-    private static let simulatedDate: Date? = {
-        if let notificationDateString = ProcessInfo.processInfo.environment["simulated_notification_date"],
-           let notificationTimeInterval = TimeInterval(notificationDateString) {
-            return Date(timeIntervalSince1970: notificationTimeInterval)
-        } else {
-            return nil
-        }
-    }()
-
     init() {
         self.notificationDelegateHandler = NotificationDelegateHandler(
             notificationReceivedSubject: notificationReceivedSubject,
@@ -92,7 +83,7 @@ class AppleNotificationPlugin: NotificationPlugin {
         ]
 
         var date = notification.date
-        if let simulatedDate = Self.simulatedDate {
+        if let simulatedDate = Date.simulatedDate {
             let timeInterval = Date().distance(to: simulatedDate)
             date.addTimeInterval(-timeInterval)
             logger.notice("Notification \(notification.id) rescheduled to: \(date)")
