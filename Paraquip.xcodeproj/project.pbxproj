@@ -130,6 +130,7 @@
 		0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC26263DE1B60038B25D /* AppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistence.swift; sourceTree = "<group>"; };
 		0DDA569826ADA45B004A46F8 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		0DDA569B26ADAB5F004A46F8 /* Snapshot.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Snapshot.xcappdata; sourceTree = "<group>"; };
 		0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedNotificationConfig.swift; sourceTree = "<group>"; };
 		0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistanceMapping.swift; sourceTree = "<group>"; };
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
@@ -225,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				0D11FBAE2620A5D0009D9349 /* ParaquipUITests.swift */,
+				0DDA569B26ADAB5F004A46F8 /* Snapshot.xcappdata */,
 				0D11FBB02620A5D0009D9349 /* Info.plist */,
 			);
 			path = ParaquipUITests;
@@ -354,6 +356,7 @@
 				0D11FB8A2620A5CE009D9349 /* Sources */,
 				0D11FB8B2620A5CE009D9349 /* Frameworks */,
 				0D11FB8C2620A5CE009D9349 /* Resources */,
+				0DDA569E26ADB389004A46F8 /* Copy Screenshot data */,
 			);
 			buildRules = (
 			);
@@ -475,6 +478,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0DDA569E26ADB389004A46F8 /* Copy Screenshot data */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Screenshot data";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nif [[ ${CONFIGURATION} == \"Debug\" ]] && [[ ! -z ${FASTLANE_SNAPSHOT} ]]; then\n    bundlePath=\"${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}\"\n    cp -R \"${SRCROOT}/ParaquipUITests/Snapshot.xcappdata\" $bundlePath\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0D11FB8A2620A5CE009D9349 /* Sources */ = {
