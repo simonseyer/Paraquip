@@ -1,0 +1,25 @@
+update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new release build to the App Store"
+  lane :release do
+    app_store_connect_api_key(
+      key_id: "BR9339CXSN",
+      issuer_id: "69a6de8c-ea4d-47e3-e053-5b8c7c11a4d1",
+      key_filepath: "./fastlane/AuthKey_BR9339CXSN.p8"
+    )
+
+    increment_build_number(xcodeproj: "Paraquip.xcodeproj")
+
+    build_app(scheme: "Paraquip")
+
+    capture_screenshots
+
+    upload_to_app_store(
+      overwrite_screenshots: true,
+      precheck_include_in_app_purchases: false
+    )
+  end
+end

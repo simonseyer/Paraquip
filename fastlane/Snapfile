@@ -1,0 +1,17 @@
+devices([
+    "iPhone 12 Pro Max",
+    "iPhone 12 Pro",
+    "iPhone 8 Plus",
+    "iPhone 8",
+])
+
+languages([
+  "en-US",
+  "de-DE",
+])
+
+scheme("ParaquipUITests")
+
+clear_previous_screenshots(true)
+override_status_bar(true)
+stop_after_first_error(true)
