@@ -125,7 +125,8 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: true,
                                         wasRequestRejected: false,
                                         configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
-                                       profileStore: profileStore
+                                       profileStore: profileStore,
+                                       notifications: FakeNotificationPlugin()
                     )
                 )
         }
@@ -137,7 +138,8 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: false,
                                         wasRequestRejected: true,
                                         configuration: []),
-                                       profileStore: profileStore
+                                       profileStore: profileStore,
+                                       notifications: FakeNotificationPlugin()
                     )
                 )
         }
