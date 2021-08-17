@@ -12,7 +12,7 @@ protocol Equipment {
     var brand: Brand { get set }
     var name: String { get set }
     var checkCycle: Int { get set }
-    var checkLog: [Check] { get set }
+    var checkLog: [Check] { get }
     var purchaseDate: Date? { get set }
 }
 
@@ -47,5 +47,19 @@ extension Equipment {
         } else {
             return .later
         }
+    }
+}
+
+extension Array where Element == Check {
+    func sorted() -> [Element] {
+        return sorted { check1, check2 in
+            return check1.date > check2.date
+        }
+    }
+}
+
+extension CheckModel {
+    func toModel() -> Check {
+        Check(id: id!, date: date!)
     }
 }

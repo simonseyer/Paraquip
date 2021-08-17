@@ -7,14 +7,15 @@
 
 import Foundation
 import Combine
+import CoreData
 
 struct ProfileIdentifier: Identifiable, Hashable {
     var id: UUID
     var name: String
 
-    fileprivate init(profile: Profile) {
-        self.id = profile.id
-        self.name = profile.name
+    fileprivate init(profile: ProfileModel) {
+        self.id = profile.id!
+        self.name = profile.name!
     }
 
     func hash(into hasher: inout Hasher) {
@@ -24,40 +25,48 @@ struct ProfileIdentifier: Identifiable, Hashable {
 
 class AppStore: ObservableObject {
 
-    private let persistence: AppPersistence
-
     private var storedProfiles: [ProfileIdentifier: ProfileStore] = [:] {
         didSet {
             profiles = Array(storedProfiles.keys)
-            save()
         }
     }
 
     @Published private(set) var profiles: [ProfileIdentifier] = []
 
-    static var shared = AppStore()
+    private let persistentContainer: NSPersistentContainer
 
-    init(persistence: AppPersistence = .init()) {
-        self.persistence = persistence
+    static var shared: AppStore = {
+        let container = NSPersistentContainer(name: "Model")
+        container.loadPersistentStores { description, error in
+            if let error = error {
+                fatalError("Unable to load persistent stores: \(error)")
+            }
+        }
+        return AppStore(persistentContainer: container)
+    }()
 
-        var profileStores = persistence
-            .load()?
-            .compactMap { ProfileStore(id: $0) }
-            ?? []
+    init(persistentContainer: NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
+
+        let profileStores: [(ProfileIdentifier, ProfileStore)] = Self
+            .loadProfiles(context: persistentContainer.viewContext)
+            .compactMap {
+                let store = CoreDataProfileStore(profile: $0, persistentContainer: persistentContainer)
+                return (ProfileIdentifier(profile: $0), store)
+            }
 
         if profileStores.isEmpty {
-            profileStores.append(ProfileStore(profile: Profile(name: "Paraquip")))
+            _ = createProfile(name: "Paraquip")
+        } else {
+            storedProfiles = .init(uniqueKeysWithValues: profileStores)
+            profiles = Array(storedProfiles.keys)
         }
-
-        storedProfiles = profileStores.reduce(into: [ProfileIdentifier: ProfileStore]()) {
-            $0[ProfileIdentifier(profile: $1.profile)] = $1
-        }
-        profiles = Array(storedProfiles.keys)
-        save()
     }
 
-    private func save() {
-        persistence.save(profiles: storedProfiles.keys.map { $0.id })
+    private static func loadProfiles(context: NSManagedObjectContext) -> [ProfileModel] {
+        let fetchRequest: NSFetchRequest<ProfileModel> = ProfileModel.fetchRequest()
+        let results = (try? context.fetch(fetchRequest)) ?? []
+        return results
     }
 
     func profileStore(for identifier: ProfileIdentifier) -> ProfileStore? {
@@ -65,9 +74,13 @@ class AppStore: ObservableObject {
     }
 
     func createProfile(name: String) -> ProfileStore {
-        let newProfile = Profile(name: name)
-        let store = ProfileStore(profile: newProfile)
-        storedProfiles[ProfileIdentifier(profile: newProfile)] = store
+        let model = ProfileModel(context: persistentContainer.viewContext)
+        model.name = name
+        model.id = UUID()
+        try? persistentContainer.viewContext.save()
+
+        let store = CoreDataProfileStore(profile: model, persistentContainer: persistentContainer)
+        storedProfiles[ProfileIdentifier(profile: model)] = store
         return store
     }
 
@@ -80,3 +93,8 @@ class AppStore: ObservableObject {
     }
 }
 
+extension AppStore {
+    var mainProfileStore: ProfileStore {
+        store(for: profiles.first!)!
+    }
+}

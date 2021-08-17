@@ -22,7 +22,7 @@ struct EditEquipmentView: View {
         }
     }
 
-    @EnvironmentObject var store: ProfileStore
+    @EnvironmentObject var store: ProfileViewModel
 
     @State var equipment: Equipment
     @State var sizeIndex: Int = 4
@@ -154,15 +154,16 @@ struct EditEquipmentView: View {
 
                     equipment.brand = brand
                     equipment.checkCycle = Int(checkCycle)
-                    if let checkDate = lastCheckDate {
-                        equipment.checkLog.append(Check(date: checkDate))
-                    }
 
                     if var paraglider = equipment as? Paraglider {
                         paraglider.size = sizeOptions[sizeIndex]
                         store.store(equipment: paraglider)
                     } else {
                         store.store(equipment: equipment)
+                    }
+
+                    if let checkDate = lastCheckDate {
+                        store.logCheck(for: equipment, date: checkDate)
                     }
 
                     dismiss()
@@ -180,25 +181,25 @@ struct AddEquipmentView_Previews: PreviewProvider {
             NavigationView {
                 EditEquipmentView(equipment:Profile.fake().equipment.first!,
                                   dismiss: {})
-                    .environmentObject(ProfileStore(profile: Profile.fake()))
+                    .environmentObject(ProfileViewModel.fake())
             }
 
             NavigationView {
                 EditEquipmentView(equipment: Paraglider.new(),
                                   dismiss: {})
-                    .environmentObject(ProfileStore(profile: Profile.fake()))
+                    .environmentObject(ProfileViewModel.fake())
             }
 
             NavigationView {
                 EditEquipmentView(equipment: Paraglider(brand: Brand(name: "Heyho"), name: "Test", size: "M", checkCycle: 6),
                                   dismiss: {})
-                    .environmentObject(ProfileStore(profile: Profile.fake()))
+                    .environmentObject(ProfileViewModel.fake())
             }
 
             NavigationView {
                 EditEquipmentView(equipment:Profile.fake().equipment.last!,
                                   dismiss: {})
-                    .environmentObject(ProfileStore(profile: Profile.fake()))
+                    .environmentObject(ProfileViewModel.fake())
             }
         }.environment(\.locale, .init(identifier: "de"))
     }

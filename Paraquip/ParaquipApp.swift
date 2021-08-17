@@ -9,6 +9,11 @@ import SwiftUI
 
 @main
 struct ParaquipApp: App {
+
+    init() {
+        LegacyAppPersistence().migrate(into: AppStore.shared.mainProfileStore)
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

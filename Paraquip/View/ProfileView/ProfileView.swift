@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
 
-    @EnvironmentObject var store: ProfileStore
+    @EnvironmentObject var store: ProfileViewModel
     @State private var newEquipment: AnyEquipment?
     @State private var editMode: EditMode = .inactive
 
@@ -156,7 +156,7 @@ extension CheckUrgency {
 
 struct ProfileView_Previews: PreviewProvider {
 
-    private static let profileStore = ProfileStore(profile: Profile.fake())
+    private static let profileStore = ProfileViewModel.fake()
 
     static var previews: some View {
         Group {
@@ -167,7 +167,7 @@ struct ProfileView_Previews: PreviewProvider {
 
             NavigationView {
                 ProfileView(selectedEquipment: .constant(nil))
-                    .environmentObject(ProfileStore(profile: Profile(name: "Empty")))
+                    .environmentObject(ProfileViewModel.fake(profile: Profile(name: "Empty")))
             }
         }
         .environment(\.locale, .init(identifier: "de"))

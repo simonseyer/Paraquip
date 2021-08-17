@@ -8,16 +8,38 @@
 import Foundation
 
 struct Reserve: Equipment, Identifiable {
-    var id = UUID()
+    var id: UUID
     var brand: Brand
     var name: String
     var checkCycle: Int
-    var checkLog: [Check] = []
-    var purchaseDate: Date? = nil
+    let checkLog: [Check]
+    var purchaseDate: Date?
+
+    init(id: UUID = UUID(), brand: Brand, name: String, checkCycle: Int, checkLog: [Check] = [], purchaseDate: Date? = nil) {
+        self.id = id
+        self.brand = brand
+        self.name = name
+        self.checkCycle = checkCycle
+        self.checkLog = checkLog.sorted()
+        self.purchaseDate = purchaseDate
+    }
 }
 
 extension Reserve {
     static func new() -> Reserve {
         return Reserve(brand: Brand(name: ""), name: "", checkCycle: 3)
+    }
+}
+
+extension ReserveModel {
+    func toModel() -> Reserve {
+        return Reserve(
+            id: id!,
+            brand: Brand(name: brand!, id: brandId),
+            name: name!,
+            checkCycle: Int(checkCycle),
+            checkLog: (checkLog as! Set<CheckModel>).map { $0.toModel() },
+            purchaseDate: purchaseDate
+        )
     }
 }

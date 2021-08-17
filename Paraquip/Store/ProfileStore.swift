@@ -6,85 +6,140 @@
 //
 
 import Foundation
+import CoreData
+import Combine
 
-class ProfileStore: ObservableObject {
+protocol ProfileStore {
+    var profile: CurrentValueSubject<Profile, Never> { get }
 
-    @Published private(set) var profile: Profile {
-        didSet {
-            save()
-        }
-    }
+    func store(profile: Profile)
+    func store(equipment: Equipment)
+    func remove(equipment: [Equipment])
+    func logCheck(at date: Date, for equipment: Equipment)
+    func remove(checks: [Check], for equipment: Equipment)
+}
 
-    private let persistence: ProfilePersistence
+class CoreDataProfileStore: ProfileStore {
 
-    init(profile: Profile, persistence: ProfilePersistence = .init()) {
-        self.profile = profile.sorted()
-        self.persistence = persistence
-        save()
-    }
+    let profile: CurrentValueSubject<Profile, Never>
 
-    init?(id: UUID, persistence: ProfilePersistence = .init()) {
-        guard let profile = persistence.load(with: id)?.toModel() else {
-            return nil
-        }
-        self.profile = profile.sorted()
-        self.persistence = persistence
+    private var profileModel: ProfileModel
+    private let persistentContainer: NSPersistentContainer
+    private var context: NSManagedObjectContext { persistentContainer.viewContext }
+
+    init(profile: ProfileModel, persistentContainer: NSPersistentContainer) {
+        self.profileModel = profile
+        self.persistentContainer = persistentContainer
+        self.profile = CurrentValueSubject(profile.toModel())
     }
 
     private func save() {
-        persistence.save(profile: profile.toPersistence())
+        try? context.save()
+        profile.send(profileModel.toModel())
     }
 
-    func update(name: String) {
-        profile.name = name
-    }
-
-    func equipment(with id: UUID) -> Equipment? {
-        return profile.equipment.first { $0.id == id }
+    func store(profile: Profile) {
+        profileModel.name = profile.name
+        save()
     }
 
     func store(equipment: Equipment) {
-        var profile = self.profile
-        if let index = profile.equipment.firstIndex(where: { $0.id == equipment.id }) {
-            profile.equipment[index] = equipment
-        } else {
-            profile.equipment.append(equipment)
-        }
-        self.profile = profile.sorted()
-    }
-
-    func removeEquipment(atOffsets indexSet: IndexSet) {
-        profile.equipment.remove(atOffsets: indexSet)
-    }
-
-    func logCheck(for equipment: Equipment, date: Date) {
-        if let index = profile.equipment.firstIndex(where: { $0.id == equipment.id }) {
-            var profile = self.profile
-            profile.equipment[index].checkLog.append(Check(date: date))
-            // TODO: optimise sorting
-            profile.equipment[index].checkLog.sort { check1, check2 in
-                return check1.date > check2.date
+        let model: EquipmentModel = {
+            if let equipmentModel = EquipmentModel.fetch(equipment, context: context) {
+                return equipmentModel
+            } else {
+                switch equipment {
+                case is Paraglider:
+                    let paragliderModel = ParagliderModel(context: context)
+                    profileModel.addToParaglider(paragliderModel)
+                    return paragliderModel
+                case is Harness:
+                    let harnessModel = HarnessModel(context: context)
+                    profileModel.addToHarnesses(harnessModel)
+                    return harnessModel
+                case is Reserve:
+                    let reserveModel = ReserveModel(context: context)
+                    profileModel.addToReserves(reserveModel)
+                    return reserveModel
+                default:
+                    fatalError("Unknown equipment type: \(type(of: equipment))")
+                }
             }
-            self.profile = profile.sorted()
+        }()
+
+        model.id = equipment.id
+        model.name = equipment.name
+        model.brand = equipment.brand.name
+        model.brandId = equipment.brand.id
+        model.checkCycle = Int16(equipment.checkCycle)
+        model.purchaseDate = equipment.purchaseDate
+
+        if let paraglider = equipment as? Paraglider,
+           let paragliderModel = model as? ParagliderModel {
+            paragliderModel.size = paraglider.size
         }
+
+        save()
     }
 
-    func removeChecks(for equipment: Equipment, atOffsets indexSet: IndexSet) {
-        if let index = profile.equipment.firstIndex(where: { $0.id == equipment.id }) {
-            var profile = self.profile
-            profile.equipment[index].checkLog.remove(atOffsets: indexSet)
-            self.profile = profile.sorted()
+    func remove(equipment: [Equipment]) {
+        let fetchRequest: NSFetchRequest<EquipmentModel> = EquipmentModel.fetchRequest()
+        fetchRequest.predicate = .init(format: "id IN %@", equipment.map { return $0.id })
+        let results = try? context.fetch(fetchRequest)
+
+        for equipmentModel in results ?? [] {
+            context.delete(equipmentModel)
         }
+
+        save()
+    }
+
+    func logCheck(at date: Date, for equipment: Equipment) {
+        guard let model = EquipmentModel.fetch(equipment, context: context) else {
+            return
+        }
+
+        let checkModel = CheckModel(context: context)
+        checkModel.id = UUID()
+        checkModel.date = date
+        model.addToCheckLog(checkModel)
+
+        save()
+    }
+
+    func remove(checks: [Check], for equipment: Equipment) {
+        let fetchRequest: NSFetchRequest<CheckModel> = CheckModel.fetchRequest()
+        fetchRequest.predicate = .init(format: "id IN %@", checks.map { return $0.id })
+        let results = try? context.fetch(fetchRequest)
+
+        for checkModel in results ?? [] {
+            context.delete(checkModel)
+        }
+
+        save()
     }
 }
 
-extension Profile {
-    func sorted() -> Profile {
-        // TODO: optimise sorting
-        var profile = self
-        profile.equipment.sort { equipment1, equipment2 in
-            return equipment1.nextCheck < equipment2.nextCheck
-        }
-        return profile
+extension EquipmentModel {
+    static func fetch(_ equipment: Equipment, context: NSManagedObjectContext) -> EquipmentModel? {
+        let fetchRequest: NSFetchRequest<EquipmentModel> = EquipmentModel.fetchRequest()
+        fetchRequest.predicate = .init(format: "id == %@", equipment.id.uuidString)
+        fetchRequest.fetchLimit = 1
+        return try? context.fetch(fetchRequest).first
     }
+}
+
+class FakeProfileStore: ProfileStore {
+
+    let profile: CurrentValueSubject<Profile, Never>
+
+    init(profile: Profile) {
+        self.profile = CurrentValueSubject(profile)
+    }
+
+    func store(profile: Profile) {}
+    func store(equipment: Equipment) {}
+    func remove(equipment: [Equipment]) {}
+    func logCheck(at date: Date, for equipment: Equipment) {}
+    func remove(checks: [Check], for equipment: Equipment) {}
 }

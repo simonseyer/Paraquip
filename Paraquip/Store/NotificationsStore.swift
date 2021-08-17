@@ -118,7 +118,7 @@ class NotificationsStore: ObservableObject {
 
     private func setupNotificationScheduling() {
         profileStore
-            .$profile
+            .profile
             .combineLatest($state)
             .debounce(for: .init(Self.notificationSchedulingDebounce), scheduler: RunLoop.main)
             .sink {[weak self] profile, notificationState in

@@ -115,7 +115,7 @@ struct NotificationSettingsView: View {
 
 struct NotificationSettingsView_Previews: PreviewProvider {
 
-    private static let profileStore = ProfileStore(profile: .fake())
+    private static let profileStore = FakeProfileStore(profile: .fake())
 
     static var previews: some View {
         NavigationView {

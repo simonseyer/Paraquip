@@ -17,14 +17,14 @@ struct ContentView: View {
 
     @State private var selectedTab: Tabs = .profile
     @State private var selectedEquipment: UUID? = nil
-    @ObservedObject private var notificationsStore = NotificationsStore(profileStore: AppStore.shared.profileStore(for: AppStore.shared.profiles.first!)!)
+    @ObservedObject private var notificationsStore = NotificationsStore(profileStore: AppStore.shared.mainProfileStore)
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
                 ProfileView(selectedEquipment: $selectedEquipment)
             }
-            .environmentObject(store.profileStore(for: store.profiles.first!)!)
+            .environmentObject(ProfileViewModel(store: store.mainProfileStore))
             .tabItem {
                 Label("Equipment", systemImage: "book.closed.fill")
             }
@@ -57,6 +57,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(AppStore())
+            .environmentObject(AppStore.shared)
     }
 }

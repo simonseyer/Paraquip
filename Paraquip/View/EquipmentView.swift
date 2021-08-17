@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EquipmentView: View {
 
-    @EnvironmentObject var store: ProfileStore
+    @EnvironmentObject var store: ProfileViewModel
     let equipmentId: UUID
 
     private var equipment: Equipment {
@@ -164,12 +164,12 @@ struct EquipmentView_Previews: PreviewProvider {
         Group {
             NavigationView {
                 EquipmentView(equipmentId: profile.equipment.first!.id)
-                    .environmentObject(ProfileStore(profile: profile))
+                    .environmentObject(ProfileViewModel(store: FakeProfileStore(profile: profile)))
             }
 
             NavigationView {
                 EquipmentView(equipmentId: profile.equipment.last!.id)
-                    .environmentObject(ProfileStore(profile: profile))
+                    .environmentObject(ProfileViewModel(store: FakeProfileStore(profile: profile)))
             }
         }
         .environment(\.locale, .init(identifier: "de"))

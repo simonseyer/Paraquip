@@ -10,36 +10,80 @@ import XCTest
 
 class EquipmentTests: XCTestCase {
 
-    func testNextCheck() {
-        let equipment = equipment(checkLog: [Check(date: date(offsetByDays: -40))])
+    func equipment(checkCycle: Int = 1, checkLog: [Check] = [], purchaseDate: Date? = nil) throws -> Equipment {
+        throw XCTSkip()
+    }
 
-        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: date(offsetByDays: -40))!
+    func testCheckLogSorted() throws {
+        let equipment = try equipment(checkLog: [
+            Check(date: Date.offsetBy(days: -40)),
+            Check(date: Date.offsetBy(days: 1))
+        ])
 
+        XCTAssert(Calendar.current.isDate(equipment.checkLog[0].date, inSameDayAs: Date.offsetBy(days: 1)))
+        XCTAssert(Calendar.current.isDate(equipment.checkLog[1].date, inSameDayAs: Date.offsetBy(days: -40)))
+    }
+
+    func testNextCheck() throws {
+        let equipment = try equipment(checkLog: [Check(date: Date.offsetBy(days: -40))])
+
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
     }
 
-    func testNextCheckWithPurchaseDate() {
-        let equipment = equipment(purchaseDate: date(offsetByDays: 0))
+    func testNextCheckWithMultipleChecks() throws {
+        let equipment = try equipment(checkLog: [
+            Check(date: Date.offsetBy(days: -40)),
+            Check(date: Date.offsetBy(days: 1))
+        ])
 
-        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: date(offsetByDays: 0))!
-
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 1))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
     }
 
-    func testNextCheckWithPurchaseDateAndCheck() {
-        let equipment = equipment(checkLog: [Check(date: date(offsetByDays: -40))],
-                                  purchaseDate: date(offsetByDays: -60))
+    func testNextCheckWithPurchaseDate() throws {
+        let equipment = try equipment(purchaseDate: Date.offsetBy(days: 0))
 
-        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: date(offsetByDays: -40))!
-
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 0))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
     }
 
-    func date(offsetByDays days: Int) -> Date {
-        return Calendar.current.date(byAdding: .day, value: days, to: Date())!
-    }
+    func testNextCheckWithPurchaseDateAndCheck() throws {
+        let equipment = try equipment(checkLog: [Check(date: Date.offsetBy(days: -40))],
+                                      purchaseDate: Date.offsetBy(days: -60))
 
-    func equipment(checkLog: [Check] = [], purchaseDate: Date? = nil) -> Equipment {
-        return Reserve(brand: Brand(name: "", id: ""), name: "", checkCycle: 1, checkLog: checkLog, purchaseDate: purchaseDate)
+        let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
+        XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
+    }
+}
+
+class ParagliderTests: EquipmentTests {
+    override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
+        Paraglider(brand: Brand(name: "Gin", id: "gin"),
+                   name: "Atlas 2",
+                   size: "M",
+                   checkCycle: checkCycle,
+                   checkLog: checkLog,
+                   purchaseDate: purchaseDate)
+    }
+}
+
+class ReserveTests: EquipmentTests {
+    override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
+        Reserve(brand: Brand(name: "Gin", id: "gin"),
+                name: "Yeti",
+                checkCycle: checkCycle,
+                checkLog: checkLog,
+                purchaseDate: purchaseDate)
+    }
+}
+
+class HarnessTests: EquipmentTests {
+    override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
+        Harness(brand: Brand(name: "Gin", id: "gin"),
+                name: "Yeti",
+                checkCycle: checkCycle,
+                checkLog: checkLog,
+                purchaseDate: purchaseDate)
     }
 }

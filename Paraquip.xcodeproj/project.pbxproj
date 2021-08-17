@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D07CBFE26B6B6BF00BCC3E6 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0D07CBFC26B6B6BF00BCC3E6 /* Model.xcdatamodeld */; };
 		0D0DFF9F26887C4900AEB2AD /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0DFF9E26887C4900AEB2AD /* TimelineViewCell.swift */; };
 		0D0DFFA12688C49C00AEB2AD /* LogCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0DFFA02688C49C00AEB2AD /* LogCheckView.swift */; };
 		0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D11FB912620A5CF009D9349 /* ParaquipApp.swift */; };
@@ -41,23 +42,24 @@
 		0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AEB2651220B005AB7A7 /* SelectableText.swift */; };
 		0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */; };
 		0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */; };
+		0DCF78E726CC25C3004B1602 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF78E626CC25C3004B1602 /* TestUtils.swift */; };
+		0DCF78EA26CC345B004B1602 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF78E926CC345B004B1602 /* ProfileViewModel.swift */; };
 		0DD7FC0E263DD2AD0038B25D /* ProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */; };
 		0DD7FC10263DD3060038B25D /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0F263DD3060038B25D /* Profile.swift */; };
 		0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC12263DD32A0038B25D /* Equipment.swift */; };
 		0DD7FC15263DD33C0038B25D /* Paraglider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC14263DD33C0038B25D /* Paraglider.swift */; };
 		0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC16263DD34E0038B25D /* Reserve.swift */; };
-		0DD7FC1A263DD7540038B25D /* PersistedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC19263DD7540038B25D /* PersistedProfile.swift */; };
-		0DD7FC1C263DD8320038B25D /* ProfilePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC1B263DD8320038B25D /* ProfilePersistence.swift */; };
+		0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC19263DD7540038B25D /* LegacyPersistedProfile.swift */; };
 		0DD7FC1F263DDF8B0038B25D /* CheckPersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC1E263DDF8B0038B25D /* CheckPersistenceMapping.swift */; };
 		0DD7FC21263DDFB60038B25D /* ParagliderPersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC20263DDFB60038B25D /* ParagliderPersistenceMapping.swift */; };
 		0DD7FC23263DDFC00038B25D /* ReservePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */; };
 		0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */; };
-		0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC26263DE1B60038B25D /* AppPersistence.swift */; };
+		0DD7FC27263DE1B60038B25D /* LegacyAppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */; };
 		0DDA569926ADA45B004A46F8 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA569826ADA45B004A46F8 /* Date.swift */; };
 		0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */; };
 		0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */; };
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
-		0DE8DE23264C5BE40020B778 /* ProfileStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8DE22264C5BE40020B778 /* ProfileStoreTests.swift */; };
+		0DE8DE23264C5BE40020B778 /* ProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8DE22264C5BE40020B778 /* ProfileTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D07CBFD26B6B6BF00BCC3E6 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0D0DFF9E26887C4900AEB2AD /* TimelineViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
 		0D0DFFA02688C49C00AEB2AD /* LogCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCheckView.swift; sourceTree = "<group>"; };
 		0D11FB8E2620A5CF009D9349 /* Paraquip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paraquip.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,25 +122,26 @@
 		0D919AEB2651220B005AB7A7 /* SelectableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableText.swift; sourceTree = "<group>"; };
 		0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerOverlay.swift; sourceTree = "<group>"; };
 		0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEntryView.swift; sourceTree = "<group>"; };
+		0DCF78E626CC25C3004B1602 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
+		0DCF78E926CC345B004B1602 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		0DD7FC0D263DD2AD0038B25D /* ProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStore.swift; sourceTree = "<group>"; };
 		0DD7FC0F263DD3060038B25D /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0DD7FC12263DD32A0038B25D /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
 		0DD7FC14263DD33C0038B25D /* Paraglider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paraglider.swift; sourceTree = "<group>"; };
 		0DD7FC16263DD34E0038B25D /* Reserve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reserve.swift; sourceTree = "<group>"; };
-		0DD7FC19263DD7540038B25D /* PersistedProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedProfile.swift; sourceTree = "<group>"; };
-		0DD7FC1B263DD8320038B25D /* ProfilePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistence.swift; sourceTree = "<group>"; };
+		0DD7FC19263DD7540038B25D /* LegacyPersistedProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPersistedProfile.swift; sourceTree = "<group>"; };
 		0DD7FC1E263DDF8B0038B25D /* CheckPersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC20263DDFB60038B25D /* ParagliderPersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagliderPersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistenceMapping.swift; sourceTree = "<group>"; };
-		0DD7FC26263DE1B60038B25D /* AppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistence.swift; sourceTree = "<group>"; };
+		0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyAppPersistence.swift; sourceTree = "<group>"; };
 		0DDA569826ADA45B004A46F8 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		0DDA569B26ADAB5F004A46F8 /* Snapshot.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Snapshot.xcappdata; sourceTree = "<group>"; };
 		0DDA569D26ADABA9004A46F8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedNotificationConfig.swift; sourceTree = "<group>"; };
 		0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistanceMapping.swift; sourceTree = "<group>"; };
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
-		0DE8DE22264C5BE40020B778 /* ProfileStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStoreTests.swift; sourceTree = "<group>"; };
+		0DE8DE22264C5BE40020B778 /* ProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,10 +197,11 @@
 				0D80E1CB2662B7E300305B23 /* Utils */,
 				0D6CBD4B264C9313003655C6 /* Paraquip.entitlements */,
 				0D5E7A52262C430E0002A67B /* View */,
+				0DCF78E826CC3442004B1602 /* ViewModel */,
 				0D11FBBF2620A5E2009D9349 /* Model */,
 				0DD7FC11263DD30F0038B25D /* Store */,
 				0D6D4D0626629D7A003EAC35 /* Plugins */,
-				0DD7FC1D263DDF710038B25D /* PersistenceMapping */,
+				0DD7FC1D263DDF710038B25D /* LegacyPersistenceMapping */,
 				0DD7FC18263DD7420038B25D /* Persistence */,
 				0D2B2D2626484B5F009873CE /* Ressources */,
 				0D11FB912620A5CF009D9349 /* ParaquipApp.swift */,
@@ -220,8 +225,9 @@
 			isa = PBXGroup;
 			children = (
 				0D11FBA52620A5D0009D9349 /* Info.plist */,
-				0DE8DE22264C5BE40020B778 /* ProfileStoreTests.swift */,
+				0DE8DE22264C5BE40020B778 /* ProfileTests.swift */,
 				0D919AE726504857005AB7A7 /* EquipmentTests.swift */,
+				0DCF78E626CC25C3004B1602 /* TestUtils.swift */,
 			);
 			path = ParaquipTests;
 			sourceTree = "<group>";
@@ -240,6 +246,7 @@
 		0D11FBBF2620A5E2009D9349 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0D07CBFC26B6B6BF00BCC3E6 /* Model.xcdatamodeld */,
 				0D3EE1BA262C5BD800DA347B /* Fake.swift */,
 				0DD7FC0F263DD3060038B25D /* Profile.swift */,
 				0DD7FC12263DD32A0038B25D /* Equipment.swift */,
@@ -315,6 +322,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		0DCF78E826CC3442004B1602 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0DCF78E926CC345B004B1602 /* ProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		0DD7FC11263DD30F0038B25D /* Store */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,9 +343,8 @@
 		0DD7FC18263DD7420038B25D /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				0DD7FC19263DD7540038B25D /* PersistedProfile.swift */,
-				0DD7FC1B263DD8320038B25D /* ProfilePersistence.swift */,
-				0DD7FC26263DE1B60038B25D /* AppPersistence.swift */,
+				0DD7FC19263DD7540038B25D /* LegacyPersistedProfile.swift */,
+				0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */,
 				0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */,
 				0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */,
 				0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */,
@@ -338,7 +352,7 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
-		0DD7FC1D263DDF710038B25D /* PersistenceMapping */ = {
+		0DD7FC1D263DDF710038B25D /* LegacyPersistenceMapping */ = {
 			isa = PBXGroup;
 			children = (
 				0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */,
@@ -348,7 +362,7 @@
 				0D2B2D1E264700EA009873CE /* HarnessPersistenceMapping.swift */,
 				0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */,
 			);
-			path = PersistenceMapping;
+			path = LegacyPersistenceMapping;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -514,7 +528,7 @@
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
-				0DD7FC1A263DD7540038B25D /* PersistedProfile.swift in Sources */,
+				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
 				0D2B2D1B2646FCA0009873CE /* ViewUtils.swift in Sources */,
 				0DD7FC1F263DDF8B0038B25D /* CheckPersistenceMapping.swift in Sources */,
@@ -522,7 +536,6 @@
 				0D11FB942620A5CF009D9349 /* ContentView.swift in Sources */,
 				0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */,
 				0D11FBCB2620BF45009D9349 /* ProfileView.swift in Sources */,
-				0DD7FC1C263DD8320038B25D /* ProfilePersistence.swift in Sources */,
 				0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */,
 				0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */,
 				0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */,
@@ -542,6 +555,7 @@
 				0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */,
 				0D2B2D1F264700EA009873CE /* HarnessPersistenceMapping.swift in Sources */,
 				0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */,
+				0D07CBFE26B6B6BF00BCC3E6 /* Model.xcdatamodeld in Sources */,
 				0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */,
 				0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */,
 				0D4071922656CD12001385D7 /* NotificationsStore.swift in Sources */,
@@ -549,11 +563,12 @@
 				0D0DFFA12688C49C00AEB2AD /* LogCheckView.swift in Sources */,
 				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
+				0DCF78EA26CC345B004B1602 /* ProfileViewModel.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
 				0D0DFF9F26887C4900AEB2AD /* TimelineViewCell.swift in Sources */,
 				0D11FBC62620A927009D9349 /* AppStore.swift in Sources */,
-				0DD7FC27263DE1B60038B25D /* AppPersistence.swift in Sources */,
+				0DD7FC27263DE1B60038B25D /* LegacyAppPersistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,7 +576,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DE8DE23264C5BE40020B778 /* ProfileStoreTests.swift in Sources */,
+				0DE8DE23264C5BE40020B778 /* ProfileTests.swift in Sources */,
+				0DCF78E726CC25C3004B1602 /* TestUtils.swift in Sources */,
 				0D919AE826504857005AB7A7 /* EquipmentTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -916,6 +932,19 @@
 			productName = Versionable;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		0D07CBFC26B6B6BF00BCC3E6 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0D07CBFD26B6B6BF00BCC3E6 /* Model.xcdatamodel */,
+			);
+			currentVersion = 0D07CBFD26B6B6BF00BCC3E6 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0D11FB862620A5CE009D9349 /* Project object */;
 }
