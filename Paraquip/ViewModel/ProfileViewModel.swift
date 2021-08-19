@@ -24,8 +24,11 @@ class ProfileViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
 
-    func store(equipment: Equipment) {
+    func store(equipment: Equipment, withCheckAt checkDate: Date?) {
         profileStore.store(equipment: equipment)
+        if let date = checkDate {
+            profileStore.logCheck(at: date, for: equipment)
+        }
     }
 
     func removeEquipment(atOffsets indexSet: IndexSet) {
@@ -33,19 +36,8 @@ class ProfileViewModel: ObservableObject {
         profileStore.remove(equipment: equipment)
     }
 
-    func logCheck(for equipment: Equipment, date: Date) {
-        profileStore.logCheck(at: date, for: equipment)
-    }
-
-    func removeChecks(for equipment: Equipment, atOffsets indexSet: IndexSet) {
-        let checks = indexSet.map { equipment.checkLog[$0] }
-        profileStore.remove(checks: checks, for: equipment)
-    }
-}
-
-extension ProfileViewModel {
-    func equipment(with id: UUID) -> Equipment? {
-        return profile.equipment.first { $0.id == id }
+    func viewModel(for equipment: Equipment) -> EquipmentViewModel {
+        EquipmentViewModel(store: profileStore, equipment: equipment)
     }
 }
 

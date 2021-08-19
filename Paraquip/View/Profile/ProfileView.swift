@@ -33,7 +33,7 @@ struct ProfileView: View {
             } else {
                 List {
                     ForEach(store.profile.equipment, id: \.id) { equipment in
-                        NavigationLink(destination: EquipmentView(equipmentId: equipment.id),
+                        NavigationLink(destination: EquipmentView(viewModel: store.viewModel(for: equipment)),
                                        tag: equipment.id,
                                        selection: $selectedEquipment) {
                             EquipmentRow(equipment: equipment)

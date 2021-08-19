@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G80" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Check" representedClassName="CheckModel" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
@@ -13,9 +13,14 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="purchaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="checkLog" toMany="YES" deletionRule="Cascade" destinationEntity="Check" inverseName="equipment" inverseEntity="Check"/>
+        <relationship name="manual" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Manual" inverseName="equipment" inverseEntity="Manual"/>
     </entity>
     <entity name="Harness" representedClassName="HarnessModel" parentEntity="Equipment" syncable="YES" codeGenerationType="class">
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Profile" inverseName="harnesses" inverseEntity="Profile"/>
+    </entity>
+    <entity name="Manual" representedClassName="ManualModel" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" inverseName="manual" inverseEntity="Equipment"/>
     </entity>
     <entity name="Paraglider" representedClassName="ParagliderModel" parentEntity="Equipment" syncable="YES" codeGenerationType="class">
         <attribute name="size" optional="YES" attributeType="String"/>
@@ -33,10 +38,11 @@
     </entity>
     <elements>
         <element name="Check" positionX="30.0057373046875" positionY="352.1790771484375" width="128" height="74"/>
-        <element name="Equipment" positionX="-135" positionY="-54" width="128" height="134"/>
+        <element name="Equipment" positionX="-135" positionY="-54" width="128" height="149"/>
         <element name="Harness" positionX="-247.60888671875" positionY="201.7550659179688" width="128" height="58"/>
         <element name="Paraglider" positionX="-63" positionY="-18" width="128" height="59"/>
         <element name="Profile" positionX="-392.4204711914062" positionY="-269.9826965332031" width="128" height="104"/>
         <element name="Reserve" positionX="-21.1131591796875" positionY="-227.8502502441406" width="128" height="44"/>
+        <element name="Manual" positionX="-189" positionY="-108" width="128" height="59"/>
     </elements>
 </model>

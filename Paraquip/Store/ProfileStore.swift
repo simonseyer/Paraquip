@@ -13,10 +13,16 @@ protocol ProfileStore {
     var profile: CurrentValueSubject<Profile, Never> { get }
 
     func store(profile: Profile)
+
     func store(equipment: Equipment)
     func remove(equipment: [Equipment])
+
     func logCheck(at date: Date, for equipment: Equipment)
     func remove(checks: [Check], for equipment: Equipment)
+
+    func attach(manual: Data, to equipment: Equipment)
+    func loadManual(for equipment: Equipment) -> Data?
+    func deleteManual(for equipment: Equipment)
 }
 
 class CoreDataProfileStore: ProfileStore {
@@ -118,6 +124,36 @@ class CoreDataProfileStore: ProfileStore {
 
         save()
     }
+
+    func attach(manual: Data, to equipment: Equipment) {
+        guard let equipmentModel = EquipmentModel.fetch(equipment, context: context) else {
+            return
+        }
+
+        let manualModel = ManualModel(context: context)
+        manualModel.data = manual
+        equipmentModel.manual = manualModel
+
+        save()
+    }
+
+    func loadManual(for equipment: Equipment) -> Data? {
+        guard let equipmentModel = EquipmentModel.fetch(equipment, context: context) else {
+            return nil
+        }
+
+        return equipmentModel.manual?.data
+    }
+
+    func deleteManual(for equipment: Equipment) {
+        guard let equipmentModel = EquipmentModel.fetch(equipment, context: context),
+              let manualModel = equipmentModel.manual else {
+            return
+        }
+
+        context.delete(manualModel)
+        save()
+    }
 }
 
 extension EquipmentModel {
@@ -142,4 +178,7 @@ class FakeProfileStore: ProfileStore {
     func remove(equipment: [Equipment]) {}
     func logCheck(at date: Date, for equipment: Equipment) {}
     func remove(checks: [Check], for equipment: Equipment) {}
+    func attach(manual: Data, to equipment: Equipment) {}
+    func loadManual(for equipment: Equipment) -> Data? { nil }
+    func deleteManual(for equipment: Equipment) {}
 }

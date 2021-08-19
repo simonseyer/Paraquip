@@ -9,16 +9,12 @@ import SwiftUI
 
 struct EquipmentView: View {
 
-    @EnvironmentObject var store: ProfileViewModel
-    let equipmentId: UUID
-
-    private var equipment: Equipment {
-        store.equipment(with: equipmentId) ?? PlaceholderEquipment()
-    }
+    let viewModel: EquipmentViewModel
 
     @State private var showingAddEquipment = false
     @State private var showingLogCheck = false
     @State private var editMode: EditMode = .inactive
+    @State private var showingManual = false
 
     @Environment(\.locale) var locale
 
@@ -32,18 +28,25 @@ struct EquipmentView: View {
         VStack(alignment: .leading) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    Text("by \(equipment.brand.name)")
-                        .font(.headline)
                     HStack {
-                        PillLabel(LocalizedStringKey(equipment.localizedType))
-                        if let paraglider = equipment as? Paraglider {
+                        Text("by \(viewModel.equipment.brand.name)")
+                            .font(.headline)
+                        Button(action: {
+                            showingManual.toggle()
+                        }) {
+                            Image(systemName: "book.fill")
+                        }
+                    }
+                    HStack {
+                        PillLabel(LocalizedStringKey(viewModel.equipment.localizedType))
+                        if let paraglider = viewModel.equipment as? Paraglider {
                             PillLabel("Size \(paraglider.size)")
                         }
                     }
                     .padding([.top, .bottom], 10)
                 }
                 Spacer()
-                if let icon = equipment.icon {
+                if let icon = viewModel.equipment.icon {
                     icon
                         .resizable()
                         .scaledToFit()
@@ -53,20 +56,20 @@ struct EquipmentView: View {
             .padding([.leading, .trailing])
 
             List {
-                if equipment.timeline.isEmpty {
+                if viewModel.equipment.timeline.isEmpty {
                     Text("No check logged")
                         .foregroundColor(Color(UIColor.systemGray))
                 } else {
-                    ForEach(equipment.timeline) { entry in
+                    ForEach(viewModel.equipment.timeline) { entry in
                         TimelineViewCell(timelineEntry: entry) {
                             showingLogCheck = true
                         }
                         .deleteDisabled(!entry.isCheck)
                     }
                     .onDelete(perform: { indexSet in
-                        let offsets = equipment.timeline.checkIndexSet(from: indexSet)
-                        store.removeChecks(for: equipment, atOffsets: offsets)
-                        if equipment.checkLog.isEmpty {
+                        let offsets = viewModel.equipment.timeline.checkIndexSet(from: indexSet)
+                        viewModel.removeChecks(atOffsets: offsets)
+                        if viewModel.equipment.checkLog.isEmpty {
                             withAnimation {
                                 editMode = .inactive
                             }
@@ -76,15 +79,15 @@ struct EquipmentView: View {
             }
             .listStyle(InsetGroupedListStyle())
             .environment(\.editMode, $editMode)
-            .toolbar(content: {
+            .toolbar {
                 Button("Edit") {
                     showingAddEquipment = true
                 }
-            })
-            .navigationTitle(equipment.name)
+            }
+            .navigationTitle(viewModel.equipment.name)
             .sheet(isPresented: $showingAddEquipment) {
                 NavigationView {
-                    EditEquipmentView(equipment: equipment) {
+                    EditEquipmentView(equipment: viewModel.equipment) {
                         showingAddEquipment = false
                     }
                 }
@@ -92,22 +95,29 @@ struct EquipmentView: View {
             .sheet(isPresented: $showingLogCheck) {
                 LogCheckView() { date in
                     if let checkDate = date {
-                        store.logCheck(for: equipment, date: checkDate)
+                        viewModel.logCheck(at: checkDate)
                     }
                     showingLogCheck = false
                 }
             }
+            .sheet(isPresented: $showingManual) {
+                if let manual = viewModel.loadManual() {
+                    NavigationView {
+                        ManualView(manual: manual, dismiss: {
+                            showingManual = false
+                        }, deleteManual: {
+                            viewModel.deleteManual()
+                            showingManual = false
+                        })
+                    }
+                } else {
+                    DocumentPicker() { url in
+                        viewModel.attachManual(at: url)
+                    }
+                }
+            }
         }
     }
-}
-
-struct PlaceholderEquipment: Equipment {
-    var id: UUID = .init()
-    var brand: Brand = .init(name: "")
-    var name: String = ""
-    var checkCycle: Int = 0
-    var checkLog: [Check] = []
-    var purchaseDate: Date? = nil
 }
 
 extension Equipment {
@@ -159,36 +169,18 @@ extension Array where Element == TimelineEntry {
 struct EquipmentView_Previews: PreviewProvider {
 
     private static let profile = Profile.fake()
+    private static let store = FakeProfileStore(profile: profile)
 
     static var previews: some View {
         Group {
             NavigationView {
-                EquipmentView(equipmentId: profile.equipment.first!.id)
-                    .environmentObject(ProfileViewModel(store: FakeProfileStore(profile: profile)))
+                EquipmentView(viewModel: EquipmentViewModel(store: store, equipment: profile.equipment[0]))
             }
 
             NavigationView {
-                EquipmentView(equipmentId: profile.equipment.last!.id)
-                    .environmentObject(ProfileViewModel(store: FakeProfileStore(profile: profile)))
+                EquipmentView(viewModel: EquipmentViewModel(store: store, equipment: profile.equipment[1]))
             }
         }
         .environment(\.locale, .init(identifier: "de"))
-    }
-}
-
-struct PillLabel: View {
-
-    let content: LocalizedStringKey
-
-    init(_ content: LocalizedStringKey) {
-        self.content = content
-    }
-
-    var body: some View {
-        Text(content)
-            .font(.caption)
-            .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
-            .background(Color(UIColor.secondarySystemBackground))
-            .cornerRadius(6)
     }
 }

@@ -157,13 +157,9 @@ struct EditEquipmentView: View {
 
                     if var paraglider = equipment as? Paraglider {
                         paraglider.size = sizeOptions[sizeIndex]
-                        store.store(equipment: paraglider)
+                        store.store(equipment: paraglider, withCheckAt: lastCheckDate)
                     } else {
-                        store.store(equipment: equipment)
-                    }
-
-                    if let checkDate = lastCheckDate {
-                        store.logCheck(for: equipment, date: checkDate)
+                        store.store(equipment: equipment, withCheckAt: lastCheckDate)
                     }
 
                     dismiss()
