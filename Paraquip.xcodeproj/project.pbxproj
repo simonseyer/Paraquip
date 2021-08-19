@@ -22,7 +22,6 @@
 		0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D182646BF5A009873CE /* BrandRow.swift */; };
 		0D2B2D1B2646FCA0009873CE /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D1A2646FCA0009873CE /* ViewUtils.swift */; };
 		0D2B2D1D2647009F009873CE /* Harness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D1C2647009F009873CE /* Harness.swift */; };
-		0D2B2D1F264700EA009873CE /* HarnessPersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D1E264700EA009873CE /* HarnessPersistenceMapping.swift */; };
 		0D2B2D2226484B52009873CE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
 		0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* EquipmentView.swift */; };
 		0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1BA262C5BD800DA347B /* Fake.swift */; };
@@ -30,7 +29,6 @@
 		0D59D1D9268A37FD00E6334F /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D59D1D8268A37FD00E6334F /* SnapshotHelper.swift */; };
 		0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E7A53262C43270002A67B /* EditEquipmentView.swift */; };
 		0D61B2EB2649A7C200509C30 /* Versionable in Frameworks */ = {isa = PBXBuildFile; productRef = 0D61B2EA2649A7C200509C30 /* Versionable */; };
-		0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */; };
 		0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6D4D0726629D89003EAC35 /* NotificationPlugin.swift */; };
 		0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1C72662B7A000305B23 /* FakeNotificationPlugin.swift */; };
 		0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1C92662B7C300305B23 /* AppleNotificationPlugin.swift */; };
@@ -50,10 +48,6 @@
 		0DD7FC15263DD33C0038B25D /* Paraglider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC14263DD33C0038B25D /* Paraglider.swift */; };
 		0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC16263DD34E0038B25D /* Reserve.swift */; };
 		0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC19263DD7540038B25D /* LegacyPersistedProfile.swift */; };
-		0DD7FC1F263DDF8B0038B25D /* CheckPersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC1E263DDF8B0038B25D /* CheckPersistenceMapping.swift */; };
-		0DD7FC21263DDFB60038B25D /* ParagliderPersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC20263DDFB60038B25D /* ParagliderPersistenceMapping.swift */; };
-		0DD7FC23263DDFC00038B25D /* ReservePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */; };
-		0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */; };
 		0DD7FC27263DE1B60038B25D /* LegacyAppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */; };
 		0DDA569926ADA45B004A46F8 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA569826ADA45B004A46F8 /* Date.swift */; };
 		0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */; };
@@ -101,7 +95,6 @@
 		0D2B2D182646BF5A009873CE /* BrandRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandRow.swift; sourceTree = "<group>"; };
 		0D2B2D1A2646FCA0009873CE /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
 		0D2B2D1C2647009F009873CE /* Harness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Harness.swift; sourceTree = "<group>"; };
-		0D2B2D1E264700EA009873CE /* HarnessPersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarnessPersistenceMapping.swift; sourceTree = "<group>"; };
 		0D2B2D2326484B52009873CE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0D2B2D2526484B56009873CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0D3EE1B5262C58A700DA347B /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
@@ -109,7 +102,6 @@
 		0D4071912656CD12001385D7 /* NotificationsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsStore.swift; sourceTree = "<group>"; };
 		0D59D1D8268A37FD00E6334F /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		0D5E7A53262C43270002A67B /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
-		0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceVersions.swift; sourceTree = "<group>"; };
 		0D6CBD4B264C9313003655C6 /* Paraquip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Paraquip.entitlements; sourceTree = "<group>"; };
 		0D6D4D0726629D89003EAC35 /* NotificationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPlugin.swift; sourceTree = "<group>"; };
 		0D80E1C72662B7A000305B23 /* FakeNotificationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationPlugin.swift; sourceTree = "<group>"; };
@@ -130,10 +122,6 @@
 		0DD7FC14263DD33C0038B25D /* Paraglider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paraglider.swift; sourceTree = "<group>"; };
 		0DD7FC16263DD34E0038B25D /* Reserve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reserve.swift; sourceTree = "<group>"; };
 		0DD7FC19263DD7540038B25D /* LegacyPersistedProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyPersistedProfile.swift; sourceTree = "<group>"; };
-		0DD7FC1E263DDF8B0038B25D /* CheckPersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPersistenceMapping.swift; sourceTree = "<group>"; };
-		0DD7FC20263DDFB60038B25D /* ParagliderPersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagliderPersistenceMapping.swift; sourceTree = "<group>"; };
-		0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservePersistenceMapping.swift; sourceTree = "<group>"; };
-		0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistenceMapping.swift; sourceTree = "<group>"; };
 		0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyAppPersistence.swift; sourceTree = "<group>"; };
 		0DDA569826ADA45B004A46F8 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		0DDA569B26ADAB5F004A46F8 /* Snapshot.xcappdata */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Snapshot.xcappdata; sourceTree = "<group>"; };
@@ -201,7 +189,6 @@
 				0D11FBBF2620A5E2009D9349 /* Model */,
 				0DD7FC11263DD30F0038B25D /* Store */,
 				0D6D4D0626629D7A003EAC35 /* Plugins */,
-				0DD7FC1D263DDF710038B25D /* LegacyPersistenceMapping */,
 				0DD7FC18263DD7420038B25D /* Persistence */,
 				0D2B2D2626484B5F009873CE /* Ressources */,
 				0D11FB912620A5CF009D9349 /* ParaquipApp.swift */,
@@ -343,26 +330,13 @@
 		0DD7FC18263DD7420038B25D /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */,
 				0DD7FC19263DD7540038B25D /* LegacyPersistedProfile.swift */,
 				0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */,
-				0D61B2EC2649AC7D00509C30 /* PersistanceVersions.swift */,
 				0DE34C59265C060700EF080F /* PersistedNotificationConfig.swift */,
 				0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */,
 			);
 			path = Persistence;
-			sourceTree = "<group>";
-		};
-		0DD7FC1D263DDF710038B25D /* LegacyPersistenceMapping */ = {
-			isa = PBXGroup;
-			children = (
-				0DD7FC24263DDFC80038B25D /* ProfilePersistenceMapping.swift */,
-				0DD7FC20263DDFB60038B25D /* ParagliderPersistenceMapping.swift */,
-				0DD7FC22263DDFC00038B25D /* ReservePersistenceMapping.swift */,
-				0DD7FC1E263DDF8B0038B25D /* CheckPersistenceMapping.swift */,
-				0D2B2D1E264700EA009873CE /* HarnessPersistenceMapping.swift */,
-				0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */,
-			);
-			path = LegacyPersistenceMapping;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -531,14 +505,12 @@
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
 				0D2B2D1B2646FCA0009873CE /* ViewUtils.swift in Sources */,
-				0DD7FC1F263DDF8B0038B25D /* CheckPersistenceMapping.swift in Sources */,
 				0D2B2D172646B1A9009873CE /* Brand.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* ContentView.swift in Sources */,
 				0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */,
 				0D11FBCB2620BF45009D9349 /* ProfileView.swift in Sources */,
 				0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */,
 				0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */,
-				0DD7FC25263DDFC80038B25D /* ProfilePersistenceMapping.swift in Sources */,
 				0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */,
 				0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
@@ -550,14 +522,10 @@
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
 				0DD7FC15263DD33C0038B25D /* Paraglider.swift in Sources */,
-				0DD7FC21263DDFB60038B25D /* ParagliderPersistenceMapping.swift in Sources */,
-				0DD7FC23263DDFC00038B25D /* ReservePersistenceMapping.swift in Sources */,
 				0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */,
-				0D2B2D1F264700EA009873CE /* HarnessPersistenceMapping.swift in Sources */,
 				0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */,
 				0D07CBFE26B6B6BF00BCC3E6 /* Model.xcdatamodeld in Sources */,
 				0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */,
-				0D61B2ED2649AC7D00509C30 /* PersistanceVersions.swift in Sources */,
 				0D4071922656CD12001385D7 /* NotificationsStore.swift in Sources */,
 				0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */,
 				0D0DFFA12688C49C00AEB2AD /* LogCheckView.swift in Sources */,

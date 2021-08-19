@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Versionable
 
 struct PersistedNotificationState: Codable {
 
@@ -22,4 +23,25 @@ struct PersistedNotificationConfig: Codable {
     var id: UUID
     var unit: Unit
     var multiplier: Int
+}
+
+extension PersistedNotificationState: Versionable {
+    var version: Version {
+        .v1
+    }
+
+    static var mock: PersistedNotificationState {
+        PersistedNotificationState(isEnabled: false, configuration: [])
+    }
+
+    enum Version: Int, VersionType {
+        case v1
+    }
+
+    static func migrate(to: Version) -> Migration {
+        switch to {
+        case .v1:
+            return .none
+        }
+    }
 }
