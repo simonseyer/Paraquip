@@ -1,1 +1,1 @@
-Diese Version bringt ein vereinfachtes Design mit Fokus auf die wichtigsten Informationen.
+Mit dieser Version können die Betriebsanleitungen der Ausrüstung in der App verwaltet werden.
