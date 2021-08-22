@@ -25,6 +25,10 @@ class SnapshotUITests: XCTestCase {
     func testExample() throws {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
+        app.launchEnvironment = [
+            "isUITest": "true",
+            "simulated_notification_date": "1632985185"
+        ]
         setupSnapshot(app)
         app.launch()
 

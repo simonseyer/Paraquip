@@ -9,37 +9,54 @@ import Foundation
 
 extension Profile {
     static func fake() -> Profile {
-        Profile(
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        dateFormatter.locale = Locale(identifier: "de")
+
+        return Profile(
             name: "Equipment",
             equipment: [
-                Paraglider(brand: Brand(name: "Gin", id: "gin"),
-                           name: "Atlas 2",
-                           size: "M",
-                           checkCycle: 6,
-                           checkLog: [
-                            Check(date: Date(timeIntervalSinceNow: -10000))
-                           ],
-                           purchaseDate: Date(timeIntervalSinceNow: -1000000)),
-                Paraglider(brand: Brand(name: "U-Turn", id: "u-turn"),
-                           name: "Infinity 5",
-                           size: "M",
-                           checkCycle: 6,
-                           checkLog: [
-                            Check(date: Date(timeIntervalSinceNow: -160 * 60 * 60 * 24))
-                           ]),
+                Reserve(brand: Brand(name: "Nova", id: "nova"),
+                        name: "Beamer 3 light",
+                        checkCycle: 3,
+                        checkLog: [],
+                        purchaseDate: dateFormatter.date(from: "30.09.2020")!),
+                Reserve(brand: Brand(name: "Ozone", id: "ozone"),
+                        name: "Angel SQ",
+                        checkCycle: 3,
+                        checkLog: [
+                            Check(date: dateFormatter.date(from: "14.07.2021")!)
+                        ],
+                        purchaseDate: dateFormatter.date(from: "30.09.2020")!),
+                Harness(brand: Brand(name: "Woody Valley", id: "woody-valley"),
+                        name: "Wani Light 2",
+                        checkCycle: 12,
+                        checkLog: [
+                            Check(date: dateFormatter.date(from: "14.04.2021")!)
+                        ],
+                        purchaseDate: dateFormatter.date(from: "30.09.2020")!),
                 Paraglider(brand: Brand(name: "Gin", id: "gin"),
                            name: "Explorer 2",
                            size: "S",
                            checkCycle: 12,
                            checkLog: [
-                            Check(date: Date(timeIntervalSinceNow: -182 * 60 * 60 * 24))
-                           ]),
-                Harness(brand: Brand(name: "Gin", id: "gin"),
-                        name: "Verso 3",
-                        checkCycle: 12),
-                Reserve(brand: Brand(name: "Gin", id: "gin"),
-                        name: "Yeti",
-                        checkCycle: 3)
+                            Check(date: dateFormatter.date(from: "12.08.2021")!)
+                           ],
+                           purchaseDate: dateFormatter.date(from: "30.09.2020")!)
             ])
+    }
+}
+
+extension NotificationState {
+    static func fake() -> NotificationState {
+        return NotificationState(
+            isEnabled: true,
+            wasRequestRejected: false,
+            configuration: [
+                NotificationConfig(unit: .months, multiplier: 1),
+                NotificationConfig(unit: .days, multiplier: 10)
+            ]
+        )
     }
 }

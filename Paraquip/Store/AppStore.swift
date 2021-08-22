@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import CoreData
 
-struct ProfileIdentifier: Identifiable, Hashable {
+fileprivate struct ProfileIdentifier: Identifiable, Hashable {
     var id: UUID
     var name: String
 
@@ -23,27 +23,28 @@ struct ProfileIdentifier: Identifiable, Hashable {
     }
 }
 
-class AppStore: ObservableObject {
+protocol AppStore {
+    var mainProfileStore: ProfileStore { get }
+}
 
-    private var storedProfiles: [ProfileIdentifier: ProfileStore] = [:] {
-        didSet {
-            profiles = Array(storedProfiles.keys)
-        }
-    }
+class CoreDataAppStore: AppStore {
 
-    @Published private(set) var profiles: [ProfileIdentifier] = []
-
+    private var storedProfiles: [ProfileIdentifier: ProfileStore] = [:]
     private let persistentContainer: NSPersistentContainer
 
-    static var shared: AppStore = {
+    var mainProfileStore: ProfileStore {
+        return storedProfiles.values.first!
+    }
+
+    convenience init() {
         let container = NSPersistentContainer(name: "Model")
         container.loadPersistentStores { description, error in
             if let error = error {
                 fatalError("Unable to load persistent stores: \(error)")
             }
         }
-        return AppStore(persistentContainer: container)
-    }()
+        self.init(persistentContainer: container)
+    }
 
     init(persistentContainer: NSPersistentContainer) {
         self.persistentContainer = persistentContainer
@@ -59,7 +60,6 @@ class AppStore: ObservableObject {
             _ = createProfile(name: "Paraquip")
         } else {
             storedProfiles = .init(uniqueKeysWithValues: profileStores)
-            profiles = Array(storedProfiles.keys)
         }
     }
 
@@ -69,11 +69,7 @@ class AppStore: ObservableObject {
         return results
     }
 
-    func profileStore(for identifier: ProfileIdentifier) -> ProfileStore? {
-        return storedProfiles[identifier]
-    }
-
-    func createProfile(name: String) -> ProfileStore {
+    private func createProfile(name: String) -> ProfileStore {
         let model = ProfileModel(context: persistentContainer.viewContext)
         model.name = name
         model.id = UUID()
@@ -83,18 +79,8 @@ class AppStore: ObservableObject {
         storedProfiles[ProfileIdentifier(profile: model)] = store
         return store
     }
-
-    func delete(profile: ProfileIdentifier) {
-        storedProfiles[profile] = nil
-    }
-
-    func store(for profileIdentifier: ProfileIdentifier) -> ProfileStore? {
-        return storedProfiles[profileIdentifier]
-    }
 }
 
-extension AppStore {
-    var mainProfileStore: ProfileStore {
-        store(for: profiles.first!)!
-    }
+class FakeAppStore: AppStore {
+    let mainProfileStore: ProfileStore = FakeProfileStore(profile: .fake())
 }

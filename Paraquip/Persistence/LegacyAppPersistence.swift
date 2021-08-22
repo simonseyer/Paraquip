@@ -24,7 +24,6 @@ class LegacyAppPersistence {
     init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
         self.basePath = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        loadSnapshotData()
     }
 
     func migrate(into store: ProfileStore) {
@@ -40,7 +39,9 @@ class LegacyAppPersistence {
             }
         }
 
-        try? fileManager.moveItem(at: url, to: url.appendingPathExtension("bak"))
+        let backupURL = url.appendingPathExtension("bak")
+        try? fileManager.removeItem(at: backupURL)
+        try? fileManager.moveItem(at: url, to: backupURL)
     }
 
     private func load() -> [UUID]? {
@@ -60,39 +61,6 @@ class LegacyAppPersistence {
             return container.instance
         } catch {
             return nil
-        }
-    }
-
-    private func loadSnapshotData() {
-        guard let contentsURL = Bundle.main.url(forResource: "Snapshot", withExtension: "xcappdata")?.appendingPathComponent("AppData").appendingPathComponent("Documents") else {
-            return
-        }
-
-        logger.info("Found Snapshot.xcappdata — copying data")
-
-        guard let destinationRoot = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return
-        }
-
-        guard let enumerator = fileManager.enumerator(at: contentsURL,
-                                                      includingPropertiesForKeys: [],
-                                                      options: [],
-                                                      errorHandler: nil) else {
-            return
-        }
-
-        while let sourceURL = enumerator.nextObject() as? URL {
-            let destinationURL = destinationRoot.appendingPathComponent(sourceURL.lastPathComponent)
-
-            logger.info("Copying \(sourceURL) to \(destinationURL)")
-
-            try? fileManager.removeItem(at: destinationURL)
-
-            do {
-                try fileManager.copyItem(at: sourceURL, to: destinationURL)
-            } catch {
-                logger.error("Failed to copy file \(sourceURL.lastPathComponent): \(error.localizedDescription)")
-            }
         }
     }
 }

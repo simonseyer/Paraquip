@@ -10,14 +10,30 @@ import SwiftUI
 @main
 struct ParaquipApp: App {
 
+    private let appStore: AppStore
+    private let notificationsStore: NotificationsStore
+
     init() {
-        LegacyAppPersistence().migrate(into: AppStore.shared.mainProfileStore)
+        if ProcessInfo.processInfo.environment["isUITest"] == "true" {
+            self.appStore = FakeAppStore()
+            self.notificationsStore = NotificationsStore(
+                state: .fake(),
+                profileStore: appStore.mainProfileStore,
+                persistence: NotificationPersistence(),
+                notifications: FakeNotificationPlugin()
+            )
+        } else {
+            self.appStore = CoreDataAppStore()
+            self.notificationsStore = NotificationsStore(profileStore: appStore.mainProfileStore)
+        }
+        LegacyAppPersistence().migrate(into: appStore.mainProfileStore)
     }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(AppStore.shared)
+                .environmentObject(ProfileViewModel(store: appStore.mainProfileStore))
+                .environmentObject(notificationsStore)
         }
     }
 }

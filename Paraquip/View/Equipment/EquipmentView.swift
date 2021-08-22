@@ -16,7 +16,6 @@ struct EquipmentView: View {
     @State private var editMode: EditMode = .inactive
     @State private var showingManual = false
 
-    @Environment(\.locale) var locale
     @EnvironmentObject var store: ProfileViewModel
 
     let dateFormatter: DateFormatter = {
