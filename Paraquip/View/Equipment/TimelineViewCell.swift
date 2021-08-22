@@ -10,24 +10,24 @@ import SwiftUI
 enum TimelineEntry: Identifiable {
     case purchase(date: Date)
     case check(check: Check)
-    case nextCheck(date: Date, urgency: CheckUrgency)
+    case nextCheck(urgency: CheckUrgency)
 
     private static let purchaseID = UUID()
     private static let nextCheckID = UUID()
 
     var id: UUID {
         switch self {
-        case .purchase(_):
+        case .purchase:
             return Self.purchaseID
         case .check(let check):
             return check.id
-        case .nextCheck(_, _):
+        case .nextCheck:
             return Self.nextCheckID
         }
     }
 
     var isNextCheck: Bool {
-        if case .nextCheck(_, _) = self {
+        if case .nextCheck = self {
             return true
         } else {
             return false
@@ -46,15 +46,15 @@ enum TimelineEntry: Identifiable {
 fileprivate extension TimelineEntry {
     var lineHeightFactor: CGFloat {
         switch self {
-        case .purchase(_), .nextCheck(_, _):
+        case .purchase, .nextCheck:
             return 0.5
-        case .check(_):
+        case .check:
             return 1.0
         }
     }
 
     var lineTopPaddingFactor: CGFloat {
-        if case .nextCheck(_, _) = self {
+        if case .nextCheck = self {
             return 0.5
         } else {
             return 0.0
@@ -63,9 +63,9 @@ fileprivate extension TimelineEntry {
 
     var color: Color {
         switch self {
-        case .purchase(_), .check(_):
+        case .purchase, .check:
             return Color(UIColor.systemGray3)
-        case .nextCheck(_, let urgency):
+        case .nextCheck(let urgency):
             return urgency.color
         }
     }
@@ -82,8 +82,8 @@ fileprivate extension TimelineEntry {
             return LocalizedStringKey(Self.dateFormatter.string(from: date))
         case .check(let check):
             return LocalizedStringKey(Self.dateFormatter.string(from: check.date))
-        case .nextCheck(let date, let urgency):
-            return formattedCheckInterval(date: date, urgency: urgency)
+        case .nextCheck(let urgency):
+            return urgency.formattedCheckInterval()
         }
     }
 }
@@ -141,19 +141,35 @@ struct TimelineVisual: View {
 
 struct TimelineView_Previews: PreviewProvider {
 
-    static let timeline: [TimelineEntry] = [
-        .nextCheck(date: Date(), urgency: .now),
+    static let timelines: [[TimelineEntry]] = [
+        [
+        .nextCheck(urgency: .now),
         .check(check: Check(date: Date())),
         .check(check: Check(date: Date())),
         .purchase(date: Date())
+            ],
+        [
+        .nextCheck(urgency: .soon(Date())),
+        .purchase(date: Date())
+            ],
+        [
+        .nextCheck(urgency: .later(Date())),
+        .check(check: Check(date: Date())),
+            ],
+        [
+        .nextCheck(urgency: .never),
+            ],
     ]
-
     static var previews: some View {
-        List {
-            ForEach(timeline) { timelineEntry in
-                TimelineViewCell(timelineEntry: timelineEntry, logAction: {})
+        ForEach(Array(zip(timelines.indices, timelines)), id: \.0) { (_, timeline) in
+            Group {
+                List {
+                    ForEach(timeline) { timelineEntry in
+                        TimelineViewCell(timelineEntry: timelineEntry, logAction: {})
+                    }
+                }
+                .listStyle(InsetGroupedListStyle())
             }
         }
-        .listStyle(InsetGroupedListStyle())
     }
 }

@@ -128,11 +128,17 @@ struct EditEquipmentView: View {
                                date: $equipment.purchaseDate)
             }
             Section(header: Text("Check cycle")) {
-                HStack {
-                    Slider(value: $checkCycle, in: 3...36, step: 1) {
-                        EmptyView()
+                GeometryReader { metrics in
+                    HStack {
+                        Slider(value: $checkCycle, in: 0...36, step: 1) {
+                            EmptyView()
+                        }
+                        .frame(width: metrics.size.width * 0.65)
+                        Spacer()
+                        Text(checkCycle > 0 ? "\(Int(checkCycle)) months" : "Off")
+                            .font(.body.monospacedDigit())
+                            .foregroundColor(checkCycle > 0 ? .primary : Color(UIColor.systemGray))
                     }
-                    Text("\(Int(checkCycle)) months")
                 }
             }
             if isNew {

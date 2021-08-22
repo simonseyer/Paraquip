@@ -22,7 +22,15 @@ struct Profile: Identifiable {
 extension Array where Element == Equipment {
     func sorted() -> [Element] {
         return sorted { equipment1, equipment2 in
-            return equipment1.nextCheck < equipment2.nextCheck
+            guard let nextCheck1 = equipment1.nextCheck else {
+                return false
+            }
+            
+            guard let nextCheck2 = equipment2.nextCheck else {
+                return true
+            }
+
+            return nextCheck1 < nextCheck2
         }
     }
 }

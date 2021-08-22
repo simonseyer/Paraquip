@@ -22,11 +22,18 @@ struct Check: Identifiable {
 }
 
 enum CheckUrgency {
-    case now, soon, later
+    case now
+    case soon(Date)
+    case later(Date)
+    case never
 }
 
 extension Equipment {
-    var nextCheck: Date {
+    var nextCheck: Date? {
+        guard checkCycle > 0 else {
+            return nil
+        }
+
         guard let lastCheck = checkLog.first?.date ?? purchaseDate else {
             return Date.now
         }
@@ -37,15 +44,19 @@ extension Equipment {
     }
 
     var checkUrgency: CheckUrgency {
+        guard let nextCheck = nextCheck else {
+            return .never
+        }
+
         let months = Calendar.current.dateComponents([.month], from: Date.now, to: nextCheck).month ?? 0
 
         if Calendar.current.isDate(nextCheck, inSameDayAs: Date.now) ||
             nextCheck < Date.now {
             return .now
         } else if months == 0 {
-            return .soon
+            return .soon(nextCheck)
         } else {
-            return .later
+            return .later(nextCheck)
         }
     }
 }

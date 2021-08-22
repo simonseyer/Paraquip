@@ -118,38 +118,36 @@ extension Equipment {
         }
         return Image(logo)
     }
-
-    func formattedCheckInterval(locale: Locale = Locale.current) -> LocalizedStringKey {
-        return Paraquip.formattedCheckInterval(date: nextCheck, urgency: checkUrgency, locale: locale)
-    }
-}
-
-func formattedCheckInterval(date: Date, urgency: CheckUrgency, locale: Locale = Locale.current) -> LocalizedStringKey {
-    if urgency == .now {
-        return "Check now"
-    }
-
-    var calendar = Calendar.current
-    calendar.locale = locale
-
-    let formatter = DateComponentsFormatter()
-    formatter.calendar = calendar
-    formatter.unitsStyle = .full
-    formatter.maximumUnitCount = 1
-    formatter.allowedUnits = [.month, .day]
-    formatter.includesTimeRemainingPhrase = true
-
-    return "\(formatter.string(from: Date.now, to: date) ?? "???")"
 }
 
 extension CheckUrgency {
+    private static let dateFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.maximumUnitCount = 1
+        formatter.allowedUnits = [.month, .day]
+        formatter.includesTimeRemainingPhrase = true
+        return formatter
+    }()
+
+    func formattedCheckInterval() -> LocalizedStringKey {
+        switch self {
+        case .now:
+            return "Check now"
+        case .soon(let date), .later(let date):
+            return "\(Self.dateFormatter.string(from: Date.now, to: date) ?? "")"
+        case .never:
+            return "No check needed"
+        }
+    }
+
     var color: Color {
         switch self {
         case .now:
             return Color(UIColor.systemRed)
         case .soon:
             return Color(UIColor.systemOrange)
-        case .later:
+        case .later, .never:
             return Color(UIColor.systemGreen)
         }
     }

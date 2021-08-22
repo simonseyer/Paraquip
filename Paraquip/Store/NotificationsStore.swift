@@ -187,8 +187,13 @@ class NotificationsStore: ObservableObject {
     }
 
     private func scheduleNotification(for equipment: Equipment, config: NotificationConfig) {
+        guard let nextCheck = equipment.nextCheck else {
+            logger.info("Skipping notifications for equipment since check is off: \(equipment.id)")
+            return
+        }
+
         let date = Calendar.current.date(byAdding: config.dateComponents,
-                                         to: equipment.nextCheck.settingTimeTo(hour: Self.notificationHour))!
+                                         to: nextCheck.settingTimeTo(hour: Self.notificationHour))!
 
         guard date > Date.now else {
             logger.info("Ignoring notification config because it lies in the past: \(config)")
@@ -218,7 +223,10 @@ class NotificationsStore: ObservableObject {
 
     private func updateBadge(for profile: Profile) {
         let badgeCount = profile.equipment.filter {
-            $0.checkUrgency == .now
+            if case .now = $0.checkUrgency {
+                return true
+            }
+            return false
         }.count
 
         notifications.setBadge(count: badgeCount)

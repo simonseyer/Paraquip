@@ -33,6 +33,7 @@
 "by %@" = "von %@";
 "Size %@" = "Größe %@";
 "Manual" = "Betriebsanleitung";
+"No check needed" = "Kein Check nötig";
 
 // Edit Equipment View
 "Cancel" = "Abbrechen";
@@ -47,6 +48,7 @@
 "Next steps" = "Nächste Schritte";
 "Log last check" = "Letzen Check eintragen";
 "Attach Manual" = "Anleitung anhängen";
+"Off" = "Aus";
 
 // Notification View
 "Enable" = "Aktivieren";

@@ -46,7 +46,7 @@ extension CheckUrgency {
             return Image(systemName: "exclamationmark.circle.fill")
         case .soon:
             return Image(systemName: "exclamationmark.triangle.fill")
-        case .later:
+        case .later, .never:
             return Image(systemName: "checkmark.circle.fill")
         }
     }

@@ -140,8 +140,7 @@ extension Equipment {
     var timeline: [TimelineEntry] {
         var timeline: [TimelineEntry] = []
 
-        timeline.append(.nextCheck(date: nextCheck,
-                                   urgency: checkUrgency))
+        timeline.append(.nextCheck(urgency: checkUrgency))
 
         timeline.append(contentsOf: checkLog.map {
             .check(check: $0)

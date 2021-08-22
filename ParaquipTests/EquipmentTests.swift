@@ -28,7 +28,7 @@ class EquipmentTests: XCTestCase {
         let equipment = try equipment(checkLog: [Check(date: Date.offsetBy(days: -40))])
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
+        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithMultipleChecks() throws {
@@ -38,14 +38,14 @@ class EquipmentTests: XCTestCase {
         ])
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 1))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
+        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithPurchaseDate() throws {
         let equipment = try equipment(purchaseDate: Date.offsetBy(days: 0))
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 0))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
+        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithPurchaseDateAndCheck() throws {
@@ -53,7 +53,12 @@ class EquipmentTests: XCTestCase {
                                       purchaseDate: Date.offsetBy(days: -60))
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck, inSameDayAs: nextCheck))
+        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
+    }
+
+    func testNextCheckWithCheckOff() throws {
+        let equipment = try equipment(checkCycle: 0)
+        XCTAssertEqual(equipment.nextCheck, nil)
     }
 }
 
