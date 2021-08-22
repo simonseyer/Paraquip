@@ -82,7 +82,7 @@ class CoreDataProfileStore: ProfileStore {
 
         if let paraglider = equipment as? Paraglider,
            let paragliderModel = model as? ParagliderModel {
-            paragliderModel.size = paraglider.size
+            paragliderModel.size = paraglider.size.rawValue
         }
 
         save()

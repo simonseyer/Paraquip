@@ -10,7 +10,7 @@ import Combine
 
 struct PlaceholderEquipment: Equipment {
     var id: UUID = .init()
-    var brand: Brand = .init(name: "")
+    var brand: Brand = .none
     var name: String = ""
     var checkCycle: Int = 0
     var checkLog: [Check] = []

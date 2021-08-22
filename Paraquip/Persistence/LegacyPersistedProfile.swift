@@ -90,7 +90,7 @@ extension PersistedParaglider {
             id: id,
             brand: Brand(name: brand, id: brandId),
             name: name,
-            size: size,
+            size: .init(rawValue: size)!,
             checkCycle: checkCycle,
             checkLog: checkLog.map { $0.toModel() },
             purchaseDate: purchaseDate

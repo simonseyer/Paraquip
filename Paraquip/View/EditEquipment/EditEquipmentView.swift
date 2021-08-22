@@ -16,8 +16,8 @@ struct EditEquipmentView: View {
     @State private var showingManualPicker = false
 
     private var title: Text {
-        if let brand = viewModel.brand, !brand.name.isEmpty {
-            return Text("\(brand.name) \(NSLocalizedString(viewModel.equipment.localizedType, comment: ""))")
+        if !viewModel.brand.name.isEmpty {
+            return Text("\(viewModel.equipment.brand.name) \(NSLocalizedString(viewModel.equipment.localizedType, comment: ""))")
         } else {
             return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(viewModel.equipment.localizedType, comment: ""))")
         }
@@ -26,19 +26,13 @@ struct EditEquipmentView: View {
     var body: some View {
         Form {
             Section(header: Text("")) {
-                Picker(selection: $viewModel.brandIndex, label: Text("Brand")) {
-                    ForEach(0 ..< viewModel.brandOptions.count) { index in
-                        switch viewModel.brandOptions[index] {
-                        case .none:
-                            Text("None")
-                        case .custom:
-                            Text("Custom")
-                        case .known(let brand):
-                            BrandRow(brand: brand)
-                        }
+                Picker(selection: $viewModel.brand, label: Text("Brand")) {
+                    ForEach(Brand.allCases) { brand in
+                        BrandRow(brand: brand)
+                            .tag(brand)
                     }
                 }
-                if case .custom = viewModel.brandSelection {
+                if case .custom = viewModel.brand {
                     HStack {
                         Text("Custom brand")
                         Spacer()
@@ -53,9 +47,10 @@ struct EditEquipmentView: View {
                         .multilineTextAlignment(.trailing)
                 }
                 if viewModel.equipment is Paraglider {
-                    Picker(selection: $viewModel.sizeIndex, label: Text("Size")) {
-                        ForEach(0 ..< viewModel.sizeOptions.count) {
-                            Text(viewModel.sizeOptions[$0])
+                    Picker(selection: $viewModel.paragliderSize, label: Text("Size")) {
+                        ForEach(Paraglider.Size.allCases) { size in
+                            Text(size.rawValue)
+                                .tag(size)
                         }
                     }
                 }
@@ -112,7 +107,7 @@ struct EditEquipmentView: View {
                     viewModel.save()
                     dismiss()
                 }
-                .disabled(!viewModel.brandSelection.isSelected)
+                .disabled(viewModel.brand == .none)
             }
         }
         .sheet(isPresented: $showingLogCheck) {
@@ -144,7 +139,7 @@ struct AddEquipmentView_Previews: PreviewProvider {
             }
 
             NavigationView {
-                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Paraglider(brand: Brand(name: "Heyho"), name: "Test", size: "M", checkCycle: 6), isNew: false), dismiss: {})
+                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Paraglider(brand: .custom(name: "Heyho"), name: "Test", size: .medium, checkCycle: 6), isNew: false), dismiss: {})
             }
 
             NavigationView {

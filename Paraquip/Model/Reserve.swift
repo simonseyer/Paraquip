@@ -27,7 +27,7 @@ struct Reserve: Equipment, Identifiable {
 
 extension Reserve {
     static func new() -> Reserve {
-        return Reserve(brand: Brand(name: ""), name: "", checkCycle: 3)
+        return Reserve(brand: .none, name: "", checkCycle: 3)
     }
 }
 

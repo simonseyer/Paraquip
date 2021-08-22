@@ -55,12 +55,12 @@ extension CheckUrgency {
 struct EquipmentRow_Previews: PreviewProvider {
 
     static var brands: [Brand] {
-        Brand.allBrands + [Brand(name: "Unknown", id: nil)]
+        Brand.allCases
     }
 
     static var previews: some View {
         List {
-            ForEach(brands, id: \.name) { brand in
+            ForEach(Brand.allCases) { brand in
                 EquipmentRow(equipment: Reserve(brand: brand,
                                                 name: brand.name,
                                                 checkCycle: 6))

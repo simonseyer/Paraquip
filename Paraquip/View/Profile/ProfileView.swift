@@ -112,7 +112,7 @@ struct AnyEquipment: Identifiable {
 extension Equipment {
 
     var icon: Image? {
-        guard let logo = brand.id else {
+        guard case .known(_, let logo) = brand else {
             return nil
         }
         return Image(logo)

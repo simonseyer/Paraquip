@@ -38,7 +38,7 @@ extension Profile {
                         purchaseDate: dateFormatter.date(from: "30.09.2020")!),
                 Paraglider(brand: Brand(name: "Gin", id: "gin"),
                            name: "Explorer 2",
-                           size: "S",
+                           size: .small,
                            checkCycle: 12,
                            checkLog: [
                             Check(date: dateFormatter.date(from: "12.08.2021")!)

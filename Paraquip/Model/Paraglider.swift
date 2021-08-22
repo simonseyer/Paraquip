@@ -8,15 +8,27 @@
 import Foundation
 
 struct Paraglider: Equipment, Identifiable {
+
+    enum Size: String, CaseIterable {
+        case extraExtraSmall = "XXS"
+        case extraSmall = "XS"
+        case small = "S"
+        case smallMedium = "SM"
+        case medium = "M"
+        case large = "L"
+        case extraLarge = "XL"
+        case extraExtraLarge = "XXL"
+    }
+
     var id = UUID()
     var brand: Brand
     var name: String
-    var size: String
+    var size: Size
     var checkCycle: Int
     let checkLog: [Check]
     var purchaseDate: Date?
 
-    init(id: UUID = UUID(), brand: Brand, name: String, size: String, checkCycle: Int, checkLog: [Check] = [], purchaseDate: Date? = nil) {
+    init(id: UUID = UUID(), brand: Brand, name: String, size: Size, checkCycle: Int, checkLog: [Check] = [], purchaseDate: Date? = nil) {
         self.id = id
         self.brand = brand
         self.name = name
@@ -29,7 +41,7 @@ struct Paraglider: Equipment, Identifiable {
 
 extension Paraglider {
     static func new() -> Paraglider {
-        return Paraglider(brand: Brand(name: ""), name: "", size: "M", checkCycle: 6)
+        return Paraglider(brand: .none, name: "", size: .medium, checkCycle: 6)
     }
 }
 
@@ -39,7 +51,7 @@ extension ParagliderModel {
             id: id!,
             brand: Brand(name: brand!, id: brandId),
             name: name!,
-            size: size!,
+            size: .init(rawValue: size!)!,
             checkCycle: Int(checkCycle),
             checkLog: (checkLog as! Set<CheckModel>).map { $0.toModel() },
             purchaseDate: purchaseDate

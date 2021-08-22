@@ -38,7 +38,7 @@ struct EquipmentView: View {
                     HStack {
                         PillLabel(LocalizedStringKey(viewModel.equipment.localizedType))
                         if let paraglider = viewModel.equipment as? Paraglider {
-                            PillLabel("Size \(paraglider.size)")
+                            PillLabel("Size \(paraglider.size.rawValue)")
                         }
                     }
                     .padding([.top, .bottom], 10)

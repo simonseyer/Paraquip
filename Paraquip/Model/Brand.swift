@@ -7,53 +7,91 @@
 
 import Foundation
 
-struct Brand {
-    var name: String
-    var id: String?
+// TODO: create KnownBrand enum
+enum Brand {
+    case none
+    case known(name: String, id: String)
+    case custom(name: String)
+
+    var name: String {
+        switch self {
+        case .none:
+            return ""
+        case .custom(let name):
+            return name
+        case .known(let name, _):
+            return name
+        }
+    }
+
+    private static let noneId = "none"
+    private static let customId = "custom"
+
+    var id: String {
+        switch self {
+        case .none:
+            return Self.noneId
+        case .custom:
+            return Self.customId
+        case .known(_, let id):
+            return id
+        }
+    }
+
+    // TODO: make name optional when KnownBrand was added
+    init(name: String, id: String?) {
+        if let id = id, id != Self.customId {
+            self = .known(name: name, id: id)
+        } else if !name.isEmpty {
+            self = .custom(name: name)
+        } else {
+            self = .none
+        }
+    }
 }
 
-extension Brand {
+extension Brand: CaseIterable {
 
-    // Add harness brands
-    static var allBrands: [Brand] = [
-        Brand(name: "Advance", id: "advance"),
-        Brand(name: "Air G", id: "air-g"),
-        Brand(name: "Aeros", id: "aeros"),
-        Brand(name: "Air Cross", id: "aircross"),
-        Brand(name: "Airdesign", id: "airdesign"),
-        Brand(name: "Axis", id: "axis"),
-        Brand(name: "Basisrausch", id: "basisrausch"),
-        Brand(name: "Charly", id: "charly"),
-        Brand(name: "Dudek", id: "dudek"),
-        Brand(name: "Fly Products", id: "fly-products"),
-        Brand(name: "Gin", id: "gin"),
-        Brand(name: "Icaro", id: "icaro"),
-        Brand(name: "Independence", id: "independence"),
-        Brand(name: "ITT", id: "itt"),
-        Brand(name: "ITV", id: "itv"),
-        Brand(name: "Mac Para", id: "macpara"),
-        Brand(name: "Neo", id: "neo"),
-        Brand(name: "Nervures", id: "nervures"),
-        Brand(name: "Nirvana", id: "nirvana"),
-        Brand(name: "Niviuk", id: "niviuk"),
-        Brand(name: "Nova", id: "nova"),
-        Brand(name: "NZ Aeropsports", id: "nz-aerosports"),
-        Brand(name: "Olympus", id: "olympus"),
-        Brand(name: "Ozone", id: "ozone"),
-        Brand(name: "Pro design", id: "pro-design"),
-        Brand(name: "Sky Country", id: "sky-country"),
-        Brand(name: "Sky Paragliders", id: "sky-paragliders"),
-        Brand(name: "Skyline", id: "skyline"),
-        Brand(name: "Skywalk", id: "skywalk"),
-        Brand(name: "SOL Paragliders", id: "sol"),
-        Brand(name: "Squirrel", id: "squirrel"),
-        Brand(name: "Supair", id: "supair"),
-        Brand(name: "Swing", id: "swing"),
-        Brand(name: "Trekking Parapentes", id: "trekking-parapentes"),
-        Brand(name: "Triple Seven Gliders", id: "triple-seven"),
-        Brand(name: "U-Turn", id: "u-turn"),
-        Brand(name: "Up", id: "up"),
-        Brand(name: "Windtech", id: "windtech"),
-        Brand(name: "Woody Valley", id: "woody-valley"),
+    static var allCases: [Brand] = [
+        Brand.custom(name: ""),
+        Brand.known(name: "Advance", id: "advance"),
+        Brand.known(name: "Air G", id: "air-g"),
+        Brand.known(name: "Aeros", id: "aeros"),
+        Brand.known(name: "Air Cross", id: "aircross"),
+        Brand.known(name: "Airdesign", id: "airdesign"),
+        Brand.known(name: "Axis", id: "axis"),
+        Brand.known(name: "Basisrausch", id: "basisrausch"),
+        Brand.known(name: "Charly", id: "charly"),
+        Brand.known(name: "Dudek", id: "dudek"),
+        Brand.known(name: "Fly Products", id: "fly-products"),
+        Brand.known(name: "Gin", id: "gin"),
+        Brand.known(name: "Icaro", id: "icaro"),
+        Brand.known(name: "Independence", id: "independence"),
+        Brand.known(name: "ITT", id: "itt"),
+        Brand.known(name: "ITV", id: "itv"),
+        Brand.known(name: "Mac Para", id: "macpara"),
+        Brand.known(name: "Neo", id: "neo"),
+        Brand.known(name: "Nervures", id: "nervures"),
+        Brand.known(name: "Nirvana", id: "nirvana"),
+        Brand.known(name: "Niviuk", id: "niviuk"),
+        Brand.known(name: "Nova", id: "nova"),
+        Brand.known(name: "NZ Aeropsports", id: "nz-aerosports"),
+        Brand.known(name: "Olympus", id: "olympus"),
+        Brand.known(name: "Ozone", id: "ozone"),
+        Brand.known(name: "Pro design", id: "pro-design"),
+        Brand.known(name: "Sky Country", id: "sky-country"),
+        Brand.known(name: "Sky Paragliders", id: "sky-paragliders"),
+        Brand.known(name: "Skyline", id: "skyline"),
+        Brand.known(name: "Skywalk", id: "skywalk"),
+        Brand.known(name: "SOL Paragliders", id: "sol"),
+        Brand.known(name: "Squirrel", id: "squirrel"),
+        Brand.known(name: "Supair", id: "supair"),
+        Brand.known(name: "Swing", id: "swing"),
+        Brand.known(name: "Trekking Parapentes", id: "trekking-parapentes"),
+        Brand.known(name: "Triple Seven Gliders", id: "triple-seven"),
+        Brand.known(name: "U-Turn", id: "u-turn"),
+        Brand.known(name: "Up", id: "up"),
+        Brand.known(name: "Windtech", id: "windtech"),
+        Brand.known(name: "Woody Valley", id: "woody-valley"),
     ]
 }
