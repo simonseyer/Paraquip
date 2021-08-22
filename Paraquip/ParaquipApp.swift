@@ -31,8 +31,7 @@ struct ParaquipApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(ProfileViewModel(store: appStore.mainProfileStore))
+            ContentView(viewModel: ProfileViewModel(store: appStore.mainProfileStore))
                 .environmentObject(notificationsStore)
         }
     }

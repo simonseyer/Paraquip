@@ -82,7 +82,6 @@ struct EditEquipmentView: View {
                         .padding([.top, .bottom], 6)
                     }
 
-
                     Button(action: { showingManualPicker = true }) {
                         HStack {
                             FormIcon(icon: Image(systemName: "book.fill"))

@@ -12,7 +12,8 @@ struct ContentView: View {
     enum Tabs: String {
         case profile, notifications
     }
-    
+
+    @ObservedObject var viewModel: ProfileViewModel
     @EnvironmentObject var notificationsStore: NotificationsStore
 
     @State private var selectedTab: Tabs = .profile
@@ -21,7 +22,7 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                ProfileView(selectedEquipment: $selectedEquipment)
+                ProfileView(viewModel: viewModel, selectedEquipment: $selectedEquipment)
             }
             .tabItem {
                 Label("Equipment", systemImage: "book.closed.fill")
@@ -56,8 +57,7 @@ struct ContentView_Previews: PreviewProvider {
     static let profileStore = FakeProfileStore(profile: .fake())
 
     static var previews: some View {
-        ContentView()
-            .environmentObject(ProfileViewModel(store: profileStore))
+        ContentView(viewModel: ProfileViewModel(store: profileStore))
             .environmentObject(NotificationsStore(profileStore: profileStore))
     }
 }

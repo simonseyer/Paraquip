@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
 
-    @EnvironmentObject var store: ProfileViewModel
+    @ObservedObject var viewModel: ProfileViewModel
     @State private var newEquipment: AnyEquipment?
     @State private var editMode: EditMode = .inactive
 
@@ -17,7 +17,7 @@ struct ProfileView: View {
 
     var body: some View {
         Group {
-            if store.profile.equipment.isEmpty {
+            if viewModel.profile.equipment.isEmpty {
                 VStack {
                     Image("icon")
                         .resizable()
@@ -32,16 +32,16 @@ struct ProfileView: View {
                 }
             } else {
                 List {
-                    ForEach(store.profile.equipment, id: \.id) { equipment in
-                        NavigationLink(destination: EquipmentView(viewModel: store.viewModel(for: equipment)),
+                    ForEach(viewModel.profile.equipment, id: \.id) { equipment in
+                        NavigationLink(destination: EquipmentView(viewModel: viewModel.viewModel(for: equipment)),
                                        tag: equipment.id,
                                        selection: $selectedEquipment) {
                             EquipmentRow(equipment: equipment)
                         }
                     }
                     .onDelete(perform: { indexSet in
-                        store.removeEquipment(atOffsets: indexSet)
-                        if store.profile.equipment.isEmpty {
+                        viewModel.removeEquipment(atOffsets: indexSet)
+                        if viewModel.profile.equipment.isEmpty {
                             withAnimation {
                                 editMode = .inactive
                             }
@@ -62,7 +62,7 @@ struct ProfileView: View {
                 }
             }
         }
-        .navigationTitle(store.profile.name)
+        .navigationTitle(viewModel.profile.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
@@ -90,7 +90,7 @@ struct ProfileView: View {
         }
         .sheet(item: $newEquipment) { equipment in
             NavigationView {
-                EditEquipmentView(viewModel: store.editViewModel(for: equipment.wrappedValue)) {
+                EditEquipmentView(viewModel: viewModel.editViewModel(for: equipment.wrappedValue)) {
                     newEquipment = nil
                 }
             }
@@ -154,18 +154,16 @@ extension CheckUrgency {
 
 struct ProfileView_Previews: PreviewProvider {
 
-    private static let profileStore = ProfileViewModel.fake()
+    private static let viewModel = ProfileViewModel.fake()
 
     static var previews: some View {
         Group {
             NavigationView {
-                ProfileView(selectedEquipment: .constant(nil))
-                    .environmentObject(profileStore)
+                ProfileView(viewModel: viewModel, selectedEquipment: .constant(nil))
             }
 
             NavigationView {
-                ProfileView(selectedEquipment: .constant(nil))
-                    .environmentObject(ProfileViewModel.fake(profile: Profile(name: "Empty")))
+                ProfileView(viewModel: ProfileViewModel.fake(profile: Profile(name: "Empty")), selectedEquipment: .constant(nil))
             }
         }
         .environment(\.locale, .init(identifier: "de"))
