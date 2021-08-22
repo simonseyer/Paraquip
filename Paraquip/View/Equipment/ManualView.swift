@@ -19,7 +19,7 @@ struct ManualView: View {
             .navigationTitle("Manual")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button("Done", action: dismiss)
                 }
                 ToolbarItem(placement: .navigationBarLeading) {

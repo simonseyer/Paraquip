@@ -29,7 +29,11 @@ struct PDFViewer: UIViewControllerRepresentable {
         override func loadView() {
             view = pdfView
             pdfView.autoScales = true
-            pdfView.displayMode = .singlePageContinuous
+        }
+
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit
         }
     }
 }
