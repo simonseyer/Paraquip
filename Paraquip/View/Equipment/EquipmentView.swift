@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EquipmentView: View {
 
-    let viewModel: EquipmentViewModel
+    @ObservedObject var viewModel: EquipmentViewModel
 
     @State private var showingAddEquipment = false
     @State private var showingLogCheck = false
