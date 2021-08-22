@@ -20,9 +20,9 @@ struct EquipmentRow: View {
                         .resizable()
                         .scaledToFit()
                 } else {
-                    Image(systemName: "star")
+                    Image(systemName: "star.fill")
                         .foregroundColor(Color(UIColor.systemGray3))
-                        .font(.system(size: 32))
+                        .font(.system(size: 24))
                 }
             }
             .frame(width: 50, height: 50, alignment: .center)
