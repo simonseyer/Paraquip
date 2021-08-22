@@ -60,6 +60,7 @@
 		0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */; };
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
 		0DE8DE23264C5BE40020B778 /* ProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8DE22264C5BE40020B778 /* ProfileTests.swift */; };
+		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +142,7 @@
 		0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistanceMapping.swift; sourceTree = "<group>"; };
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
 		0DE8DE22264C5BE40020B778 /* ProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTests.swift; sourceTree = "<group>"; };
+		0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCycleRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +322,7 @@
 				0D2B2D182646BF5A009873CE /* BrandRow.swift */,
 				0D919AE526503E47005AB7A7 /* FormDatePicker.swift */,
 				0D77A35626D2692E002B24D6 /* FormIcon.swift */,
+				0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */,
 			);
 			path = EditEquipment;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */,
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
