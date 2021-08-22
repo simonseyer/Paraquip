@@ -32,11 +32,11 @@
 "No check logged" = "Noch kein Check";
 "by %@" = "von %@";
 "Size %@" = "Größe %@";
+"Manual" = "Betriebsanleitung";
 
 // Edit Equipment View
 "Cancel" = "Abbrechen";
 "Save" = "Speichern";
-"Attributes" = "Merkmale";
 "%lld months" = "%lld Monate";
 "Last check" = "Letzter Check";
 "Custom brand" = "Markennamen";
@@ -44,6 +44,9 @@
 "None" = "Auswählen";
 "New" = "Neuer";
 "Purchase Date" = "Kaufdatum";
+"Next steps" = "Nächste Schritte";
+"Log last check" = "Letzen Check eintragen";
+"Attach Manual" = "Anleitung anhängen";
 
 // Notification View
 "Enable" = "Aktivieren";

@@ -38,5 +38,6 @@ struct ManualView_Previews: PreviewProvider {
         NavigationView {
             ManualView(manual: Data(), dismiss: {}, deleteManual: {})
         }
+        .environment(\.locale, .init(identifier: "de"))
     }
 }

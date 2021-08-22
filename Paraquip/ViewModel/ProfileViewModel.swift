@@ -24,10 +24,18 @@ class ProfileViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
 
-    func store(equipment: Equipment, withCheckAt checkDate: Date?) {
+    func store(equipment: Equipment, lastCheckDate: Date?, manualURL: URL?) {
         profileStore.store(equipment: equipment)
-        if let date = checkDate {
+        if let date = lastCheckDate {
             profileStore.logCheck(at: date, for: equipment)
+        }
+        if let url = manualURL {
+            do {
+                let data = try Data(contentsOf: url)
+                profileStore.attach(manual: data, to: equipment)
+            } catch {
+                print(error)
+            }
         }
     }
 

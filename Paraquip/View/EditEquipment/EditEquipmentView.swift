@@ -30,6 +30,9 @@ struct EditEquipmentView: View {
     @State var customBrandName: String = ""
     @State var checkCycle: Double = 12
     @State var lastCheckDate: Date?
+    @State var manualURL: URL?
+    @State var showingLogCheck = false
+    @State var showingManualPicker = false
 
     private var brand: Brand? {
         switch brandOptions[brandIndex] {
@@ -112,17 +115,15 @@ struct EditEquipmentView: View {
                     TextField("Name", text: $equipment.name)
                         .multilineTextAlignment(.trailing)
                 }
-                FormDatePicker(label: "Purchase Date",
-                               date: $equipment.purchaseDate)
-            }
-            if equipment is Paraglider {
-                Section(header: Text("Attributes")) {
+                if equipment is Paraglider {
                     Picker(selection: $sizeIndex, label: Text("Size")) {
                         ForEach(0 ..< sizeOptions.count) {
                             Text(self.sizeOptions[$0])
                         }
                     }
                 }
+                FormDatePicker(label: "Purchase Date",
+                               date: $equipment.purchaseDate)
             }
             Section(header: Text("Check cycle")) {
                 HStack {
@@ -131,13 +132,40 @@ struct EditEquipmentView: View {
                     }
                     Text("\(Int(checkCycle)) months")
                 }
-                if equipment.checkLog.isEmpty {
-                    FormDatePicker(label: "Last check",
-                                   date: $lastCheckDate)
+            }
+            Section(header: Text("Next steps")) {
+                Button(action: { showingLogCheck.toggle() }) {
+                    HStack {
+                        FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
+                            .padding(.trailing, 8)
+                        Text("Log last check")
+                        Spacer()
+                        if lastCheckDate != nil {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(Color.accentColor)
+                        }
+                    }
+                    .foregroundColor(.primary)
+                    .padding([.top, .bottom], 6)
+                }
+
+
+                Button(action: { showingManualPicker = true }) {
+                    HStack {
+                        FormIcon(icon: Image(systemName: "book.fill"))
+                            .padding(.trailing, 8)
+                        Text("Attach Manual")
+                        Spacer()
+                        if manualURL != nil {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(Color.accentColor)
+                        }
+                    }
+                    .foregroundColor(.primary)
+                    .padding([.top, .bottom], 6)
                 }
             }
         }
-        
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -157,9 +185,17 @@ struct EditEquipmentView: View {
 
                     if var paraglider = equipment as? Paraglider {
                         paraglider.size = sizeOptions[sizeIndex]
-                        store.store(equipment: paraglider, withCheckAt: lastCheckDate)
+                        store.store(
+                            equipment: paraglider,
+                            lastCheckDate: lastCheckDate,
+                            manualURL: manualURL
+                        )
                     } else {
-                        store.store(equipment: equipment, withCheckAt: lastCheckDate)
+                        store.store(
+                            equipment: equipment,
+                            lastCheckDate: lastCheckDate,
+                            manualURL: manualURL
+                        )
                     }
 
                     dismiss()
@@ -167,7 +203,17 @@ struct EditEquipmentView: View {
                 .disabled(!brandOptions[brandIndex].isSelected)
             }
         }
-
+        .sheet(isPresented: $showingLogCheck) {
+            LogCheckView() { date in
+                lastCheckDate = date
+                showingLogCheck = false
+            }
+        }
+        .sheet(isPresented: $showingManualPicker) {
+            DocumentPicker() { url in
+                manualURL = url
+            }
+        }
     }
 }
 
