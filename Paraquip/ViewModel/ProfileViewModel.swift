@@ -24,21 +24,6 @@ class ProfileViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
 
-    func store(equipment: Equipment, lastCheckDate: Date?, manualURL: URL?) {
-        profileStore.store(equipment: equipment)
-        if let date = lastCheckDate {
-            profileStore.logCheck(at: date, for: equipment)
-        }
-        if let url = manualURL {
-            do {
-                let data = try Data(contentsOf: url)
-                profileStore.attach(manual: data, to: equipment)
-            } catch {
-                print(error)
-            }
-        }
-    }
-
     func removeEquipment(atOffsets indexSet: IndexSet) {
         let equipment = indexSet.map { profile.equipment[$0] }
         profileStore.remove(equipment: equipment)
@@ -46,6 +31,10 @@ class ProfileViewModel: ObservableObject {
 
     func viewModel(for equipment: Equipment) -> EquipmentViewModel {
         EquipmentViewModel(store: profileStore, equipment: equipment)
+    }
+
+    func editViewModel(for equipment: Equipment) -> EditEquipmentViewModel {
+        EditEquipmentViewModel(store: profileStore, equipment: equipment, isNew: true)
     }
 }
 

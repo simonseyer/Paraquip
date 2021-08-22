@@ -61,6 +61,7 @@
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
 		0DE8DE23264C5BE40020B778 /* ProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8DE22264C5BE40020B778 /* ProfileTests.swift */; };
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
+		0DEA2ABE26D2C67100627E34 /* EditEquipmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABD26D2C67100627E34 /* EditEquipmentViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +144,7 @@
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
 		0DE8DE22264C5BE40020B778 /* ProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTests.swift; sourceTree = "<group>"; };
 		0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCycleRow.swift; sourceTree = "<group>"; };
+		0DEA2ABD26D2C67100627E34 /* EditEquipmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -364,6 +366,7 @@
 			children = (
 				0DCF78E926CC345B004B1602 /* ProfileViewModel.swift */,
 				0D1E770E26CEF3BE00D3989F /* EquipmentViewModel.swift */,
+				0DEA2ABD26D2C67100627E34 /* EditEquipmentViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 				0D11FBC62620A927009D9349 /* AppStore.swift in Sources */,
 				0DA93A0326CEE0290063356B /* PDFViewer.swift in Sources */,
 				0DD7FC27263DE1B60038B25D /* LegacyAppPersistence.swift in Sources */,
+				0DEA2ABE26D2C67100627E34 /* EditEquipmentViewModel.swift in Sources */,
 				0D1E770F26CEF3BE00D3989F /* EquipmentViewModel.swift in Sources */,
 				0DA93A0926CEE8950063356B /* ManualView.swift in Sources */,
 			);

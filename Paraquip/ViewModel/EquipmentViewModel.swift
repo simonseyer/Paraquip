@@ -59,6 +59,10 @@ class EquipmentViewModel: ObservableObject {
     func deleteManual() {
         profileStore.deleteManual(for: equipment)
     }
+
+    func editEquipmentViewModel() -> EditEquipmentViewModel {
+        EditEquipmentViewModel(store: profileStore, equipment: equipment, isNew: false)
+    }
 }
 
 fileprivate extension Profile {

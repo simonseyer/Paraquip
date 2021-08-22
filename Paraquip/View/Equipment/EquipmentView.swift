@@ -11,12 +11,10 @@ struct EquipmentView: View {
 
     @ObservedObject var viewModel: EquipmentViewModel
 
-    @State private var showingAddEquipment = false
+    @State private var showingEditEquipment = false
     @State private var showingLogCheck = false
     @State private var editMode: EditMode = .inactive
     @State private var showingManual = false
-
-    @EnvironmentObject var store: ProfileViewModel
 
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -81,16 +79,15 @@ struct EquipmentView: View {
             .environment(\.editMode, $editMode)
             .toolbar {
                 Button("Edit") {
-                    showingAddEquipment = true
+                    showingEditEquipment = true
                 }
             }
             .navigationTitle(viewModel.equipment.name)
-            .sheet(isPresented: $showingAddEquipment) {
+            .sheet(isPresented: $showingEditEquipment) {
                 NavigationView {
-                    EditEquipmentView(equipment: viewModel.equipment, isNew: false) {
-                        showingAddEquipment = false
+                    EditEquipmentView(viewModel: viewModel.editEquipmentViewModel()) {
+                        showingEditEquipment = false
                     }
-                    .environmentObject(store)
                 }
             }
             .sheet(isPresented: $showingLogCheck) {
