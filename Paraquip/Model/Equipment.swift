@@ -29,12 +29,17 @@ enum CheckUrgency {
 }
 
 extension Equipment {
+
+    var lastCheck: Date? {
+        checkLog.first?.date ?? purchaseDate
+    }
+
     var nextCheck: Date? {
         guard checkCycle > 0 else {
             return nil
         }
 
-        guard let lastCheck = checkLog.first?.date ?? purchaseDate else {
+        guard let lastCheck = lastCheck else {
             return Date.now
         }
 

@@ -22,14 +22,35 @@ struct Profile: Identifiable {
 extension Array where Element == Equipment {
     func sorted() -> [Element] {
         return sorted { equipment1, equipment2 in
+            // If check cycle for both equipment is turned off, sort by last check
+            if equipment1.nextCheck == nil && equipment2.nextCheck == nil {
+
+                // If no order inherent can be determined, keep order stable by id
+                if equipment1.lastCheck == nil && equipment2.lastCheck == nil {
+                    return equipment1.id.uuidString < equipment2.id.uuidString
+                }
+
+                // Equipment *without* a check at all goes first
+                guard let lastCheck1 = equipment1.lastCheck else {
+                    return true
+                }
+                guard let lastCheck2 = equipment2.lastCheck else {
+                    return false
+                }
+
+                // Equipment with the oldest check goes first
+                return lastCheck1 < lastCheck2
+            }
+
+            // Equipment *with* a next check goes first (equipment with disabled check cycle goes last)
             guard let nextCheck1 = equipment1.nextCheck else {
                 return false
             }
-            
             guard let nextCheck2 = equipment2.nextCheck else {
                 return true
             }
 
+            // Equipment with closest check goes first
             return nextCheck1 < nextCheck2
         }
     }
