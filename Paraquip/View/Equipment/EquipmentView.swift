@@ -17,6 +17,7 @@ struct EquipmentView: View {
     @State private var showingManual = false
 
     @Environment(\.locale) var locale
+    @EnvironmentObject var store: ProfileViewModel
 
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -90,6 +91,7 @@ struct EquipmentView: View {
                     EditEquipmentView(equipment: viewModel.equipment, isNew: false) {
                         showingAddEquipment = false
                     }
+                    .environmentObject(store)
                 }
             }
             .sheet(isPresented: $showingLogCheck) {

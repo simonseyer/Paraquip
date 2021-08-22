@@ -93,6 +93,7 @@ struct ProfileView: View {
                 EditEquipmentView(equipment: equipment.wrappedValue, isNew: true) {
                     newEquipment = nil
                 }
+                .environmentObject(store)
             }
         }
     }
