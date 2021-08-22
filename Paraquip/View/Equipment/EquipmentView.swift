@@ -87,7 +87,7 @@ struct EquipmentView: View {
             .navigationTitle(viewModel.equipment.name)
             .sheet(isPresented: $showingAddEquipment) {
                 NavigationView {
-                    EditEquipmentView(equipment: viewModel.equipment) {
+                    EditEquipmentView(equipment: viewModel.equipment, isNew: false) {
                         showingAddEquipment = false
                     }
                 }

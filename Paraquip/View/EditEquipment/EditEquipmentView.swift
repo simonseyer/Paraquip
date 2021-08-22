@@ -45,6 +45,7 @@ struct EditEquipmentView: View {
         }
     }
 
+    private let isNew: Bool
     private let dismiss: () -> Void
 
     let sizeOptions = ["XXS", "XS", "S", "SM", "M", "L", "XL", "XXL"]
@@ -60,7 +61,8 @@ struct EditEquipmentView: View {
         }
     }
 
-    init(equipment: Equipment, dismiss: @escaping () -> Void ) {
+    init(equipment: Equipment, isNew: Bool, dismiss: @escaping () -> Void ) {
+        self.isNew = isNew
         self.dismiss = dismiss
 
         self._equipment = State(initialValue: equipment)
@@ -133,36 +135,38 @@ struct EditEquipmentView: View {
                     Text("\(Int(checkCycle)) months")
                 }
             }
-            Section(header: Text("Next steps")) {
-                Button(action: { showingLogCheck.toggle() }) {
-                    HStack {
-                        FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
-                            .padding(.trailing, 8)
-                        Text("Log last check")
-                        Spacer()
-                        if lastCheckDate != nil {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(Color.accentColor)
+            if isNew {
+                Section(header: Text("Next steps")) {
+                    Button(action: { showingLogCheck.toggle() }) {
+                        HStack {
+                            FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
+                                .padding(.trailing, 8)
+                            Text("Log last check")
+                            Spacer()
+                            if lastCheckDate != nil {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(Color.accentColor)
+                            }
                         }
+                        .foregroundColor(.primary)
+                        .padding([.top, .bottom], 6)
                     }
-                    .foregroundColor(.primary)
-                    .padding([.top, .bottom], 6)
-                }
 
 
-                Button(action: { showingManualPicker = true }) {
-                    HStack {
-                        FormIcon(icon: Image(systemName: "book.fill"))
-                            .padding(.trailing, 8)
-                        Text("Attach Manual")
-                        Spacer()
-                        if manualURL != nil {
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(Color.accentColor)
+                    Button(action: { showingManualPicker = true }) {
+                        HStack {
+                            FormIcon(icon: Image(systemName: "book.fill"))
+                                .padding(.trailing, 8)
+                            Text("Attach Manual")
+                            Spacer()
+                            if manualURL != nil {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(Color.accentColor)
+                            }
                         }
+                        .foregroundColor(.primary)
+                        .padding([.top, .bottom], 6)
                     }
-                    .foregroundColor(.primary)
-                    .padding([.top, .bottom], 6)
                 }
             }
         }
@@ -222,24 +226,28 @@ struct AddEquipmentView_Previews: PreviewProvider {
         Group {
             NavigationView {
                 EditEquipmentView(equipment:Profile.fake().equipment.first!,
+                                  isNew: false,
                                   dismiss: {})
                     .environmentObject(ProfileViewModel.fake())
             }
 
             NavigationView {
                 EditEquipmentView(equipment: Paraglider.new(),
+                                  isNew: true,
                                   dismiss: {})
                     .environmentObject(ProfileViewModel.fake())
             }
 
             NavigationView {
                 EditEquipmentView(equipment: Paraglider(brand: Brand(name: "Heyho"), name: "Test", size: "M", checkCycle: 6),
+                                  isNew: false,
                                   dismiss: {})
                     .environmentObject(ProfileViewModel.fake())
             }
 
             NavigationView {
                 EditEquipmentView(equipment:Profile.fake().equipment.last!,
+                                  isNew: false,
                                   dismiss: {})
                     .environmentObject(ProfileViewModel.fake())
             }

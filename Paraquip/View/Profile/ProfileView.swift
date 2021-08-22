@@ -90,7 +90,7 @@ struct ProfileView: View {
         }
         .sheet(item: $newEquipment) { equipment in
             NavigationView {
-                EditEquipmentView(equipment: equipment.wrappedValue) {
+                EditEquipmentView(equipment: equipment.wrappedValue, isNew: true) {
                     newEquipment = nil
                 }
             }
