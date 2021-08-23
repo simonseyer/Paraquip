@@ -38,7 +38,7 @@ enum Brand {
     }
 
     init(name: String, id: String?) {
-        if let id = id, id != Self.customId {
+        if let id = id, ![Self.customId, Self.noneId].contains(id) {
             self = .known(name: name, id: id)
         } else if !name.isEmpty {
             self = .custom(name: name)
