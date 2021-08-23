@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: create KnownBrand enum
 enum Brand {
     case none
     case known(name: String, id: String)
@@ -38,7 +37,6 @@ enum Brand {
         }
     }
 
-    // TODO: make name optional when KnownBrand was added
     init(name: String, id: String?) {
         if let id = id, id != Self.customId {
             self = .known(name: name, id: id)
