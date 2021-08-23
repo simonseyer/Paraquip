@@ -39,19 +39,6 @@ struct EquipmentRow: View {
     }
 }
 
-extension CheckUrgency {
-    var icon: Image {
-        switch self {
-        case .now:
-            return Image(systemName: "exclamationmark.circle.fill")
-        case .soon:
-            return Image(systemName: "exclamationmark.triangle.fill")
-        case .later, .never:
-            return Image(systemName: "checkmark.circle.fill")
-        }
-    }
-}
-
 struct EquipmentRow_Previews: PreviewProvider {
 
     static var brands: [Brand] {

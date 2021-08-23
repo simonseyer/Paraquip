@@ -135,7 +135,7 @@ struct AddEquipmentView_Previews: PreviewProvider {
             }
 
             NavigationView {
-                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Paraglider.new(), isNew: true), dismiss: {})
+                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Paraglider(), isNew: true), dismiss: {})
             }
 
             NavigationView {

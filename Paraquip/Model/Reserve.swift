@@ -26,8 +26,8 @@ struct Reserve: Equipment, Identifiable {
 }
 
 extension Reserve {
-    static func new() -> Reserve {
-        return Reserve(brand: .none, name: "", checkCycle: 3)
+    init() {
+        self.init(brand: .none, name: "", checkCycle: 3)
     }
 }
 

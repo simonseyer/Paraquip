@@ -7,11 +7,7 @@
 
 import SwiftUI
 
-enum TimelineEntry: Identifiable {
-    case purchase(date: Date)
-    case check(check: Check)
-    case nextCheck(urgency: CheckUrgency)
-
+extension TimelineEntry: Identifiable {
     private static let purchaseID = UUID()
     private static let nextCheckID = UUID()
 
@@ -26,16 +22,8 @@ enum TimelineEntry: Identifiable {
         }
     }
 
-    var isNextCheck: Bool {
-        if case .nextCheck = self {
-            return true
-        } else {
-            return false
-        }
-    }
-
     var isCheck: Bool {
-        if case .check(_) = self {
+        if case .check = self {
             return true
         } else {
             return false
@@ -83,7 +71,7 @@ fileprivate extension TimelineEntry {
         case .check(let check):
             return LocalizedStringKey(Self.dateFormatter.string(from: check.date))
         case .nextCheck(let urgency):
-            return urgency.formattedCheckInterval()
+            return urgency.formattedCheckInterval
         }
     }
 }
@@ -97,7 +85,7 @@ struct TimelineViewCell: View {
         HStack {
             Text(timelineEntry.text)
             Spacer()
-            if timelineEntry.isNextCheck {
+            if case .nextCheck = timelineEntry {
                 Button(action: logAction) {
                     Image(systemName: "square.and.pencil")
                         .font(Font.body.weight(.medium))

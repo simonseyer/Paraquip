@@ -37,6 +37,9 @@
 		0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1C92662B7C300305B23 /* AppleNotificationPlugin.swift */; };
 		0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1CC2662B7ED00305B23 /* LoggerExtensions.swift */; };
 		0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1D42663F49200305B23 /* ErrorExtensions.swift */; };
+		0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */; };
+		0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */; };
+		0D846AF126D41C8400A574BA /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D846AF026D41C8400A574BA /* Timeline.swift */; };
 		0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE526503E47005AB7A7 /* FormDatePicker.swift */; };
 		0D919AE826504857005AB7A7 /* EquipmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE726504857005AB7A7 /* EquipmentTests.swift */; };
 		0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */; };
@@ -119,6 +122,9 @@
 		0D80E1C92662B7C300305B23 /* AppleNotificationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleNotificationPlugin.swift; sourceTree = "<group>"; };
 		0D80E1CC2662B7ED00305B23 /* LoggerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerExtensions.swift; sourceTree = "<group>"; };
 		0D80E1D42663F49200305B23 /* ErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorExtensions.swift; sourceTree = "<group>"; };
+		0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUrgencyViewExtensions.swift; sourceTree = "<group>"; };
+		0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentViewExtensions.swift; sourceTree = "<group>"; };
+		0D846AF026D41C8400A574BA /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		0D919AE526503E47005AB7A7 /* FormDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePicker.swift; sourceTree = "<group>"; };
 		0D919AE726504857005AB7A7 /* EquipmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentTests.swift; sourceTree = "<group>"; };
 		0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
@@ -256,6 +262,7 @@
 				0D2B2D162646B1A9009873CE /* Brand.swift */,
 				0D2B2D1C2647009F009873CE /* Harness.swift */,
 				0DDA569826ADA45B004A46F8 /* Date.swift */,
+				0D846AF026D41C8400A574BA /* Timeline.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -280,6 +287,7 @@
 		0D5E7A52262C430E0002A67B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0D846AEB26D41B7A00A574BA /* ModelExtensions */,
 				0DA93A0726CEE7A90063356B /* LogCheck */,
 				0DA93A0626CEE7690063356B /* NotificationSettings */,
 				0DA93A0526CEE75C0063356B /* Equipment */,
@@ -315,6 +323,15 @@
 				0D80E1D42663F49200305B23 /* ErrorExtensions.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		0D846AEB26D41B7A00A574BA /* ModelExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */,
+				0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */,
+			);
+			path = ModelExtensions;
 			sourceTree = "<group>";
 		};
 		0DA93A0426CEE7220063356B /* EditEquipment */ = {
@@ -538,6 +555,7 @@
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
+				0D846AF126D41C8400A574BA /* Timeline.swift in Sources */,
 				0D2B2D1B2646FCA0009873CE /* ViewUtils.swift in Sources */,
 				0D2B2D172646B1A9009873CE /* Brand.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* ContentView.swift in Sources */,
@@ -557,6 +575,7 @@
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
 				0DD7FC15263DD33C0038B25D /* Paraglider.swift in Sources */,
+				0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */,
 				0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */,
 				0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */,
 				0D07CBFE26B6B6BF00BCC3E6 /* Model.xcdatamodeld in Sources */,
@@ -565,6 +584,7 @@
 				0DD7FC17263DD34E0038B25D /* Reserve.swift in Sources */,
 				0D0DFFA12688C49C00AEB2AD /* LogCheckView.swift in Sources */,
 				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
+				0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
 				0DCF78EA26CC345B004B1602 /* ProfileViewModel.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,

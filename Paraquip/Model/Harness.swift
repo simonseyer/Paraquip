@@ -26,8 +26,8 @@ struct Harness: Equipment, Identifiable {
 }
 
 extension Harness {
-    static func new() -> Harness {
-        return Harness(brand: .none, name: "", checkCycle: 12)
+    init() {
+        self.init(brand: .none, name: "", checkCycle: 12)
     }
 }
 

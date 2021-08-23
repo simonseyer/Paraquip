@@ -67,17 +67,17 @@ struct ProfileView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
                     Button(action: {
-                        newEquipment = AnyEquipment(Paraglider.new())
+                        newEquipment = AnyEquipment(Paraglider())
                     }) {
                         Text("Paraglider")
                     }
                     Button(action: {
-                        newEquipment = AnyEquipment(Harness.new())
+                        newEquipment = AnyEquipment(Harness())
                     }) {
                         Text("Harness")
                     }
                     Button(action: {
-                        newEquipment = AnyEquipment(Reserve.new())
+                        newEquipment = AnyEquipment(Reserve())
                     }) {
                         Text("Reserve")
                     }
@@ -106,49 +106,6 @@ struct AnyEquipment: Identifiable {
 
     init(_ equipment: Equipment) {
         self.wrappedValue = equipment
-    }
-}
-
-extension Equipment {
-
-    var icon: Image? {
-        guard case .known(_, let logo) = brand else {
-            return nil
-        }
-        return Image(logo)
-    }
-}
-
-extension CheckUrgency {
-    private static let dateFormatter: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        formatter.maximumUnitCount = 1
-        formatter.allowedUnits = [.month, .day]
-        formatter.includesTimeRemainingPhrase = true
-        return formatter
-    }()
-
-    func formattedCheckInterval() -> LocalizedStringKey {
-        switch self {
-        case .now:
-            return "Check now"
-        case .soon(let date), .later(let date):
-            return "\(Self.dateFormatter.string(from: Date.now, to: date) ?? "")"
-        case .never:
-            return "No check needed"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .now:
-            return Color(UIColor.systemRed)
-        case .soon:
-            return Color(UIColor.systemOrange)
-        case .later, .never:
-            return Color(UIColor.systemGreen)
-        }
     }
 }
 

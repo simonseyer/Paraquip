@@ -40,8 +40,8 @@ struct Paraglider: Equipment, Identifiable {
 }
 
 extension Paraglider {
-    static func new() -> Paraglider {
-        return Paraglider(brand: .none, name: "", size: .medium, checkCycle: 6)
+    init() {
+        self.init(brand: .none, name: "", size: .medium, checkCycle: 6)
     }
 }
 

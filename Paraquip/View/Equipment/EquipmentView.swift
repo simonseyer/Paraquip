@@ -118,39 +118,6 @@ struct EquipmentView: View {
     }
 }
 
-extension Equipment {
-    var localizedType: String {
-        switch self {
-        case is Paraglider:
-            return "Paraglider"
-        case is Reserve:
-            return "Reserve"
-        case is Harness:
-            return "Harness"
-        case is PlaceholderEquipment:
-            return ""
-        default:
-            preconditionFailure("Unknown equipment type")
-        }
-    }
-
-    var timeline: [TimelineEntry] {
-        var timeline: [TimelineEntry] = []
-
-        timeline.append(.nextCheck(urgency: checkUrgency))
-
-        timeline.append(contentsOf: checkLog.map {
-            .check(check: $0)
-        })
-
-        if let purchaseDate = purchaseDate {
-            timeline.append(.purchase(date: purchaseDate))
-        }
-
-        return timeline
-    }
-}
-
 extension Array where Element == TimelineEntry {
     /// Returns an index set mapped back to the check log
     func checkIndexSet(from indexSet: IndexSet) -> IndexSet {
