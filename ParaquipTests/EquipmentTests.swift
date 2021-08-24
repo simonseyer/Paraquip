@@ -66,7 +66,7 @@ class ParagliderTests: EquipmentTests {
     override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
         Paraglider(brand: Brand(name: "Gin", id: "gin"),
                    name: "Atlas 2",
-                   size: "M",
+                   size: .medium,
                    checkCycle: checkCycle,
                    checkLog: checkLog,
                    purchaseDate: purchaseDate)
