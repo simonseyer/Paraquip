@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Equipment {
-    var id: UUID { get set }
+    var id: UUID { get }
     var brand: Brand { get set }
     var name: String { get set }
     var checkCycle: Int { get set }
@@ -17,8 +17,18 @@ protocol Equipment {
 }
 
 struct Check: Identifiable {
-    var id = UUID()
-    var date: Date
+    let id: UUID
+    let date: Date
+
+    init(id: UUID, date: Date) {
+        self.id = id
+        self.date = date
+    }
+
+    init(date: Date) {
+        self.id = UUID()
+        self.date = date
+    }
 }
 
 enum CheckUrgency {

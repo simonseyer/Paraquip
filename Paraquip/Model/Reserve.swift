@@ -8,7 +8,7 @@
 import Foundation
 
 struct Reserve: Equipment, Identifiable {
-    var id: UUID
+    let id: UUID
     var brand: Brand
     var name: String
     var checkCycle: Int

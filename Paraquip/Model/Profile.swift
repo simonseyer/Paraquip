@@ -8,7 +8,7 @@
 import Foundation
 
 struct Profile: Identifiable {
-    var id: UUID
+    let id: UUID
     var name: String
     let equipment: [Equipment]
 

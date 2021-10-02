@@ -20,7 +20,7 @@ struct Paraglider: Equipment, Identifiable {
         case extraExtraLarge = "XXL"
     }
 
-    var id = UUID()
+    let id: UUID
     var brand: Brand
     var name: String
     var size: Size
