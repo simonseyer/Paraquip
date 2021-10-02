@@ -16,6 +16,7 @@ extension Profile {
 
         return Profile(
             name: "Equipment",
+            icon: .default,
             equipment: [
                 Reserve(brand: Brand(name: "Nova", id: "nova"),
                         name: "Beamer 3 light",

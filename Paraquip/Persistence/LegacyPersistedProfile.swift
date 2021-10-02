@@ -59,7 +59,7 @@ extension PersistedProfile {
         equipment.append(contentsOf: reserves.map { $0.toModel() })
         equipment.append(contentsOf: harnesses.map { $0.toModel() })
 
-        return Profile(id: id, name: name, equipment: equipment)
+        return Profile(id: id, name: name, icon: .default, equipment: equipment)
     }
 }
 

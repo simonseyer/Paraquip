@@ -10,12 +10,24 @@ import Foundation
 struct Profile: Identifiable {
     let id: UUID
     var name: String
+    var icon: Icon
     let equipment: [Equipment]
 
-    init(id: UUID = UUID(), name: String, equipment: [Equipment] = []) {
+    init(id: UUID = UUID(), name: String, icon: Icon, equipment: [Equipment] = []) {
         self.id = id
         self.name = name
+        self.icon = icon
         self.equipment = equipment.sorted()
+    }
+}
+
+extension Profile {
+    enum Icon: String, CaseIterable, Identifiable {
+        case campground, feather, mountain, beach, cloud, hiking, trophy, wind
+
+        var id: String { rawValue }
+
+        static var `default`: Icon { .mountain }
     }
 }
 
@@ -63,6 +75,11 @@ extension ProfileModel {
         equipment.append(contentsOf: (reserves as! Set<ReserveModel>).map { $0.toModel() })
         equipment.append(contentsOf: (harnesses as! Set<HarnessModel>).map { $0.toModel() })
 
-        return Profile(id: id!, name: name!, equipment: equipment)
+        return Profile(
+            id: id!,
+            name: name!,
+            icon: Profile.Icon(rawValue: icon ?? "") ?? .default,
+            equipment: equipment
+        )
     }
 }

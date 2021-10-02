@@ -22,7 +22,7 @@ class ProfileTests: XCTestCase {
     func testEquipmentSorted() {
         let equipment1 = equipment(no: 1, checkLog: [Check(date: Date.offsetBy(days: -40))])
         let equipment2 = equipment(no: 2, checkLog: [Check(date: Date.offsetBy(days: 0))])
-        let profile = Profile(name: "", equipment: [equipment2, equipment1])
+        let profile = Profile(name: "", icon: .default, equipment: [equipment2, equipment1])
 
         XCTAssertEqual(profile.equipment[0].id, equipment1.id)
         XCTAssertEqual(profile.equipment[1].id, equipment2.id)
@@ -31,7 +31,7 @@ class ProfileTests: XCTestCase {
     func testEquipmentSortedWithCheckOff() {
         let equipment1 = equipment(no: 1, checkLog: [Check(date: Date.offsetBy(days: 0))])
         let equipment2 = equipment(no: 2, checkCycle: 0, checkLog: [Check(date: Date.offsetBy(days: -40))])
-        let profile = Profile(name: "", equipment: [equipment2, equipment1])
+        let profile = Profile(name: "", icon: .default, equipment: [equipment2, equipment1])
 
         XCTAssertEqual(profile.equipment[0].id, equipment1.id)
         XCTAssertEqual(profile.equipment[1].id, equipment2.id)
@@ -40,7 +40,7 @@ class ProfileTests: XCTestCase {
     func testEquipmentSortedWithAllChecksOff() {
         let equipment1 = equipment(no: 1, checkCycle: 0, checkLog: [Check(date: Date.offsetBy(days: -40))])
         let equipment2 = equipment(no: 2, checkCycle: 0, checkLog: [Check(date: Date.offsetBy(days: 0))])
-        let profile = Profile(name: "", equipment: [equipment2, equipment1])
+        let profile = Profile(name: "", icon: .default, equipment: [equipment2, equipment1])
 
         XCTAssertEqual(profile.equipment[0].id, equipment1.id)
         XCTAssertEqual(profile.equipment[1].id, equipment2.id)
@@ -49,7 +49,7 @@ class ProfileTests: XCTestCase {
     func testEquipmentSortedWithAllChecksOffWithoutOneCheck() {
         let equipment1 = equipment(no: 1, checkCycle: 0, checkLog: [])
         let equipment2 = equipment(no: 2, checkCycle: 0, checkLog: [Check(date: Date.offsetBy(days: 0))])
-        let profile = Profile(name: "", equipment: [equipment2, equipment1])
+        let profile = Profile(name: "", icon: .default, equipment: [equipment2, equipment1])
 
         XCTAssertEqual(profile.equipment[0].id, equipment1.id)
         XCTAssertEqual(profile.equipment[1].id, equipment2.id)
@@ -58,7 +58,7 @@ class ProfileTests: XCTestCase {
     func testEquipmentSortedWithAllChecksOffWithoutAllChecks() {
         let equipment1 = equipment(no: 1, checkCycle: 0, checkLog: [])
         let equipment2 = equipment(no: 2, checkCycle: 0, checkLog: [])
-        let profile = Profile(name: "", equipment: [equipment2, equipment1])
+        let profile = Profile(name: "", icon: .default, equipment: [equipment2, equipment1])
 
         XCTAssertEqual(profile.equipment[0].id, equipment1.id)
         XCTAssertEqual(profile.equipment[1].id, equipment2.id)
