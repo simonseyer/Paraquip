@@ -70,7 +70,7 @@ struct EditEquipmentView: View {
                             Spacer()
                             if viewModel.lastCheckDate != nil {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(Color.accentColor)
+                                    .foregroundColor(Color.green)
                             }
                         }
                         .foregroundColor(.primary)
@@ -85,7 +85,7 @@ struct EditEquipmentView: View {
                             Spacer()
                             if viewModel.manualURL != nil {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(Color.accentColor)
+                                    .foregroundColor(Color.green)
                             }
                         }
                         .foregroundColor(.primary)
