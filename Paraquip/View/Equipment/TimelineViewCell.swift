@@ -97,6 +97,7 @@ struct TimelineViewCell: View {
                             bottom: 13,
                             trailing: 0))
         .listRowBackground(
+            // TODO: fix selection animation
             TimelineVisual(timelineEntry: timelineEntry)
         )
     }
@@ -108,22 +109,25 @@ struct TimelineVisual: View {
 
     var body: some View {
         GeometryReader { metrics in
-            ZStack(alignment: .top) {
+            ZStack(alignment: .topLeading) {
+                Color.white
+                Group {
                 Rectangle()
                     .frame(
                         width: 2,
                         height: metrics.size.height * timelineEntry.lineHeightFactor)
                     .foregroundColor(timelineEntry.color)
                     .opacity(0.4)
-                    .padding([.top], metrics.size.height * timelineEntry.lineTopPaddingFactor)
+                    .padding(EdgeInsets(top: metrics.size.height * timelineEntry.lineTopPaddingFactor, leading: 4, bottom: 0, trailing: 0))
                 Circle()
                     .frame(width: 10, height: 10)
                     .foregroundColor(timelineEntry.color)
-                    .padding([.top], metrics.size.height / 2 - 5)
+                    .padding(.top, metrics.size.height / 2 - 5)
+                }
+                .padding(.leading, 27)
             }
-
         }
-        .padding([.leading], 27)
+
     }
 }
 
