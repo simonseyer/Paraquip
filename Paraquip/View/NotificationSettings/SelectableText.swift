@@ -14,31 +14,24 @@ struct SelectableText<T: StringProtocol>: View {
     @Binding var isSelected: Bool
 
     var body: some View {
-
-        let textField = Button(action: {isSelected.toggle()}) {Text(text)}
-            .padding(EdgeInsets(top: 5,
-                                leading: 14,
-                                bottom: 5,
-                                trailing: 14))
-            .buttonStyle(PlainButtonStyle())
-            .background(Color(UIColor.systemGray6))
-            .cornerRadius(6)
-            .scaledToFit()
-            .multilineTextAlignment(.center)
-
-
-        if isSelected {
-            textField
-                .foregroundColor(.accentColor)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color.accentColor, lineWidth: 1)
-                        .animation(.none)
-                )
-                .animation(.none)
-        } else {
-            textField
+        Button(action: { isSelected.toggle() }) {
+            Text(text)
         }
+        .padding(EdgeInsets(top: 5,
+                            leading: 14,
+                            bottom: 5,
+                            trailing: 14))
+        .buttonStyle(PlainButtonStyle())
+        .background(Color(UIColor.systemGray6))
+        .cornerRadius(6)
+        .foregroundColor(isSelected ? .accentColor : nil)
+        .overlay(isSelected ? overlay : nil)
+        .animation(.none, value: isSelected)
+    }
+
+    private var overlay: some View {
+        RoundedRectangle(cornerRadius: 6)
+            .stroke(Color.accentColor, lineWidth: 1)
     }
 }
 
