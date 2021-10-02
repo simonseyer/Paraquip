@@ -64,6 +64,7 @@ class NotificationsStore: ObservableObject {
     }
     @Published private(set) var navigationState = NavigationState.none
 
+    // TODO: use EquipmentStore
     init(profileStore: ProfileStore, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
         self.profileStore = profileStore
         self.persistence = persistence

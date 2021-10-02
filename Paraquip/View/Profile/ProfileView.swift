@@ -11,9 +11,6 @@ struct ProfileView: View {
 
     @ObservedObject var viewModel: ProfileViewModel
     @State private var newEquipment: AnyEquipment?
-    @State private var editMode: EditMode = .inactive
-
-    @Binding var selectedEquipment: UUID?
 
     var body: some View {
         Group {
@@ -33,33 +30,15 @@ struct ProfileView: View {
             } else {
                 List {
                     ForEach(viewModel.profile.equipment, id: \.id) { equipment in
-                        NavigationLink(destination: EquipmentView(viewModel: viewModel.viewModel(for: equipment)),
-                                       tag: equipment.id,
-                                       selection: $selectedEquipment) {
+                        NavigationLink(destination: EquipmentView(viewModel: viewModel.viewModel(for: equipment))) {
                             EquipmentRow(equipment: equipment)
                         }
                     }
                     .onDelete(perform: { indexSet in
                         viewModel.removeEquipment(atOffsets: indexSet)
-                        if viewModel.profile.equipment.isEmpty {
-                            withAnimation {
-                                editMode = .inactive
-                            }
-                        }
                     })
                 }
                 .listStyle(InsetGroupedListStyle())
-                .environment(\.editMode, $editMode)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(editMode == .inactive ? "Edit" : "Done") {
-                            withAnimation {
-                                editMode.toggle()
-                            }
-                        }
-                        .animation(.none)
-                    }
-                }
             }
         }
         .navigationTitle(viewModel.profile.name)
@@ -116,11 +95,11 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                ProfileView(viewModel: viewModel, selectedEquipment: .constant(nil))
+                ProfileView(viewModel: viewModel)
             }
 
             NavigationView {
-                ProfileView(viewModel: ProfileViewModel.fake(profile: Profile(name: "Empty")), selectedEquipment: .constant(nil))
+                ProfileView(viewModel: ProfileViewModel.fake(profile: Profile(name: "Empty", icon: .default)))
             }
         }
         .environment(\.locale, .init(identifier: "de"))

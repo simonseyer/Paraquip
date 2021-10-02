@@ -84,6 +84,20 @@ extension Array where Element == Check {
     }
 }
 
+extension EquipmentModel {
+    func toEquipmentModel() -> Equipment {
+        if let equipment = self as? ParagliderModel {
+            return equipment.toModel()
+        } else if let equipment = self as? ReserveModel {
+            return equipment.toModel()
+        } else if let equipment = self as? HarnessModel {
+            return equipment.toModel()
+        } else {
+            fatalError("Unknown equipment type")
+        }
+    }
+}
+
 extension CheckModel {
     func toModel() -> Check {
         Check(id: id!, date: date!)

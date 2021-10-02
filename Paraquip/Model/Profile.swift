@@ -29,6 +29,36 @@ extension Profile {
 
         static var `default`: Icon { .mountain }
     }
+
+    struct Description: Identifiable, Hashable {
+        let id: UUID
+        var name: String
+        var icon: Icon
+
+        init(profile: Profile) {
+            self.id = profile.id
+            self.name = profile.name
+            self.icon = profile.icon
+        }
+
+        init(id: UUID, name: String, icon: Icon) {
+            self.id = id
+            self.name = name
+            self.icon = icon
+        }
+
+        init(name: String, icon: Icon) {
+            self.init(id: UUID(), name: name, icon: icon)
+        }
+
+        init() {
+            self.init(name: "", icon: .default)
+        }
+    }
+
+    var description: Description {
+        return Description(profile: self)
+    }
 }
 
 extension Array where Element == Equipment {

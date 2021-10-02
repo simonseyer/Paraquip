@@ -16,6 +16,7 @@ protocol ProfileStore {
 
     func store(equipment: Equipment)
     func remove(equipment: [Equipment])
+    func updateContainedEquipment(_ equipment: [Equipment])
 
     func logCheck(at date: Date, for equipment: Equipment)
     func remove(checks: [Check], for equipment: Equipment)
@@ -33,10 +34,16 @@ class CoreDataProfileStore: ProfileStore {
     private let persistentContainer: NSPersistentContainer
     private var context: NSManagedObjectContext { persistentContainer.viewContext }
 
+    private var subscriptions: Set<AnyCancellable> = []
+
     init(profile: ProfileModel, persistentContainer: NSPersistentContainer) {
         self.profileModel = profile
         self.persistentContainer = persistentContainer
         self.profile = CurrentValueSubject(profile.toModel())
+
+        self.profileModel.publisher(for: \.self)
+            .sink { model in print(model) }
+            .store(in: &subscriptions)
     }
 
     private func save() {
@@ -56,23 +63,18 @@ class CoreDataProfileStore: ProfileStore {
             } else {
                 switch equipment {
                 case is Paraglider:
-                    let paragliderModel = ParagliderModel(context: context)
-                    profileModel.addToParaglider(paragliderModel)
-                    return paragliderModel
+                    return ParagliderModel(context: context)
                 case is Harness:
-                    let harnessModel = HarnessModel(context: context)
-                    profileModel.addToHarnesses(harnessModel)
-                    return harnessModel
+                    return HarnessModel(context: context)
                 case is Reserve:
-                    let reserveModel = ReserveModel(context: context)
-                    profileModel.addToReserves(reserveModel)
-                    return reserveModel
+                    return ReserveModel(context: context)
                 default:
                     fatalError("Unknown equipment type: \(type(of: equipment))")
                 }
             }
         }()
 
+        profileModel.addToEquipment(model)
         model.id = equipment.id
         model.name = equipment.name
         model.brand = equipment.brand.name
@@ -89,12 +91,35 @@ class CoreDataProfileStore: ProfileStore {
     }
 
     func remove(equipment: [Equipment]) {
-        let fetchRequest: NSFetchRequest<EquipmentModel> = EquipmentModel.fetchRequest()
-        fetchRequest.predicate = .init(format: "id IN %@", equipment.map { return $0.id })
-        let results = try? context.fetch(fetchRequest)
-
-        for equipmentModel in results ?? [] {
+        for equipmentModel in EquipmentModel.fetch(equipment, context: context) {
             context.delete(equipmentModel)
+        }
+        save()
+    }
+
+    func updateContainedEquipment(_ equipment: [Equipment]) {
+        let diff = equipment.difference(from: profile.value.equipment) { equipment1, equipment2 in
+            equipment1.id == equipment2.id
+        }
+
+        var removedEquipment: [Equipment] = []
+        var insertedEquipment: [Equipment] = []
+
+        for change in diff {
+          switch change {
+          case let .remove(_, oldElement, _):
+              removedEquipment.append(oldElement)
+          case let .insert(_, newElement, _):
+              insertedEquipment.append(newElement)
+          }
+        }
+
+        for equipmentModel in EquipmentModel.fetch(removedEquipment, context: context) {
+            profileModel.removeFromEquipment(equipmentModel)
+        }
+
+        for equipmentModel in EquipmentModel.fetch(insertedEquipment, context: context) {
+            profileModel.addToEquipment(equipmentModel)
         }
 
         save()
@@ -163,6 +188,38 @@ extension EquipmentModel {
         fetchRequest.fetchLimit = 1
         return try? context.fetch(fetchRequest).first
     }
+
+    static func fetch(_ equipment: [Equipment], context: NSManagedObjectContext) -> [EquipmentModel] {
+        let fetchRequest: NSFetchRequest<EquipmentModel> = EquipmentModel.fetchRequest()
+        fetchRequest.predicate = .init(format: "id IN %@", equipment.map { return $0.id })
+        return (try? context.fetch(fetchRequest)) ?? []
+    }
+}
+
+extension ProfileModel {
+    func addToEquipment(_ value: EquipmentModel) {
+        if let equipment = value as? ParagliderModel {
+            addToParaglider(equipment)
+        } else if let equipment = value as? ReserveModel {
+            addToReserves(equipment)
+        } else if let equipment = value as? HarnessModel {
+            addToHarnesses(equipment)
+        } else {
+            fatalError("Unknown equipment type")
+        }
+    }
+
+    func removeFromEquipment(_ value: EquipmentModel) {
+        if let equipment = value as? ParagliderModel {
+            removeFromParaglider(equipment)
+        } else if let equipment = value as? ReserveModel {
+            removeFromReserves(equipment)
+        } else if let equipment = value as? HarnessModel {
+            removeFromHarnesses(equipment)
+        } else {
+            fatalError("Unknown equipment type")
+        }
+    }
 }
 
 class FakeProfileStore: ProfileStore {
@@ -176,6 +233,7 @@ class FakeProfileStore: ProfileStore {
     func store(profile: Profile) {}
     func store(equipment: Equipment) {}
     func remove(equipment: [Equipment]) {}
+    func updateContainedEquipment(_ equipment: [Equipment]) {}
     func logCheck(at date: Date, for equipment: Equipment) {}
     func remove(checks: [Check], for equipment: Equipment) {}
     func attach(manual: Data, to equipment: Equipment) {}
