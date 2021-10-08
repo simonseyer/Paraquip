@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct EditSetView: View {
 
-    @ObservedObject var viewModel: EditSetViewModel
+    @ObservedObject var set: ProfileModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) var managedObjectContext
+
+    @FetchRequest(sortDescriptors: [
+        SortDescriptor(\.brand),
+        SortDescriptor(\.name)
+    ])
+    private var allEquipment: FetchedResults<EquipmentModel>
 
     @ViewBuilder
     var attributionFooter: some View {
@@ -20,15 +28,15 @@ struct EditSetView: View {
     var body: some View {
         Form {
             Section(footer: attributionFooter) {
-                TextField("Name", text: $viewModel.profile.name)
+                TextField("Name", text: $set.profileName)
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(Profile.Icon.allCases) { icon in
+                    HStack(spacing: 12) {
+                        ForEach(ProfileModel.Icon.allCases) { icon in
                             IconSelectionView(
                                 icon: icon,
-                                isSelected: icon == viewModel.profile.icon)
+                                isSelected: icon == set.profileIcon)
                                 .onTapGesture {
-                                    viewModel.profile.icon = icon
+                                    set.profileIcon = icon
                                 }
                         }
                     }
@@ -36,14 +44,20 @@ struct EditSetView: View {
             }
 
             Section("Equipment") {
-                ForEach(viewModel.equipment, id: \.id) { equipment in
+                ForEach(allEquipment, id: \.id) { equipment in
                     Button(action: {
-                        viewModel.toggle(equipment: equipment)
+                        if set.equipment?.contains(equipment) ?? false {
+                            set.removeFromEquipment(equipment)
+                        } else {
+                            set.addToEquipment(equipment)
+                        }
                     }) {
                         HStack {
-                            Text("\(equipment.brand.name) \(equipment.name)")
+                            Text(equipment.brandName)
+                                .foregroundColor(.secondary)
+                            Text(equipment.equipmentName)
                             Spacer()
-                            if viewModel.isSelected(equipment: equipment) {
+                            if set.equipment?.contains(equipment) ?? false {
                                 Image(systemName: "checkmark")
                                     .font(.system(.body).weight(.medium))
                                     .foregroundColor(.accentColor)
@@ -53,16 +67,17 @@ struct EditSetView: View {
                 }
             }
         }
-        .navigationTitle(viewModel.profile.name.isEmpty ? "New Set" : viewModel.profile.name)
+        .navigationTitle(set.profileName.isEmpty ? "New Set" : set.profileName)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
+                    managedObjectContext.rollback()
                     dismiss()
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    viewModel.save()
+                    try? managedObjectContext.save()
                     dismiss()
                 }
             }
@@ -72,18 +87,19 @@ struct EditSetView: View {
 
 struct EdiSetView_Previews: PreviewProvider {
 
-    static let appStore = FakeAppStore()
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
         NavigationView {
-            EditSetView(viewModel: EditSetViewModel(appStore: appStore, profile: appStore.profiles.value.first!))
+            EditSetView(set: persistentContainer.fakeProfile())
+                .environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }
 
 struct IconSelectionView: View {
 
-    let icon: Profile.Icon
+    let icon: ProfileModel.Icon
     let isSelected: Bool
 
     var body: some View {
@@ -97,7 +113,5 @@ struct IconSelectionView: View {
                     Color(UIColor.systemGray5)
             )
             .cornerRadius(10)
-            .padding(.trailing, 10)
-
     }
 }

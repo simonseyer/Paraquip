@@ -6,61 +6,64 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct EditEquipmentView: View {
 
-    @ObservedObject var viewModel: EditEquipmentViewModel
-    let dismiss: () -> Void
+    @ObservedObject var equipment: EquipmentModel
+
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.dismiss) private var dismiss
 
     @State private var showingLogCheck = false
     @State private var showingManualPicker = false
+    @State private var lastCheckDate: Date?
+    @State private var manualURL: URL?
 
     private var title: Text {
-        if !viewModel.brand.name.isEmpty {
-            return Text("\(viewModel.equipment.brand.name) \(NSLocalizedString(viewModel.equipment.localizedType, comment: ""))")
+        if !equipment.brandName.isEmpty {
+            return Text("\(equipment.brandName) \(NSLocalizedString(equipment.localizedType, comment: ""))")
         } else {
-            return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(viewModel.equipment.localizedType, comment: ""))")
+            return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(equipment.localizedType, comment: ""))")
         }
     }
 
     var body: some View {
         Form {
             Section(header: Text("")) {
-                Picker(selection: $viewModel.brand, label: Text("Brand")) {
+                Picker(selection: $equipment.equipmentBrand, label: Text("Brand")) {
                     ForEach(Brand.allCases) { brand in
                         BrandRow(brand: brand)
                             .tag(brand)
                     }
                 }
-                if case .custom = viewModel.brand {
+                if case .custom = equipment.equipmentBrand {
                     HStack {
                         Text("Custom brand")
                         Spacer()
-                        TextField("Brand", text: $viewModel.customBrandName)
+                        TextField("Brand", text: $equipment.brandName)
                             .multilineTextAlignment(.trailing)
                     }
                 }
                 HStack {
                     Text("Name")
                     Spacer()
-                    TextField("Name", text: $viewModel.equipment.name)
+                    TextField("Name", text: $equipment.equipmentName)
                         .multilineTextAlignment(.trailing)
                 }
-                if viewModel.equipment is Paraglider {
-                    Picker(selection: $viewModel.paragliderSize, label: Text("Size")) {
-                        ForEach(Paraglider.Size.allCases) { size in
-                            Text(size.rawValue)
-                                .tag(size)
-                        }
+                Picker(selection: $equipment.equipmentSize, label: Text("Size")) {
+                    ForEach(EquipmentModel.Size.allCases) { size in
+                        Text(size.rawValue)
+                            .tag(size)
                     }
                 }
                 FormDatePicker(label: "Purchase Date",
-                               date: $viewModel.equipment.purchaseDate)
+                               date: $equipment.purchaseDate)
             }
             Section(header: Text("Check cycle")) {
-                CheckCycleRow(checkCycle: $viewModel.checkCycle)
+                CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
             }
-            if viewModel.isNew {
+            if equipment.isInserted {
                 Section(header: Text("Next steps")) {
                     Button(action: { showingLogCheck.toggle() }) {
                         HStack {
@@ -68,7 +71,7 @@ struct EditEquipmentView: View {
                                 .padding(.trailing, 8)
                             Text("Log last check")
                             Spacer()
-                            if viewModel.lastCheckDate != nil {
+                            if lastCheckDate != nil {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(Color.green)
                             }
@@ -83,7 +86,7 @@ struct EditEquipmentView: View {
                                 .padding(.trailing, 8)
                             Text("Attach Manual")
                             Spacer()
-                            if viewModel.manualURL != nil {
+                            if manualURL != nil {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(Color.green)
                             }
@@ -99,26 +102,45 @@ struct EditEquipmentView: View {
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
+                    managedObjectContext.rollback()
                     dismiss()
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    viewModel.save()
+                    if let date = lastCheckDate {
+                        let check = CheckModel(context: managedObjectContext)
+                        check.id = UUID()
+                        check.date = date
+                        equipment.addToCheckLog(check)
+                    }
+
+                    if let url = manualURL {
+                        do {
+                            let data = try Data(contentsOf: url)
+                            let manual = ManualModel(context: managedObjectContext)
+                            manual.data = data
+                            equipment.manual = manual
+                        } catch {
+                            print(error)
+                        }
+                    }
+
+                    try? managedObjectContext.save()
                     dismiss()
                 }
-                .disabled(viewModel.brand == .none)
+                .disabled(equipment.equipmentBrand == .none)
             }
         }
         .sheet(isPresented: $showingLogCheck) {
             LogCheckView() { date in
-                viewModel.lastCheckDate = date
+                lastCheckDate = date
                 showingLogCheck = false
             }
         }
         .sheet(isPresented: $showingManualPicker) {
             DocumentPicker() { url in
-                viewModel.manualURL = url
+                manualURL = url
             }
         }
     }
@@ -126,25 +148,27 @@ struct EditEquipmentView: View {
 
 struct AddEquipmentView_Previews: PreviewProvider {
 
-    static let store = FakeProfileStore(profile: .fake())
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
+
+    static var equipments: [EquipmentModel] {
+        persistentContainer.fakeProfile().equipment!.allObjects as! [EquipmentModel]
+    }
 
     static var previews: some View {
         Group {
             NavigationView {
-                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Profile.fake().equipment.first!, isNew: false), dismiss: {})
+                EditEquipmentView(equipment: equipments[0])
             }
 
             NavigationView {
-                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Paraglider(), isNew: true), dismiss: {})
+                EditEquipmentView(equipment: ParagliderModel(context: persistentContainer.viewContext))
             }
 
             NavigationView {
-                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Paraglider(brand: .custom(name: "Heyho"), name: "Test", size: .medium, checkCycle: 6), isNew: false), dismiss: {})
+                EditEquipmentView(equipment: equipments[1])
             }
-
-            NavigationView {
-                EditEquipmentView(viewModel: EditEquipmentViewModel(store: store, equipment: Profile.fake().equipment.last!, isNew: false), dismiss: {})
-            }
-        }.environment(\.locale, .init(identifier: "de"))
+        }
+        .environment(\.locale, .init(identifier: "de"))
+        .environment(\.managedObjectContext, persistentContainer.viewContext)
     }
 }

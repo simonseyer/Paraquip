@@ -9,17 +9,17 @@ import Foundation
 
 enum TimelineEntry {
     case purchase(date: Date)
-    case check(check: Check)
-    case nextCheck(urgency: CheckUrgency)
+    case check(check: CheckModel)
+    case nextCheck(urgency: EquipmentModel.CheckUrgency)
 }
 
-extension Equipment {
+extension EquipmentModel {
     var timeline: [TimelineEntry] {
         var timeline: [TimelineEntry] = []
 
         timeline.append(.nextCheck(urgency: checkUrgency))
 
-        timeline.append(contentsOf: checkLog.map {
+        timeline.append(contentsOf: sortedCheckLog.map {
             .check(check: $0)
         })
 

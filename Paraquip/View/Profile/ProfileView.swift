@@ -6,21 +6,37 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ProfileView: View {
 
-    @ObservedObject var viewModel: ProfileViewModel
-    @State private var newEquipment: AnyEquipment?
+    @ObservedObject var profileModel: ProfileModel
+    @State private var newEquipment: EquipmentModel?
+    @Environment(\.managedObjectContext) var managedObjectContext
+
+    private let equipmentFetchRequest: FetchRequest<EquipmentModel>
+    private var equipments: FetchedResults<EquipmentModel> {
+        equipmentFetchRequest.wrappedValue
+    }
+
+    init(profileModel: ProfileModel) {
+        self.profileModel = profileModel
+        self.equipmentFetchRequest = FetchRequest(
+            sortDescriptors: [
+                SortDescriptor(\.name)
+            ],
+            predicate: .init(format: "ANY profiles.id == %@", profileModel.uuid)
+        )
+    }
 
     var body: some View {
         Group {
-            if viewModel.profile.equipment.isEmpty {
+            if equipments.isEmpty {
                 VStack {
                     Image("icon")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: 120)
-
                     Text("profile_empty_text")
                         .font(.title3)
                         .multilineTextAlignment(.center)
@@ -28,35 +44,41 @@ struct ProfileView: View {
                         .padding()
                 }
             } else {
-                List {
-                    ForEach(viewModel.profile.equipment, id: \.id) { equipment in
-                        NavigationLink(destination: EquipmentView(viewModel: viewModel.viewModel(for: equipment))) {
+                List{
+                    ForEach(equipments) { equipment in
+                        NavigationLink(destination: EquipmentView(equipment: equipment)) {
                             EquipmentRow(equipment: equipment)
                         }
                     }
-                    .onDelete(perform: { indexSet in
-                        viewModel.removeEquipment(atOffsets: indexSet)
-                    })
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            managedObjectContext.delete(equipments[index])
+                        }
+                        try? managedObjectContext.save()
+                    }
                 }
-                .listStyle(InsetGroupedListStyle())
             }
         }
-        .navigationTitle(viewModel.profile.name)
+        .listStyle(InsetGroupedListStyle())
+        .navigationTitle(profileModel.name ?? "")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
                     Button(action: {
-                        newEquipment = AnyEquipment(Paraglider())
+                        newEquipment = ParagliderModel.create(context: managedObjectContext)
+                        profileModel.addToEquipment(newEquipment!)
                     }) {
                         Text("Paraglider")
                     }
                     Button(action: {
-                        newEquipment = AnyEquipment(Harness())
+                        newEquipment = HarnessModel.create(context: managedObjectContext)
+                        profileModel.addToEquipment(newEquipment!)
                     }) {
                         Text("Harness")
                     }
                     Button(action: {
-                        newEquipment = AnyEquipment(Reserve())
+                        newEquipment = ReserveModel.create(context: managedObjectContext)
+                        profileModel.addToEquipment(newEquipment!)
                     }) {
                         Text("Reserve")
                     }
@@ -69,39 +91,27 @@ struct ProfileView: View {
         }
         .sheet(item: $newEquipment) { equipment in
             NavigationView {
-                EditEquipmentView(viewModel: viewModel.editViewModel(for: equipment.wrappedValue)) {
-                    newEquipment = nil
-                }
+                EditEquipmentView(equipment: equipment)
             }
         }
-    }
-}
-
-struct AnyEquipment: Identifiable {
-    
-    let wrappedValue: Equipment
-
-    var id: UUID { wrappedValue.id }
-
-    init(_ equipment: Equipment) {
-        self.wrappedValue = equipment
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
 
-    private static let viewModel = ProfileViewModel.fake()
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
         Group {
             NavigationView {
-                ProfileView(viewModel: viewModel)
+                ProfileView(profileModel: persistentContainer.fakeProfile())
             }
 
             NavigationView {
-                ProfileView(viewModel: ProfileViewModel.fake(profile: Profile(name: "Empty", icon: .default)))
+                ProfileView(profileModel: ProfileModel.create(context: persistentContainer.viewContext))
             }
         }
         .environment(\.locale, .init(identifier: "de"))
+        .environment(\.managedObjectContext, persistentContainer.viewContext)
     }
 }

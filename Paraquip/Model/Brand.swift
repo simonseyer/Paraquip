@@ -37,14 +37,24 @@ enum Brand {
         }
     }
 
-    init(name: String, id: String?) {
+    init(name: String?, id: String?) {
         if let id = id, ![Self.customId, Self.noneId].contains(id) {
-            self = .known(name: name, id: id)
-        } else if !name.isEmpty {
-            self = .custom(name: name)
+            self = .known(name: name ?? "", id: id)
+        } else if (id ?? "") == Self.customId || !(name ?? "").isEmpty {
+            self = .custom(name: name ?? "")
         } else {
             self = .none
         }
+    }
+}
+
+extension Brand: Identifiable, Hashable {
+    static func == (lhs: Brand, rhs: Brand) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 

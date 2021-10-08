@@ -6,33 +6,81 @@
 //
 
 import SwiftUI
+import CoreData
 
 @main
 struct ParaquipApp: App {
 
-    private let appStore: AppStore
+    private let container: NSPersistentContainer
     private let notificationsStore: NotificationsStore
 
     init() {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
-            self.appStore = FakeAppStore()
+            self.container = NSPersistentContainer.fake(name: "Model")
             self.notificationsStore = NotificationsStore(
                 state: .fake(),
-                profileStore: appStore.mainProfileStore,
+                managedObjectContext: container.viewContext,
                 persistence: NotificationPersistence(),
                 notifications: FakeNotificationPlugin()
             )
         } else {
-            self.appStore = CoreDataAppStore()
-            self.notificationsStore = NotificationsStore(profileStore: appStore.mainProfileStore)
+            let container = NSPersistentContainer(name: "Model")
+            container.loadPersistentStores { description, error in
+                if let error = error {
+                    fatalError("Unable to load persistent stores: \(error)")
+                }
+            }
+
+            self.container = container
+            self.notificationsStore = NotificationsStore(managedObjectContext: container.viewContext)
+
+            let migrationContext = container.newBackgroundContext()
+            LegacyAppPersistence().migrate(into: migrationContext)
+            migrateDatabase(context: migrationContext)
+            initializeDatabase(context: migrationContext)
         }
-        LegacyAppPersistence().migrate(into: appStore.mainProfileStore)
+    }
+
+    private func migrateDatabase(context: NSManagedObjectContext) {
+        let profilesFetchRequest = ProfileModel.fetchRequest()
+        let profiles = (try? context.fetch(profilesFetchRequest)) ?? []
+
+        guard profiles.count == 1,
+              let profile = profiles.first,
+              profile.name == "Paraquip",
+              profile.equipment?.count ?? 0 == 0 else {
+                  return
+              }
+
+        profile.name = NSLocalizedString("Equipment", comment: "")
+
+        let equipmentFetchRequest = EquipmentModel.fetchRequest()
+        let equipment = (try? context.fetch(equipmentFetchRequest)) ?? []
+
+        for equipment in equipment {
+            profile.addToEquipment(equipment)
+        }
+
+        try? context.save()
+    }
+
+    private func initializeDatabase(context: NSManagedObjectContext) {
+        let profiles = (try? context.count(for: ProfileModel.fetchRequest())) ?? 0
+        guard profiles == 0 else {
+            return
+        }
+
+        let profile = ProfileModel.create(context: context)
+        profile.name = NSLocalizedString("Equipment", comment: "")
+
+        try? context.save()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: SetViewModel(store: appStore))
+            ContentView()
                 .environmentObject(notificationsStore)
+                .environment(\.managedObjectContext, container.viewContext)
         }
     }
 }

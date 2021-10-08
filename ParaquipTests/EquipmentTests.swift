@@ -7,88 +7,67 @@
 
 import XCTest
 @testable import Paraquip
+import CoreData
 
 class EquipmentTests: XCTestCase {
 
-    func equipment(checkCycle: Int = 1, checkLog: [Check] = [], purchaseDate: Date? = nil) throws -> Equipment {
-        throw XCTSkip()
+    var persistentContainer: NSPersistentContainer!
+
+    override func setUp() {
+        super.setUp()
+        persistentContainer = NSPersistentContainer.fake(name: "Model")
     }
 
-    func testCheckLogSorted() throws {
-        let equipment = try equipment(checkLog: [
-            Check(date: Date.offsetBy(days: -40)),
-            Check(date: Date.offsetBy(days: 1))
-        ])
+    private func equipment(checkCycle: Int = 1, checkLog: [Date] = [], purchaseDate: Date? = nil) -> EquipmentModel {
+        let equipment = ReserveModel(context: persistentContainer.viewContext)
+        equipment.checkCycle = Int16(checkCycle)
+        equipment.purchaseDate = purchaseDate
 
-        XCTAssert(Calendar.current.isDate(equipment.checkLog[0].date, inSameDayAs: Date.offsetBy(days: 1)))
-        XCTAssert(Calendar.current.isDate(equipment.checkLog[1].date, inSameDayAs: Date.offsetBy(days: -40)))
+        for check in checkLog {
+            equipment.addToCheckLog(CheckModel.create(context: persistentContainer.viewContext, date: check))
+        }
+
+        return equipment
     }
 
-    func testNextCheck() throws {
-        let equipment = try equipment(checkLog: [Check(date: Date.offsetBy(days: -40))])
+    func testCheckLogSorted() {
+        let equipment = equipment(checkLog: [Date.offsetBy(days: -40), Date.offsetBy(days: 1)])
+
+        XCTAssert(Calendar.current.isDate(equipment.sortedCheckLog[0].date!, inSameDayAs: Date.offsetBy(days: 1)))
+        XCTAssert(Calendar.current.isDate(equipment.sortedCheckLog[1].date!, inSameDayAs: Date.offsetBy(days: -40)))
+    }
+
+    func testNextCheck() {
+        let equipment = equipment(checkLog: [Date.offsetBy(days: -40)])
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
-    func testNextCheckWithMultipleChecks() throws {
-        let equipment = try equipment(checkLog: [
-            Check(date: Date.offsetBy(days: -40)),
-            Check(date: Date.offsetBy(days: 1))
-        ])
+    func testNextCheckWithMultipleChecks() {
+        let equipment = equipment(checkLog: [Date.offsetBy(days: -40), Date.offsetBy(days: 1)])
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 1))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
-    func testNextCheckWithPurchaseDate() throws {
-        let equipment = try equipment(purchaseDate: Date.offsetBy(days: 0))
+    func testNextCheckWithPurchaseDate() {
+        let equipment = equipment(purchaseDate: Date.offsetBy(days: 0))
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 0))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
-    func testNextCheckWithPurchaseDateAndCheck() throws {
-        let equipment = try equipment(checkLog: [Check(date: Date.offsetBy(days: -40))],
-                                      purchaseDate: Date.offsetBy(days: -60))
+    func testNextCheckWithPurchaseDateAndCheck() {
+        let equipment = equipment(checkLog: [Date.offsetBy(days: -40)],
+                                  purchaseDate: Date.offsetBy(days: -60))
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
         XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
-    func testNextCheckWithCheckOff() throws {
-        let equipment = try equipment(checkCycle: 0)
+    func testNextCheckWithCheckOff() {
+        let equipment = equipment(checkCycle: 0)
         XCTAssertEqual(equipment.nextCheck, nil)
-    }
-}
-
-class ParagliderTests: EquipmentTests {
-    override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
-        Paraglider(brand: Brand(name: "Gin", id: "gin"),
-                   name: "Atlas 2",
-                   size: .medium,
-                   checkCycle: checkCycle,
-                   checkLog: checkLog,
-                   purchaseDate: purchaseDate)
-    }
-}
-
-class ReserveTests: EquipmentTests {
-    override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
-        Reserve(brand: Brand(name: "Gin", id: "gin"),
-                name: "Yeti",
-                checkCycle: checkCycle,
-                checkLog: checkLog,
-                purchaseDate: purchaseDate)
-    }
-}
-
-class HarnessTests: EquipmentTests {
-    override func equipment(checkCycle: Int, checkLog: [Check], purchaseDate: Date?) throws -> Equipment {
-        Harness(brand: Brand(name: "Gin", id: "gin"),
-                name: "Yeti",
-                checkCycle: checkCycle,
-                checkLog: checkLog,
-                purchaseDate: purchaseDate)
     }
 }

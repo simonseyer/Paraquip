@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct NotificationSettingsView: View {
     
@@ -104,7 +105,7 @@ struct NotificationSettingsView: View {
                 if store.state.isEnabled && !store.state.configuration.isEmpty {
                     Button(editMode == .inactive ? "Edit" : "Done") {
                         withAnimation {
-                            editMode.toggle()
+                            editMode = editMode == .active ? .inactive : .active
                         }
                     }
                 }
@@ -115,7 +116,7 @@ struct NotificationSettingsView: View {
 
 struct NotificationSettingsView_Previews: PreviewProvider {
 
-    private static let profileStore = FakeProfileStore(profile: .fake())
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
         NavigationView {
@@ -125,7 +126,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: true,
                                         wasRequestRejected: false,
                                         configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
-                                       profileStore: profileStore,
+                                       managedObjectContext: persistentContainer.viewContext,
                                        notifications: FakeNotificationPlugin()
                     )
                 )
@@ -138,7 +139,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: false,
                                         wasRequestRejected: true,
                                         configuration: []),
-                                       profileStore: profileStore,
+                                       managedObjectContext: persistentContainer.viewContext,
                                        notifications: FakeNotificationPlugin()
                     )
                 )

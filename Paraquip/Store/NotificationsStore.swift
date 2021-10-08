@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import OSLog
+import CoreData
 
 struct NotificationState {
 
@@ -19,7 +20,7 @@ struct NotificationState {
 enum NavigationState: Equatable {
     case none
     case notificationSettings
-    case equipment(UUID)
+    case equipment(EquipmentModel)
 }
 
 fileprivate extension NotificationState {
@@ -49,7 +50,7 @@ class NotificationsStore: ObservableObject {
 
     private let persistence: NotificationPersistence
     private let notifications: NotificationPlugin
-    private let profileStore: ProfileStore // TODO: eliminate dependency
+    private let managedObjectContext: NSManagedObjectContext
     private let logger = Logger(category: "NotificationsStore")
 
     private var subscriptions = Set<AnyCancellable>()
@@ -60,13 +61,13 @@ class NotificationsStore: ObservableObject {
     @Published private(set) var state: NotificationState {
         didSet {
             persistence.save(notificationState: state.toPersistence())
+            scheduleNotifications(configuration: state.configuration)
         }
     }
     @Published private(set) var navigationState = NavigationState.none
 
-    // TODO: use EquipmentStore
-    init(profileStore: ProfileStore, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
-        self.profileStore = profileStore
+    init(managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
+        self.managedObjectContext = managedObjectContext
         self.persistence = persistence
         self.notifications = notifications
         self.state = persistence.load()?.toModel() ?? .default
@@ -75,8 +76,8 @@ class NotificationsStore: ObservableObject {
         setupNotificationScheduling()
     }
 
-    init(state: NotificationState, profileStore: ProfileStore, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
-        self.profileStore = profileStore
+    init(state: NotificationState, managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
+        self.managedObjectContext = managedObjectContext
         self.persistence = persistence
         self.notifications = notifications
         self.state = state
@@ -112,20 +113,34 @@ class NotificationsStore: ObservableObject {
             .map { $0.equipmentId }
             .sink { [weak self] equipment in
                 self?.logger.info("Handling notification for equipment: \(equipment)")
-                self?.navigationState = .equipment(equipment)
+                
+                let fetchRequest = EquipmentModel.fetchRequest()
+                fetchRequest.predicate = .init(format: "id == %@", equipment.uuidString)
+                fetchRequest.fetchLimit = 1
+                let equipmentModel = try? self?.managedObjectContext.fetch(fetchRequest).first
+                
+                if let equipmentModel = equipmentModel {
+                    self?.navigationState = .equipment(equipmentModel)
+                } else {
+                    self?.logger.error("Unable to fetch equipment: \(equipment)")
+                }
             }
             .store(in: &subscriptions)
     }
 
     private func setupNotificationScheduling() {
-        profileStore
-            .profile
-            .combineLatest($state)
-            .debounce(for: .init(Self.notificationSchedulingDebounce), scheduler: RunLoop.main)
-            .sink {[weak self] profile, notificationState in
-                self?.scheduleNotifications(for: profile, configuration: notificationState.configuration)
-            }
-            .store(in: &subscriptions)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(managedObjectContextDidSave), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext)
+    }
+
+    @objc private func managedObjectContextDidSave() {
+        scheduleNotifications(configuration: state.configuration)
+    }
+
+    private func scheduleNotifications(configuration: [NotificationConfig]) {
+        let fetchRequest = EquipmentModel.fetchRequest()
+        let equipment: [EquipmentModel] = (try? managedObjectContext.fetch(fetchRequest)) ?? []
+        scheduleNotifications(for: equipment, configuration: configuration)
     }
 
     func enable(completion: @escaping () -> Void)  {
@@ -169,7 +184,7 @@ class NotificationsStore: ObservableObject {
         navigationState = .none
     }
 
-    private func scheduleNotifications(for profile: Profile, configuration: [NotificationConfig]) {
+    private func scheduleNotifications(for equipment: [EquipmentModel], configuration: [NotificationConfig]) {
         notifications.reset()
 
         guard state.isEnabled else {
@@ -178,18 +193,18 @@ class NotificationsStore: ObservableObject {
 
         logger.info("Updating notifications")
 
-        for equipment in profile.equipment {
+        for equipment in equipment {
             for notificationConfig in configuration {
                 scheduleNotification(for: equipment, config: notificationConfig)
             }
         }
 
-        updateBadge(for: profile)
+        updateBadge(for: equipment)
     }
 
-    private func scheduleNotification(for equipment: Equipment, config: NotificationConfig) {
+    private func scheduleNotification(for equipment: EquipmentModel, config: NotificationConfig) {
         guard let nextCheck = equipment.nextCheck else {
-            logger.info("Skipping notifications for equipment since check is off: \(equipment.id)")
+            logger.info("Skipping notifications for equipment since check is off: \(equipment.id!)")
             return
         }
 
@@ -203,11 +218,11 @@ class NotificationsStore: ObservableObject {
 
         let body = LocalizedNotificationString(
             key: config.bodyLocalizationKey,
-            arguments: [equipment.brand.name, equipment.name, String(config.multiplier)]
+            arguments: [equipment.brandName, equipment.equipmentName, String(config.multiplier)]
         )
 
         let notification = Notification(
-            equipmentId: equipment.id,
+            equipmentId: equipment.id!,
             notificationConfigId: config.id,
             title: "notification_check_due_title",
             body: body,
@@ -222,8 +237,8 @@ class NotificationsStore: ObservableObject {
         }
     }
 
-    private func updateBadge(for profile: Profile) {
-        let badgeCount = profile.equipment.filter {
+    private func updateBadge(for equipment: [EquipmentModel]) {
+        let badgeCount = equipment.filter {
             if case .now = $0.checkUrgency {
                 return true
             }

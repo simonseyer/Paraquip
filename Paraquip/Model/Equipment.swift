@@ -6,42 +6,70 @@
 //
 
 import Foundation
+import CoreData
 
-protocol Equipment {
-    var id: UUID { get }
-    var brand: Brand { get set }
-    var name: String { get set }
-    var checkCycle: Int { get set }
-    var checkLog: [Check] { get }
-    var purchaseDate: Date? { get set }
-}
-
-struct Check: Identifiable {
-    let id: UUID
-    let date: Date
-
-    init(id: UUID, date: Date) {
-        self.id = id
-        self.date = date
+extension EquipmentModel {
+    enum CheckUrgency {
+        case now
+        case soon(Date)
+        case later(Date)
+        case never
     }
 
-    init(date: Date) {
-        self.id = UUID()
-        self.date = date
+    enum Size: String, CaseIterable, Identifiable {
+        case none = ""
+        case extraExtraSmall = "XXS"
+        case extraSmall = "XS"
+        case small = "S"
+        case smallMedium = "SM"
+        case medium = "M"
+        case large = "L"
+        case extraLarge = "XL"
+        case extraExtraLarge = "XXL"
+
+        var id: String { rawValue }
+        
+        static var allCases: [EquipmentModel.Size] {
+            [.extraExtraSmall, .extraSmall, .small, .smallMedium, .medium, .large, .extraLarge, .extraExtraLarge]
+        }
     }
-}
 
-enum CheckUrgency {
-    case now
-    case soon(Date)
-    case later(Date)
-    case never
-}
+    var equipmentName: String {
+        get { name ?? "" }
+        set { name = newValue }
+    }
 
-extension Equipment {
+    var equipmentSize: EquipmentModel.Size {
+        get { EquipmentModel.Size(rawValue: size ?? "") ?? .none }
+        set { size = newValue.rawValue }
+    }
+
+    var floatingCheckCycle: Double {
+        get { Double(checkCycle) }
+        set { checkCycle = Int16(newValue) }
+    }
+
+    var equipmentBrand: Brand {
+        get { Brand(name: brand, id: brandId) }
+        set {
+            brand = newValue.name
+            brandId = newValue.id
+        }
+    }
+
+    var brandName: String {
+        get { brand ?? "" }
+        set { brand = newValue }
+    }
+
+    var sortedCheckLog: [CheckModel] {
+        return (checkLog as! Set<CheckModel>).sorted { check1, check2 in
+            return check1.date! > check2.date!
+        }
+    }
 
     var lastCheck: Date? {
-        checkLog.first?.date ?? purchaseDate
+        sortedCheckLog.first?.date ?? purchaseDate
     }
 
     var nextCheck: Date? {
@@ -54,7 +82,7 @@ extension Equipment {
         }
 
         return Calendar.current.date(byAdding: .month,
-                                     value: checkCycle,
+                                     value: Int(checkCycle),
                                      to: lastCheck)!
     }
 
@@ -74,32 +102,19 @@ extension Equipment {
             return .later(nextCheck)
         }
     }
-}
 
-extension Array where Element == Check {
-    func sorted() -> [Element] {
-        return sorted { check1, check2 in
-            return check1.date > check2.date
-        }
-    }
-}
-
-extension EquipmentModel {
-    func toEquipmentModel() -> Equipment {
-        if let equipment = self as? ParagliderModel {
-            return equipment.toModel()
-        } else if let equipment = self as? ReserveModel {
-            return equipment.toModel()
-        } else if let equipment = self as? HarnessModel {
-            return equipment.toModel()
-        } else {
-            fatalError("Unknown equipment type")
-        }
+    static func create(context: NSManagedObjectContext) -> Self {
+        let equipment = Self(context: context)
+        equipment.id = UUID()
+        return equipment
     }
 }
 
 extension CheckModel {
-    func toModel() -> Check {
-        Check(id: id!, date: date!)
+    static func create(context: NSManagedObjectContext, date: Date) -> Self {
+        let check = Self(context: context)
+        check.id = UUID()
+        check.date = date
+        return check
     }
 }

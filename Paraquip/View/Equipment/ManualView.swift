@@ -11,7 +11,7 @@ struct ManualView: View {
 
     let manual: Data
 
-    var dismiss: () -> Void
+    @Environment(\.dismiss) private var dismiss
     var deleteManual: () -> Void
 
     var body: some View {
@@ -20,11 +20,14 @@ struct ManualView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done", action: dismiss)
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         deleteManual()
+                        dismiss()
                     }) {
                         Image(systemName: "trash")
                     }
@@ -36,7 +39,7 @@ struct ManualView: View {
 struct ManualView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ManualView(manual: Data(), dismiss: {}, deleteManual: {})
+            ManualView(manual: Data(), deleteManual: {})
         }
         .environment(\.locale, .init(identifier: "de"))
     }

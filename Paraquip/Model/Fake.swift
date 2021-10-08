@@ -6,46 +6,104 @@
 //
 
 import Foundation
+import CoreData
 
-extension Profile {
-    static func fake() -> Profile {
+extension NSPersistentContainer {
+    static func fake(name: String) -> NSPersistentContainer {
+        let container = NSPersistentContainer(name: name)
+
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        container.persistentStoreDescriptions = [description]
+
+        container.loadPersistentStores { description, error in
+            if let error = error {
+                fatalError("Unable to load persistent stores: \(error)")
+            }
+        }
+        
+        container.loadFakeData()
+
+        return container
+    }
+
+    private func loadFakeData() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "de")
 
-        return Profile(
-            name: "Equipment",
-            icon: .default,
-            equipment: [
-                Reserve(brand: Brand(name: "Nova", id: "nova"),
-                        name: "Beamer 3 light",
-                        checkCycle: 3,
-                        checkLog: [],
-                        purchaseDate: dateFormatter.date(from: "30.09.2020")!),
-                Reserve(brand: Brand(name: "Ozone", id: "ozone"),
-                        name: "Angel SQ",
-                        checkCycle: 3,
-                        checkLog: [
-                            Check(date: dateFormatter.date(from: "14.07.2021")!)
-                        ],
-                        purchaseDate: dateFormatter.date(from: "30.09.2020")!),
-                Harness(brand: Brand(name: "Woody Valley", id: "woody-valley"),
-                        name: "Wani Light 2",
-                        checkCycle: 12,
-                        checkLog: [
-                            Check(date: dateFormatter.date(from: "14.04.2021")!)
-                        ],
-                        purchaseDate: dateFormatter.date(from: "30.09.2020")!),
-                Paraglider(brand: Brand(name: "Gin", id: "gin"),
-                           name: "Explorer 2",
-                           size: .small,
-                           checkCycle: 12,
-                           checkLog: [
-                            Check(date: dateFormatter.date(from: "12.08.2021")!)
-                           ],
-                           purchaseDate: dateFormatter.date(from: "30.09.2020")!)
-            ])
+        let profile = ProfileModel(context: viewContext)
+        profile.id = UUID()
+        profile.name = "Equipment"
+        profile.profileIcon = .default
+
+        do {
+            let equipment = ReserveModel(context: viewContext)
+            equipment.id = UUID()
+            equipment.brand = "Nova"
+            equipment.brandId = "nova"
+            equipment.name = "Beamer 3 light"
+            equipment.checkCycle = 3
+            equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            profile.addToEquipment(equipment)
+        }
+
+        do {
+            let equipment = ReserveModel(context: viewContext)
+            equipment.id = UUID()
+            equipment.brand = "Ozone"
+            equipment.brandId = "ozone"
+            equipment.name = "Angel SQ"
+            equipment.checkCycle = 3
+            equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            profile.addToEquipment(equipment)
+
+            let check = CheckModel(context: viewContext)
+            check.id = UUID()
+            check.date = dateFormatter.date(from: "14.07.2021")!
+            equipment.addToCheckLog(check)
+        }
+
+        do {
+            let equipment = HarnessModel(context: viewContext)
+            equipment.id = UUID()
+            equipment.brand = "Woody Valley"
+            equipment.brandId = "woody-valley"
+            equipment.name = "Wani Light 2"
+            equipment.checkCycle = 12
+            equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            profile.addToEquipment(equipment)
+
+            let check = CheckModel(context: viewContext)
+            check.id = UUID()
+            check.date = dateFormatter.date(from: "14.04.2021")!
+            equipment.addToCheckLog(check)
+        }
+
+        do {
+            let equipment = ParagliderModel(context: viewContext)
+            equipment.id = UUID()
+            equipment.brand = "Gin"
+            equipment.brandId = "gin"
+            equipment.name = "Explorer 2"
+            equipment.equipmentSize = .small
+            equipment.checkCycle = 12
+            equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            profile.addToEquipment(equipment)
+
+            let check = CheckModel(context: viewContext)
+            check.id = UUID()
+            check.date = dateFormatter.date(from: "12.08.2021")!
+            equipment.addToCheckLog(check)
+        }
+
+        try? viewContext.save()
+    }
+
+    func fakeProfile() -> ProfileModel {
+        let fetchRequest = ProfileModel.fetchRequest()
+        return try! viewContext.fetch(fetchRequest).first!
     }
 }
 

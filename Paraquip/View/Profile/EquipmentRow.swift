@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct EquipmentRow: View {
 
-    let equipment: Equipment
+    @ObservedObject var equipment: EquipmentModel
     @Environment(\.locale) var locale
 
     var body: some View {
@@ -29,7 +30,7 @@ struct EquipmentRow: View {
             .padding(.trailing, 12)
 
             HStack {
-                Text(equipment.name)
+                Text(equipment.equipmentName)
                 Spacer()
                 equipment.checkUrgency.icon
                     .foregroundColor(equipment.checkUrgency.color)
@@ -45,14 +46,20 @@ struct EquipmentRow_Previews: PreviewProvider {
         Brand.allCases
     }
 
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
+
     static var previews: some View {
         List {
             ForEach(Brand.allCases) { brand in
-                EquipmentRow(equipment: Reserve(brand: brand,
-                                                name: brand.name,
-                                                checkCycle: 6))
+                EquipmentRow(equipment: equipment(for: brand))
             }
+        }
+    }
 
-        }.previewLayout(.fixed(width: 400, height: 4000))
+    private static func equipment(for brand: Brand) -> EquipmentModel {
+        let equipment = ReserveModel.create(context: persistentContainer.viewContext)
+        equipment.equipmentBrand = brand
+        equipment.name = brand.name
+        return equipment
     }
 }

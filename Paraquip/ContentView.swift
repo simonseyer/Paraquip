@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
 
@@ -13,16 +14,15 @@ struct ContentView: View {
         case profile, notifications
     }
 
-    @ObservedObject var viewModel: SetViewModel
     @EnvironmentObject var notificationsStore: NotificationsStore
 
     @State private var selectedTab: Tabs = .profile
-    @State private var selectedEquipment: UUID? = nil
+    @State private var selectedEquipment: EquipmentModel? = nil
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                SetView(viewModel: viewModel)
+                SetView(presentedEquipment: $selectedEquipment)
             }
             .tabItem {
                 Label("Equipment", systemImage: "book.closed.fill")
@@ -54,11 +54,12 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
 
-    static let appStore = FakeAppStore()
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
-        ContentView(viewModel: SetViewModel(store: appStore))
-            .environmentObject(NotificationsStore(profileStore: appStore.mainProfileStore))
+        ContentView()
+            .environment(\.managedObjectContext, persistentContainer.viewContext)
+            .environmentObject(NotificationsStore(managedObjectContext: persistentContainer.viewContext))
     }
 }
 

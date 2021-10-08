@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 extension TimelineEntry: Identifiable {
     private static let purchaseID = UUID()
@@ -16,7 +17,7 @@ extension TimelineEntry: Identifiable {
         case .purchase:
             return Self.purchaseID
         case .check(let check):
-            return check.id
+            return check.id!
         case .nextCheck:
             return Self.nextCheckID
         }
@@ -69,7 +70,7 @@ fileprivate extension TimelineEntry {
         case .purchase(let date):
             return LocalizedStringKey(Self.dateFormatter.string(from: date))
         case .check(let check):
-            return LocalizedStringKey(Self.dateFormatter.string(from: check.date))
+            return LocalizedStringKey(Self.dateFormatter.string(from: check.date!))
         case .nextCheck(let urgency):
             return urgency.formattedCheckInterval
         }
@@ -133,24 +134,26 @@ struct TimelineVisual: View {
 
 struct TimelineView_Previews: PreviewProvider {
 
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
+
     static let timelines: [[TimelineEntry]] = [
         [
-        .nextCheck(urgency: .now),
-        .check(check: Check(date: Date())),
-        .check(check: Check(date: Date())),
-        .purchase(date: Date())
-            ],
+            .nextCheck(urgency: .now),
+            .check(check: CheckModel.create(context: persistentContainer.viewContext, date: Date())),
+            .check(check: CheckModel.create(context: persistentContainer.viewContext, date: Date())),
+            .purchase(date: Date())
+        ],
         [
-        .nextCheck(urgency: .soon(Date())),
-        .purchase(date: Date())
-            ],
+            .nextCheck(urgency: .soon(Date())),
+            .purchase(date: Date())
+        ],
         [
-        .nextCheck(urgency: .later(Date())),
-        .check(check: Check(date: Date())),
-            ],
+            .nextCheck(urgency: .later(Date())),
+            .check(check: CheckModel.create(context: persistentContainer.viewContext, date: Date())),
+        ],
         [
-        .nextCheck(urgency: .never),
-            ],
+            .nextCheck(urgency: .never),
+        ],
     ]
     static var previews: some View {
         ForEach(Array(zip(timelines.indices, timelines)), id: \.0) { (_, timeline) in

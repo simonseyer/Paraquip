@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 import Versionable
+import CoreData
 
 class LegacyAppPersistence {
 
@@ -26,18 +27,63 @@ class LegacyAppPersistence {
         self.basePath = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
-    func migrate(into store: ProfileStore) {
+    func migrate(into managedObjectContext: NSManagedObjectContext) {
         guard let profileId = load()?.first,
               let profile = load(with: profileId) else {
             return
         }
 
-        for equipment in profile.toModel().equipment {
-            store.store(equipment: equipment)
-            for check in equipment.checkLog {
-                store.logCheck(at: check.date, for: equipment)
+        let profileModel = ProfileModel.create(context: managedObjectContext)
+        profileModel.name = NSLocalizedString("Equipment", comment: "")
+        profileModel.profileIcon = .default
+
+        for paraglider in profile.paraglider {
+            let paragliderModel = ParagliderModel.create(context: managedObjectContext)
+            paragliderModel.name = paraglider.name
+            paragliderModel.brand = paraglider.brand
+            paragliderModel.brandId = paraglider.brandId
+            paragliderModel.checkCycle = Int16(paraglider.checkCycle)
+            paragliderModel.purchaseDate = paraglider.purchaseDate
+            paragliderModel.size = paraglider.size
+            profileModel.addToEquipment(paragliderModel)
+
+            for check in paraglider.checkLog {
+                let checkModel = CheckModel.create(context: managedObjectContext, date: check.date)
+                paragliderModel.addToCheckLog(checkModel)
             }
         }
+
+        for harness in profile.harnesses {
+            let harnessModel = HarnessModel.create(context: managedObjectContext)
+            harnessModel.name = harness.name
+            harnessModel.brand = harness.brand
+            harnessModel.brandId = harness.brandId
+            harnessModel.checkCycle = Int16(harness.checkCycle)
+            harnessModel.purchaseDate = harness.purchaseDate
+            profileModel.addToEquipment(harnessModel)
+
+            for check in harness.checkLog {
+                let checkModel = CheckModel.create(context: managedObjectContext, date: check.date)
+                harnessModel.addToCheckLog(checkModel)
+            }
+        }
+
+        for reserve in profile.reserves {
+            let reserveModel = ReserveModel.create(context: managedObjectContext)
+            reserveModel.name = reserve.name
+            reserveModel.brand = reserve.brand
+            reserveModel.brandId = reserve.brandId
+            reserveModel.checkCycle = Int16(reserve.checkCycle)
+            reserveModel.purchaseDate = reserve.purchaseDate
+            profileModel.addToEquipment(reserveModel)
+
+            for check in reserve.checkLog {
+                let checkModel = CheckModel.create(context: managedObjectContext, date: check.date)
+                reserveModel.addToCheckLog(checkModel)
+            }
+        }
+
+        try? managedObjectContext.save()
 
         let backupURL = url.appendingPathExtension("bak")
         try? fileManager.removeItem(at: backupURL)

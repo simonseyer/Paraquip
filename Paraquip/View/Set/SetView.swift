@@ -6,39 +6,37 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SetView: View {
 
-    @ObservedObject var viewModel: SetViewModel
+    @Binding var presentedEquipment: EquipmentModel?
 
-    @State private var editSet: Profile.Description?
-    @State private var deleteSet: Profile.Description?
-    @State private var presentedEquipment: Equipment?
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
+    private var profiles: FetchedResults<ProfileModel>
+
+    @State private var editSet: ProfileModel?
+    @State private var deleteSet: ProfileModel?
     @State private var showingDeleteAlert = false
     @State private var selectedProfile: UUID?
 
-    init(viewModel: SetViewModel) {
-        self.viewModel = viewModel
-        _selectedProfile = State(initialValue: viewModel.primaryProfile.id)
-    }
+    @Environment(\.managedObjectContext) var managedObjectContext
 
     var body: some View {
         List {
-            ForEach(viewModel.profiles) { profile in
-                // TODO: implement selectedEquipment
-
-                NavigationLink(tag: profile.id, selection: $selectedProfile) {
-                    ProfileView(viewModel: viewModel.viewModel(for: profile))
+            ForEach(profiles) { profile in
+                NavigationLink(tag: profile.id!, selection: $selectedProfile) {
+                    ProfileView(profileModel: profile)
                 } label: {
                     HStack {
-                        Image(profile.icon.rawValue)
+                        Image(profile.profileIcon.rawValue)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.accentColor)
                             .frame(width: 35, height: 35)
                             .padding(.trailing, 8)
 
-                        Text(profile.name)
+                        Text(profile.profileName)
                     }
                 }
                 .padding([.top, .bottom])
@@ -60,32 +58,37 @@ struct SetView: View {
                 }
             }
         }
-
+        .onAppear {
+            if profiles.count == 1, let profile = profiles.first {
+                selectedProfile = profile.id!
+            }
+        }
         .navigationTitle("All Sets")
         .sheet(item: $editSet) { profile in
             NavigationView {
-                EditSetView(viewModel: viewModel.editSetViewModel(for: profile))
+                EditSetView(set: profile)
             }
         }
-//        .sheet(item: $presentedEquipment) { equipment in
-//            NavigationView {
-//                EditSetView(viewModel: viewModel.editSetViewModel(for: profile))
-//            }
-//        }
+        .sheet(item: $presentedEquipment) { equipment in
+            NavigationView {
+                EquipmentView(equipment: equipment)
+            }
+        }
         .alert("Delete set", isPresented: $showingDeleteAlert, presenting: deleteSet) { selectedSet in
             Button(role: .destructive) {
                 withAnimation {
-                    viewModel.delete(profile: selectedSet)
+                    managedObjectContext.delete(selectedSet)
+                    try? managedObjectContext.save()
                 }
             } label: {
-                Text("Delete \(selectedSet.name)")
+                Text("Delete \(selectedSet.name ?? "")")
             }
             Button("Cancel", role: .cancel) { }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    editSet = .init()
+                    editSet = ProfileModel.create(context: managedObjectContext)
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -96,9 +99,13 @@ struct SetView: View {
 
 
 struct MainView_Previews: PreviewProvider {
+
+    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
+
     static var previews: some View {
         NavigationView {
-            SetView(viewModel: SetViewModel(store: FakeAppStore()))
+            SetView(presentedEquipment: .constant(nil))
+                .environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension CheckUrgency {
+extension EquipmentModel.CheckUrgency {
     private static let dateFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .full
