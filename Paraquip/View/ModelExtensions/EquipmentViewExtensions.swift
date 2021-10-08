@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension EquipmentModel {
+extension Equipment {
 
     var icon: Image? {
         guard case .known(_, let logo) = equipmentBrand else {
@@ -19,11 +19,11 @@ extension EquipmentModel {
 
     var localizedType: String {
         switch self {
-        case is ParagliderModel:
+        case is Paraglider:
             return "Paraglider"
-        case is ReserveModel:
+        case is Reserve:
             return "Reserve"
-        case is HarnessModel:
+        case is Harness:
             return "Harness"
         default:
             preconditionFailure("Unknown equipment type")

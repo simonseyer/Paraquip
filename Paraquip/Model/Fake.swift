@@ -33,13 +33,13 @@ extension NSPersistentContainer {
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "de")
 
-        let profile = ProfileModel(context: viewContext)
+        let profile = Profile(context: viewContext)
         profile.id = UUID()
         profile.name = "Equipment"
         profile.profileIcon = .default
 
         do {
-            let equipment = ReserveModel(context: viewContext)
+            let equipment = Reserve(context: viewContext)
             equipment.id = UUID()
             equipment.brand = "Nova"
             equipment.brandId = "nova"
@@ -50,7 +50,7 @@ extension NSPersistentContainer {
         }
 
         do {
-            let equipment = ReserveModel(context: viewContext)
+            let equipment = Reserve(context: viewContext)
             equipment.id = UUID()
             equipment.brand = "Ozone"
             equipment.brandId = "ozone"
@@ -59,14 +59,14 @@ extension NSPersistentContainer {
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
             profile.addToEquipment(equipment)
 
-            let check = CheckModel(context: viewContext)
+            let check = Check(context: viewContext)
             check.id = UUID()
             check.date = dateFormatter.date(from: "14.07.2021")!
             equipment.addToCheckLog(check)
         }
 
         do {
-            let equipment = HarnessModel(context: viewContext)
+            let equipment = Harness(context: viewContext)
             equipment.id = UUID()
             equipment.brand = "Woody Valley"
             equipment.brandId = "woody-valley"
@@ -75,14 +75,14 @@ extension NSPersistentContainer {
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
             profile.addToEquipment(equipment)
 
-            let check = CheckModel(context: viewContext)
+            let check = Check(context: viewContext)
             check.id = UUID()
             check.date = dateFormatter.date(from: "14.04.2021")!
             equipment.addToCheckLog(check)
         }
 
         do {
-            let equipment = ParagliderModel(context: viewContext)
+            let equipment = Paraglider(context: viewContext)
             equipment.id = UUID()
             equipment.brand = "Gin"
             equipment.brandId = "gin"
@@ -92,7 +92,7 @@ extension NSPersistentContainer {
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
             profile.addToEquipment(equipment)
 
-            let check = CheckModel(context: viewContext)
+            let check = Check(context: viewContext)
             check.id = UUID()
             check.date = dateFormatter.date(from: "12.08.2021")!
             equipment.addToCheckLog(check)
@@ -101,8 +101,8 @@ extension NSPersistentContainer {
         try? viewContext.save()
     }
 
-    func fakeProfile() -> ProfileModel {
-        let fetchRequest = ProfileModel.fetchRequest()
+    func fakeProfile() -> Profile {
+        let fetchRequest = Profile.fetchRequest()
         return try! viewContext.fetch(fetchRequest).first!
     }
 }

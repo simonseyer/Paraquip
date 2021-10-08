@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-extension EquipmentModel {
+extension Equipment {
     enum CheckUrgency {
         case now
         case soon(Date)
@@ -29,7 +29,7 @@ extension EquipmentModel {
 
         var id: String { rawValue }
         
-        static var allCases: [EquipmentModel.Size] {
+        static var allCases: [Equipment.Size] {
             [.extraExtraSmall, .extraSmall, .small, .smallMedium, .medium, .large, .extraLarge, .extraExtraLarge]
         }
     }
@@ -39,8 +39,8 @@ extension EquipmentModel {
         set { name = newValue }
     }
 
-    var equipmentSize: EquipmentModel.Size {
-        get { EquipmentModel.Size(rawValue: size ?? "") ?? .none }
+    var equipmentSize: Equipment.Size {
+        get { Equipment.Size(rawValue: size ?? "") ?? .none }
         set { size = newValue.rawValue }
     }
 
@@ -62,8 +62,8 @@ extension EquipmentModel {
         set { brand = newValue }
     }
 
-    var sortedCheckLog: [CheckModel] {
-        return (checkLog as! Set<CheckModel>).sorted { check1, check2 in
+    var sortedCheckLog: [Check] {
+        return (checkLog as! Set<Check>).sorted { check1, check2 in
             return check1.date! > check2.date!
         }
     }
@@ -110,7 +110,7 @@ extension EquipmentModel {
     }
 }
 
-extension CheckModel {
+extension Check {
     static func create(context: NSManagedObjectContext, date: Date) -> Self {
         let check = Self(context: context)
         check.id = UUID()

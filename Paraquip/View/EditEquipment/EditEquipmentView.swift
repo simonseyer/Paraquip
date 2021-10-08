@@ -10,7 +10,7 @@ import CoreData
 
 struct EditEquipmentView: View {
 
-    @ObservedObject var equipment: EquipmentModel
+    @ObservedObject var equipment: Equipment
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.dismiss) private var dismiss
@@ -52,7 +52,7 @@ struct EditEquipmentView: View {
                         .multilineTextAlignment(.trailing)
                 }
                 Picker(selection: $equipment.equipmentSize, label: Text("Size")) {
-                    ForEach(EquipmentModel.Size.allCases) { size in
+                    ForEach(Equipment.Size.allCases) { size in
                         Text(size.rawValue)
                             .tag(size)
                     }
@@ -109,7 +109,7 @@ struct EditEquipmentView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     if let date = lastCheckDate {
-                        let check = CheckModel(context: managedObjectContext)
+                        let check = Check(context: managedObjectContext)
                         check.id = UUID()
                         check.date = date
                         equipment.addToCheckLog(check)
@@ -118,7 +118,7 @@ struct EditEquipmentView: View {
                     if let url = manualURL {
                         do {
                             let data = try Data(contentsOf: url)
-                            let manual = ManualModel(context: managedObjectContext)
+                            let manual = Manual(context: managedObjectContext)
                             manual.data = data
                             equipment.manual = manual
                         } catch {
@@ -150,8 +150,8 @@ struct AddEquipmentView_Previews: PreviewProvider {
 
     static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
-    static var equipments: [EquipmentModel] {
-        persistentContainer.fakeProfile().equipment!.allObjects as! [EquipmentModel]
+    static var equipments: [Equipment] {
+        persistentContainer.fakeProfile().equipment!.allObjects as! [Equipment]
     }
 
     static var previews: some View {
@@ -161,7 +161,7 @@ struct AddEquipmentView_Previews: PreviewProvider {
             }
 
             NavigationView {
-                EditEquipmentView(equipment: ParagliderModel(context: persistentContainer.viewContext))
+                EditEquipmentView(equipment: Paraglider(context: persistentContainer.viewContext))
             }
 
             NavigationView {

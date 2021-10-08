@@ -10,7 +10,7 @@ import CoreData
 
 struct EditProfileView: View {
 
-    @ObservedObject var profile: ProfileModel
+    @ObservedObject var profile: Profile
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -18,7 +18,7 @@ struct EditProfileView: View {
         SortDescriptor(\.brand),
         SortDescriptor(\.name)
     ])
-    private var allEquipment: FetchedResults<EquipmentModel>
+    private var allEquipment: FetchedResults<Equipment>
 
     @ViewBuilder
     var attributionFooter: some View {
@@ -31,7 +31,7 @@ struct EditProfileView: View {
                 TextField("Name", text: $profile.profileName)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(ProfileModel.Icon.allCases) { icon in
+                        ForEach(Profile.Icon.allCases) { icon in
                             IconSelectionView(
                                 icon: icon,
                                 isSelected: icon == profile.profileIcon)
@@ -99,7 +99,7 @@ struct EdiProfileView_Previews: PreviewProvider {
 
 struct IconSelectionView: View {
 
-    let icon: ProfileModel.Icon
+    let icon: Profile.Icon
     let isSelected: Bool
 
     var body: some View {

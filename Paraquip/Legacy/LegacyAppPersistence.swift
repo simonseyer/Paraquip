@@ -33,12 +33,12 @@ class LegacyAppPersistence {
             return
         }
 
-        let profileModel = ProfileModel.create(context: managedObjectContext)
+        let profileModel = Profile.create(context: managedObjectContext)
         profileModel.name = NSLocalizedString("Equipment", comment: "")
         profileModel.profileIcon = .default
 
         for paraglider in profile.paraglider {
-            let paragliderModel = ParagliderModel.create(context: managedObjectContext)
+            let paragliderModel = Paraglider.create(context: managedObjectContext)
             paragliderModel.name = paraglider.name
             paragliderModel.brand = paraglider.brand
             paragliderModel.brandId = paraglider.brandId
@@ -48,13 +48,13 @@ class LegacyAppPersistence {
             profileModel.addToEquipment(paragliderModel)
 
             for check in paraglider.checkLog {
-                let checkModel = CheckModel.create(context: managedObjectContext, date: check.date)
+                let checkModel = Check.create(context: managedObjectContext, date: check.date)
                 paragliderModel.addToCheckLog(checkModel)
             }
         }
 
         for harness in profile.harnesses {
-            let harnessModel = HarnessModel.create(context: managedObjectContext)
+            let harnessModel = Harness.create(context: managedObjectContext)
             harnessModel.name = harness.name
             harnessModel.brand = harness.brand
             harnessModel.brandId = harness.brandId
@@ -63,13 +63,13 @@ class LegacyAppPersistence {
             profileModel.addToEquipment(harnessModel)
 
             for check in harness.checkLog {
-                let checkModel = CheckModel.create(context: managedObjectContext, date: check.date)
+                let checkModel = Check.create(context: managedObjectContext, date: check.date)
                 harnessModel.addToCheckLog(checkModel)
             }
         }
 
         for reserve in profile.reserves {
-            let reserveModel = ReserveModel.create(context: managedObjectContext)
+            let reserveModel = Reserve.create(context: managedObjectContext)
             reserveModel.name = reserve.name
             reserveModel.brand = reserve.brand
             reserveModel.brandId = reserve.brandId
@@ -78,7 +78,7 @@ class LegacyAppPersistence {
             profileModel.addToEquipment(reserveModel)
 
             for check in reserve.checkLog {
-                let checkModel = CheckModel.create(context: managedObjectContext, date: check.date)
+                let checkModel = Check.create(context: managedObjectContext, date: check.date)
                 reserveModel.addToCheckLog(checkModel)
             }
         }

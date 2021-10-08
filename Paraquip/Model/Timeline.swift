@@ -9,11 +9,11 @@ import Foundation
 
 enum TimelineEntry {
     case purchase(date: Date)
-    case check(check: CheckModel)
-    case nextCheck(urgency: EquipmentModel.CheckUrgency)
+    case check(check: Check)
+    case nextCheck(urgency: Equipment.CheckUrgency)
 }
 
-extension EquipmentModel {
+extension Equipment {
     var timeline: [TimelineEntry] {
         var timeline: [TimelineEntry] = []
 

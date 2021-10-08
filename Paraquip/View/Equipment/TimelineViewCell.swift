@@ -139,8 +139,8 @@ struct TimelineView_Previews: PreviewProvider {
     static let timelines: [[TimelineEntry]] = [
         [
             .nextCheck(urgency: .now),
-            .check(check: CheckModel.create(context: persistentContainer.viewContext, date: Date())),
-            .check(check: CheckModel.create(context: persistentContainer.viewContext, date: Date())),
+            .check(check: Check.create(context: persistentContainer.viewContext, date: Date())),
+            .check(check: Check.create(context: persistentContainer.viewContext, date: Date())),
             .purchase(date: Date())
         ],
         [
@@ -149,7 +149,7 @@ struct TimelineView_Previews: PreviewProvider {
         ],
         [
             .nextCheck(urgency: .later(Date())),
-            .check(check: CheckModel.create(context: persistentContainer.viewContext, date: Date())),
+            .check(check: Check.create(context: persistentContainer.viewContext, date: Date())),
         ],
         [
             .nextCheck(urgency: .never),

@@ -10,7 +10,7 @@ import CoreData
 
 struct EquipmentView: View {
 
-    @ObservedObject var equipment: EquipmentModel
+    @ObservedObject var equipment: Equipment
     @Environment(\.managedObjectContext) var managedObjectContext
 
     @State private var showingEditEquipment = false
@@ -90,7 +90,7 @@ struct EquipmentView: View {
             .sheet(isPresented: $showingLogCheck) {
                 LogCheckView() { date in
                     if let checkDate = date {
-                        let check = CheckModel(context: managedObjectContext)
+                        let check = Check(context: managedObjectContext)
                         check.id = UUID()
                         check.date = checkDate
                         equipment.addToCheckLog(check)
@@ -111,7 +111,7 @@ struct EquipmentView: View {
                     DocumentPicker() { url in
                         do {
                             let data = try Data(contentsOf: url)
-                            let manual = ManualModel(context: managedObjectContext)
+                            let manual = Manual(context: managedObjectContext)
                             manual.data = data
                             equipment.manual = manual
                             try managedObjectContext.save()
@@ -129,8 +129,8 @@ struct EquipmentView_Previews: PreviewProvider {
 
     static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
-    static var equipments: [EquipmentModel] {
-        persistentContainer.fakeProfile().equipment!.allObjects as! [EquipmentModel]
+    static var equipments: [Equipment] {
+        persistentContainer.fakeProfile().equipment!.allObjects as! [Equipment]
     }
 
     static var previews: some View {

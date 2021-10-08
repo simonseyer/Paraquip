@@ -10,13 +10,13 @@ import CoreData
 
 struct ProfileListView: View {
 
-    @Binding var presentedEquipment: EquipmentModel?
+    @Binding var presentedEquipment: Equipment?
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
-    private var profiles: FetchedResults<ProfileModel>
+    private var profiles: FetchedResults<Profile>
 
-    @State private var editProfile: ProfileModel?
-    @State private var deleteProfile: ProfileModel?
+    @State private var editProfile: Profile?
+    @State private var deleteProfile: Profile?
     @State private var showingDeleteAlert = false
     @State private var selectedProfile: UUID?
 
@@ -88,7 +88,7 @@ struct ProfileListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    editProfile = ProfileModel.create(context: managedObjectContext)
+                    editProfile = Profile.create(context: managedObjectContext)
                 } label: {
                     Image(systemName: "plus")
                 }

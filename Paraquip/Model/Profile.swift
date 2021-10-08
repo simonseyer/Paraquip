@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-extension ProfileModel {
+extension Profile {
     enum Icon: String, CaseIterable, Identifiable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
 
@@ -26,13 +26,13 @@ extension ProfileModel {
         set { name = newValue }
     }
 
-    var profileIcon: ProfileModel.Icon {
-        get { ProfileModel.Icon(rawValue: icon ?? "") ?? .default }
+    var profileIcon: Profile.Icon {
+        get { Profile.Icon(rawValue: icon ?? "") ?? .default }
         set { icon = newValue.rawValue }
     }
 
-    static func create(context: NSManagedObjectContext) -> ProfileModel {
-        let profile = ProfileModel(context: context)
+    static func create(context: NSManagedObjectContext) -> Profile {
+        let profile = Profile(context: context)
         profile.id = UUID()
         return profile
     }

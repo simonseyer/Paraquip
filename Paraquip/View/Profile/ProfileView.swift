@@ -10,16 +10,16 @@ import CoreData
 
 struct ProfileView: View {
 
-    @ObservedObject var profileModel: ProfileModel
-    @State private var newEquipment: EquipmentModel?
+    @ObservedObject var profileModel: Profile
+    @State private var newEquipment: Equipment?
     @Environment(\.managedObjectContext) var managedObjectContext
 
-    private let equipmentFetchRequest: FetchRequest<EquipmentModel>
-    private var equipments: FetchedResults<EquipmentModel> {
+    private let equipmentFetchRequest: FetchRequest<Equipment>
+    private var equipments: FetchedResults<Equipment> {
         equipmentFetchRequest.wrappedValue
     }
 
-    init(profileModel: ProfileModel) {
+    init(profileModel: Profile) {
         self.profileModel = profileModel
         self.equipmentFetchRequest = FetchRequest(
             sortDescriptors: [
@@ -65,19 +65,19 @@ struct ProfileView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(content: {
                     Button(action: {
-                        newEquipment = ParagliderModel.create(context: managedObjectContext)
+                        newEquipment = Paraglider.create(context: managedObjectContext)
                         profileModel.addToEquipment(newEquipment!)
                     }) {
                         Text("Paraglider")
                     }
                     Button(action: {
-                        newEquipment = HarnessModel.create(context: managedObjectContext)
+                        newEquipment = Harness.create(context: managedObjectContext)
                         profileModel.addToEquipment(newEquipment!)
                     }) {
                         Text("Harness")
                     }
                     Button(action: {
-                        newEquipment = ReserveModel.create(context: managedObjectContext)
+                        newEquipment = Reserve.create(context: managedObjectContext)
                         profileModel.addToEquipment(newEquipment!)
                     }) {
                         Text("Reserve")
@@ -108,7 +108,7 @@ struct ProfileView_Previews: PreviewProvider {
             }
 
             NavigationView {
-                ProfileView(profileModel: ProfileModel.create(context: persistentContainer.viewContext))
+                ProfileView(profileModel: Profile.create(context: persistentContainer.viewContext))
             }
         }
         .environment(\.locale, .init(identifier: "de"))

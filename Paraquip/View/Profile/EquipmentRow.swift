@@ -10,7 +10,7 @@ import CoreData
 
 struct EquipmentRow: View {
 
-    @ObservedObject var equipment: EquipmentModel
+    @ObservedObject var equipment: Equipment
     @Environment(\.locale) var locale
 
     var body: some View {
@@ -56,8 +56,8 @@ struct EquipmentRow_Previews: PreviewProvider {
         }
     }
 
-    private static func equipment(for brand: Brand) -> EquipmentModel {
-        let equipment = ReserveModel.create(context: persistentContainer.viewContext)
+    private static func equipment(for brand: Brand) -> Equipment {
+        let equipment = Reserve.create(context: persistentContainer.viewContext)
         equipment.equipmentBrand = brand
         equipment.name = brand.name
         return equipment

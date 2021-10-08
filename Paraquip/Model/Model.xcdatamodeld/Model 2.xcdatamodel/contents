@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Check" representedClassName="CheckModel" syncable="YES" codeGenerationType="class">
+    <entity name="Check" representedClassName="Check" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" inverseName="checkLog" inverseEntity="Equipment"/>
     </entity>
-    <entity name="Equipment" representedClassName="EquipmentModel" isAbstract="YES" syncable="YES" codeGenerationType="class">
+    <entity name="Equipment" representedClassName="Equipment" isAbstract="YES" syncable="YES" codeGenerationType="class">
         <attribute name="brand" attributeType="String"/>
         <attribute name="brandId" optional="YES" attributeType="String"/>
         <attribute name="checkCycle" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -17,19 +17,19 @@
         <relationship name="manual" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Manual" inverseName="equipment" inverseEntity="Manual"/>
         <relationship name="profiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Profile" inverseName="equipment" inverseEntity="Profile"/>
     </entity>
-    <entity name="Harness" representedClassName="HarnessModel" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
-    <entity name="Manual" representedClassName="ManualModel" syncable="YES" codeGenerationType="class">
+    <entity name="Harness" representedClassName="Harness" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
+    <entity name="Manual" representedClassName="Manual" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" inverseName="manual" inverseEntity="Equipment"/>
     </entity>
-    <entity name="Paraglider" representedClassName="ParagliderModel" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
-    <entity name="Profile" representedClassName="ProfileModel" syncable="YES" codeGenerationType="class">
+    <entity name="Paraglider" representedClassName="Paraglider" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
+    <entity name="Profile" representedClassName="Profile" syncable="YES" codeGenerationType="class">
         <attribute name="icon" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="equipment" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Equipment" inverseName="profiles" inverseEntity="Equipment"/>
     </entity>
-    <entity name="Reserve" representedClassName="ReserveModel" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
+    <entity name="Reserve" representedClassName="Reserve" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <elements>
         <element name="Check" positionX="30.0057373046875" positionY="352.1790771484375" width="128" height="74"/>
         <element name="Equipment" positionX="-135" positionY="-54" width="128" height="179"/>

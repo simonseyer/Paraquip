@@ -18,13 +18,13 @@ class EquipmentTests: XCTestCase {
         persistentContainer = NSPersistentContainer.fake(name: "Model")
     }
 
-    private func equipment(checkCycle: Int = 1, checkLog: [Date] = [], purchaseDate: Date? = nil) -> EquipmentModel {
-        let equipment = ReserveModel(context: persistentContainer.viewContext)
+    private func equipment(checkCycle: Int = 1, checkLog: [Date] = [], purchaseDate: Date? = nil) -> Equipment {
+        let equipment = Reserve(context: persistentContainer.viewContext)
         equipment.checkCycle = Int16(checkCycle)
         equipment.purchaseDate = purchaseDate
 
         for check in checkLog {
-            equipment.addToCheckLog(CheckModel.create(context: persistentContainer.viewContext, date: check))
+            equipment.addToCheckLog(Check.create(context: persistentContainer.viewContext, date: check))
         }
 
         return equipment

@@ -17,7 +17,7 @@ struct MainView: View {
     @EnvironmentObject var notificationService: NotificationService
 
     @State private var selectedTab: Tabs = .profile
-    @State private var selectedEquipment: EquipmentModel? = nil
+    @State private var selectedEquipment: Equipment? = nil
 
     var body: some View {
         TabView(selection: $selectedTab) {

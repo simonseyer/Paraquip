@@ -20,7 +20,7 @@ struct NotificationState {
 enum NavigationState: Equatable {
     case none
     case notificationSettings
-    case equipment(EquipmentModel)
+    case equipment(Equipment)
 }
 
 fileprivate extension NotificationState {
@@ -114,7 +114,7 @@ class NotificationService: ObservableObject {
             .sink { [weak self] equipment in
                 self?.logger.info("Handling notification for equipment: \(equipment)")
                 
-                let fetchRequest = EquipmentModel.fetchRequest()
+                let fetchRequest = Equipment.fetchRequest()
                 fetchRequest.predicate = .init(format: "id == %@", equipment.uuidString)
                 fetchRequest.fetchLimit = 1
                 let equipmentModel = try? self?.managedObjectContext.fetch(fetchRequest).first
@@ -138,8 +138,8 @@ class NotificationService: ObservableObject {
     }
 
     private func scheduleNotifications(configuration: [NotificationConfig]) {
-        let fetchRequest = EquipmentModel.fetchRequest()
-        let equipment: [EquipmentModel] = (try? managedObjectContext.fetch(fetchRequest)) ?? []
+        let fetchRequest = Equipment.fetchRequest()
+        let equipment: [Equipment] = (try? managedObjectContext.fetch(fetchRequest)) ?? []
         scheduleNotifications(for: equipment, configuration: configuration)
     }
 
@@ -184,7 +184,7 @@ class NotificationService: ObservableObject {
         navigationState = .none
     }
 
-    private func scheduleNotifications(for equipment: [EquipmentModel], configuration: [NotificationConfig]) {
+    private func scheduleNotifications(for equipment: [Equipment], configuration: [NotificationConfig]) {
         notifications.reset()
 
         guard state.isEnabled else {
@@ -202,7 +202,7 @@ class NotificationService: ObservableObject {
         updateBadge(for: equipment)
     }
 
-    private func scheduleNotification(for equipment: EquipmentModel, config: NotificationConfig) {
+    private func scheduleNotification(for equipment: Equipment, config: NotificationConfig) {
         guard let nextCheck = equipment.nextCheck else {
             logger.info("Skipping notifications for equipment since check is off: \(equipment.id!)")
             return
@@ -237,7 +237,7 @@ class NotificationService: ObservableObject {
         }
     }
 
-    private func updateBadge(for equipment: [EquipmentModel]) {
+    private func updateBadge(for equipment: [Equipment]) {
         let badgeCount = equipment.filter {
             if case .now = $0.checkUrgency {
                 return true

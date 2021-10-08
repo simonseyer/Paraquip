@@ -42,7 +42,7 @@ struct ParaquipApp: App {
     }
 
     private func migrateDatabase(context: NSManagedObjectContext) {
-        let profilesFetchRequest = ProfileModel.fetchRequest()
+        let profilesFetchRequest = Profile.fetchRequest()
         let profiles = (try? context.fetch(profilesFetchRequest)) ?? []
 
         guard profiles.count == 1,
@@ -54,7 +54,7 @@ struct ParaquipApp: App {
 
         profile.name = NSLocalizedString("Equipment", comment: "")
 
-        let equipmentFetchRequest = EquipmentModel.fetchRequest()
+        let equipmentFetchRequest = Equipment.fetchRequest()
         let equipment = (try? context.fetch(equipmentFetchRequest)) ?? []
 
         for equipment in equipment {
@@ -65,12 +65,12 @@ struct ParaquipApp: App {
     }
 
     private func initializeDatabase(context: NSManagedObjectContext) {
-        let profiles = (try? context.count(for: ProfileModel.fetchRequest())) ?? 0
+        let profiles = (try? context.count(for: Profile.fetchRequest())) ?? 0
         guard profiles == 0 else {
             return
         }
 
-        let profile = ProfileModel.create(context: context)
+        let profile = Profile.create(context: context)
         profile.name = NSLocalizedString("Equipment", comment: "")
 
         try? context.save()
