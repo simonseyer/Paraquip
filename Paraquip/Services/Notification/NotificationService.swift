@@ -1,5 +1,5 @@
 //
-//  NotificationsStore.swift
+//  NotificationService.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 20.05.21.
@@ -46,7 +46,7 @@ struct NotificationConfig: Identifiable, Hashable {
     var multiplier: Int
 }
 
-class NotificationsStore: ObservableObject {
+class NotificationService: ObservableObject {
 
     private let persistence: NotificationPersistence
     private let notifications: NotificationPlugin

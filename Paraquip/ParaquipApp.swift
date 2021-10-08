@@ -12,12 +12,12 @@ import CoreData
 struct ParaquipApp: App {
 
     private let container: NSPersistentContainer
-    private let notificationsStore: NotificationsStore
+    private let notificationService: NotificationService
 
     init() {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
             self.container = NSPersistentContainer.fake(name: "Model")
-            self.notificationsStore = NotificationsStore(
+            self.notificationService = NotificationService(
                 state: .fake(),
                 managedObjectContext: container.viewContext,
                 persistence: NotificationPersistence(),
@@ -32,7 +32,7 @@ struct ParaquipApp: App {
             }
 
             self.container = container
-            self.notificationsStore = NotificationsStore(managedObjectContext: container.viewContext)
+            self.notificationService = NotificationService(managedObjectContext: container.viewContext)
 
             let migrationContext = container.newBackgroundContext()
             LegacyAppPersistence().migrate(into: migrationContext)
@@ -78,8 +78,8 @@ struct ParaquipApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(notificationsStore)
+            MainView()
+                .environmentObject(notificationService)
                 .environment(\.managedObjectContext, container.viewContext)
         }
     }

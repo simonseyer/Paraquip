@@ -1,6 +1,6 @@
 //
-//  EditSetView.swift
-//  EditSetView
+//  EditProfileView.swift
+//  EditProfileView
 //
 //  Created by Simon Seyer on 26.08.21.
 //
@@ -8,9 +8,9 @@
 import SwiftUI
 import CoreData
 
-struct EditSetView: View {
+struct EditProfileView: View {
 
-    @ObservedObject var set: ProfileModel
+    @ObservedObject var profile: ProfileModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -28,15 +28,15 @@ struct EditSetView: View {
     var body: some View {
         Form {
             Section(footer: attributionFooter) {
-                TextField("Name", text: $set.profileName)
+                TextField("Name", text: $profile.profileName)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
                         ForEach(ProfileModel.Icon.allCases) { icon in
                             IconSelectionView(
                                 icon: icon,
-                                isSelected: icon == set.profileIcon)
+                                isSelected: icon == profile.profileIcon)
                                 .onTapGesture {
-                                    set.profileIcon = icon
+                                    profile.profileIcon = icon
                                 }
                         }
                     }
@@ -46,10 +46,10 @@ struct EditSetView: View {
             Section("Equipment") {
                 ForEach(allEquipment, id: \.id) { equipment in
                     Button(action: {
-                        if set.equipment?.contains(equipment) ?? false {
-                            set.removeFromEquipment(equipment)
+                        if profile.equipment?.contains(equipment) ?? false {
+                            profile.removeFromEquipment(equipment)
                         } else {
-                            set.addToEquipment(equipment)
+                            profile.addToEquipment(equipment)
                         }
                     }) {
                         HStack {
@@ -57,7 +57,7 @@ struct EditSetView: View {
                                 .foregroundColor(.secondary)
                             Text(equipment.equipmentName)
                             Spacer()
-                            if set.equipment?.contains(equipment) ?? false {
+                            if profile.equipment?.contains(equipment) ?? false {
                                 Image(systemName: "checkmark")
                                     .font(.system(.body).weight(.medium))
                                     .foregroundColor(.accentColor)
@@ -67,7 +67,7 @@ struct EditSetView: View {
                 }
             }
         }
-        .navigationTitle(set.profileName.isEmpty ? "New Set" : set.profileName)
+        .navigationTitle(profile.profileName.isEmpty ? "New Set" : profile.profileName)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
@@ -85,13 +85,13 @@ struct EditSetView: View {
     }
 }
 
-struct EdiSetView_Previews: PreviewProvider {
+struct EdiProfileView_Previews: PreviewProvider {
 
     static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
         NavigationView {
-            EditSetView(set: persistentContainer.fakeProfile())
+            EditProfileView(profile: persistentContainer.fakeProfile())
                 .environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }

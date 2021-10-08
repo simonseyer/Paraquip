@@ -14,11 +14,11 @@ struct NotificationSettingsView: View {
     @State private var configurationSectionShown = false
     @State private var editMode: EditMode = .inactive
 
-    @EnvironmentObject var store: NotificationsStore
+    @EnvironmentObject var notificationService: NotificationService
 
     var footer: some View {
         return HStack {
-            if store.state.wasRequestRejected {
+            if notificationService.state.wasRequestRejected {
                 Label("notification_denied_info", systemImage: "exclamationmark.triangle.fill")
             } else {
                 Text("notification_info")
@@ -31,22 +31,22 @@ struct NotificationSettingsView: View {
             Section(header: Text(""), footer: footer.padding([.leading, .trailing])) {
                 Toggle("Enable", isOn: $notificationsOn.animation())
                     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                    .disabled(store.state.wasRequestRejected)
+                    .disabled(notificationService.state.wasRequestRejected)
             }
             
             if configurationSectionShown {
                 Section {
-                    ForEach(store.state.configuration) { config in
+                    ForEach(notificationService.state.configuration) { config in
                         NotificationEntryView(
                             config: config
                         ) { newConfig in
-                            store.update(notificationConfig: newConfig)
+                            notificationService.update(notificationConfig: newConfig)
                         }
                         .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
                     }
                     .onDelete(perform: { indexSet in
-                        store.removeNotificationConfigs(atOffsets: indexSet)
-                        if store.state.configuration.isEmpty {
+                        notificationService.removeNotificationConfigs(atOffsets: indexSet)
+                        if notificationService.state.configuration.isEmpty {
                             withAnimation {
                                 editMode = .inactive
                             }
@@ -54,7 +54,7 @@ struct NotificationSettingsView: View {
                     })
                     Button(action: {
                         withAnimation {
-                            store.addNotificationConfig()
+                            notificationService.addNotificationConfig()
                         }
                     }) {
                         HStack {
@@ -80,21 +80,21 @@ struct NotificationSettingsView: View {
         .environment(\.editMode, $editMode)
         .onChange(of: notificationsOn) { value in
             if value {
-                store.enable {
+                notificationService.enable {
                     withAnimation {
-                        notificationsOn = store.state.isEnabled
+                        notificationsOn = notificationService.state.isEnabled
                     }
                 }
             } else {
-                store.disable()
+                notificationService.disable()
             }
         }
         .onAppear {
-            let isEnabled = store.state.isEnabled
+            let isEnabled = notificationService.state.isEnabled
             notificationsOn = isEnabled
             configurationSectionShown = isEnabled
         }
-        .onChange(of: store.state.isEnabled) { value in
+        .onChange(of: notificationService.state.isEnabled) { value in
             withAnimation {
                 notificationsOn = value
                 configurationSectionShown = value
@@ -102,7 +102,7 @@ struct NotificationSettingsView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if store.state.isEnabled && !store.state.configuration.isEmpty {
+                if notificationService.state.isEnabled && !notificationService.state.configuration.isEmpty {
                     Button(editMode == .inactive ? "Edit" : "Done") {
                         withAnimation {
                             editMode = editMode == .active ? .inactive : .active
@@ -122,7 +122,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
         NavigationView {
             NotificationSettingsView()
                 .environmentObject(
-                    NotificationsStore(state: .init(
+                    NotificationService(state: .init(
                                         isEnabled: true,
                                         wasRequestRejected: false,
                                         configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
@@ -135,7 +135,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
         NavigationView {
             NotificationSettingsView()
                 .environmentObject(
-                    NotificationsStore(state: .init(
+                    NotificationService(state: .init(
                                         isEnabled: false,
                                         wasRequestRejected: true,
                                         configuration: []),

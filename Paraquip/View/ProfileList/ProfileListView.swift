@@ -1,6 +1,6 @@
 //
-//  SetView.swift
-//  SetView
+//  ProfileListView.swift
+//  ProfileListView
 //
 //  Created by Simon Seyer on 26.08.21.
 //
@@ -8,15 +8,15 @@
 import SwiftUI
 import CoreData
 
-struct SetView: View {
+struct ProfileListView: View {
 
     @Binding var presentedEquipment: EquipmentModel?
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<ProfileModel>
 
-    @State private var editSet: ProfileModel?
-    @State private var deleteSet: ProfileModel?
+    @State private var editProfile: ProfileModel?
+    @State private var deleteProfile: ProfileModel?
     @State private var showingDeleteAlert = false
     @State private var selectedProfile: UUID?
 
@@ -42,14 +42,14 @@ struct SetView: View {
                 .padding([.top, .bottom])
                 .swipeActions {
                     Button {
-                        editSet = profile
+                        editProfile = profile
                     } label: {
                         Label("Edit", systemImage: "pencil")
                     }
                     .tint(.blue)
 
                     Button {
-                        deleteSet = profile
+                        deleteProfile = profile
                         showingDeleteAlert = true
                     } label: {
                         Label("Delete", systemImage: "trash")
@@ -64,9 +64,9 @@ struct SetView: View {
             }
         }
         .navigationTitle("All Sets")
-        .sheet(item: $editSet) { profile in
+        .sheet(item: $editProfile) { profile in
             NavigationView {
-                EditSetView(set: profile)
+                EditProfileView(profile: profile)
             }
         }
         .sheet(item: $presentedEquipment) { equipment in
@@ -74,21 +74,21 @@ struct SetView: View {
                 EquipmentView(equipment: equipment)
             }
         }
-        .alert("Delete set", isPresented: $showingDeleteAlert, presenting: deleteSet) { selectedSet in
+        .alert("Delete set", isPresented: $showingDeleteAlert, presenting: deleteProfile) { selectedProfile in
             Button(role: .destructive) {
                 withAnimation {
-                    managedObjectContext.delete(selectedSet)
+                    managedObjectContext.delete(selectedProfile)
                     try? managedObjectContext.save()
                 }
             } label: {
-                Text("Delete \(selectedSet.name ?? "")")
+                Text("Delete \(selectedProfile.name ?? "")")
             }
             Button("Cancel", role: .cancel) { }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    editSet = ProfileModel.create(context: managedObjectContext)
+                    editProfile = ProfileModel.create(context: managedObjectContext)
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -97,14 +97,13 @@ struct SetView: View {
     }
 }
 
-
 struct MainView_Previews: PreviewProvider {
 
     static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
         NavigationView {
-            SetView(presentedEquipment: .constant(nil))
+            ProfileListView(presentedEquipment: .constant(nil))
                 .environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }

@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 09.04.21.
@@ -8,13 +8,13 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
+struct MainView: View {
 
     enum Tabs: String {
         case profile, notifications
     }
 
-    @EnvironmentObject var notificationsStore: NotificationsStore
+    @EnvironmentObject var notificationService: NotificationService
 
     @State private var selectedTab: Tabs = .profile
     @State private var selectedEquipment: EquipmentModel? = nil
@@ -22,7 +22,7 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                SetView(presentedEquipment: $selectedEquipment)
+                ProfileListView(presentedEquipment: $selectedEquipment)
             }
             .tabItem {
                 Label("Equipment", systemImage: "book.closed.fill")
@@ -37,7 +37,7 @@ struct ContentView: View {
             }
             .tag(Tabs.notifications)
         }
-        .onChange(of: notificationsStore.navigationState, perform: { value in
+        .onChange(of: notificationService.navigationState, perform: { value in
             switch value {
             case .notificationSettings:
                 selectedTab = .notifications
@@ -47,7 +47,7 @@ struct ContentView: View {
             case .none:
                 break
             }
-            notificationsStore.resetNavigationState()
+            notificationService.resetNavigationState()
         })
     }
 }
@@ -57,9 +57,9 @@ struct ContentView_Previews: PreviewProvider {
     static let persistentContainer = NSPersistentContainer.fake(name: "Model")
 
     static var previews: some View {
-        ContentView()
+        MainView()
             .environment(\.managedObjectContext, persistentContainer.viewContext)
-            .environmentObject(NotificationsStore(managedObjectContext: persistentContainer.viewContext))
+            .environmentObject(NotificationService(managedObjectContext: persistentContainer.viewContext))
     }
 }
 
