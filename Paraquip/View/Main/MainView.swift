@@ -17,12 +17,12 @@ struct MainView: View {
     @EnvironmentObject var notificationService: NotificationService
 
     @State private var selectedTab: Tabs = .profile
-    @State private var selectedEquipment: Equipment? = nil
+    @State private var presentedEquipment: Equipment? = nil
 
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
-                ProfileListView(presentedEquipment: $selectedEquipment)
+                ProfileListView()
             }
             .tabItem {
                 Label("Equipment", systemImage: "book.closed.fill")
@@ -43,12 +43,24 @@ struct MainView: View {
                 selectedTab = .notifications
             case .equipment(let equipmentId):
                 selectedTab = .profile
-                selectedEquipment = equipmentId
+                presentedEquipment = equipmentId
             case .none:
                 break
             }
             notificationService.resetNavigationState()
         })
+        .sheet(item: $presentedEquipment) { equipment in
+            NavigationView {
+                EquipmentView(equipment: equipment)
+                    .toolbar {
+                        ToolbarItem(placement: .navigation) {
+                            Button("Close") {
+                                presentedEquipment = nil
+                            }
+                        }
+                    }
+            }
+        }
     }
 }
 

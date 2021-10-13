@@ -10,8 +10,6 @@ import CoreData
 
 struct ProfileListView: View {
 
-    @Binding var presentedEquipment: Equipment?
-
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
 
@@ -69,11 +67,6 @@ struct ProfileListView: View {
                 EditProfileView(profile: profile)
             }
         }
-        .sheet(item: $presentedEquipment) { equipment in
-            NavigationView {
-                EquipmentView(equipment: equipment)
-            }
-        }
         .alert("Delete set", isPresented: $showingDeleteAlert, presenting: deleteProfile) { selectedProfile in
             Button(role: .destructive) {
                 // TODO: fix deletion animation
@@ -100,7 +93,7 @@ struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-            ProfileListView(presentedEquipment: .constant(nil))
+            ProfileListView()
                 .environment(\.managedObjectContext, CoreData.previewContext)
         }
     }
