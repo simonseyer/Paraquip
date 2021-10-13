@@ -59,7 +59,7 @@ struct ProfileView: View {
                 }
             }
         }
-        .listStyle(InsetGroupedListStyle())
+        .listStyle(.insetGrouped)
         .navigationTitle(profileModel.name ?? "")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

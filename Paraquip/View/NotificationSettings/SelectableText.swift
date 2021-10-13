@@ -21,7 +21,7 @@ struct SelectableText<T: StringProtocol>: View {
                             leading: 14,
                             bottom: 5,
                             trailing: 14))
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .background(Color(UIColor.systemGray6))
         .cornerRadius(6)
         .foregroundColor(isSelected ? .accentColor : nil)

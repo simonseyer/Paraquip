@@ -16,22 +16,22 @@ struct NotificationSettingsView: View {
 
     @EnvironmentObject var notificationService: NotificationService
 
-    var footer: some View {
-        return HStack {
-            if notificationService.state.wasRequestRejected {
-                Label("notification_denied_info", systemImage: "exclamationmark.triangle.fill")
-            } else {
-                Text("notification_info")
-            }
-        }
-    }
-
     var body: some View {
         Form {
-            Section(header: Text(""), footer: footer.padding([.leading, .trailing])) {
+            Section {
                 Toggle("Enable", isOn: $notificationsOn.animation())
                     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                     .disabled(notificationService.state.wasRequestRejected)
+            } header: {
+                Text("")
+            } footer: {
+                HStack {
+                    if notificationService.state.wasRequestRejected {
+                        Label("notification_denied_info", systemImage: "exclamationmark.triangle.fill")
+                    } else {
+                        Text("notification_info")
+                    }
+                }
             }
             
             if configurationSectionShown {

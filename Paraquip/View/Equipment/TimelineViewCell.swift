@@ -163,7 +163,7 @@ struct TimelineView_Previews: PreviewProvider {
                         TimelineViewCell(timelineEntry: timelineEntry, logAction: {})
                     }
                 }
-                .listStyle(InsetGroupedListStyle())
+                .listStyle(.insetGrouped)
             }
         }
     }

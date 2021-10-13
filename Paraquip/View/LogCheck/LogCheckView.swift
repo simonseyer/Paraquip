@@ -16,7 +16,7 @@ struct LogCheckView: View {
     var body: some View {
         VStack {
             DatePicker("", selection: $date, displayedComponents: .date)
-                .datePickerStyle(GraphicalDatePickerStyle())
+                .datePickerStyle(.graphical)
 
             Button(action: { completion(date) }) {
                 Text( "Log check")
@@ -25,7 +25,7 @@ struct LogCheckView: View {
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.accentColor))
                     .foregroundColor(.white)
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(.plain)
 
             Button("Cancel") { completion(nil) }
                 .padding()

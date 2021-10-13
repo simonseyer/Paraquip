@@ -75,7 +75,7 @@ struct EquipmentView: View {
                     })
                 }
             }
-            .listStyle(InsetGroupedListStyle())
+            .listStyle(.insetGrouped)
             .toolbar {
                 Button("Edit") {
                     showingEditEquipment = true

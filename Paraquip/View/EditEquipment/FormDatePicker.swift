@@ -55,7 +55,7 @@ struct FormDatePicker: View {
                     DatePicker("",
                                selection: $selectedDate,
                                displayedComponents: .date)
-                        .datePickerStyle(GraphicalDatePickerStyle())
+                        .datePickerStyle(.graphical)
                 }
             }
         }

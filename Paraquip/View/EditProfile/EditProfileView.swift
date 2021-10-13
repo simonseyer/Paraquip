@@ -20,14 +20,9 @@ struct EditProfileView: View {
     ])
     private var allEquipment: FetchedResults<Equipment>
 
-    @ViewBuilder
-    var attributionFooter: some View {
-        Text("Icons by Font Awesome used without modification. See [license](https://fontawesome.com/license).")
-    }
-
     var body: some View {
         Form {
-            Section(footer: attributionFooter) {
+            Section {
                 TextField("Name", text: $profile.profileName)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
@@ -41,6 +36,8 @@ struct EditProfileView: View {
                         }
                     }
                 }
+            } footer: {
+                Text("Icons by Font Awesome used without modification. See [license](https://fontawesome.com/license).")
             }
 
             Section("Equipment") {
