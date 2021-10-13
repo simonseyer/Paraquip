@@ -98,12 +98,10 @@ struct ProfileListView: View {
 
 struct MainView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var previews: some View {
         NavigationView {
             ProfileListView(presentedEquipment: .constant(nil))
-                .environment(\.managedObjectContext, persistentContainer.viewContext)
+                .environment(\.managedObjectContext, CoreData.previewContext)
         }
     }
 }

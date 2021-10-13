@@ -54,12 +54,10 @@ struct MainView: View {
 
 struct ContentView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var previews: some View {
         MainView()
-            .environment(\.managedObjectContext, persistentContainer.viewContext)
-            .environmentObject(NotificationService(managedObjectContext: persistentContainer.viewContext))
+            .environment(\.managedObjectContext, CoreData.previewContext)
+            .environmentObject(NotificationService(managedObjectContext: CoreData.previewContext))
     }
 }
 

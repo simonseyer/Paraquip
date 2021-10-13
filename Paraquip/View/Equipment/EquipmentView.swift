@@ -126,10 +126,8 @@ struct EquipmentView: View {
 
 struct EquipmentView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var equipments: [Equipment] {
-        persistentContainer.fakeProfile().equipment!.allObjects as! [Equipment]
+        CoreData.fakeProfile.equipment!.allObjects as! [Equipment]
     }
 
     static var previews: some View {
@@ -143,6 +141,6 @@ struct EquipmentView_Previews: PreviewProvider {
             }
         }
         .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, persistentContainer.viewContext)
+        .environment(\.managedObjectContext, CoreData.previewContext)
     }
 }

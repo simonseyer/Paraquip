@@ -8,6 +8,19 @@
 import Foundation
 import CoreData
 
+struct CoreData {
+    static let inMemoryPersistentContainer: NSPersistentContainer = .fake(name: "Model")
+
+    static var previewContext: NSManagedObjectContext {
+        inMemoryPersistentContainer.viewContext
+    }
+
+    static var fakeProfile: Profile {
+        let fetchRequest = Profile.fetchRequest()
+        return try! previewContext.fetch(fetchRequest).first!
+    }
+}
+
 extension NSPersistentContainer {
     static func fake(name: String) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: name)
@@ -61,7 +74,7 @@ extension NSPersistentContainer {
 
             let check = Check(context: viewContext)
             check.id = UUID()
-            check.date = dateFormatter.date(from: "14.07.2021")!
+            check.date = dateFormatter.date(from: "10.07.2021")!
             equipment.addToCheckLog(check)
         }
 
@@ -99,11 +112,6 @@ extension NSPersistentContainer {
         }
 
         try! viewContext.save()
-    }
-
-    func fakeProfile() -> Profile {
-        let fetchRequest = Profile.fetchRequest()
-        return try! viewContext.fetch(fetchRequest).first!
     }
 }
 

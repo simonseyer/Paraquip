@@ -46,8 +46,6 @@ struct EquipmentRow_Previews: PreviewProvider {
         Brand.allCases
     }
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var previews: some View {
         List {
             ForEach(Brand.allCases) { brand in
@@ -57,7 +55,7 @@ struct EquipmentRow_Previews: PreviewProvider {
     }
 
     private static func equipment(for brand: Brand) -> Equipment {
-        let equipment = Reserve.create(context: persistentContainer.viewContext)
+        let equipment = Reserve.create(context: CoreData.previewContext)
         equipment.equipmentBrand = brand
         equipment.name = brand.name
         return equipment

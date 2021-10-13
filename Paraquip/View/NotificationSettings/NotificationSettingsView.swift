@@ -116,8 +116,6 @@ struct NotificationSettingsView: View {
 
 struct NotificationSettingsView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var previews: some View {
         NavigationView {
             NotificationSettingsView()
@@ -126,7 +124,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: true,
                                         wasRequestRejected: false,
                                         configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
-                                       managedObjectContext: persistentContainer.viewContext,
+                                       managedObjectContext: CoreData.previewContext,
                                        notifications: FakeNotificationPlugin()
                     )
                 )
@@ -139,7 +137,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: false,
                                         wasRequestRejected: true,
                                         configuration: []),
-                                       managedObjectContext: persistentContainer.viewContext,
+                                       managedObjectContext: CoreData.previewContext,
                                        notifications: FakeNotificationPlugin()
                     )
                 )

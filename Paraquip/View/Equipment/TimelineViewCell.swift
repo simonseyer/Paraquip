@@ -134,13 +134,11 @@ struct TimelineVisual: View {
 
 struct TimelineView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static let timelines: [[TimelineEntry]] = [
         [
             .nextCheck(urgency: .now),
-            .check(check: Check.create(context: persistentContainer.viewContext, date: Date())),
-            .check(check: Check.create(context: persistentContainer.viewContext, date: Date())),
+            .check(check: Check.create(context: CoreData.previewContext, date: Date())),
+            .check(check: Check.create(context: CoreData.previewContext, date: Date())),
             .purchase(date: Date())
         ],
         [
@@ -149,7 +147,7 @@ struct TimelineView_Previews: PreviewProvider {
         ],
         [
             .nextCheck(urgency: .later(Date())),
-            .check(check: Check.create(context: persistentContainer.viewContext, date: Date())),
+            .check(check: Check.create(context: CoreData.previewContext, date: Date())),
         ],
         [
             .nextCheck(urgency: .never),

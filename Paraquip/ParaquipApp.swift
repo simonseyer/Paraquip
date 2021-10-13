@@ -18,13 +18,16 @@ struct ParaquipApp: App {
 
     init() {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
-            self.container = NSPersistentContainer.fake(name: "Model")
+            self.container = CoreData.inMemoryPersistentContainer
             self.notificationService = NotificationService(
                 state: .fake(),
                 managedObjectContext: container.viewContext,
                 persistence: NotificationPersistence(),
                 notifications: FakeNotificationPlugin()
             )
+        } else if ProcessInfo.processInfo.environment["isNotificationTest"] == "true" {
+            self.container = CoreData.inMemoryPersistentContainer
+            self.notificationService = NotificationService(managedObjectContext: container.viewContext)
         } else {
             let container = NSPersistentContainer(name: "Model")
             container.loadPersistentStores { description, error in

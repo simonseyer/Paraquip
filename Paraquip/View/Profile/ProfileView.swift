@@ -97,19 +97,17 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var previews: some View {
         Group {
             NavigationView {
-                ProfileView(profileModel: persistentContainer.fakeProfile())
+                ProfileView(profileModel: CoreData.fakeProfile)
             }
 
             NavigationView {
-                ProfileView(profileModel: Profile.create(context: persistentContainer.viewContext))
+                ProfileView(profileModel: Profile.create(context: CoreData.previewContext))
             }
         }
         .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, persistentContainer.viewContext)
+        .environment(\.managedObjectContext, CoreData.previewContext)
     }
 }

@@ -85,12 +85,10 @@ struct EditProfileView: View {
 
 struct EdiProfileView_Previews: PreviewProvider {
 
-    static let persistentContainer = NSPersistentContainer.fake(name: "Model")
-
     static var previews: some View {
         NavigationView {
-            EditProfileView(profile: persistentContainer.fakeProfile())
-                .environment(\.managedObjectContext, persistentContainer.viewContext)
+            EditProfileView(profile: CoreData.fakeProfile)
+                .environment(\.managedObjectContext, CoreData.previewContext)
         }
     }
 }
