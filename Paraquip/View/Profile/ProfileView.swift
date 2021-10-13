@@ -60,10 +60,10 @@ struct ProfileView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(profileModel.name ?? "")
+        .navigationTitle(profileModel.profileName)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Menu(content: {
+                Menu {
                     Button(action: {
                         newEquipment = Paraglider.create(context: managedObjectContext)
                         profileModel.addToEquipment(newEquipment!)
@@ -82,11 +82,9 @@ struct ProfileView: View {
                     }) {
                         Text("Reserve")
                     }
-                },
-                label: {
+                } label: {
                     Image(systemName: "plus")
-
-                })
+                }
             }
         }
         .sheet(item: $newEquipment) { equipment in
