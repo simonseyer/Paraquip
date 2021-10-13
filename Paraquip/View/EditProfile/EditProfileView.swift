@@ -37,7 +37,7 @@ struct EditProfileView: View {
                     }
                 }
             } footer: {
-                Text("Icons by Font Awesome used without modification. See [license](https://fontawesome.com/license).")
+                Text("icon_attribution")
             }
 
             Section("Equipment") {
@@ -64,7 +64,7 @@ struct EditProfileView: View {
                 }
             }
         }
-        .navigationTitle(profile.profileName.isEmpty ? "New Set" : profile.profileName)
+        .navigationTitle(profile.profileName.isEmpty ? NSLocalizedString("New Set", comment: "") : profile.profileName)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {

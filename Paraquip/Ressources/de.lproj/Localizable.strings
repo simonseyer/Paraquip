@@ -15,6 +15,13 @@
 "Equipment" = "Ausrüstung";
 "Notifications" = "Benachrichtungen";
 
+// Profile List View
+"All Sets" = "Alle Sets";
+
+// Edit Profile View
+"icon_attribution" = "Icons von Font Awesome (ohne Modifikation) — siehe [Lizenz](https://fontawesome.com/license)";
+"New Set" = "Neues Set";
+
 // Profile View
 "Check now" = "Jetzt checken";
 "profile_empty_text" = "Füge mit dem + oben rechts deine Ausrüstung hinzu";
@@ -34,6 +41,7 @@
 "Size %@" = "Größe %@";
 "Manual" = "Betriebsanleitung";
 "No check needed" = "Kein Check nötig";
+"Close" = "Schließen";
 
 // Edit Equipment View
 "Cancel" = "Abbrechen";
