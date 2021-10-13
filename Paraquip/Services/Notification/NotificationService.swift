@@ -84,6 +84,7 @@ class NotificationService: ObservableObject {
 
         setupNotificationHandler()
         setupNotificationScheduling()
+        scheduleNotifications(configuration: state.configuration)
     }
 
     private func setupNotificationHandler() {
@@ -115,7 +116,7 @@ class NotificationService: ObservableObject {
                 self?.logger.info("Handling notification for equipment: \(equipment)")
                 
                 let fetchRequest = Equipment.fetchRequest()
-                fetchRequest.predicate = .init(format: "id == %@", equipment.uuidString)
+                fetchRequest.predicate = .init(format: "id == %@", equipment as CVarArg)
                 fetchRequest.fetchLimit = 1
                 let equipmentModel = try? self?.managedObjectContext.fetch(fetchRequest).first
                 
