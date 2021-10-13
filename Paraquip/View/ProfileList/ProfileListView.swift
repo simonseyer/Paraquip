@@ -17,6 +17,7 @@ struct ProfileListView: View {
     @State private var deleteProfile: Profile?
     @State private var showingDeleteAlert = false
     @State private var selectedProfile: UUID?
+    @State private var isFirstAppearance = true
 
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -57,8 +58,10 @@ struct ProfileListView: View {
             }
         }
         .onAppear {
-            if profiles.count == 1, let profile = profiles.first {
+            if isFirstAppearance, profiles.count == 1,
+                let profile = profiles.first {
                 selectedProfile = profile.id!
+                isFirstAppearance = false
             }
         }
         .navigationTitle("All Sets")
