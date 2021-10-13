@@ -54,7 +54,7 @@ struct ProfileView: View {
                         for index in indexSet {
                             managedObjectContext.delete(equipments[index])
                         }
-                        try? managedObjectContext.save()
+                        try! managedObjectContext.save()
                     }
                 }
             }

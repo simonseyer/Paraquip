@@ -76,10 +76,9 @@ struct ProfileListView: View {
         }
         .alert("Delete set", isPresented: $showingDeleteAlert, presenting: deleteProfile) { selectedProfile in
             Button(role: .destructive) {
-                withAnimation {
-                    managedObjectContext.delete(selectedProfile)
-                    try? managedObjectContext.save()
-                }
+                // TODO: fix deletion animation
+                managedObjectContext.delete(selectedProfile)
+                try! managedObjectContext.save()
             } label: {
                 Text("Delete \(selectedProfile.name ?? "")")
             }

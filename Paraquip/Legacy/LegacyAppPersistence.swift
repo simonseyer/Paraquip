@@ -82,8 +82,11 @@ class LegacyAppPersistence {
                 reserveModel.addToCheckLog(checkModel)
             }
         }
-
-        try? managedObjectContext.save()
+        do {
+            try managedObjectContext.save()
+        } catch {
+            logger.error("Failed to migrate data: \(error.description)")
+        }
 
         let backupURL = url.appendingPathExtension("bak")
         try? fileManager.removeItem(at: backupURL)

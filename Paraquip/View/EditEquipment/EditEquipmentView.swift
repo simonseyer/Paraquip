@@ -109,9 +109,7 @@ struct EditEquipmentView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     if let date = lastCheckDate {
-                        let check = Check(context: managedObjectContext)
-                        check.id = UUID()
-                        check.date = date
+                        let check = Check.create(context: managedObjectContext, date: date)
                         equipment.addToCheckLog(check)
                     }
 
@@ -122,14 +120,15 @@ struct EditEquipmentView: View {
                             manual.data = data
                             equipment.manual = manual
                         } catch {
+                            // TODO: error handling
                             print(error)
                         }
                     }
 
-                    try? managedObjectContext.save()
+                    try! managedObjectContext.save()
                     dismiss()
                 }
-                .disabled(equipment.equipmentBrand == .none)
+                .disabled(equipment.equipmentBrand == .none || equipment.equipmentName.isEmpty)
             }
         }
         .sheet(isPresented: $showingLogCheck) {

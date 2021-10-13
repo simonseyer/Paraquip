@@ -7,12 +7,14 @@
 
 import SwiftUI
 import CoreData
+import OSLog
 
 @main
 struct ParaquipApp: App {
 
     private let container: NSPersistentContainer
     private let notificationService: NotificationService
+    private let logger = Logger(category: "ParaquipApp")
 
     init() {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
@@ -61,7 +63,11 @@ struct ParaquipApp: App {
             profile.addToEquipment(equipment)
         }
 
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            logger.error("Failed to migrate database from v0 to v1: \(error.description)")
+        }
     }
 
     private func initializeDatabase(context: NSManagedObjectContext) {
@@ -73,7 +79,11 @@ struct ParaquipApp: App {
         let profile = Profile.create(context: context)
         profile.name = NSLocalizedString("Equipment", comment: "")
 
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            logger.error("Failed to initialise empty database: \(error.description)")
+        }
     }
 
     var body: some Scene {

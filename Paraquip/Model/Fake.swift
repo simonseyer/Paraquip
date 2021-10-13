@@ -98,7 +98,7 @@ extension NSPersistentContainer {
             equipment.addToCheckLog(check)
         }
 
-        try? viewContext.save()
+        try! viewContext.save()
     }
 
     func fakeProfile() -> Profile {

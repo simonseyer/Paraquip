@@ -71,7 +71,7 @@ struct EquipmentView: View {
                                 managedObjectContext.delete(check)
                             }
                         }
-                        try? managedObjectContext.save()
+                        try! managedObjectContext.save()
                     })
                 }
             }
@@ -81,7 +81,7 @@ struct EquipmentView: View {
                     showingEditEquipment = true
                 }
             }
-            .navigationTitle(equipment.name!)
+            .navigationTitle(equipment.equipmentName)
             .sheet(isPresented: $showingEditEquipment) {
                 NavigationView {
                     EditEquipmentView(equipment: equipment)
@@ -90,11 +90,9 @@ struct EquipmentView: View {
             .sheet(isPresented: $showingLogCheck) {
                 LogCheckView() { date in
                     if let checkDate = date {
-                        let check = Check(context: managedObjectContext)
-                        check.id = UUID()
-                        check.date = checkDate
+                        let check = Check.create(context: managedObjectContext, date: checkDate)
                         equipment.addToCheckLog(check)
-                        try? managedObjectContext.save()
+                        try! managedObjectContext.save()
                     }
                     showingLogCheck = false
                 }
@@ -104,7 +102,7 @@ struct EquipmentView: View {
                     NavigationView {
                         ManualView(manual: manual.data!, deleteManual: {
                             managedObjectContext.delete(manual)
-                            try? managedObjectContext.save()
+                            try! managedObjectContext.save()
                         })
                     }
                 } else {
@@ -116,6 +114,7 @@ struct EquipmentView: View {
                             equipment.manual = manual
                             try managedObjectContext.save()
                         } catch {
+                            // TODO: error handling
                             print(error)
                         }
                     }

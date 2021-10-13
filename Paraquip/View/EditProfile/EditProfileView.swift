@@ -77,9 +77,10 @@ struct EditProfileView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    try? managedObjectContext.save()
+                    try! managedObjectContext.save()
                     dismiss()
                 }
+                .disabled(profile.profileName.isEmpty)
             }
         }
     }
