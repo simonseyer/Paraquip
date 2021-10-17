@@ -14,7 +14,6 @@ struct ProfileListView: View {
     private var profiles: FetchedResults<Profile>
 
     @State private var editProfile: Profile?
-    @State private var selectedProfile: UUID?
     @State private var isFirstAppearance = true
 
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -22,8 +21,8 @@ struct ProfileListView: View {
     var body: some View {
         List {
             ForEach(profiles) { profile in
-                NavigationLink(tag: profile.id!, selection: $selectedProfile) {
                     ProfileView(profileModel: profile)
+                NavigationLink() {
                 } label: {
                     HStack {
                         Image(profile.profileIcon.rawValue)
@@ -55,13 +54,7 @@ struct ProfileListView: View {
                     }
                     .tint(.red)
                 }
-            }
-        }
-        .onAppear {
-            if isFirstAppearance, profiles.count == 1,
-                let profile = profiles.first {
-                selectedProfile = profile.id!
-                isFirstAppearance = false
+                .labelStyle(.titleOnly)
             }
         }
         .navigationTitle("All Sets")
