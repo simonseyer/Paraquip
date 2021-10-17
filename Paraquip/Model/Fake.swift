@@ -16,8 +16,7 @@ struct CoreData {
     }
 
     static var fakeProfile: Profile {
-        let fetchRequest = Profile.fetchRequest()
-        return try! previewContext.fetch(fetchRequest).first!
+        return inMemoryPersistentContainer.createFakeProfile()
     }
 }
 
@@ -33,26 +32,28 @@ extension NSPersistentContainer {
             if let error = error {
                 fatalError("Unable to load persistent stores: \(error)")
             }
+
+            _ = container.createFakeProfile()
         }
-        
-        container.loadFakeData()
 
         return container
     }
 
-    private func loadFakeData() {
+    func createFakeProfile() -> Profile {
+        let context = viewContext
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "de")
 
-        let profile = Profile(context: viewContext)
+        let profile = Profile(context: context)
         profile.id = UUID()
         profile.name = "Equipment"
         profile.profileIcon = .default
 
         do {
-            let equipment = Reserve(context: viewContext)
+            let equipment = Reserve(context: context)
             equipment.id = UUID()
             equipment.brand = "Nova"
             equipment.brandId = "nova"
@@ -63,7 +64,7 @@ extension NSPersistentContainer {
         }
 
         do {
-            let equipment = Reserve(context: viewContext)
+            let equipment = Reserve(context: context)
             equipment.id = UUID()
             equipment.brand = "Ozone"
             equipment.brandId = "ozone"
@@ -72,14 +73,14 @@ extension NSPersistentContainer {
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
             profile.addToEquipment(equipment)
 
-            let check = Check(context: viewContext)
+            let check = Check(context: context)
             check.id = UUID()
             check.date = dateFormatter.date(from: "10.07.2021")!
             equipment.addToCheckLog(check)
         }
 
         do {
-            let equipment = Harness(context: viewContext)
+            let equipment = Harness(context: context)
             equipment.id = UUID()
             equipment.brand = "Woody Valley"
             equipment.brandId = "woody-valley"
@@ -88,14 +89,14 @@ extension NSPersistentContainer {
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
             profile.addToEquipment(equipment)
 
-            let check = Check(context: viewContext)
+            let check = Check(context: context)
             check.id = UUID()
             check.date = dateFormatter.date(from: "14.04.2021")!
             equipment.addToCheckLog(check)
         }
 
         do {
-            let equipment = Paraglider(context: viewContext)
+            let equipment = Paraglider(context: context)
             equipment.id = UUID()
             equipment.brand = "Gin"
             equipment.brandId = "gin"
@@ -105,13 +106,13 @@ extension NSPersistentContainer {
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
             profile.addToEquipment(equipment)
 
-            let check = Check(context: viewContext)
+            let check = Check(context: context)
             check.id = UUID()
             check.date = dateFormatter.date(from: "12.08.2021")!
             equipment.addToCheckLog(check)
         }
 
-        try! viewContext.save()
+        return profile
     }
 }
 
