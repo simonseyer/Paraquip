@@ -109,9 +109,11 @@ struct TimelineViewCell: View {
             }
         }
         .simultaneousGesture(
+            timelineEntry.isNextCheck ?
             DragGesture(minimumDistance: 0.0)
-                .onChanged { _ in isHighlighted = timelineEntry.isNextCheck }
+                .onChanged { _ in isHighlighted = true }
                 .onEnded { _ in isHighlighted = false }
+            : nil
         )
     }
 }
