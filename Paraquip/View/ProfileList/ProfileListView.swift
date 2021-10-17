@@ -14,8 +14,6 @@ struct ProfileListView: View {
     private var profiles: FetchedResults<Profile>
 
     @State private var editProfile: Profile?
-    @State private var deleteProfile: Profile?
-    @State private var showingDeleteAlert = false
     @State private var selectedProfile: UUID?
     @State private var isFirstAppearance = true
 
@@ -48,8 +46,10 @@ struct ProfileListView: View {
                     .tint(.blue)
 
                     Button {
-                        deleteProfile = profile
-                        showingDeleteAlert = true
+                        withAnimation {
+                            managedObjectContext.delete(profile)
+                            try! managedObjectContext.save()
+                        }
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
@@ -69,16 +69,6 @@ struct ProfileListView: View {
             NavigationView {
                 EditProfileView(profile: profile)
             }
-        }
-        .alert("Delete set", isPresented: $showingDeleteAlert, presenting: deleteProfile) { selectedProfile in
-            Button(role: .destructive) {
-                // TODO: fix deletion animation
-                managedObjectContext.delete(selectedProfile)
-                try! managedObjectContext.save()
-            } label: {
-                Text("Delete \(selectedProfile.name ?? "")")
-            }
-            Button("Cancel", role: .cancel) { }
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
