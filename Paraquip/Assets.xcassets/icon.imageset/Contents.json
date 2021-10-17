@@ -1,12 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "appicon_1024.png",
+      "filename" : "paraglider_luecke_groß.svg",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }
