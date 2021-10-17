@@ -11,6 +11,14 @@ enum TimelineEntry {
     case purchase(date: Date)
     case check(check: Check)
     case nextCheck(urgency: Equipment.CheckUrgency)
+
+    var isNextCheck: Bool {
+        if case .nextCheck = self {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 extension Equipment {

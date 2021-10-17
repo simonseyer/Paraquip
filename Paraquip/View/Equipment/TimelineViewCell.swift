@@ -82,24 +82,36 @@ struct TimelineViewCell: View {
     let timelineEntry: TimelineEntry
     let logAction: () -> Void
 
+    @State private var isHighlighted = false
+
     var body: some View {
         HStack {
             Text(timelineEntry.text)
             Spacer()
-            if case .nextCheck = timelineEntry {
-                Button(action: logAction) {
-                    Image(systemName: "square.and.pencil")
-                        .font(Font.body.weight(.medium))
-                }
+            if timelineEntry.isNextCheck {
+                Image(systemName: "square.and.pencil")
+                    .font(Font.body.weight(.medium))
+                    .foregroundColor(.accentColor)
             }
         }
         .padding(EdgeInsets(top: 13,
                             leading: 36,
                             bottom: 13,
                             trailing: 0))
+
         .listRowBackground(
-            // TODO: fix selection animation
-            TimelineVisual(timelineEntry: timelineEntry)
+            TimelineVisual(timelineEntry: timelineEntry, isHighlighted: $isHighlighted)
+        )
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if timelineEntry.isNextCheck {
+                logAction()
+            }
+        }
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0.0)
+                .onChanged { _ in isHighlighted = timelineEntry.isNextCheck }
+                .onEnded { _ in isHighlighted = false }
         )
     }
 }
@@ -107,11 +119,16 @@ struct TimelineViewCell: View {
 struct TimelineVisual: View {
 
     let timelineEntry: TimelineEntry
+    @Binding var isHighlighted: Bool
 
     var body: some View {
         GeometryReader { metrics in
             ZStack(alignment: .topLeading) {
-                Color.white
+                if isHighlighted {
+                    Color(UIColor.systemGray4)
+                } else {
+                    Color.white
+                }
                 Group {
                 Rectangle()
                     .frame(
