@@ -10,45 +10,47 @@ import CoreData
 
 struct MainView: View {
 
-    enum Tabs: String {
-        case profile, notifications
-    }
-
     @EnvironmentObject var notificationService: NotificationService
 
-    @State private var selectedTab: Tabs = .profile
+    @State private var showNotificationSettings = false
     @State private var presentedEquipment: Equipment? = nil
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            NavigationView {
-                ProfileListView()
-            }
-            .tabItem {
-                Label("Equipment", systemImage: "book.closed.fill")
-            }
-            .tag(Tabs.profile)
-            
-            NavigationView {
-                NotificationSettingsView()
-            }
-            .tabItem {
-                Label("Notifications", systemImage: "bell.fill")
-            }
-            .tag(Tabs.notifications)
+        NavigationView {
+            ProfileListView()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            showNotificationSettings = true
+                        } label: {
+                            Image(systemName: "bell.fill")
+                        }
+                    }
+                }
         }
-        .onChange(of: notificationService.navigationState, perform: { value in
+        .onChange(of: notificationService.navigationState) { value in
             switch value {
             case .notificationSettings:
-                selectedTab = .notifications
+                showNotificationSettings = true
             case .equipment(let equipmentId):
-                selectedTab = .profile
                 presentedEquipment = equipmentId
             case .none:
                 break
             }
             notificationService.resetNavigationState()
-        })
+        }
+        .sheet(isPresented: $showNotificationSettings) {
+            NavigationView {
+                NotificationSettingsView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigation) {
+                            Button("Close") {
+                                showNotificationSettings = false
+                            }
+                        }
+                    }
+            }
+        }
         .sheet(item: $presentedEquipment) { equipment in
             NavigationView {
                 EquipmentView(equipment: equipment)
