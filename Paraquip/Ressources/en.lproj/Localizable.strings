@@ -6,6 +6,9 @@
   
 */
 
+// Profile List View
+"set_footer" = "Organize your equipment in sets, e.g. for cross-country or dune flying.";
+
 // Edit Profile View
 "icon_attribution" = "Icons by Font Awesome used without modification — see [license](https://fontawesome.com/license)";
 

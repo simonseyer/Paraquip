@@ -57,7 +57,7 @@ struct ParaquipApp: App {
                   return
               }
 
-        profile.name = NSLocalizedString("Equipment", comment: "")
+        profile.name = NSLocalizedString("Your Equipment", comment: "")
 
         let equipmentFetchRequest = Equipment.fetchRequest()
         let equipment = (try? context.fetch(equipmentFetchRequest)) ?? []
@@ -80,7 +80,7 @@ struct ParaquipApp: App {
         }
 
         let profile = Profile.create(context: context)
-        profile.name = NSLocalizedString("Equipment", comment: "")
+        profile.name = NSLocalizedString("Your Equipment", comment: "")
 
         do {
             try context.save()

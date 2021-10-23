@@ -20,41 +20,45 @@ struct ProfileListView: View {
 
     var body: some View {
         List {
-            ForEach(profiles) { profile in
-                    ProfileView(profileModel: profile)
-                NavigationLink() {
-                } label: {
-                    HStack {
-                        Image(profile.profileIcon.rawValue)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.accentColor)
-                            .frame(width: 35, height: 35)
-                            .padding(.trailing, 8)
-
-                        Text(profile.profileName)
-                    }
-                }
-                .padding([.top, .bottom])
-                .swipeActions {
-                    Button {
-                        editProfile = profile
+            Section {
+                ForEach(profiles) { profile in
+                    NavigationLink {
+                        ProfileView(profile: profile)
                     } label: {
-                        Label("Edit", systemImage: "pencil")
-                    }
-                    .tint(.blue)
+                        HStack {
+                            Image(profile.profileIcon.rawValue)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(.accentColor)
+                                .frame(width: 35, height: 35)
+                                .padding(.trailing, 8)
 
-                    Button {
-                        withAnimation {
-                            managedObjectContext.delete(profile)
-                            try! managedObjectContext.save()
+                            Text(profile.profileName)
                         }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
                     }
-                    .tint(.red)
+                    .padding([.top, .bottom])
+                    .swipeActions {
+                        Button {
+                            editProfile = profile
+                        } label: {
+                            Label("Edit", systemImage: "pencil")
+                        }
+                        .tint(.blue)
+
+                        Button {
+                            withAnimation {
+                                managedObjectContext.delete(profile)
+                                try! managedObjectContext.save()
+                            }
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                        .tint(.red)
+                    }
+                    .labelStyle(.titleOnly)
                 }
-                .labelStyle(.titleOnly)
+            } footer: {
+                Text("set_footer")
             }
         }
         .navigationTitle("All Sets")
