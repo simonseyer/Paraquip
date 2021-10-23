@@ -10,77 +10,60 @@ import CoreData
 
 struct ProfileView: View {
 
-    @ObservedObject var profileModel: Profile
+    @ObservedObject var profile: Profile
     @State private var newEquipment: Equipment?
     @Environment(\.managedObjectContext) var managedObjectContext
 
-    private let equipmentFetchRequest: FetchRequest<Equipment>
-    private var equipments: FetchedResults<Equipment> {
-        equipmentFetchRequest.wrappedValue
-    }
-
-    init(profileModel: Profile) {
-        self.profileModel = profileModel
-        self.equipmentFetchRequest = FetchRequest(
-            sortDescriptors: [
-                SortDescriptor(\.name)
-            ],
-            predicate: .init(format: "ANY profiles.id == %@", profileModel.uuid)
-        )
+    init(profile: Profile) {
+        self.profile = profile
     }
 
     var body: some View {
         Group {
-            if equipments.isEmpty {
-                VStack {
-                    Image("icon")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 120)
-                    Text("profile_empty_text")
-                        .font(.title3)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: 250)
-                        .padding()
-                }
+            if profile.allEquipment.isEmpty {
+                ProfileEmptyView()
             } else {
                 List{
-                    ForEach(equipments) { equipment in
-                        NavigationLink(destination: EquipmentView(equipment: equipment)) {
-                            EquipmentRow(equipment: equipment)
-                        }
-                    }
-                    .onDelete { indexSet in
-                        for index in indexSet {
-                            managedObjectContext.delete(equipments[index])
-                        }
-                        try! managedObjectContext.save()
-                    }
+                    ProfileSectionView(
+                        title: "Paraglider",
+                        icon: "paraglider",
+                        equipment: profile.paraglider
+                    )
+                    ProfileSectionView(
+                        title: "Harness",
+                        icon: "harness",
+                        equipment: profile.harnesses
+                    )
+                    ProfileSectionView(
+                        title: "Reserve",
+                        icon: "reserve",
+                        equipment: profile.reserves
+                    )
                 }
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(profileModel.profileName)
+        .navigationTitle(profile.profileName)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button(action: {
                         newEquipment = Paraglider.create(context: managedObjectContext)
-                        profileModel.addToEquipment(newEquipment!)
+                        profile.addToEquipment(newEquipment!)
                     }) {
-                        Text("Paraglider")
+                        Label("Paraglider", image: "paraglider")
                     }
                     Button(action: {
                         newEquipment = Harness.create(context: managedObjectContext)
-                        profileModel.addToEquipment(newEquipment!)
+                        profile.addToEquipment(newEquipment!)
                     }) {
-                        Text("Harness")
+                        Label("Harness", image: "harness")
                     }
                     Button(action: {
                         newEquipment = Reserve.create(context: managedObjectContext)
-                        profileModel.addToEquipment(newEquipment!)
+                        profile.addToEquipment(newEquipment!)
                     }) {
-                        Text("Reserve")
+                        Label("Reserve", image: "reserve")
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -100,11 +83,11 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                ProfileView(profileModel: CoreData.fakeProfile)
+                ProfileView(profile: CoreData.fakeProfile)
             }
 
             NavigationView {
-                ProfileView(profileModel: Profile.create(context: CoreData.previewContext))
+                ProfileView(profile: Profile.create(context: CoreData.previewContext))
             }
         }
         .environment(\.locale, .init(identifier: "de"))

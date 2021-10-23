@@ -57,6 +57,8 @@
 		0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */; };
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
+		0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CA271C268900407599 /* ProfileEmptyView.swift */; };
+		0DEE05CD271C371A00407599 /* ProfileSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CC271C371A00407599 /* ProfileSectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +137,8 @@
 		0DE34C5B265C067500EF080F /* NotificationPersistanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistanceMapping.swift; sourceTree = "<group>"; };
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
 		0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCycleRow.swift; sourceTree = "<group>"; };
+		0DEE05CA271C268900407599 /* ProfileEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyView.swift; sourceTree = "<group>"; };
+		0DEE05CC271C371A00407599 /* ProfileSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionView.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -258,6 +262,8 @@
 			children = (
 				0D11FBCA2620BF45009D9349 /* ProfileView.swift */,
 				0D2B2D142646A04D009873CE /* EquipmentRow.swift */,
+				0DEE05CA271C268900407599 /* ProfileEmptyView.swift */,
+				0DEE05CC271C371A00407599 /* ProfileSectionView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -532,6 +538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */,
 				0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */,
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
@@ -567,6 +574,7 @@
 				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
 				0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
+				0DEE05CD271C371A00407599 /* ProfileSectionView.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
 				0D0DFF9F26887C4900AEB2AD /* TimelineViewCell.swift in Sources */,

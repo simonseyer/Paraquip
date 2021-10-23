@@ -31,6 +31,23 @@ extension Profile {
         set { icon = newValue.rawValue }
     }
 
+    var allEquipment: [Equipment] {
+        let set = equipment as? Set<Equipment> ?? []
+        return Array<Equipment>(set)
+    }
+
+    var paraglider: [Paraglider] {
+        allEquipment.compactMap { $0 as? Paraglider }
+    }
+
+    var harnesses: [Harness] {
+        allEquipment.compactMap { $0 as? Harness }
+    }
+
+    var reserves: [Reserve] {
+        allEquipment.compactMap { $0 as? Reserve }
+    }
+
     static func create(context: NSManagedObjectContext) -> Profile {
         let profile = Profile(context: context)
         profile.id = UUID()
