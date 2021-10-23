@@ -40,27 +40,29 @@ struct EditProfileView: View {
                 Text("icon_attribution")
             }
 
-            Section("Equipment") {
-                ForEach(allEquipment, id: \.id) { equipment in
-                    Button(action: {
-                        if profile.equipment?.contains(equipment) ?? false {
-                            profile.removeFromEquipment(equipment)
-                        } else {
-                            profile.addToEquipment(equipment)
-                        }
-                    }) {
-                        HStack {
-                            Text(equipment.brandName)
-                                .foregroundColor(.secondary)
-                            Text(equipment.equipmentName)
-                            Spacer()
+            if !allEquipment.isEmpty {
+                Section("Equipment") {
+                    ForEach(allEquipment, id: \.id) { equipment in
+                        Button(action: {
                             if profile.equipment?.contains(equipment) ?? false {
-                                Image(systemName: "checkmark")
-                                    .font(.system(.body).weight(.medium))
-                                    .foregroundColor(.accentColor)
-                            }}
+                                profile.removeFromEquipment(equipment)
+                            } else {
+                                profile.addToEquipment(equipment)
+                            }
+                        }) {
+                            HStack {
+                                Text(equipment.brandName)
+                                    .foregroundColor(.secondary)
+                                Text(equipment.equipmentName)
+                                Spacer()
+                                if profile.equipment?.contains(equipment) ?? false {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(.body).weight(.medium))
+                                        .foregroundColor(.accentColor)
+                                }}
+                        }
+                        .foregroundColor(.primary)
                     }
-                    .foregroundColor(.primary)
                 }
             }
         }
