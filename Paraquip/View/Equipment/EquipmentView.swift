@@ -25,34 +25,16 @@ struct EquipmentView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("by \(equipment.brandName)")
-                            .font(.headline)
-                        Button(action: {
-                            showingManual.toggle()
-                        }) {
-                            Image(systemName: "book.fill")
-                        }
+            EquipmentHeaderView(brandName: equipment.brandName,
+                            icon: equipment.icon,
+                            showManualAction: { showingManual.toggle() }) {
+                HStack {
+                    PillLabel(LocalizedStringKey(equipment.localizedType))
+                    if let size = equipment.size {
+                        PillLabel("Size \(size)")
                     }
-                    HStack {
-                        PillLabel(LocalizedStringKey(equipment.localizedType))
-                        if let size = equipment.size {
-                            PillLabel("Size \(size)")
-                        }
-                    }
-                    .padding([.top, .bottom], 10)
-                }
-                Spacer()
-                if let icon = equipment.icon {
-                    icon
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 80)
                 }
             }
-            .padding([.leading, .trailing])
 
             List {
                 if equipment.timeline.isEmpty {

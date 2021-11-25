@@ -10,11 +10,11 @@ import SwiftUI
 
 extension Equipment {
 
-    var icon: Image? {
+    var icon: UIImage? {
         guard case .known(_, let logo) = equipmentBrand else {
             return nil
         }
-        return Image(logo)
+        return UIImage(named: logo)
     }
 
     var localizedType: String {

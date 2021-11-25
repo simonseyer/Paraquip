@@ -17,7 +17,7 @@ struct EquipmentRow: View {
         HStack {
             Group {
                 if let icon = equipment.icon {
-                    icon
+                    Image(uiImage: icon)
                         .resizable()
                         .scaledToFit()
                 } else {
