@@ -38,7 +38,7 @@ struct EquipmentHeaderView<TagView: View>: View {
             }
             Spacer()
             if let icon = icon {
-                BrandIconView(image: icon, area: 3500, alignment: .trailing)
+                BrandIconView(image: icon, area: 4000, alignment: .trailing)
                     .frame(maxWidth: 130, maxHeight: 80, alignment: .trailing)
             }
         }
