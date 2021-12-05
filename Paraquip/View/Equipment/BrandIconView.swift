@@ -20,9 +20,7 @@ struct BrandIconView: View {
         // apply sqrt to get the scaling for width/height
         let scale = sqrt(area / iconArea)
 
-        Image(uiImage: image)
-            .resizable()
-            .scaledToFit()
+        SharpImageView(image: image)
             .frame(maxWidth: iconSize.width * scale,
                    maxHeight: iconSize.height * scale,
                    alignment: alignment)
