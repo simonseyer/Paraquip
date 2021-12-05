@@ -361,7 +361,6 @@
 				0DA93A0226CEE0290063356B /* PDFViewer.swift */,
 				0DA93A0A26CEE9160063356B /* PillLabel.swift */,
 				0D5EDB16274FF52F00B3D134 /* EquipmentHeaderView.swift */,
-				0D7F23DF275CC99E005298E2 /* BrandIconView.swift */,
 			);
 			path = Equipment;
 			sourceTree = "<group>";
@@ -396,6 +395,7 @@
 		0DC585EE275CE0E9001B346E /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0D7F23DF275CC99E005298E2 /* BrandIconView.swift */,
 				0DC585EF275CE0F7001B346E /* SharpImageView.swift */,
 			);
 			path = Shared;
