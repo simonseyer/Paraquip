@@ -50,6 +50,8 @@
 		0DA93A0926CEE8950063356B /* ManualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0826CEE8950063356B /* ManualView.swift */; };
 		0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0A26CEE9160063356B /* PillLabel.swift */; };
 		0DC585F0275CE0F7001B346E /* SharpImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585EF275CE0F7001B346E /* SharpImageView.swift */; };
+		0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */; };
+		0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585F5275D08FA001B346E /* WeightRangeView.swift */; };
 		0DCF78E726CC25C3004B1602 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF78E626CC25C3004B1602 /* TestUtils.swift */; };
 		0DD7FC10263DD3060038B25D /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0F263DD3060038B25D /* Profile.swift */; };
 		0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC12263DD32A0038B25D /* Equipment.swift */; };
@@ -132,6 +134,9 @@
 		0DA93A0826CEE8950063356B /* ManualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualView.swift; sourceTree = "<group>"; };
 		0DA93A0A26CEE9160063356B /* PillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLabel.swift; sourceTree = "<group>"; };
 		0DC585EF275CE0F7001B346E /* SharpImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharpImageView.swift; sourceTree = "<group>"; };
+		0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWeightView.swift; sourceTree = "<group>"; };
+		0DC585F4275CF448001B346E /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
+		0DC585F5275D08FA001B346E /* WeightRangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRangeView.swift; sourceTree = "<group>"; };
 		0DCF78E626CC25C3004B1602 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		0DD7FC0F263DD3060038B25D /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		0DD7FC12263DD32A0038B25D /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
@@ -312,6 +317,7 @@
 				0DC0904A26D818B700AB3BCF /* ProfileList */,
 				0D09984926D81BEA00E297F9 /* EditProfile */,
 				0D2B2D132646A03F009873CE /* Profile */,
+				0DC585F1275CE8BD001B346E /* ProfileWeight */,
 				0DA93A0526CEE75C0063356B /* Equipment */,
 				0DA93A0726CEE7A90063356B /* LogCheck */,
 				0DA93A0426CEE7220063356B /* EditEquipment */,
@@ -399,6 +405,15 @@
 				0DC585EF275CE0F7001B346E /* SharpImageView.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		0DC585F1275CE8BD001B346E /* ProfileWeight */ = {
+			isa = PBXGroup;
+			children = (
+				0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */,
+				0DC585F5275D08FA001B346E /* WeightRangeView.swift */,
+			);
+			path = ProfileWeight;
 			sourceTree = "<group>";
 		};
 		0DD7FC11263DD30F0038B25D /* Services */ = {
@@ -577,6 +592,8 @@
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
+				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
+				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
@@ -971,10 +988,11 @@
 		0D07CBFC26B6B6BF00BCC3E6 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0DC585F4275CF448001B346E /* Model 3.xcdatamodel */,
 				0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */,
 				0D07CBFD26B6B6BF00BCC3E6 /* Model.xcdatamodel */,
 			);
-			currentVersion = 0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */;
+			currentVersion = 0DC585F4275CF448001B346E /* Model 3.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

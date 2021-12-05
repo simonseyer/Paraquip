@@ -33,7 +33,7 @@ extension Profile {
 
     var allEquipment: [Equipment] {
         let set = equipment as? Set<Equipment> ?? []
-        return Array<Equipment>(set)
+        return Array<Equipment>(set).sorted { $0.equipmentName > $1.equipmentName }
     }
 
     var paraglider: [Paraglider] {

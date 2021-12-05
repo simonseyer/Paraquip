@@ -60,6 +60,13 @@ extension NSPersistentContainer {
             equipment.name = "Beamer 3 light"
             equipment.checkCycle = 3
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            equipment.weight = 1.37
+            equipment.weightRange = {
+                let weightRange = WeightRange(context: context)
+                weightRange.min = 0
+                weightRange.max = 130
+                return weightRange
+            }()
             profile.addToEquipment(equipment)
         }
 
@@ -71,6 +78,13 @@ extension NSPersistentContainer {
             equipment.name = "Angel SQ"
             equipment.checkCycle = 3
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            equipment.weight = 1.54
+            equipment.weightRange = {
+                let weightRange = WeightRange(context: context)
+                weightRange.min = 0
+                weightRange.max = 120
+                return weightRange
+            }()
             profile.addToEquipment(equipment)
 
             let check = Check(context: context)
@@ -87,6 +101,8 @@ extension NSPersistentContainer {
             equipment.name = "Wani Light 2"
             equipment.checkCycle = 12
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            equipment.equipmentSize = .medium
+            equipment.weight = 2.75
             profile.addToEquipment(equipment)
 
             let check = Check(context: context)
@@ -104,6 +120,13 @@ extension NSPersistentContainer {
             equipment.equipmentSize = .small
             equipment.checkCycle = 12
             equipment.purchaseDate = dateFormatter.date(from: "30.09.2020")!
+            equipment.weight = 3.7
+            equipment.weightRange = {
+                let weightRange = WeightRange(context: context)
+                weightRange.min = 75
+                weightRange.max = 95
+                return weightRange
+            }()
             profile.addToEquipment(equipment)
 
             let check = Check(context: context)

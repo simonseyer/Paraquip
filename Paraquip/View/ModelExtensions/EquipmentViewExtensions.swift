@@ -29,4 +29,17 @@ extension Equipment {
             preconditionFailure("Unknown equipment type")
         }
     }
+
+    var typeIconName: String {
+        switch self {
+        case is Paraglider:
+            return "paraglider"
+        case is Reserve:
+            return "reserve"
+        case is Harness:
+            return "harness"
+        default:
+            preconditionFailure("Unknown equipment type")
+        }
+    }
 }

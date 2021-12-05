@@ -62,6 +62,38 @@ extension Equipment {
         set { brand = newValue }
     }
 
+    var weightMeasurement: Measurement<UnitMass>? {
+        get {
+            guard let weight = weight?.doubleValue else { return nil }
+            return Measurement<UnitMass>(value: weight, unit: .kilograms)
+        }
+        set {
+            guard let weightMeasurement = newValue else { weight = nil; return }
+            weight = NSNumber(value: weightMeasurement.converted(to: .kilograms).value)
+        }
+    }
+
+    var weightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
+        get {
+            guard let weightRange = weightRange else { return nil }
+            let min = Measurement<UnitMass>(value: weightRange.min, unit: .kilograms)
+            let max = Measurement<UnitMass>(value: weightRange.max, unit: .kilograms)
+            return ClosedRange(uncheckedBounds: (min, max))
+        }
+        set {
+            guard let weightRange = newValue else {
+                if let oldWeightRange = weightRange {
+                    managedObjectContext?.delete(oldWeightRange)
+                }
+                return
+            }
+            let range = WeightRange(context: managedObjectContext!)
+            range.min = weightRange.lowerBound.converted(to: .kilograms).value
+            range.max = weightRange.upperBound.converted(to: .kilograms).value
+            self.weightRange = range
+        }
+    }
+
     var sortedCheckLog: [Check] {
         return (checkLog as! Set<Check>).sorted { check1, check2 in
             return check1.date! > check2.date!

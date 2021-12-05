@@ -23,7 +23,7 @@ struct ProfileView: View {
             if profile.allEquipment.isEmpty {
                 ProfileEmptyView()
             } else {
-                List{
+                List {
                     ProfileSectionView(
                         title: "Paraglider",
                         icon: "paraglider",
