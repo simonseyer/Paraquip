@@ -27,11 +27,9 @@ struct BrandRow: View {
     var body: some View {
         HStack {
             if case .known(_, let logo) = brand {
-                Image(logo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 60, height: 40, alignment: .center)
-
+                BrandIconView(image: UIImage(named: logo)!, area: 1500, alignment: .leading)
+                    .frame(width: 70, height: 50, alignment: .center)
+                    .padding(.trailing, 12)
             }
             Text(brand.selectionName)
         }
@@ -40,6 +38,10 @@ struct BrandRow: View {
 
 struct BrandRow_Previews: PreviewProvider {
     static var previews: some View {
-        BrandRow(brand: Brand.allCases.last!)
+        List {
+            ForEach(Brand.allCases) { brand in
+                BrandRow(brand: brand)
+            }
+        }
     }
 }

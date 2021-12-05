@@ -17,16 +17,14 @@ struct EquipmentRow: View {
         HStack {
             Group {
                 if let icon = equipment.icon {
-                    Image(uiImage: icon)
-                        .resizable()
-                        .scaledToFit()
+                    BrandIconView(image: icon, area: 1500, alignment: .center)
                 } else {
                     Image(systemName: "star.fill")
                         .foregroundColor(Color(UIColor.systemGray3))
                         .font(.system(size: 24))
                 }
             }
-            .frame(width: 50, height: 50, alignment: .center)
+            .frame(width: 70, height: 50, alignment: .center)
             .padding(.trailing, 12)
 
             HStack {

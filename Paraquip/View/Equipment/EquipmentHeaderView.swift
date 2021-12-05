@@ -38,18 +38,7 @@ struct EquipmentHeaderView<TagView: View>: View {
             }
             Spacer()
             if let icon = icon {
-                let iconSize = icon.size
-                let iconArea = iconSize.width * iconSize.height
-                // Calcuate scale for the area of the image and
-                // apply sqrt to get the scaling for width/height
-                let scale = sqrt(3000 / iconArea)
-
-                Image(uiImage: icon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: iconSize.width * scale,
-                           maxHeight: iconSize.height * scale,
-                           alignment: .trailing)
+                BrandIconView(image: icon, area: 3000, alignment: .trailing)
                     .frame(maxWidth: 120, maxHeight: 80, alignment: .trailing)
             }
         }
