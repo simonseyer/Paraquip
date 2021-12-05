@@ -39,10 +39,10 @@ struct EquipmentHeaderView<TagView: View>: View {
             Spacer()
             if let icon = icon {
                 BrandIconView(image: icon, area: 3500, alignment: .trailing)
-                    .frame(maxWidth: 140, maxHeight: 80, alignment: .trailing)
+                    .frame(maxWidth: 130, maxHeight: 80, alignment: .trailing)
             }
         }
-        .padding([.leading, .trailing])
+        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
     }
 }
 
