@@ -42,9 +42,6 @@ struct FormDatePicker: View {
                                 .foregroundColor(.secondary)
                                 .font(.system(size: 15))
                         }
-                    } else {
-                        Text(label)
-                            .foregroundColor(Color(UIColor.placeholderText))
                     }
                 }
             }

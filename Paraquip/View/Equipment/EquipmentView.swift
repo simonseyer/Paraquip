@@ -12,6 +12,7 @@ struct EquipmentView: View {
 
     @ObservedObject var equipment: Equipment
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.locale) var locale: Locale
 
     @State private var showingEditEquipment = false
     @State private var showingLogCheck = false
@@ -66,7 +67,7 @@ struct EquipmentView: View {
             .navigationTitle(equipment.equipmentName)
             .sheet(isPresented: $showingEditEquipment) {
                 NavigationView {
-                    EditEquipmentView(equipment: equipment)
+                    EditEquipmentView(equipment: equipment, locale: locale)
                 }
             }
             .sheet(isPresented: $showingLogCheck) {
@@ -108,18 +109,10 @@ struct EquipmentView: View {
 
 struct EquipmentView_Previews: PreviewProvider {
 
-    static var equipments: [Equipment] {
-        CoreData.fakeProfile.equipment!.allObjects as! [Equipment]
-    }
-
     static var previews: some View {
-        Group {
+        ForEach(CoreData.fakeProfile.allEquipment) { equipment in
             NavigationView {
-                EquipmentView(equipment: equipments[0])
-            }
-
-            NavigationView {
-                EquipmentView(equipment: equipments[1])
+                EquipmentView(equipment: equipment)
             }
         }
         .environment(\.locale, .init(identifier: "de"))

@@ -12,7 +12,9 @@ struct ProfileView: View {
 
     @ObservedObject var profile: Profile
     @State private var newEquipment: Equipment?
+    @State private var showWeightView = false
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.locale) var locale: Locale
 
     init(profile: Profile) {
         self.profile = profile
@@ -46,6 +48,13 @@ struct ProfileView: View {
         .navigationTitle(profile.profileName)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showWeightView = true
+                } label: {
+                    Image(systemName: "scalemass.fill")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button(action: {
                         newEquipment = Paraglider.create(context: managedObjectContext)
@@ -72,7 +81,19 @@ struct ProfileView: View {
         }
         .sheet(item: $newEquipment) { equipment in
             NavigationView {
-                EditEquipmentView(equipment: equipment)
+                EditEquipmentView(equipment: equipment, locale: locale)
+            }
+        }
+        .sheet(isPresented: $showWeightView) {
+            NavigationView {
+                ProfileWeightView(profile: profile)
+                    .toolbar {
+                        ToolbarItem(placement: .navigation) {
+                            Button("Close") {
+                                showWeightView = false
+                            }
+                        }
+                    }
             }
         }
     }

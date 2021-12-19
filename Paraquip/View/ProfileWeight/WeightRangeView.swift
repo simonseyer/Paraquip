@@ -28,9 +28,9 @@ struct WeightRangeView: View {
     }
 
     private var relativeValue: Double {
-        let min = minWeight.converted(to: .kilograms).value
-        let max = maxWeight.converted(to: .kilograms).value
-        let value = weight.converted(to: .kilograms).value
+        let min = minWeight.converted(to: .baseUnit()).value
+        let max = maxWeight.converted(to: .baseUnit()).value
+        let value = weight.converted(to: .baseUnit()).value
 
         let buffer = (bufferRatio * (max - min)) / (1.0 - bufferCount * bufferRatio)
         let minWithBuffer = min - (bufferCount - 1) * buffer

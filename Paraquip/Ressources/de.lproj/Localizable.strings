@@ -60,6 +60,15 @@
 "Log last check" = "Letzen Check eintragen";
 "Attach Manual" = "Anleitung anhängen";
 "Off" = "Aus";
+"Weight" = "Gewicht";
+"Weight range" = "Gewichtsbereich";
+"Minimum weight" = "Minimalgewicht";
+"Maximum weight" = "Maximalgewicht";
+
+// Profile Weight View
+"Weight Check" = "Gewichtsrechner";
+"Takeoff weight" = "Abbfluggewicht";
+"Pilot" = "Pilot";
 
 // Notification View
 "Enable" = "Aktivieren";

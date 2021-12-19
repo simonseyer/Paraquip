@@ -31,6 +31,24 @@ extension Profile {
         set { icon = newValue.rawValue }
     }
 
+    var pilotWeightMeasurement: Measurement<UnitMass> {
+        get {
+            return Measurement<UnitMass>(value: pilotWeight, unit: .baseUnit())
+        }
+        set {
+            pilotWeight = newValue.converted(to: .baseUnit()).value
+        }
+    }
+
+    var additionalWeightMeasurement: Measurement<UnitMass> {
+        get {
+            return Measurement<UnitMass>(value: additionalWeight, unit: .baseUnit())
+        }
+        set {
+            additionalWeight = newValue.converted(to: .baseUnit()).value
+        }
+    }
+
     var allEquipment: [Equipment] {
         let set = equipment as? Set<Equipment> ?? []
         return Array<Equipment>(set).sorted { $0.equipmentName > $1.equipmentName }

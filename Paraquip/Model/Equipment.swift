@@ -65,19 +65,19 @@ extension Equipment {
     var weightMeasurement: Measurement<UnitMass>? {
         get {
             guard let weight = weight?.doubleValue else { return nil }
-            return Measurement<UnitMass>(value: weight, unit: .kilograms)
+            return Measurement<UnitMass>(value: weight, unit: .baseUnit())
         }
         set {
             guard let weightMeasurement = newValue else { weight = nil; return }
-            weight = NSNumber(value: weightMeasurement.converted(to: .kilograms).value)
+            weight = NSNumber(value: weightMeasurement.converted(to: .baseUnit()).value)
         }
     }
 
     var weightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
         get {
             guard let weightRange = weightRange else { return nil }
-            let min = Measurement<UnitMass>(value: weightRange.min, unit: .kilograms)
-            let max = Measurement<UnitMass>(value: weightRange.max, unit: .kilograms)
+            let min = Measurement<UnitMass>(value: weightRange.min, unit: .baseUnit())
+            let max = Measurement<UnitMass>(value: weightRange.max, unit: .baseUnit())
             return ClosedRange(uncheckedBounds: (min, max))
         }
         set {
@@ -88,8 +88,8 @@ extension Equipment {
                 return
             }
             let range = WeightRange(context: managedObjectContext!)
-            range.min = weightRange.lowerBound.converted(to: .kilograms).value
-            range.max = weightRange.upperBound.converted(to: .kilograms).value
+            range.min = weightRange.lowerBound.converted(to: .baseUnit()).value
+            range.max = weightRange.upperBound.converted(to: .baseUnit()).value
             self.weightRange = range
         }
     }

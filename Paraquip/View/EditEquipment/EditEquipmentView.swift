@@ -8,23 +8,77 @@
 import SwiftUI
 import CoreData
 
+extension NumberFormatter {
+    func string(from doubleValue: Double) -> String? {
+        return string(from: NSNumber(value: doubleValue))
+    }
+
+    func value(from string: String) -> Double? {
+        return number(from: string)?.doubleValue
+    }
+}
+
+extension Locale {
+    var weightUnit: UnitMass {
+        usesMetricSystem ? .kilograms : .pounds
+    }
+}
+
 struct EditEquipmentView: View {
 
     @ObservedObject var equipment: Equipment
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.locale) var locale: Locale
 
     @State private var showingLogCheck = false
     @State private var showingManualPicker = false
     @State private var lastCheckDate: Date?
     @State private var manualURL: URL?
+    @State private var weight: String = ""
+    @State private var minWeight: String = ""
+    @State private var maxWeight: String = ""
+
+    private let weightUnitText: String
+    private let weightFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 1
+        return formatter
+    }()
+    private let weightRangeFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }()
 
     private var title: Text {
         if !equipment.brandName.isEmpty {
             return Text("\(equipment.brandName) \(NSLocalizedString(equipment.localizedType, comment: ""))")
         } else {
             return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(equipment.localizedType, comment: ""))")
+        }
+    }
+
+    init(equipment: Equipment, locale: Locale) {
+        self.equipment = equipment
+
+        let formatter = MeasurementFormatter()
+        formatter.locale = locale
+        formatter.unitStyle = .short
+        weightUnitText = formatter.string(from: locale.weightUnit)
+
+        if let equipmentWeight = equipment.weightMeasurement {
+            let value = equipmentWeight.converted(to: locale.weightUnit).value
+            _weight = State(initialValue: weightFormatter.string(from: value) ?? "")
+        }
+        
+        if let weightRange = equipment.weightRangeMeasurement {
+            let minValue = weightRange.lowerBound.converted(to: locale.weightUnit).value
+            let maxValue = weightRange.upperBound.converted(to: locale.weightUnit).value
+            _minWeight = State(initialValue: weightRangeFormatter.string(from: minValue) ?? "")
+            _maxWeight = State(initialValue: weightRangeFormatter.string(from: maxValue) ?? "")
         }
     }
 
@@ -41,14 +95,14 @@ struct EditEquipmentView: View {
                     HStack {
                         Text("Custom brand")
                         Spacer()
-                        TextField("Brand", text: $equipment.brandName)
+                        TextField("", text: $equipment.brandName)
                             .multilineTextAlignment(.trailing)
                     }
                 }
                 HStack {
                     Text("Name")
                     Spacer()
-                    TextField("Name", text: $equipment.equipmentName)
+                    TextField("", text: $equipment.equipmentName)
                         .multilineTextAlignment(.trailing)
                 }
                 Picker(selection: $equipment.equipmentSize, label: Text("Size")) {
@@ -57,8 +111,41 @@ struct EditEquipmentView: View {
                             .tag(size)
                     }
                 }
+                HStack {
+                    Text("Weight")
+                    Spacer()
+                    TextField("", text: $weight)
+                        .multilineTextAlignment(.trailing)
+                        .keyboardType(.decimalPad)
+                    Text(weightUnitText)
+                        .foregroundColor(.secondary)
+                }
                 FormDatePicker(label: "Purchase Date",
                                date: $equipment.purchaseDate)
+            }
+            if equipment is Paraglider || equipment is Reserve {
+                Section(header: Text("Weight range")) {
+                    if equipment is Paraglider {
+                        HStack {
+                            Text("Minimum weight")
+                            Spacer()
+                            TextField("", text: $minWeight)
+                                .multilineTextAlignment(.trailing)
+                                .keyboardType(.numberPad)
+                            Text(weightUnitText)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    HStack {
+                        Text("Maximum weight")
+                        Spacer()
+                        TextField("", text: $maxWeight)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.numberPad)
+                        Text(weightUnitText)
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
             Section(header: Text("Check cycle")) {
                 CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
@@ -108,6 +195,25 @@ struct EditEquipmentView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
+                    if let weight = weightFormatter.value(from: weight) {
+                        equipment.weightMeasurement = .init(value: weight, unit: locale.weightUnit)
+                    } else {
+                        equipment.weightMeasurement = nil
+                    }
+
+                    let minWeight = weightFormatter.value(from: minWeight)
+                    let maxWeight = weightFormatter.value(from: maxWeight)
+                    if let maxWeight = maxWeight {
+                        let sanitizedMinWeight = minWeight ?? 0
+                        let sanitizedMaxWeight = max(maxWeight, sanitizedMinWeight)
+
+                        let minMeasurement = Measurement<UnitMass>(value: sanitizedMinWeight, unit: locale.weightUnit)
+                        let maxMeasurement = Measurement<UnitMass>(value: sanitizedMaxWeight, unit: locale.weightUnit)
+                        equipment.weightRangeMeasurement = minMeasurement...maxMeasurement
+                    } else {
+                        equipment.weightRangeMeasurement = nil
+                    }
+
                     if let date = lastCheckDate {
                         let check = Check.create(context: managedObjectContext, date: date)
                         equipment.addToCheckLog(check)
@@ -147,25 +253,20 @@ struct EditEquipmentView: View {
 
 struct AddEquipmentView_Previews: PreviewProvider {
 
-    static var equipments: [Equipment] {
-        CoreData.fakeProfile.equipment!.allObjects as! [Equipment]
-    }
+    static var locale: Locale = .init(identifier: "de")
 
     static var previews: some View {
         Group {
             NavigationView {
-                EditEquipmentView(equipment: equipments[0])
+                EditEquipmentView(equipment: Paraglider(context: CoreData.previewContext), locale: locale)
             }
-
-            NavigationView {
-                EditEquipmentView(equipment: Paraglider(context: CoreData.previewContext))
-            }
-
-            NavigationView {
-                EditEquipmentView(equipment: equipments[1])
+            ForEach(CoreData.fakeProfile.allEquipment) { equipment in
+                NavigationView {
+                    EditEquipmentView(equipment: equipment, locale: locale)
+                }
             }
         }
-        .environment(\.locale, .init(identifier: "de"))
+        .environment(\.locale, locale)
         .environment(\.managedObjectContext, CoreData.previewContext)
     }
 }

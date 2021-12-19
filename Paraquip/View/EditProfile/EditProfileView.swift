@@ -41,7 +41,7 @@ struct EditProfileView: View {
             }
 
             if !allEquipment.isEmpty {
-                Section("Equipment") {
+                Section(header: Text("Equipment")) {
                     ForEach(allEquipment, id: \.id) { equipment in
                         Button(action: {
                             if profile.equipment?.contains(equipment) ?? false {

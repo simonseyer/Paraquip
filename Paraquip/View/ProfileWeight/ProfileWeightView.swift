@@ -7,98 +7,153 @@
 
 import SwiftUI
 
-extension ClosedRange where Bound == Double {
-    func scale(_ value: Double) -> Double {
-        lowerBound + value * (upperBound - lowerBound)
+extension Measurement where UnitType == UnitMass {
+    static var zero: Self {
+        .init(value: 0, unit: .baseUnit())
     }
 }
 
 struct ProfileWeightView: View {
 
     @ObservedObject var profile: Profile
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.locale) var locale: Locale
 
-    let pilotWeightRange = 50.0...150.0
-    let additionalWeightRange = 0.0...20.0
+    private var formatter: MeasurementFormatter {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.maximumFractionDigits = 1
+        numberFormatter.minimumFractionDigits = 1
 
-    var pilotWeightMeasurement: Measurement<UnitMass> {
-        Measurement(value: pilotWeightRange.scale(pilotWeight), unit: .kilograms)
+        let formatter = MeasurementFormatter()
+        formatter.locale = locale
+        formatter.unitStyle = .medium
+        formatter.unitOptions = .providedUnit
+        formatter.numberFormatter = numberFormatter
+        return formatter
     }
 
-    var additionalWeightMeasurement: Measurement<UnitMass> {
-        Measurement(value: additionalWeightRange.scale(additionalWeight), unit: .kilograms)
-    }
+    @State private var editEquipment: Equipment?
+    @State private var sumMeasurement: Measurement<UnitMass> = .zero
 
-    var sumMeasurement: Measurement<UnitMass> {
-        let zeroKilograms = Measurement<UnitMass>(value: 0, unit: .kilograms)
-
-        return profile.allEquipment
+    private func updateSum() {
+        let equipmentWeight = profile.allEquipment
             .compactMap { $0.weightMeasurement }
-            .reduce(zeroKilograms, +) +
-        pilotWeightMeasurement +
-        additionalWeightMeasurement
+            .reduce(.zero, +)
+        sumMeasurement = equipmentWeight + profile.pilotWeightMeasurement + profile.additionalWeightMeasurement
     }
 
-    @State var pilotWeight: Double = 0.5
-    @State var additionalWeight: Double = 0.5
+    private func formatted(value: Measurement<UnitMass>) -> String {
+        return formatter.string(from: value.converted(to: locale.weightUnit))
+    }
 
     var body: some View {
         List {
-            Section("Equipment") {
+            Section(header: Text("Equipment")) {
                 ForEach(profile.allEquipment) { equipment in
-                    HStack {
-                        ListIcon(image: Image(equipment.typeIconName))
-                            .padding(.trailing, 6)
-                        Text(equipment.equipmentName)
-                        Spacer()
-                        if let weight = equipment.weightMeasurement {
-                            Text(weight, format: .measurement(width: .abbreviated))
-                                .monospacedDigit()
-                                .foregroundColor(.secondary)
-                        }
+                    Button {
+                        editEquipment = equipment
+                    } label: {
+                        EquipmentWeightRow(equipment: equipment, formatter: formatted(value:))
+                            .foregroundColor(.primary)
                     }
                 }
             }
-            Section("Pilot") {
+            Section(header: Text("Pilot")) {
                 HStack {
                     ListIcon(image: Image(systemName: "person.fill"))
                         .padding(.trailing, 6)
-                    Slider(value: $pilotWeight, in: 0...1)
-                    Text(pilotWeightMeasurement, format: .measurement(width: .abbreviated))
+                    Slider(value: $profile.pilotWeight, in: 50...150, step: 1)
+                    Text(formatted(value: profile.pilotWeightMeasurement))
                         .monospacedDigit()
                         .foregroundColor(.secondary)
+                        .frame(minWidth: 80, alignment: .trailing)
                 }
                 HStack {
                     ListIcon(image: Image(systemName: "takeoutbag.and.cup.and.straw.fill"))
                         .padding(.trailing, 6)
-                    Slider(value: $additionalWeight, in: 0...1)
-                    Text(additionalWeightMeasurement, format: .measurement(width: .abbreviated))
+                    Slider(value: $profile.additionalWeight, in: 0...20)
+                    Text(formatted(value: profile.additionalWeightMeasurement))
                         .monospacedDigit()
                         .foregroundColor(.secondary)
+                        .frame(minWidth: 80, alignment: .trailing)
                 }
             }
-            Section("Result") {
+            Section {
                 HStack {
                     ListIcon(image: Image(systemName: "sum"))
                         .padding(.trailing, 6)
-                    Text("Sum")
+                    Text("Takeoff weight")
                     Spacer()
-                    Text(sumMeasurement, format: .measurement(width: .abbreviated))
+                    Text(formatted(value: sumMeasurement))
                         .monospacedDigit()
                         .foregroundColor(.secondary)
                 }
                 ForEach(profile.allEquipment) { equipment in
-                    if let weightRange = equipment.weightRangeMeasurement {
-                        VStack {
-                            Text(equipment.equipmentName)
-                                .foregroundColor(.secondary)
-                            WeightRangeView(minWeight: weightRange.lowerBound,
-                                            maxWeight: weightRange.upperBound,
-                                            weight: sumMeasurement)
-                        }
-                    }
+                    EquipmentWeightRangeRow(equipment: equipment, sumMeasurement: sumMeasurement)
                 }
             }
         }
+        .navigationBarTitle("Weight Check")
+        .sheet(item: $editEquipment) { equipment in
+            NavigationView {
+                EditEquipmentView(equipment: equipment, locale: locale)
+            }
+        }
+        .onAppear {
+            updateSum()
+        }
+        .onChange(of: profile.pilotWeightMeasurement) { _ in
+            updateSum()
+        }
+        .onChange(of: profile.additionalWeightMeasurement) { _ in
+            updateSum()
+        }
+        .onChange(of: editEquipment) { _ in
+            updateSum()
+        }
+        .onDisappear {
+            try! managedObjectContext.save()
+        }
+    }
+}
+
+struct EquipmentWeightRow: View {
+
+    @ObservedObject var equipment: Equipment
+    let formatter: (Measurement<UnitMass>) -> String
+
+    var body: some View {
+        HStack {
+            ListIcon(image: Image(equipment.typeIconName))
+                .padding(.trailing, 6)
+            Text(equipment.equipmentName)
+            Spacer()
+            if let weight = equipment.weightMeasurement {
+                Text(formatter(weight))
+                    .monospacedDigit()
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
+
+struct EquipmentWeightRangeRow: View {
+
+    @ObservedObject var equipment: Equipment
+    var sumMeasurement: Measurement<UnitMass>
+
+    var body: some View {
+            if let weightRange = equipment.weightRangeMeasurement {
+                VStack {
+                    Text("\(equipment.brandName) \(equipment.equipmentName)")
+                        .foregroundColor(.secondary)
+                    WeightRangeView(minWeight: weightRange.lowerBound,
+                                    maxWeight: weightRange.upperBound,
+                                    weight: sumMeasurement)
+                }
+            } else {
+                EmptyView()
+            }
     }
 }
 
