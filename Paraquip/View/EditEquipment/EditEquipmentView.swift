@@ -26,6 +26,15 @@ extension Locale {
 
 struct EditEquipmentView: View {
 
+    enum Field {
+        case customBrand
+        case name
+        case weight
+        case purchaseDate
+        case minimumWeight
+        case maximumWeight
+    }
+
     @ObservedObject var equipment: Equipment
 
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -39,6 +48,7 @@ struct EditEquipmentView: View {
     @State private var weight: String = ""
     @State private var minWeight: String = ""
     @State private var maxWeight: String = ""
+    @FocusState private var focusedField: Field?
 
     private let weightUnitText: String
     private let weightFormatter: NumberFormatter = {
@@ -97,6 +107,7 @@ struct EditEquipmentView: View {
                         Spacer()
                         TextField("", text: $equipment.brandName)
                             .multilineTextAlignment(.trailing)
+                            .focused($focusedField, equals: .customBrand)
                     }
                 }
                 HStack {
@@ -104,6 +115,7 @@ struct EditEquipmentView: View {
                     Spacer()
                     TextField("", text: $equipment.equipmentName)
                         .multilineTextAlignment(.trailing)
+                        .focused($focusedField, equals: .name)
                 }
                 Picker(selection: $equipment.equipmentSize, label: Text("Size")) {
                     ForEach(Equipment.Size.allCases) { size in
@@ -117,6 +129,7 @@ struct EditEquipmentView: View {
                     TextField("", text: $weight)
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .weight)
                     Text(weightUnitText)
                         .foregroundColor(.secondary)
                 }
@@ -132,6 +145,7 @@ struct EditEquipmentView: View {
                             TextField("", text: $minWeight)
                                 .multilineTextAlignment(.trailing)
                                 .keyboardType(.numberPad)
+                                .focused($focusedField, equals: .minimumWeight)
                             Text(weightUnitText)
                                 .foregroundColor(.secondary)
                         }
@@ -142,6 +156,7 @@ struct EditEquipmentView: View {
                         TextField("", text: $maxWeight)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
+                            .focused($focusedField, equals: .maximumWeight)
                         Text(weightUnitText)
                             .foregroundColor(.secondary)
                     }
@@ -187,6 +202,11 @@ struct EditEquipmentView: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                Button("Done") {
+                    focusedField = nil
+                }
+            }
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
                     managedObjectContext.rollback()
