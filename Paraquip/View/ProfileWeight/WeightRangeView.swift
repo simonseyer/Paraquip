@@ -22,6 +22,7 @@ struct WeightRangeView: View {
     let weight: Measurement<UnitMass>
 
     private let bufferRatio = 0.3
+    private let circleSize: CGFloat = 8
 
     private var bufferCount: Double {
         minWeight.value == 0 ? 1 : 2
@@ -57,17 +58,21 @@ struct WeightRangeView: View {
                             Rectangle()
                                 .frame(width: bufferRatio * geometry.size.width)
                                 .foregroundColor(Color(UIColor.systemGray5))
+                                .cornerRadius(circleSize, corners: [.topLeft, .bottomLeft])
                         }
                         Rectangle()
                             .frame(width: (1.0 - bufferCount * bufferRatio) * geometry.size.width)
                             .foregroundColor(.accentColor)
+                            .cornerRadius(bufferCount > 1 ? 0 : circleSize, corners: [.topLeft, .bottomLeft])
                         Rectangle()
                             .frame(width: bufferRatio * geometry.size.width)
+                            .cornerRadius(circleSize, corners: [.topRight, .bottomRight])
                             .foregroundColor(Color(UIColor.systemGray5))
+
                     }
                     Circle()
                         .foregroundColor(dotColor)
-                        .frame(width: 8)
+                        .frame(width: circleSize)
                         .padding(.leading, relativeValue * geometry.size.width - 4)
                 }
 
@@ -75,9 +80,11 @@ struct WeightRangeView: View {
                 HStack {
                     if bufferCount > 1 {
                         Text(minWeight, format: .measurement(width: .abbreviated))
+                            .fontWeight(.light)
                     }
                     Spacer()
                     Text(maxWeight, format: .measurement(width: .abbreviated))
+                        .fontWeight(.light)
                 }
                 .monospacedDigit()
                 .padding([.leading, .trailing], bufferRatio * geometry.size.width)

@@ -33,13 +33,14 @@ struct ProfileWeightView: View {
     }
 
     @State private var editEquipment: Equipment?
+    @State private var equipmentSumMeasurement: Measurement<UnitMass> = .zero
     @State private var sumMeasurement: Measurement<UnitMass> = .zero
 
     private func updateSum() {
-        let equipmentWeight = profile.allEquipment
+        equipmentSumMeasurement = profile.allEquipment
             .compactMap { $0.weightMeasurement }
             .reduce(.zero, +)
-        sumMeasurement = equipmentWeight + profile.pilotWeightMeasurement + profile.additionalWeightMeasurement
+        sumMeasurement = equipmentSumMeasurement + profile.pilotWeightMeasurement + profile.additionalWeightMeasurement
     }
 
     private func formatted(value: Measurement<UnitMass>) -> String {
@@ -56,6 +57,16 @@ struct ProfileWeightView: View {
                         EquipmentWeightRow(equipment: equipment, formatter: formatted(value:))
                             .foregroundColor(.primary)
                     }
+                }
+                HStack {
+                    ListIcon(image: Image(systemName: "sum"))
+                        .padding(.trailing, 6)
+                    Text("Sum")
+                        .bold()
+                    Spacer()
+                    Text(formatted(value: equipmentSumMeasurement))
+                        .monospacedDigit()
+                        .bold()
                 }
             }
             Section(header: Text("Pilot")) {
@@ -83,10 +94,11 @@ struct ProfileWeightView: View {
                     ListIcon(image: Image(systemName: "sum"))
                         .padding(.trailing, 6)
                     Text("Takeoff weight")
+                        .bold()
                     Spacer()
                     Text(formatted(value: sumMeasurement))
                         .monospacedDigit()
-                        .foregroundColor(.secondary)
+                        .bold()
                 }
                 ForEach(profile.allEquipment) { equipment in
                     EquipmentWeightRangeRow(equipment: equipment, sumMeasurement: sumMeasurement)
@@ -146,7 +158,6 @@ struct EquipmentWeightRangeRow: View {
             if let weightRange = equipment.weightRangeMeasurement {
                 VStack {
                     Text("\(equipment.brandName) \(equipment.equipmentName)")
-                        .foregroundColor(.secondary)
                     WeightRangeView(minWeight: weightRange.lowerBound,
                                     maxWeight: weightRange.upperBound,
                                     weight: sumMeasurement)
