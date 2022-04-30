@@ -80,18 +80,18 @@ struct WeightRangeView: View {
                 HStack {
                     if bufferCount > 1 {
                         Text(minWeight, format: .measurement(width: .abbreviated))
-                            .fontWeight(.light)
                     }
                     Spacer()
                     Text(maxWeight, format: .measurement(width: .abbreviated))
-                        .fontWeight(.light)
+
                 }
+                .font(.footnote)
                 .monospacedDigit()
                 .padding([.leading, .trailing], bufferRatio * geometry.size.width)
                 .foregroundColor(.secondary)
             }
         }
-        .frame(height: 36)
+        .frame(height: 32)
     }
 }
 
