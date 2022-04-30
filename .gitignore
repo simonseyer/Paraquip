@@ -90,3 +90,8 @@ fastlane/test_output
 iOSInjectionProject/
 
 fastlane/AuthKey_BR9339CXSN.p8
+
+# Ruby
+/.bundle/
+/vendor/bundle
+/lib/bundler/man/
