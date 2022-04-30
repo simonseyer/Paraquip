@@ -71,7 +71,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
             .environment(\.managedObjectContext, CoreData.previewContext)
-            .environmentObject(NotificationService(managedObjectContext: CoreData.previewContext))
+            .environmentObject(NotificationService(managedObjectContext: CoreData.previewContext,
+                                                   notifications: FakeNotificationPlugin()))
     }
 }
 
