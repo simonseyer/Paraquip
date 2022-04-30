@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Versionable",
-        "repositoryURL": "https://github.com/krzysztofzablocki/Versionable",
-        "state": {
-          "branch": null,
-          "revision": "4dd5a2215270ecde78e20830cec0ac0bb76084c3",
-          "version": "1.0.0"
-        }
+  "pins" : [
+    {
+      "identity" : "versionable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzysztofzablocki/Versionable",
+      "state" : {
+        "revision" : "4dd5a2215270ecde78e20830cec0ac0bb76084c3",
+        "version" : "1.0.0"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
