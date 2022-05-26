@@ -24,6 +24,15 @@ extension Locale {
     }
 }
 
+fileprivate struct LogEntryView: View {
+
+    @ObservedObject var logEntry: Check
+
+    var body: some View {
+        Text(logEntry.checkDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
+    }
+}
+
 struct EditEquipmentView: View {
 
     enum Field {
@@ -43,7 +52,7 @@ struct EditEquipmentView: View {
 
     @State private var showingLogCheck = false
     @State private var showingManualPicker = false
-    @State private var lastCheckDate: Date?
+    @State private var showingPurchaseView = false
     @State private var manualURL: URL?
     @State private var weight: String = ""
     @State private var minWeight: String = ""
@@ -133,8 +142,26 @@ struct EditEquipmentView: View {
                     Text(weightUnitText)
                         .foregroundColor(.secondary)
                 }
-                FormDatePicker(label: "Purchase Date",
-                               date: $equipment.purchaseDate)
+                NavigationLink(isActive: $showingPurchaseView) {
+                    let check = equipment.purchaseLog ?? Check.create(context: managedObjectContext)
+                    LogCheckView(check: check)
+                        .navigationBarTitle("Purchase")
+                        .onAppear {
+                            equipment.purchaseLog = check
+                        }
+                        .toolbar {
+                            Button("Clear", role: .destructive) {
+                                managedObjectContext.delete(check)
+                                showingPurchaseView = false
+                            }
+                        }
+                } label: {
+                    Text("Purchase")
+                    Spacer()
+                    if let purchaseLog = equipment.purchaseLog {
+                        LogEntryView(logEntry: purchaseLog)
+                    }
+                }
             }
             if equipment is Paraglider || equipment is Reserve {
                 Section(header: Text("Weight range")) {
@@ -167,13 +194,13 @@ struct EditEquipmentView: View {
             }
             if equipment.isInserted {
                 Section(header: Text("Next steps")) {
-                    Button(action: { showingLogCheck.toggle() }) {
+                    Button(action: { showingLogCheck = true }) {
                         HStack {
                             FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
                                 .padding(.trailing, 8)
                             Text("Log last check")
                             Spacer()
-                            if lastCheckDate != nil {
+                            if !equipment.allChecks.isEmpty {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(Color.green)
                             }
@@ -234,11 +261,6 @@ struct EditEquipmentView: View {
                         equipment.weightRangeMeasurement = nil
                     }
 
-                    if let date = lastCheckDate {
-                        let check = Check.create(context: managedObjectContext, date: date)
-                        equipment.addToCheckLog(check)
-                    }
-
                     if let url = manualURL {
                         do {
                             let data = try Data(contentsOf: url)
@@ -258,9 +280,48 @@ struct EditEquipmentView: View {
             }
         }
         .sheet(isPresented: $showingLogCheck) {
-            LogCheckView() { date in
-                lastCheckDate = date
-                showingLogCheck = false
+            NavigationView {
+                if let checkLog = equipment.allChecks.first {
+                    LogCheckView(check: checkLog)
+                        .navigationTitle("Check")
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Delete") {
+                                    managedObjectContext.delete(checkLog)
+                                    showingLogCheck = false
+                                }
+                            }
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Close") {
+                                    showingLogCheck = false
+                                }
+                            }
+                        }
+                } else {
+                    let checkLog = Check.create(context: managedObjectContext)
+                    LogCheckView(check: checkLog)
+                        .navigationTitle("Check")
+                        .onDisappear {
+                            if checkLog.equipment == nil {
+                                // Delete temporary object on cancel or dismissal
+                                managedObjectContext.delete(checkLog)
+                            }
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Cancel") {
+                                    showingLogCheck = false
+                                }
+                            }
+
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Log") {
+                                    equipment.addToCheckLog(checkLog)
+                                    showingLogCheck = false
+                                }
+                            }
+                        }
+                }
             }
         }
         .sheet(isPresented: $showingManualPicker) {

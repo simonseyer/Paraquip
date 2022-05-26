@@ -26,6 +26,7 @@
 		0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* EquipmentView.swift */; };
 		0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1BA262C5BD800DA347B /* Fake.swift */; };
 		0D4071922656CD12001385D7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4071912656CD12001385D7 /* NotificationService.swift */; };
+		0D491CC32829A5EE001BB9EC /* Check.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D491CC22829A5EE001BB9EC /* Check.swift */; };
 		0D59D1D9268A37FD00E6334F /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D59D1D8268A37FD00E6334F /* SnapshotHelper.swift */; };
 		0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E7A53262C43270002A67B /* EditEquipmentView.swift */; };
 		0D5EDB17274FF52F00B3D134 /* EquipmentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5EDB16274FF52F00B3D134 /* EquipmentHeaderView.swift */; };
@@ -40,7 +41,6 @@
 		0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D80E1D42663F49200305B23 /* ErrorExtensions.swift */; };
 		0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */; };
 		0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */; };
-		0D846AF126D41C8400A574BA /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D846AF026D41C8400A574BA /* Timeline.swift */; };
 		0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE526503E47005AB7A7 /* FormDatePicker.swift */; };
 		0D919AE826504857005AB7A7 /* EquipmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE726504857005AB7A7 /* EquipmentTests.swift */; };
 		0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */; };
@@ -111,6 +111,8 @@
 		0D3EE1B5262C58A700DA347B /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
 		0D3EE1BA262C5BD800DA347B /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fake.swift; sourceTree = "<group>"; };
 		0D4071912656CD12001385D7 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		0D491CC22829A5EE001BB9EC /* Check.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Check.swift; sourceTree = "<group>"; };
+		0D491CC42829BC9C001BB9EC /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		0D59D1D8268A37FD00E6334F /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		0D5E7A53262C43270002A67B /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
 		0D5EDB16274FF52F00B3D134 /* EquipmentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentHeaderView.swift; sourceTree = "<group>"; };
@@ -125,7 +127,6 @@
 		0D80E1D42663F49200305B23 /* ErrorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorExtensions.swift; sourceTree = "<group>"; };
 		0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUrgencyViewExtensions.swift; sourceTree = "<group>"; };
 		0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentViewExtensions.swift; sourceTree = "<group>"; };
-		0D846AF026D41C8400A574BA /* Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		0D919AE526503E47005AB7A7 /* FormDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePicker.swift; sourceTree = "<group>"; };
 		0D919AE726504857005AB7A7 /* EquipmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentTests.swift; sourceTree = "<group>"; };
 		0D919AE92651156B005AB7A7 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
@@ -265,7 +266,7 @@
 				0DD7FC12263DD32A0038B25D /* Equipment.swift */,
 				0D2B2D162646B1A9009873CE /* Brand.swift */,
 				0DDA569826ADA45B004A46F8 /* Date.swift */,
-				0D846AF026D41C8400A574BA /* Timeline.swift */,
+				0D491CC22829A5EE001BB9EC /* Check.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -583,7 +584,6 @@
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
-				0D846AF126D41C8400A574BA /* Timeline.swift in Sources */,
 				0D2B2D172646B1A9009873CE /* Brand.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* MainView.swift in Sources */,
 				0D77A35726D2692E002B24D6 /* FormIcon.swift in Sources */,
@@ -599,6 +599,7 @@
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
 				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,
+				0D491CC32829A5EE001BB9EC /* Check.swift in Sources */,
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
 				0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */,
@@ -992,11 +993,12 @@
 		0D07CBFC26B6B6BF00BCC3E6 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0D491CC42829BC9C001BB9EC /* Model 4.xcdatamodel */,
 				0DC585F4275CF448001B346E /* Model 3.xcdatamodel */,
 				0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */,
 				0D07CBFD26B6B6BF00BCC3E6 /* Model.xcdatamodel */,
 			);
-			currentVersion = 0DC585F4275CF448001B346E /* Model 3.xcdatamodel */;
+			currentVersion = 0D491CC42829BC9C001BB9EC /* Model 4.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

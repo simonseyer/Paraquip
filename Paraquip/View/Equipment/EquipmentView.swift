@@ -15,7 +15,7 @@ struct EquipmentView: View {
     @Environment(\.locale) var locale: Locale
 
     @State private var showingEditEquipment = false
-    @State private var showingLogCheck = false
+    @State private var logCheck: Check?
     @State private var showingManual = false
 
     let dateFormatter: DateFormatter = {
@@ -23,6 +23,15 @@ struct EquipmentView: View {
         formatter.dateStyle = .long
         return formatter
     }()
+
+    @FetchRequest
+    private var checkLog: FetchedResults<Check>
+
+    init(equipment: Equipment) {
+        self.equipment = equipment
+        _checkLog = FetchRequest<Check>(sortDescriptors: [SortDescriptor(\.date, order: .reverse)],
+                                        predicate: NSPredicate(format: "%K == %@", #keyPath(Check.equipment), equipment))
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -38,24 +47,18 @@ struct EquipmentView: View {
             }
 
             List {
-                if equipment.timeline.isEmpty {
-                    Text("No check logged")
-                        .foregroundColor(Color(UIColor.systemGray))
-                } else {
-                    ForEach(equipment.timeline) { entry in
-                        TimelineViewCell(timelineEntry: entry) {
-                            showingLogCheck = true
-                        }
-                        .deleteDisabled(!entry.isCheck)
+                NextCheckCell(urgency: equipment.checkUrgency) {
+                    logCheck = Check.create(context: managedObjectContext)
+                }
+                ForEach(checkLog) { log in
+                    TimelineViewCell(logEntry: log) {
+                        logCheck = log
                     }
-                    .onDelete(perform: { indexSet in
-                        for index in indexSet {
-                            if case .check(let check) = equipment.timeline[index] {
-                                managedObjectContext.delete(check)
-                            }
-                        }
-                        try! managedObjectContext.save()
-                    })
+                }
+                if let purchaseLog = equipment.purchaseLog {
+                    TimelineViewCell(logEntry: purchaseLog) {
+                        logCheck = purchaseLog
+                    }
                 }
             }
             .listStyle(.insetGrouped)
@@ -70,14 +73,48 @@ struct EquipmentView: View {
                     EditEquipmentView(equipment: equipment, locale: locale)
                 }
             }
-            .sheet(isPresented: $showingLogCheck) {
-                LogCheckView() { date in
-                    if let checkDate = date {
-                        let check = Check.create(context: managedObjectContext, date: checkDate)
-                        equipment.addToCheckLog(check)
-                        try! managedObjectContext.save()
+            .sheet(item: $logCheck, onDismiss: {
+                managedObjectContext.rollback()
+            }) { check in
+                NavigationView {
+                    if check.isTemporary {
+                        LogCheckView(check: check)
+                            .navigationTitle(check.isPurchase ? "Purchase" : "Check")
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button("Cancel") {
+                                        managedObjectContext.delete(check)
+                                        try! managedObjectContext.save()
+                                        logCheck = nil
+                                    }
+                                }
+                                ToolbarItem(placement: .confirmationAction) {
+                                    Button("Log") {
+                                        equipment.addToCheckLog(check)
+                                        try! managedObjectContext.save()
+                                        logCheck = nil
+                                    }
+                                }
+                            }
+                    } else {
+                        LogCheckView(check: check)
+                            .navigationTitle(check.isPurchase ? "Purchase" : "Check")
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button("Delete") {
+                                        managedObjectContext.delete(check)
+                                        try! managedObjectContext.save()
+                                        logCheck = nil
+                                    }
+                                }
+                                ToolbarItem(placement: .confirmationAction) {
+                                    Button("Save") {
+                                        try! managedObjectContext.save()
+                                        logCheck = nil
+                                    }
+                                }
+                            }
                     }
-                    showingLogCheck = false
                 }
             }
             .sheet(isPresented: $showingManual) {

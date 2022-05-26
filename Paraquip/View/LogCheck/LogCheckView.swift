@@ -9,34 +9,18 @@ import SwiftUI
 
 struct LogCheckView: View {
 
-    @State private var date = Date.now
-
-    let completion: (Date?) -> Void
+    @ObservedObject var check: Check
 
     var body: some View {
-        VStack {
-            DatePicker("", selection: $date, displayedComponents: .date)
+        Form {
+            DatePicker("", selection: $check.checkDate, displayedComponents: .date)
                 .datePickerStyle(.graphical)
-
-            Button(action: { completion(date) }) {
-                Text( "Log check")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.accentColor))
-                    .foregroundColor(.white)
-            }
-            .buttonStyle(.plain)
-
-            Button("Cancel") { completion(nil) }
-                .padding()
         }
-        .padding()
-        .navigationTitle("Log check")
     }
 }
 
 struct LogCheckView_Previews: PreviewProvider {
     static var previews: some View {
-        LogCheckView() { _ in }
+        LogCheckView(check: Check.create(context: CoreData.previewContext))
     }
 }

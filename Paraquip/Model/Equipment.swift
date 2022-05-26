@@ -94,14 +94,15 @@ extension Equipment {
         }
     }
 
-    var sortedCheckLog: [Check] {
-        return (checkLog as! Set<Check>).sorted { check1, check2 in
-            return check1.date! > check2.date!
-        }
+    var allChecks: Set<Check> {
+        checkLog as! Set<Check>
     }
 
     var lastCheck: Date? {
-        sortedCheckLog.first?.date ?? purchaseDate
+        // TODO: not performant
+        allChecks.sorted { check1, check2 in
+            return check1.date! > check2.date!
+        }.first?.date ?? purchaseDate
     }
 
     var nextCheck: Date? {
@@ -139,14 +140,5 @@ extension Equipment {
         let equipment = Self(context: context)
         equipment.id = UUID()
         return equipment
-    }
-}
-
-extension Check {
-    static func create(context: NSManagedObjectContext, date: Date) -> Self {
-        let check = Self(context: context)
-        check.id = UUID()
-        check.date = date
-        return check
     }
 }

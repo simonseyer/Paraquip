@@ -50,20 +50,25 @@ struct ParaquipApp: App {
         let profilesFetchRequest = Profile.fetchRequest()
         let profiles = (try? context.fetch(profilesFetchRequest)) ?? []
 
-        guard profiles.count == 1,
-              let profile = profiles.first,
-              profile.name == "Paraquip",
-              profile.equipment?.count ?? 0 == 0 else {
-                  return
-              }
-
-        profile.name = NSLocalizedString("Your Equipment", comment: "")
-
         let equipmentFetchRequest = Equipment.fetchRequest()
         let equipment = (try? context.fetch(equipmentFetchRequest)) ?? []
 
         for equipment in equipment {
-            profile.addToEquipment(equipment)
+            if let purchaseDate = equipment.purchaseDate, equipment.purchaseLog == nil {
+                equipment.purchaseLog = Check.create(context: context, date: purchaseDate)
+                equipment.purchaseDate = nil
+            }
+        }
+
+        if profiles.count == 1,
+           let profile = profiles.first,
+           profile.name == "Paraquip",
+           profile.equipment?.count ?? 0 == 0 {
+            profile.name = NSLocalizedString("Your Equipment", comment: "")
+
+            for equipment in equipment {
+                profile.addToEquipment(equipment)
+            }
         }
 
         do {
