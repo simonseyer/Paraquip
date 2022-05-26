@@ -30,13 +30,6 @@ class EquipmentTests: XCTestCase {
         return equipment
     }
 
-    func testCheckLogSorted() {
-        let equipment = equipment(checkLog: [Date.offsetBy(days: -40), Date.offsetBy(days: 1)])
-
-        XCTAssert(Calendar.current.isDate(equipment.sortedCheckLog[0].date!, inSameDayAs: Date.offsetBy(days: 1)))
-        XCTAssert(Calendar.current.isDate(equipment.sortedCheckLog[1].date!, inSameDayAs: Date.offsetBy(days: -40)))
-    }
-
     func testNextCheck() {
         let equipment = equipment(checkLog: [Date.offsetBy(days: -40)])
 
