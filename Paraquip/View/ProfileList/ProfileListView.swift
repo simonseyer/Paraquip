@@ -10,6 +10,7 @@ import CoreData
 
 struct ProfileListView: View {
 
+    // TODO: filter temporary objects to avoid flicker or wrap in super entity and add delayed
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
 
@@ -65,8 +66,24 @@ struct ProfileListView: View {
         .sheet(item: $editProfile) { profile in
             NavigationView {
                 EditProfileView(profile: profile)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                managedObjectContext.rollback()
+                                editProfile = nil
+                            }
+                        }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Save") {
+                                try! managedObjectContext.save()
+                                editProfile = nil
+                            }
+                            .disabled(profile.profileName.isEmpty)
+                        }
+                    }
             }
         }
+        .interactiveDismissDisabled(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {

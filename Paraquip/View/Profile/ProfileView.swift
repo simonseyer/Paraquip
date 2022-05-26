@@ -82,8 +82,10 @@ struct ProfileView: View {
         .sheet(item: $newEquipment) { equipment in
             NavigationView {
                 EditEquipmentView(equipment: equipment, locale: locale)
+                // TODO: handle save/rollback here and only add equipment to profile on save
             }
         }
+        .interactiveDismissDisabled(true)
         .sheet(isPresented: $showWeightView) {
             NavigationView {
                 ProfileWeightView(profile: profile)

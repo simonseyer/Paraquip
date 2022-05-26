@@ -11,8 +11,6 @@ import CoreData
 struct EditProfileView: View {
 
     @ObservedObject var profile: Profile
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.managedObjectContext) var managedObjectContext
 
     @FetchRequest(sortDescriptors: [
         SortDescriptor(\.brand),
@@ -42,7 +40,7 @@ struct EditProfileView: View {
 
             if !allEquipment.isEmpty {
                 Section(header: Text("Equipment")) {
-                    ForEach(allEquipment, id: \.id) { equipment in
+                    ForEach(allEquipment) { equipment in
                         Button(action: {
                             if profile.equipment?.contains(equipment) ?? false {
                                 profile.removeFromEquipment(equipment)
@@ -67,21 +65,6 @@ struct EditProfileView: View {
             }
         }
         .navigationTitle(profile.profileName.isEmpty ? NSLocalizedString("New Set", comment: "") : profile.profileName)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    managedObjectContext.rollback()
-                    dismiss()
-                }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Save") {
-                    try! managedObjectContext.save()
-                    dismiss()
-                }
-                .disabled(profile.profileName.isEmpty)
-            }
-        }
     }
 }
 
