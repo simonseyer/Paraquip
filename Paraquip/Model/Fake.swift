@@ -137,6 +137,8 @@ extension NSPersistentContainer {
             equipment.addToCheckLog(check)
         }
 
+        try! context.save()
+
         return profile
     }
 }

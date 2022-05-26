@@ -278,7 +278,7 @@ struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationView {
-                EditEquipmentView(equipment: Paraglider(context: CoreData.previewContext), locale: locale)
+                EditEquipmentView(equipment: Paraglider.create(context: CoreData.previewContext), locale: locale)
             }
             ForEach(CoreData.fakeProfile.allEquipment) { equipment in
                 NavigationView {
