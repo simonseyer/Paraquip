@@ -108,7 +108,7 @@ struct ProfileView_Previews: PreviewProvider {
             }
 
             NavigationView {
-                ProfileView(profile: Profile.create(context: CoreData.previewContext))
+                ProfileView(profile: Profile.create(context: CoreData.previewContext, name: "Empty"))
             }
         }
         .environment(\.locale, .init(identifier: "de"))

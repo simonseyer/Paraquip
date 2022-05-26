@@ -70,7 +70,7 @@ struct ProfileListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    editProfile = Profile.create(context: managedObjectContext)
+                    editProfile = Profile.create(context: managedObjectContext, name: "")
                 } label: {
                     Image(systemName: "plus")
                 }

@@ -33,8 +33,7 @@ class LegacyAppPersistence {
             return
         }
 
-        let profileModel = Profile.create(context: managedObjectContext)
-        profileModel.name = NSLocalizedString("Equipment", comment: "")
+        let profileModel = Profile.create(context: managedObjectContext, name: NSLocalizedString("Equipment", comment: ""))
         profileModel.profileIcon = .default
 
         for paraglider in profile.paraglider {

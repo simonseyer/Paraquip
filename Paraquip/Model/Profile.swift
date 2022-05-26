@@ -17,10 +17,6 @@ extension Profile {
         static var `default`: Icon { .mountain }
     }
 
-    var uuid: CVarArg {
-        id! as CVarArg
-    }
-
     var profileName: String {
         get { name ?? "" }
         set { name = newValue }
@@ -66,9 +62,10 @@ extension Profile {
         allEquipment.compactMap { $0 as? Reserve }
     }
 
-    static func create(context: NSManagedObjectContext) -> Profile {
+    static func create(context: NSManagedObjectContext, name: String) -> Profile {
         let profile = Profile(context: context)
         profile.id = UUID()
+        profile.name = name
         return profile
     }
 }

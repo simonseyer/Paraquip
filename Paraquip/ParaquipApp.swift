@@ -79,8 +79,7 @@ struct ParaquipApp: App {
             return
         }
 
-        let profile = Profile.create(context: context)
-        profile.name = NSLocalizedString("Your Equipment", comment: "")
+        _ = Profile.create(context: context, name: NSLocalizedString("Your Equipment", comment: ""))
 
         do {
             try context.save()
