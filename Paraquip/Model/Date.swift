@@ -8,7 +8,7 @@
 import Foundation
 
 extension Date {
-    static var now: Date {
+    static var paraquipNow: Date {
         simulatedDate ?? Date()
     }
 

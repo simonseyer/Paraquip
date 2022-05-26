@@ -110,7 +110,7 @@ extension Equipment {
         }
 
         guard let lastCheck = lastCheck else {
-            return Date.now
+            return Date.paraquipNow
         }
 
         return Calendar.current.date(byAdding: .month,
@@ -123,10 +123,10 @@ extension Equipment {
             return .never
         }
 
-        let months = Calendar.current.dateComponents([.month], from: Date.now, to: nextCheck).month ?? 0
+        let months = Calendar.current.dateComponents([.month], from: Date.paraquipNow, to: nextCheck).month ?? 0
 
-        if Calendar.current.isDate(nextCheck, inSameDayAs: Date.now) ||
-            nextCheck < Date.now {
+        if Calendar.current.isDate(nextCheck, inSameDayAs: Date.paraquipNow) ||
+            nextCheck < Date.paraquipNow {
             return .now
         } else if months == 0 {
             return .soon(nextCheck)

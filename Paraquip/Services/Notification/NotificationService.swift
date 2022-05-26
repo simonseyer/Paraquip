@@ -212,7 +212,7 @@ class NotificationService: ObservableObject {
         let date = Calendar.current.date(byAdding: config.dateComponents,
                                          to: nextCheck.settingTimeTo(hour: Self.notificationHour))!
 
-        guard date > Date.now else {
+        guard date > Date.paraquipNow else {
             logger.info("Ignoring notification config because it lies in the past: \(config)")
             return
         }

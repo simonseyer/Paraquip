@@ -21,7 +21,7 @@ struct FormDatePicker: View {
     init(label: LocalizedStringKey, date: Binding<Date?>) {
         self.label = label
         self._date = date
-        self._selectedDate = State(initialValue: date.wrappedValue ?? Date.now)
+        self._selectedDate = State(initialValue: date.wrappedValue ?? Date.paraquipNow)
     }
 
     var body: some View {

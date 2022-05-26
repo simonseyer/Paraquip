@@ -23,7 +23,7 @@ extension Equipment.CheckUrgency {
         case .now:
             return "Check now"
         case .soon(let date), .later(let date):
-            return "\(Self.dateFormatter.string(from: Date.now, to: date) ?? "")"
+            return "\(Self.dateFormatter.string(from: Date.paraquipNow, to: date) ?? "")"
         case .never:
             return "No check needed"
         }
