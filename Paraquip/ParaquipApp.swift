@@ -55,7 +55,7 @@ struct ParaquipApp: App {
 
         for equipment in equipment {
             if let purchaseDate = equipment.purchaseDate, equipment.purchaseLog == nil {
-                equipment.purchaseLog = Check.create(context: context, date: purchaseDate)
+                equipment.purchaseLog = LogEntry.create(context: context, date: purchaseDate)
                 equipment.purchaseDate = nil
             }
         }

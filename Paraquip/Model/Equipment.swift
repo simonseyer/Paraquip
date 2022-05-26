@@ -94,8 +94,8 @@ extension Equipment {
         }
     }
 
-    var allChecks: Set<Check> {
-        checkLog as! Set<Check>
+    var allChecks: Set<LogEntry> {
+        checkLog as! Set<LogEntry>
     }
 
     var lastCheck: Date? {

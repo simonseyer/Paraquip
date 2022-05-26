@@ -24,7 +24,7 @@ class EquipmentTests: XCTestCase {
         equipment.purchaseDate = purchaseDate
 
         for check in checkLog {
-            equipment.addToCheckLog(Check.create(context: persistentContainer.viewContext, date: check))
+            equipment.addToCheckLog(LogEntry.create(context: persistentContainer.viewContext, date: check))
         }
 
         return equipment

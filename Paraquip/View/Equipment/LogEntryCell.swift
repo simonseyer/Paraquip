@@ -1,5 +1,5 @@
 //
-//  TimelineViewCell.swift
+//  LogEntryCell.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 27.06.21.
@@ -23,10 +23,10 @@ struct NextCheckCell: View {
                 .font(Font.body.weight(.medium))
                 .foregroundColor(.accentColor)
         }
-        .padding(TimelineVisual.padding)
+        .padding(LogEntryCellBackground.padding)
 
         .listRowBackground(
-            TimelineVisual(color: urgency.color,
+            LogEntryCellBackground(color: urgency.color,
                            position: .start,
                            isHighlighted: $isHighlighted)
         )
@@ -40,21 +40,21 @@ struct NextCheckCell: View {
     }
 }
 
-struct TimelineViewCell: View {
+struct LogEntryCell: View {
 
-    @ObservedObject var logEntry: Check
+    @ObservedObject var logEntry: LogEntry
     let onTap: () -> Void
 
     @State private var isHighlighted = false
 
     var body: some View {
         HStack {
-            Text(logEntry.checkDate, format: Date.FormatStyle(date: .long, time: .omitted))
+            Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .long, time: .omitted))
             Spacer()
         }
-        .padding(TimelineVisual.padding)
+        .padding(LogEntryCellBackground.padding)
         .listRowBackground(
-            TimelineVisual(color: Color(UIColor.systemGray3),
+            LogEntryCellBackground(color: Color(UIColor.systemGray3),
                            position: logEntry.isPurchase ? .end : .middle,
                            isHighlighted: $isHighlighted)
         )
@@ -68,7 +68,7 @@ struct TimelineViewCell: View {
     }
 }
 
-fileprivate struct TimelineVisual: View {
+fileprivate struct LogEntryCellBackground: View {
 
     enum Position {
         case start, middle, end
@@ -112,21 +112,21 @@ fileprivate struct TimelineVisual: View {
 
 struct TimelineView_Previews: PreviewProvider {
 
-    private static func fakeCheck(isPurchase: Bool) -> Check {
-        let check = Check.create(context: CoreData.previewContext)
+    private static func fakeEntry(isPurchase: Bool) -> LogEntry {
+        let logEntry = LogEntry.create(context: CoreData.previewContext)
         if isPurchase {
-            CoreData.fakeProfile.allEquipment.first?.purchaseLog =  check
+            CoreData.fakeProfile.allEquipment.first?.purchaseLog = logEntry
         }
-        return check
+        return logEntry
     }
 
     static var previews: some View {
         Group {
             List {
                 NextCheckCell(urgency: .now, onTap: {})
-                TimelineViewCell(logEntry: fakeCheck(isPurchase: false), onTap: {})
-                TimelineViewCell(logEntry: fakeCheck(isPurchase: false), onTap: {})
-                TimelineViewCell(logEntry: fakeCheck(isPurchase: true), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true), onTap: {})
             }
             .listStyle(.insetGrouped)
         }
@@ -134,7 +134,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .soon(Date()), onTap: {})
-                TimelineViewCell(logEntry: fakeCheck(isPurchase: true), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true), onTap: {})
             }
             .listStyle(.insetGrouped)
         }
@@ -142,7 +142,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .later(Date()), onTap: {})
-                TimelineViewCell(logEntry: fakeCheck(isPurchase: false), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
             }
             .listStyle(.insetGrouped)
         }

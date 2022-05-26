@@ -61,7 +61,7 @@ extension NSPersistentContainer {
             equipment.brandId = "nova"
             equipment.name = "Beamer 3 light"
             equipment.checkCycle = 3
-            equipment.purchaseLog = Check.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 1.37
             equipment.weightRange = {
                 let weightRange = WeightRange(context: context)
@@ -79,7 +79,7 @@ extension NSPersistentContainer {
             equipment.brandId = "ozone"
             equipment.name = "Angel SQ"
             equipment.checkCycle = 3
-            equipment.purchaseLog = Check.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 1.54
             equipment.weightRange = {
                 let weightRange = WeightRange(context: context)
@@ -89,10 +89,10 @@ extension NSPersistentContainer {
             }()
             profile.addToEquipment(equipment)
 
-            let check = Check(context: context)
-            check.id = UUID()
-            check.date = dateFormatter.date(from: "10.07.2021")!
-            equipment.addToCheckLog(check)
+            let logEntry = LogEntry(context: context)
+            logEntry.id = UUID()
+            logEntry.date = dateFormatter.date(from: "10.07.2021")!
+            equipment.addToCheckLog(logEntry)
         }
 
         do {
@@ -102,15 +102,15 @@ extension NSPersistentContainer {
             equipment.brandId = "woody-valley"
             equipment.name = "Wani Light 2"
             equipment.checkCycle = 12
-            equipment.purchaseLog = Check.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
             equipment.equipmentSize = .medium
             equipment.weight = 2.75
             profile.addToEquipment(equipment)
 
-            let check = Check(context: context)
-            check.id = UUID()
-            check.date = dateFormatter.date(from: "14.04.2021")!
-            equipment.addToCheckLog(check)
+            let logEntry = LogEntry(context: context)
+            logEntry.id = UUID()
+            logEntry.date = dateFormatter.date(from: "14.04.2021")!
+            equipment.addToCheckLog(logEntry)
         }
 
         do {
@@ -121,7 +121,7 @@ extension NSPersistentContainer {
             equipment.name = "Explorer 2"
             equipment.equipmentSize = .small
             equipment.checkCycle = 12
-            equipment.purchaseLog = Check.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 3.7
             equipment.weightRange = {
                 let weightRange = WeightRange(context: context)
@@ -131,10 +131,10 @@ extension NSPersistentContainer {
             }()
             profile.addToEquipment(equipment)
 
-            let check = Check(context: context)
-            check.id = UUID()
-            check.date = dateFormatter.date(from: "12.08.2021")!
-            equipment.addToCheckLog(check)
+            let logEntry = LogEntry(context: context)
+            logEntry.id = UUID()
+            logEntry.date = dateFormatter.date(from: "12.08.2021")!
+            equipment.addToCheckLog(logEntry)
         }
 
         try! context.save()

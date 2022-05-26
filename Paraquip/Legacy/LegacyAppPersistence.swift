@@ -47,7 +47,7 @@ class LegacyAppPersistence {
             profileModel.addToEquipment(paragliderModel)
 
             for check in paraglider.checkLog {
-                let checkModel = Check.create(context: managedObjectContext, date: check.date)
+                let checkModel = LogEntry.create(context: managedObjectContext, date: check.date)
                 paragliderModel.addToCheckLog(checkModel)
             }
         }
@@ -62,7 +62,7 @@ class LegacyAppPersistence {
             profileModel.addToEquipment(harnessModel)
 
             for check in harness.checkLog {
-                let checkModel = Check.create(context: managedObjectContext, date: check.date)
+                let checkModel = LogEntry.create(context: managedObjectContext, date: check.date)
                 harnessModel.addToCheckLog(checkModel)
             }
         }
@@ -77,7 +77,7 @@ class LegacyAppPersistence {
             profileModel.addToEquipment(reserveModel)
 
             for check in reserve.checkLog {
-                let checkModel = Check.create(context: managedObjectContext, date: check.date)
+                let checkModel = LogEntry.create(context: managedObjectContext, date: check.date)
                 reserveModel.addToCheckLog(checkModel)
             }
         }

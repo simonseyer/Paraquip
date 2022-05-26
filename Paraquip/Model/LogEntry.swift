@@ -8,8 +8,8 @@
 import Foundation
 import CoreData
 
-extension Check {
-    var checkDate: Date {
+extension LogEntry {
+    var logEntryDate: Date {
         get { date ?? Date.paraquipNow }
         set { date = newValue }
     }
@@ -23,9 +23,9 @@ extension Check {
     }
 
     static func create(context: NSManagedObjectContext, date: Date = .paraquipNow) -> Self {
-        let check = Self(context: context)
-        check.id = UUID()
-        check.date = date
-        return check
+        let logEntry = Self(context: context)
+        logEntry.id = UUID()
+        logEntry.date = date
+        return logEntry
     }
 }

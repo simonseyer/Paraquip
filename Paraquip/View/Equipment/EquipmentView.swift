@@ -15,7 +15,7 @@ struct EquipmentView: View {
     @Environment(\.locale) var locale: Locale
 
     @State private var showingEditEquipment = false
-    @State private var logCheck: Check?
+    @State private var editLogEntry: LogEntry?
     @State private var showingManual = false
 
     let dateFormatter: DateFormatter = {
@@ -25,12 +25,12 @@ struct EquipmentView: View {
     }()
 
     @FetchRequest
-    private var checkLog: FetchedResults<Check>
+    private var checkLog: FetchedResults<LogEntry>
 
     init(equipment: Equipment) {
         self.equipment = equipment
-        _checkLog = FetchRequest<Check>(sortDescriptors: [SortDescriptor(\.date, order: .reverse)],
-                                        predicate: NSPredicate(format: "%K == %@", #keyPath(Check.equipment), equipment))
+        _checkLog = FetchRequest<LogEntry>(sortDescriptors: [SortDescriptor(\.date, order: .reverse)],
+                                        predicate: NSPredicate(format: "%K == %@", #keyPath(LogEntry.equipment), equipment))
     }
 
     var body: some View {
@@ -48,16 +48,16 @@ struct EquipmentView: View {
 
             List {
                 NextCheckCell(urgency: equipment.checkUrgency) {
-                    logCheck = Check.create(context: managedObjectContext)
+                    editLogEntry = LogEntry.create(context: managedObjectContext)
                 }
-                ForEach(checkLog) { log in
-                    TimelineViewCell(logEntry: log) {
-                        logCheck = log
+                ForEach(checkLog) { logEntry in
+                    LogEntryCell(logEntry: logEntry) {
+                        self.editLogEntry = logEntry
                     }
                 }
                 if let purchaseLog = equipment.purchaseLog {
-                    TimelineViewCell(logEntry: purchaseLog) {
-                        logCheck = purchaseLog
+                    LogEntryCell(logEntry: purchaseLog) {
+                        editLogEntry = purchaseLog
                     }
                 }
             }
@@ -73,44 +73,44 @@ struct EquipmentView: View {
                     EditEquipmentView(equipment: equipment, locale: locale)
                 }
             }
-            .sheet(item: $logCheck, onDismiss: {
+            .sheet(item: $editLogEntry, onDismiss: {
                 managedObjectContext.rollback()
             }) { check in
                 NavigationView {
                     if check.isTemporary {
-                        LogCheckView(check: check)
+                        LogEntryView(logEntry: check)
                             .navigationTitle(check.isPurchase ? "Purchase" : "Check")
                             .toolbar {
                                 ToolbarItem(placement: .cancellationAction) {
                                     Button("Cancel") {
                                         managedObjectContext.delete(check)
                                         try! managedObjectContext.save()
-                                        logCheck = nil
+                                        editLogEntry = nil
                                     }
                                 }
                                 ToolbarItem(placement: .confirmationAction) {
                                     Button("Log") {
                                         equipment.addToCheckLog(check)
                                         try! managedObjectContext.save()
-                                        logCheck = nil
+                                        editLogEntry = nil
                                     }
                                 }
                             }
                     } else {
-                        LogCheckView(check: check)
+                        LogEntryView(logEntry: check)
                             .navigationTitle(check.isPurchase ? "Purchase" : "Check")
                             .toolbar {
                                 ToolbarItem(placement: .cancellationAction) {
                                     Button("Delete") {
                                         managedObjectContext.delete(check)
                                         try! managedObjectContext.save()
-                                        logCheck = nil
+                                        editLogEntry = nil
                                     }
                                 }
                                 ToolbarItem(placement: .confirmationAction) {
                                     Button("Save") {
                                         try! managedObjectContext.save()
-                                        logCheck = nil
+                                        editLogEntry = nil
                                     }
                                 }
                             }

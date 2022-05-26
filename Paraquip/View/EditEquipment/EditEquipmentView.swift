@@ -24,12 +24,12 @@ extension Locale {
     }
 }
 
-fileprivate struct LogEntryView: View {
+fileprivate struct LogDateCell: View {
 
-    @ObservedObject var logEntry: Check
+    @ObservedObject var logEntry: LogEntry
 
     var body: some View {
-        Text(logEntry.checkDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
+        Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
     }
 }
 
@@ -50,7 +50,7 @@ struct EditEquipmentView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) var locale: Locale
 
-    @State private var showingLogCheck = false
+    @State private var showingCheckLogEntry = false
     @State private var showingManualPicker = false
     @State private var showingPurchaseView = false
     @State private var manualURL: URL?
@@ -143,15 +143,15 @@ struct EditEquipmentView: View {
                         .foregroundColor(.secondary)
                 }
                 NavigationLink(isActive: $showingPurchaseView) {
-                    let check = equipment.purchaseLog ?? Check.create(context: managedObjectContext)
-                    LogCheckView(check: check)
+                    let logEntry = equipment.purchaseLog ?? LogEntry.create(context: managedObjectContext)
+                    LogEntryView(logEntry: logEntry)
                         .navigationBarTitle("Purchase")
                         .onAppear {
-                            equipment.purchaseLog = check
+                            equipment.purchaseLog = logEntry
                         }
                         .toolbar {
                             Button("Clear", role: .destructive) {
-                                managedObjectContext.delete(check)
+                                managedObjectContext.delete(logEntry)
                                 showingPurchaseView = false
                             }
                         }
@@ -159,7 +159,7 @@ struct EditEquipmentView: View {
                     Text("Purchase")
                     Spacer()
                     if let purchaseLog = equipment.purchaseLog {
-                        LogEntryView(logEntry: purchaseLog)
+                        LogDateCell(logEntry: purchaseLog)
                     }
                 }
             }
@@ -194,7 +194,7 @@ struct EditEquipmentView: View {
             }
             if equipment.isInserted {
                 Section(header: Text("Next steps")) {
-                    Button(action: { showingLogCheck = true }) {
+                    Button(action: { showingCheckLogEntry = true }) {
                         HStack {
                             FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
                                 .padding(.trailing, 8)
@@ -279,45 +279,45 @@ struct EditEquipmentView: View {
                 .disabled(equipment.equipmentBrand == .none || equipment.equipmentName.isEmpty)
             }
         }
-        .sheet(isPresented: $showingLogCheck) {
+        .sheet(isPresented: $showingCheckLogEntry) {
             NavigationView {
-                if let checkLog = equipment.allChecks.first {
-                    LogCheckView(check: checkLog)
+                if let logEntry = equipment.allChecks.first {
+                    LogEntryView(logEntry: logEntry)
                         .navigationTitle("Check")
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {
                                 Button("Delete") {
-                                    managedObjectContext.delete(checkLog)
-                                    showingLogCheck = false
+                                    managedObjectContext.delete(logEntry)
+                                    showingCheckLogEntry = false
                                 }
                             }
                             ToolbarItem(placement: .confirmationAction) {
                                 Button("Close") {
-                                    showingLogCheck = false
+                                    showingCheckLogEntry = false
                                 }
                             }
                         }
                 } else {
-                    let checkLog = Check.create(context: managedObjectContext)
-                    LogCheckView(check: checkLog)
+                    let logEntry = LogEntry.create(context: managedObjectContext)
+                    LogEntryView(logEntry: logEntry)
                         .navigationTitle("Check")
                         .onDisappear {
-                            if checkLog.equipment == nil {
+                            if logEntry.equipment == nil {
                                 // Delete temporary object on cancel or dismissal
-                                managedObjectContext.delete(checkLog)
+                                managedObjectContext.delete(logEntry)
                             }
                         }
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {
                                 Button("Cancel") {
-                                    showingLogCheck = false
+                                    showingCheckLogEntry = false
                                 }
                             }
 
                             ToolbarItem(placement: .confirmationAction) {
                                 Button("Log") {
-                                    equipment.addToCheckLog(checkLog)
-                                    showingLogCheck = false
+                                    equipment.addToCheckLog(logEntry)
+                                    showingCheckLogEntry = false
                                 }
                             }
                         }
