@@ -51,6 +51,11 @@ struct LogEntryCell: View {
         HStack {
             Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .long, time: .omitted))
             Spacer()
+            if logEntry.attachments?.count ?? 0 > 0 {
+                Image(systemName: "paperclip")
+                    .font(Font.body.weight(.medium))
+                    .foregroundColor(.accentColor)
+            }
         }
         .padding(LogEntryCellBackground.padding)
         .listRowBackground(
@@ -112,10 +117,16 @@ fileprivate struct LogEntryCellBackground: View {
 
 struct TimelineView_Previews: PreviewProvider {
 
-    private static func fakeEntry(isPurchase: Bool) -> LogEntry {
+    private static func fakeEntry(isPurchase: Bool, hasAttachment: Bool = false) -> LogEntry {
         let logEntry = LogEntry.create(context: CoreData.previewContext)
         if isPurchase {
             CoreData.fakeProfile.allEquipment.first?.purchaseLog = logEntry
+        }
+        if hasAttachment {
+            let attachment = LogAttachment(context: CoreData.previewContext)
+            attachment.data = Data()
+            attachment.fileName = "Rechnung Explorer.pdf"
+            logEntry.addToAttachments(attachment)
         }
         return logEntry
     }
@@ -125,7 +136,7 @@ struct TimelineView_Previews: PreviewProvider {
             List {
                 NextCheckCell(urgency: .now, onTap: {})
                 LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false, hasAttachment: true), onTap: {})
                 LogEntryCell(logEntry: fakeEntry(isPurchase: true), onTap: {})
             }
             .listStyle(.insetGrouped)
@@ -134,7 +145,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .soon(Date()), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: true), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true, hasAttachment: true), onTap: {})
             }
             .listStyle(.insetGrouped)
         }

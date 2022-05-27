@@ -325,7 +325,7 @@ struct EditEquipmentView: View {
             }
         }
         .sheet(isPresented: $showingManualPicker) {
-            DocumentPicker() { url in
+            DocumentPicker(contentTypes: [.pdf]) { url in
                 manualURL = url
             }
         }

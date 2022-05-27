@@ -126,7 +126,7 @@ struct EquipmentView: View {
                         })
                     }
                 } else {
-                    DocumentPicker() { url in
+                    DocumentPicker(contentTypes: [.pdf]) { url in
                         do {
                             let data = try Data(contentsOf: url)
                             let manual = Manual(context: managedObjectContext)

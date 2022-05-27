@@ -7,11 +7,16 @@
 
 import Foundation
 import CoreData
+import UniformTypeIdentifiers
 
 extension LogEntry {
     var logEntryDate: Date {
         get { date ?? Date.paraquipNow }
         set { date = newValue }
+    }
+
+    var logEntryAttachments: [LogAttachment] {
+        (attachments?.allObjects as? [LogAttachment]) ?? []
     }
 
     var isTemporary: Bool {
@@ -27,5 +32,19 @@ extension LogEntry {
         logEntry.id = UUID()
         logEntry.date = date
         return logEntry
+    }
+}
+
+extension LogAttachment {
+    var attachmentContentType: UTType {
+        get {
+            guard let contentType = contentType else {
+                return .data
+            }
+            return UTType(contentType) ?? UTType.data
+        }
+        set {
+            contentType = newValue.identifier
+        }
     }
 }
