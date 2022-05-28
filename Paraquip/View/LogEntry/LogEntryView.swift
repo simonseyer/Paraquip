@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
 import QuickLook
 
 struct LogEntryView: View {
@@ -45,9 +44,9 @@ struct LogEntryView: View {
                         Button(action: { previewURL = attachment.fileURL }) {
                             HStack {
                                 Group {
-                                    if attachment.contentType == .pdf {
+                                    if attachment.contentType.conforms(to: .pdf) {
                                         Image(systemName: "doc.fill")
-                                    } else if attachment.contentType.supertypes.contains(.image) {
+                                    } else if attachment.contentType.conforms(to: .image) {
                                         Image(systemName: "photo.fill")
                                     }
                                 }
