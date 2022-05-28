@@ -52,6 +52,7 @@
 		0DA898AA2841FAD100D7568F /* CoreDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA898A92841FAD100D7568F /* CoreDataOperation.swift */; };
 		0DA898AC2842358900D7568F /* Dummy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0DA898AB2842358900D7568F /* Dummy.pdf */; };
 		0DA898AE284238F400D7568F /* Dummy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DA898AD284238F400D7568F /* Dummy.jpg */; };
+		0DA898B0284260A100D7568F /* LogAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA898AF284260A100D7568F /* LogAttachment.swift */; };
 		0DA93A0326CEE0290063356B /* PDFViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0226CEE0290063356B /* PDFViewer.swift */; };
 		0DA93A0926CEE8950063356B /* ManualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0826CEE8950063356B /* ManualView.swift */; };
 		0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0A26CEE9160063356B /* PillLabel.swift */; };
@@ -144,6 +145,7 @@
 		0DA898A92841FAD100D7568F /* CoreDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataOperation.swift; sourceTree = "<group>"; };
 		0DA898AB2842358900D7568F /* Dummy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Dummy.pdf; sourceTree = "<group>"; };
 		0DA898AD284238F400D7568F /* Dummy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dummy.jpg; sourceTree = "<group>"; };
+		0DA898AF284260A100D7568F /* LogAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAttachment.swift; sourceTree = "<group>"; };
 		0DA93A0226CEE0290063356B /* PDFViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewer.swift; sourceTree = "<group>"; };
 		0DA93A0826CEE8950063356B /* ManualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualView.swift; sourceTree = "<group>"; };
 		0DA93A0A26CEE9160063356B /* PillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLabel.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				0D2B2D162646B1A9009873CE /* Brand.swift */,
 				0DDA569826ADA45B004A46F8 /* Date.swift */,
 				0D491CC22829A5EE001BB9EC /* LogEntry.swift */,
+				0DA898AF284260A100D7568F /* LogAttachment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 		0D5E7A52262C430E0002A67B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0DA898B12842631300D7568F /* UIKitWrapper */,
 				0DC585EE275CE0E9001B346E /* Shared */,
 				0D4785A32710B9920055E377 /* Main */,
 				0DC0904A26D818B700AB3BCF /* ProfileList */,
@@ -362,6 +366,16 @@
 			path = ModelExtensions;
 			sourceTree = "<group>";
 		};
+		0DA898B12842631300D7568F /* UIKitWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				0D08F16026CD7EE0009CD3C5 /* DocumentPicker.swift */,
+				0DA93A0226CEE0290063356B /* PDFViewer.swift */,
+				0D22A9A828415D9400AB4E23 /* ImagePicker.swift */,
+			);
+			path = UIKitWrapper;
+			sourceTree = "<group>";
+		};
 		0DA93A0426CEE7220063356B /* EditEquipment */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,12 +393,9 @@
 			children = (
 				0D3EE1B5262C58A700DA347B /* EquipmentView.swift */,
 				0D0DFF9E26887C4900AEB2AD /* LogEntryCell.swift */,
-				0D08F16026CD7EE0009CD3C5 /* DocumentPicker.swift */,
 				0DA93A0826CEE8950063356B /* ManualView.swift */,
-				0DA93A0226CEE0290063356B /* PDFViewer.swift */,
 				0DA93A0A26CEE9160063356B /* PillLabel.swift */,
 				0D5EDB16274FF52F00B3D134 /* EquipmentHeaderView.swift */,
-				0D22A9A828415D9400AB4E23 /* ImagePicker.swift */,
 			);
 			path = Equipment;
 			sourceTree = "<group>";
@@ -639,6 +650,7 @@
 				0DEE05CD271C371A00407599 /* ProfileSectionView.swift in Sources */,
 				0D5EDB17274FF52F00B3D134 /* EquipmentHeaderView.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
+				0DA898B0284260A100D7568F /* LogAttachment.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
 				0D0DFF9F26887C4900AEB2AD /* LogEntryCell.swift in Sources */,
 				0DA93A0326CEE0290063356B /* PDFViewer.swift in Sources */,

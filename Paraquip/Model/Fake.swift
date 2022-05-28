@@ -138,20 +138,19 @@ extension NSPersistentContainer {
             equipment.addToCheckLog(logEntry)
 
             let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")!
-            try? FileManager.default.copyItem(at: dummyPDFURL, to: FileManager.default.attachmentsDirectory.appendingPathComponent(dummyPDFURL.lastPathComponent))
-
             let attachment = LogAttachment(context: context)
             attachment.filePath = dummyPDFURL.lastPathComponent
             attachment.timestamp = Date.paraquipNow
             logEntry.addToAttachments(attachment)
 
             let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")!
-            try? FileManager.default.copyItem(at: dummyImageURL, to: FileManager.default.attachmentsDirectory.appendingPathComponent(dummyImageURL.lastPathComponent))
-
             let attachment2 = LogAttachment(context: context)
             attachment2.filePath = dummyImageURL.lastPathComponent
             attachment2.timestamp = Date.paraquipNow
             logEntry.addToAttachments(attachment2)
+
+            try? FileManager.default.copyItem(at: dummyPDFURL, to: attachment.fileURL!)
+            try? FileManager.default.copyItem(at: dummyImageURL, to: attachment2.fileURL!)
         }
 
         try! context.save()

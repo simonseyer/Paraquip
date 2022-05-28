@@ -45,9 +45,9 @@ struct LogEntryView: View {
                         Button(action: { previewURL = attachment.fileURL }) {
                             HStack {
                                 Group {
-                                    if attachment.attachmentContentType == .pdf {
+                                    if attachment.contentType == .pdf {
                                         Image(systemName: "doc.fill")
-                                    } else if attachment.attachmentContentType.supertypes.contains(.image) {
+                                    } else if attachment.contentType.supertypes.contains(.image) {
                                         Image(systemName: "photo.fill")
                                     }
                                 }
@@ -109,42 +109,16 @@ struct LogEntryView: View {
         }
         .quickLookPreview($previewURL)
         .sheet(isPresented: $showingDocumentPicker) {
-            DocumentPicker(contentTypes: [.pdf, .image]) { url in
-                addAttachment(url: url)
-            }
+            DocumentPicker(contentTypes: [.pdf, .image], selectFile: addAttachment)
         }
         .sheet(isPresented: $showingImagePicker) {
-            ImagePicker { url in
-                addAttachment(url: url)
-            }
+            ImagePicker(selectFile: addAttachment)
         }
     }
 
     private func addAttachment(url: URL) {
-        do {
-            let fileManager = FileManager.default
-
-            let filePath = URL(string: UUID().uuidString)!
-                .appendingPathComponent(url.lastPathComponent)
-                .relativeString
-                .removingPercentEncoding!
-
-            let tempFileURL = fileManager.temporaryDirectory
-                .appendingPathComponent(filePath)
-
-            try fileManager.createDirectory(at: tempFileURL.deletingLastPathComponent(),
-                                            withIntermediateDirectories: true)
-            try fileManager.moveItem(at: url, to: tempFileURL)
-
-            let attachment = LogAttachment(context: managedObjectContext)
-            attachment.filePath = filePath
-            attachment.isTemporary = true
-            attachment.timestamp = Date.paraquipNow
-
+        if let attachment = LogAttachment.create(fileURL: url, context: managedObjectContext) {
             logEntry.addToAttachments(attachment)
-        } catch {
-            // TODO: error handling
-            print(error)
         }
     }
 }
