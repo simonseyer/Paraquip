@@ -102,7 +102,7 @@ extension Equipment: Creatable {
         // TODO: not performant
         allChecks.sorted { check1, check2 in
             return check1.date! > check2.date!
-        }.first?.date ?? purchaseDate
+        }.first?.date ?? purchaseLog?.date
     }
 
     var nextCheck: Date? {
