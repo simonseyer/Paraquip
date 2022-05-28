@@ -74,6 +74,11 @@
 "Pilot" = "Pilot";
 "Sum" = "Summe";
 
+// Log Entry View
+"Attachments" = "Anhänge";
+"Attach file" = "Datei anhängen";
+"Attach image" = "Bild anhängen";
+
 // Notification View
 "Enable" = "Aktivieren";
 "notification_info" = "Aktiviere Benachrichtigungen, um nie wieder einen Check zu verpassen.";
