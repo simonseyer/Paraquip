@@ -120,27 +120,22 @@ struct LogEntryView: View {
     private func addAttachment(url: URL) {
         do {
             let fileManager = FileManager.default
-            let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let fileUUID = UUID().uuidString
 
-            let tempURL = fileManager
-                .temporaryDirectory
-                .appendingPathComponent(fileUUID)
-            try fileManager.createDirectory(at: tempURL, withIntermediateDirectories: true)
+            let filePath = URL(string: UUID().uuidString)!
+                .appendingPathComponent(url.lastPathComponent)
+                .relativeString
+                .removingPercentEncoding!
 
-            let documentsURL = documentsDirectory
-                .appendingPathComponent("attachments")
-                .appendingPathComponent(fileUUID)
-            try fileManager.createDirectory(at: documentsURL, withIntermediateDirectories: true)
+            let tempFileURL = fileManager.temporaryDirectory
+                .appendingPathComponent(filePath)
 
-            let tempFileURL = tempURL.appendingPathComponent(url.lastPathComponent)
-            let targetURL = documentsURL.appendingPathComponent(url.lastPathComponent)
-
+            try fileManager.createDirectory(at: tempFileURL.deletingLastPathComponent(),
+                                            withIntermediateDirectories: true)
             try fileManager.moveItem(at: url, to: tempFileURL)
 
             let attachment = LogAttachment(context: managedObjectContext)
-            attachment.fileURL = tempFileURL
-            attachment.targetFileURL = targetURL
+            attachment.filePath = filePath
+            attachment.isTemporary = true
             attachment.timestamp = Date.paraquipNow
 
             logEntry.addToAttachments(attachment)
@@ -153,19 +148,24 @@ struct LogEntryView: View {
 
 struct LogEntryView_Previews: PreviewProvider {
 
-    private static var logEntry: LogEntry {
+    private static var logEntry1: LogEntry {
         CoreData.fakeProfile.allEquipment.first { equipment in
             equipment.name == "Explorer 2"
+        }!.allChecks.first!
+    }
+    private static var logEntry2: LogEntry {
+        CoreData.fakeProfile.allEquipment.first { equipment in
+            equipment.name == "Angel SQ"
         }!.allChecks.first!
     }
 
     static var previews: some View {
         NavigationView {
-            LogEntryView(logEntry: logEntry, mode: .edit)
+            LogEntryView(logEntry: logEntry1, mode: .edit)
                 .environment(\.managedObjectContext, CoreData.previewContext)
         }
         NavigationView {
-            LogEntryView(logEntry: logEntry, mode: .create)
+            LogEntryView(logEntry: logEntry2, mode: .create)
                 .environment(\.managedObjectContext, CoreData.previewContext)
         }
     }

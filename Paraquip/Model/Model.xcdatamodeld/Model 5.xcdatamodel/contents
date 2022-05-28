@@ -17,8 +17,8 @@
     </entity>
     <entity name="Harness" representedClassName="Harness" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <entity name="LogAttachment" representedClassName="LogAttachment" syncable="YES" codeGenerationType="class">
-        <attribute name="fileURL" optional="YES" attributeType="URI"/>
-        <attribute name="targetFileURL" optional="YES" transient="YES" attributeType="URI"/>
+        <attribute name="filePath" optional="YES" attributeType="String"/>
+        <attribute name="isTemporary" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="logEntry" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LogEntry" inverseName="attachments" inverseEntity="LogEntry"/>
     </entity>

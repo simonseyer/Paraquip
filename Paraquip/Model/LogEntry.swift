@@ -19,6 +19,10 @@ extension LogEntry: Creatable {
         (attachments?.allObjects as? [LogAttachment]) ?? []
     }
 
+    var attachmentURLs: [URL] {
+        logEntryAttachments.compactMap { $0.fileURL }
+    }
+
     var isTemporary: Bool {
         objectID.isTemporaryID
     }
@@ -53,13 +57,40 @@ extension LogAttachment {
         return contentType
     }
 
+    var fileURL: URL? {
+        isTemporary ? temporaryFileURL : documentsFileURL
+    }
+
+    private var temporaryFileURL: URL? {
+        guard let filePath = filePath else {
+            return nil
+        }
+
+        return FileManager.default.temporaryDirectory.appendingPathComponent(filePath)
+    }
+
+    private var documentsFileURL: URL? {
+        guard let filePath = filePath else {
+            return nil
+        }
+
+        return FileManager.default.attachmentsDirectory.appendingPathComponent(filePath)
+    }
+
     public override func willSave() {
         if isDeleted, let fileURL = fileURL {
             try? FileManager.default.removeItem(at: fileURL)
-        } else if let targetFileURL = targetFileURL, let fileURL = fileURL {
-            try? FileManager.default.moveItem(at: fileURL, to: targetFileURL)
-            self.fileURL = targetFileURL
-            self.targetFileURL = nil
+        } else if isTemporary, let temporaryFileURL = temporaryFileURL, let documentsFileURL = documentsFileURL {
+            try? FileManager.default.createDirectory(at: documentsFileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try? FileManager.default.moveItem(at: temporaryFileURL, to: documentsFileURL)
+            self.isTemporary = false
         }
+    }
+}
+
+extension FileManager {
+    var attachmentsDirectory: URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsDirectory.appendingPathComponent("attachments")
     }
 }
