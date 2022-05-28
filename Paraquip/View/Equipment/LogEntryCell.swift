@@ -123,10 +123,7 @@ struct TimelineView_Previews: PreviewProvider {
             CoreData.fakeProfile.allEquipment.first?.purchaseLog = logEntry
         }
         if hasAttachment {
-            let attachment = LogAttachment(context: CoreData.previewContext)
-            attachment.data = Data()
-            attachment.fileName = "Rechnung Explorer.pdf"
-            logEntry.addToAttachments(attachment)
+            logEntry.addToAttachments(LogAttachment(context: CoreData.previewContext))
         }
         return logEntry
     }

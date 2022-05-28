@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import QuickLook
 
 struct LogEntryView: View {
     enum Mode {
@@ -21,7 +22,17 @@ struct LogEntryView: View {
 
     @State private var showingDocumentPicker = false
     @State private var showingImagePicker = false
-    @State private var previewedPDFAttachment: LogAttachment?
+    @State private var previewURL: URL?
+
+    @FetchRequest
+    private var attachments: FetchedResults<LogAttachment>
+
+    init(logEntry: LogEntry, mode: Mode) {
+        self.logEntry = logEntry
+        self.mode = mode
+        _attachments = FetchRequest<LogAttachment>(sortDescriptors: [SortDescriptor(\.timestamp)],
+                                                   predicate: NSPredicate(format: "%K == %@", #keyPath(LogAttachment.logEntry), logEntry))
+    }
 
     var body: some View {
         Form {
@@ -29,32 +40,40 @@ struct LogEntryView: View {
                 .datePickerStyle(.graphical)
 
             Section("Attachments") {
-                ForEach(logEntry.logEntryAttachments) { attachment in
-                    if attachment.attachmentContentType == .pdf {
-                        PDFAttachmentCell(attachment: attachment) {
-                            previewedPDFAttachment = attachment
-                        }
-                    } else if attachment.attachmentContentType.supertypes.contains(.image) {
-                        ImageAttachmentCell(attachment: attachment) {
-
+                ForEach(attachments) { attachment in
+                    Button(action: { previewURL = attachment.fileURL }) {
+                        HStack {
+                            Group {
+                                if attachment.attachmentContentType == .pdf {
+                                    Image(systemName: "doc.fill")
+                                } else if attachment.attachmentContentType.supertypes.contains(.image) {
+                                    Image(systemName: "photo.fill")
+                                }
+                            }
+                            .foregroundColor(Color(UIColor.darkGray))
+                            .frame(width: 30)
+                            Text(attachment.fileURL?.lastPathComponent ?? "")
                         }
                     }
-
+                    .foregroundColor(.black)
+                }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        managedObjectContext.delete(attachments[index])
+                    }
                 }
 
                 Button(action: { showingDocumentPicker = true }) {
                     HStack {
                         Image(systemName: "doc.fill")
-                            .font(.title)
-                            .frame(width: 40)
+                            .frame(width: 30)
                         Text("Attach file")
                     }
                 }
                 Button(action: { showingImagePicker = true }) {
                     HStack {
                         Image(systemName: "photo.fill")
-                            .font(.title)
-                            .frame(width: 40)
+                            .frame(width: 30)
                         Text("Attach image")
                     }
                 }
@@ -85,6 +104,7 @@ struct LogEntryView: View {
                 }
             }
         }
+        .quickLookPreview($previewURL)
         .sheet(isPresented: $showingDocumentPicker) {
             DocumentPicker(contentTypes: [.pdf, .image]) { url in
                 addAttachment(url: url)
@@ -95,22 +115,34 @@ struct LogEntryView: View {
                 addAttachment(url: url)
             }
         }
-        .sheet(item: $previewedPDFAttachment) { attachment in
-            NavigationView {
-                PDFAttachmentView(pdfData: attachment.data!, delete: {
-                    managedObjectContext.delete(attachment)
-                })
-            }
-        }
     }
 
     private func addAttachment(url: URL) {
         do {
-            let data = try Data(contentsOf: url)
+            let fileManager = FileManager.default
+            let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileUUID = UUID().uuidString
+
+            let tempURL = fileManager
+                .temporaryDirectory
+                .appendingPathComponent(fileUUID)
+            try fileManager.createDirectory(at: tempURL, withIntermediateDirectories: true)
+
+            let documentsURL = documentsDirectory
+                .appendingPathComponent("attachments")
+                .appendingPathComponent(fileUUID)
+            try fileManager.createDirectory(at: documentsURL, withIntermediateDirectories: true)
+
+            let tempFileURL = tempURL.appendingPathComponent(url.lastPathComponent)
+            let targetURL = documentsURL.appendingPathComponent(url.lastPathComponent)
+
+            try fileManager.moveItem(at: url, to: tempFileURL)
+
             let attachment = LogAttachment(context: managedObjectContext)
-            attachment.fileName = url.lastPathComponent
-            attachment.attachmentContentType = url.contentType ?? .data
-            attachment.data = data
+            attachment.fileURL = tempFileURL
+            attachment.targetFileURL = targetURL
+            attachment.timestamp = Date.paraquipNow
+
             logEntry.addToAttachments(attachment)
         } catch {
             // TODO: error handling
@@ -119,121 +151,22 @@ struct LogEntryView: View {
     }
 }
 
-extension URL {
-    var contentType: UTType? {
-        try? resourceValues(forKeys: [.contentTypeKey]).contentType
-    }
-}
-
-struct PDFAttachmentView: View {
-
-    let pdfData: Data
-
-    @Environment(\.dismiss) private var dismiss
-    var delete: () -> Void
-
-    var body: some View {
-        PDFViewer(pdfData: pdfData)
-            .navigationTitle("Attachment")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .destructiveAction) {
-                    Button("Delete") {
-                        delete()
-                        dismiss()
-                    }
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
-    }
-}
-
 struct LogEntryView_Previews: PreviewProvider {
 
     private static var logEntry: LogEntry {
-        let logEntry = LogEntry.create(context: CoreData.previewContext)
-
-        let attachment = LogAttachment(context: CoreData.previewContext)
-        attachment.data = Data()
-        attachment.fileName = "Rechnung Explorer.pdf"
-        logEntry.addToAttachments(attachment)
-
-        let attachment2 = LogAttachment(context: CoreData.previewContext)
-        attachment2.data = Data()
-        attachment2.fileName = "Bla bla Blaf.pdf"
-        logEntry.addToAttachments(attachment2)
-
-        return logEntry
+        CoreData.fakeProfile.allEquipment.first { equipment in
+            equipment.name == "Explorer 2"
+        }!.allChecks.first!
     }
 
     static var previews: some View {
         NavigationView {
             LogEntryView(logEntry: logEntry, mode: .edit)
+                .environment(\.managedObjectContext, CoreData.previewContext)
         }
         NavigationView {
             LogEntryView(logEntry: logEntry, mode: .create)
-        }
-    }
-}
-
-struct PDFAttachmentCell: View {
-
-    let attachment: LogAttachment
-    let previewAction: () -> Void
-
-    var body: some View {
-        Button(action: previewAction) {
-            HStack {
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(Color(UIColor.systemGray6))
-                        .cornerRadius(10)
-                        .frame(width: 80, height: 80)
-                    Image(systemName: "doc.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(.gray)
-                }
-                .padding([.top, .bottom, .trailing], 8)
-
-                if let name = attachment.fileName {
-                    Text(name)
-                }
-            }
-        }
-        .foregroundColor(.black)
-    }
-}
-
-struct ImageAttachmentCell: View {
-
-    let attachment: LogAttachment
-    let previewAction: () -> Void
-
-    var body: some View {
-        HStack {
-            ZStack {
-                Rectangle()
-                    .foregroundColor(Color(UIColor.systemGray6))
-                    .cornerRadius(10)
-                    .frame(width: 80, height: 80)
-                Image(uiImage: UIImage(data: attachment.data!)!)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 76, height: 76)
-                    .cornerRadius(10)
-                    .clipped()
-
-            }
-            .padding([.top, .bottom, .trailing], 8)
-
-            if let name = attachment.fileName {
-                Text(name)
-            }
+                .environment(\.managedObjectContext, CoreData.previewContext)
         }
     }
 }

@@ -39,16 +39,27 @@ extension LogEntry: Creatable {
     }
 }
 
+extension URL {
+    var contentType: UTType? {
+        try? resourceValues(forKeys: [.contentTypeKey]).contentType
+    }
+}
+
 extension LogAttachment {
     var attachmentContentType: UTType {
-        get {
-            guard let contentType = contentType else {
-                return .data
-            }
-            return UTType(contentType) ?? UTType.data
+        guard let contentType = fileURL?.contentType else {
+            return .data
         }
-        set {
-            contentType = newValue.identifier
+        return contentType
+    }
+
+    public override func willSave() {
+        if isDeleted, let fileURL = fileURL {
+            try? FileManager.default.removeItem(at: fileURL)
+        } else if let targetFileURL = targetFileURL, let fileURL = fileURL {
+            try? FileManager.default.moveItem(at: fileURL, to: targetFileURL)
+            self.fileURL = targetFileURL
+            self.targetFileURL = nil
         }
     }
 }

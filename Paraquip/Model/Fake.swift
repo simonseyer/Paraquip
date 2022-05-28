@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 struct CoreData {
     static let inMemoryPersistentContainer: NSPersistentContainer = .fake(name: "Model")
@@ -135,6 +136,16 @@ extension NSPersistentContainer {
             logEntry.id = UUID()
             logEntry.date = dateFormatter.date(from: "12.08.2021")!
             equipment.addToCheckLog(logEntry)
+
+            let attachment = LogAttachment(context: context)
+            attachment.fileURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")
+            attachment.timestamp = Date.paraquipNow
+            logEntry.addToAttachments(attachment)
+
+            let attachment2 = LogAttachment(context: context)
+            attachment2.fileURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")
+            attachment2.timestamp = Date.paraquipNow
+            logEntry.addToAttachments(attachment2)
         }
 
         try! context.save()
