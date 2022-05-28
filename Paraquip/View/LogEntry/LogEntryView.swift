@@ -39,30 +39,33 @@ struct LogEntryView: View {
             DatePicker("", selection: $logEntry.logEntryDate, displayedComponents: .date)
                 .datePickerStyle(.graphical)
 
-            Section("Attachments") {
-                ForEach(attachments) { attachment in
-                    Button(action: { previewURL = attachment.fileURL }) {
-                        HStack {
-                            Group {
-                                if attachment.attachmentContentType == .pdf {
-                                    Image(systemName: "doc.fill")
-                                } else if attachment.attachmentContentType.supertypes.contains(.image) {
-                                    Image(systemName: "photo.fill")
+            if !attachments.isEmpty {
+                Section("Attachments") {
+                    ForEach(attachments) { attachment in
+                        Button(action: { previewURL = attachment.fileURL }) {
+                            HStack {
+                                Group {
+                                    if attachment.attachmentContentType == .pdf {
+                                        Image(systemName: "doc.fill")
+                                    } else if attachment.attachmentContentType.supertypes.contains(.image) {
+                                        Image(systemName: "photo.fill")
+                                    }
                                 }
+                                .foregroundColor(Color(UIColor.darkGray))
+                                .frame(width: 30)
+                                Text(attachment.fileURL?.lastPathComponent ?? "")
                             }
-                            .foregroundColor(Color(UIColor.darkGray))
-                            .frame(width: 30)
-                            Text(attachment.fileURL?.lastPathComponent ?? "")
+                        }
+                        .foregroundColor(.black)
+                    }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            managedObjectContext.delete(attachments[index])
                         }
                     }
-                    .foregroundColor(.black)
                 }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        managedObjectContext.delete(attachments[index])
-                    }
-                }
-
+            }
+            Section {
                 Button(action: { showingDocumentPicker = true }) {
                     HStack {
                         Image(systemName: "doc.fill")
