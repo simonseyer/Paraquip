@@ -57,28 +57,14 @@ struct EquipmentView: View {
                 ForEach(checkLog) { logEntry in
                     LogEntryCell(logEntry: logEntry)
                         .swipeActions {
-                            Button {
-                                editLogEntryOperation = Operation(editing: logEntry,
-                                                                  withParentContext: managedObjectContext)
-                            } label: {
-                                Label("Edit", systemImage: "pencil")
-                            }
-                            .tint(.blue)
+                            swipeButton(for: logEntry)
                         }
-                        .labelStyle(.titleOnly)
                 }
                 if let purchaseLog = equipment.purchaseLog {
                     LogEntryCell(logEntry: purchaseLog)
                         .swipeActions {
-                            Button {
-                                editLogEntryOperation = Operation(editing: purchaseLog,
-                                                                  withParentContext: managedObjectContext)
-                            } label: {
-                                Label("Edit", systemImage: "pencil")
-                            }
-                            .tint(.blue)
+                            swipeButton(for: purchaseLog)
                         }
-                        .labelStyle(.titleOnly)
                 }
             }
             .listStyle(.insetGrouped)
@@ -140,6 +126,17 @@ struct EquipmentView: View {
                 }
             }
         }
+    }
+
+    func swipeButton(for logEntry: LogEntry) -> some View {
+        return  Button {
+            editLogEntryOperation = Operation(editing: logEntry,
+                                              withParentContext: managedObjectContext)
+        } label: {
+            Label("Edit", systemImage: "pencil")
+        }
+        .tint(.blue)
+        .labelStyle(.titleOnly)
     }
 }
 
