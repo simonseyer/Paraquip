@@ -10,11 +10,10 @@ import CoreData
 
 struct ProfileListView: View {
 
-    // TODO: filter temporary objects to avoid flicker or wrap in super entity and add delayed
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
 
-    @State private var editProfile: Profile?
+    @State private var editProfileOperation: Operation<Profile>?
     @State private var isFirstAppearance = true
 
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -40,7 +39,8 @@ struct ProfileListView: View {
                     .padding([.top, .bottom])
                     .swipeActions {
                         Button {
-                            editProfile = profile
+                            editProfileOperation = Operation(editing: profile,
+                                                             withParentContext: managedObjectContext)
                         } label: {
                             Label("Edit", systemImage: "pencil")
                         }
@@ -63,31 +63,31 @@ struct ProfileListView: View {
             }
         }
         .navigationTitle("All Sets")
-        .sheet(item: $editProfile) { profile in
+        .sheet(item: $editProfileOperation) { operation in
             NavigationView {
-                EditProfileView(profile: profile)
+                EditProfileView(profile: operation.object)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
-                                managedObjectContext.rollback()
-                                editProfile = nil
+                                editProfileOperation = nil
                             }
                         }
                         ToolbarItem(placement: .confirmationAction) {
                             Button("Save") {
-                                try! managedObjectContext.save()
-                                editProfile = nil
+                                try! operation.childContext.save()
+                                editProfileOperation = nil
                             }
-                            .disabled(profile.profileName.isEmpty)
+                            .disabled(operation.object.profileName.isEmpty)
                         }
                     }
+                    .environment(\.managedObjectContext, operation.childContext)
             }
         }
         .interactiveDismissDisabled(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    editProfile = Profile.create(context: managedObjectContext, name: "")
+                    editProfileOperation = Operation(withParentContext: managedObjectContext)
                 } label: {
                     Image(systemName: "plus")
                 }

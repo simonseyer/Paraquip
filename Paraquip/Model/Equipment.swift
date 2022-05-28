@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-extension Equipment {
+extension Equipment: Creatable {
     enum CheckUrgency {
         case now
         case soon(Date)

@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-extension Profile {
+extension Profile: Creatable {
     enum Icon: String, CaseIterable, Identifiable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
 
@@ -62,10 +62,14 @@ extension Profile {
         allEquipment.compactMap { $0 as? Reserve }
     }
 
-    static func create(context: NSManagedObjectContext, name: String) -> Profile {
-        let profile = Profile(context: context)
+    static func create(context: NSManagedObjectContext, name: String) -> Self {
+        let profile = Self(context: context)
         profile.id = UUID()
         profile.name = name
         return profile
+    }
+
+    static func create(context: NSManagedObjectContext) -> Self {
+        return create(context: context, name: "")
     }
 }

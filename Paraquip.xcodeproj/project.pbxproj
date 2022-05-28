@@ -49,6 +49,7 @@
 		0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AEB2651220B005AB7A7 /* SelectableText.swift */; };
 		0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */; };
 		0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */; };
+		0DA898AA2841FAD100D7568F /* CoreDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA898A92841FAD100D7568F /* CoreDataOperation.swift */; };
 		0DA93A0326CEE0290063356B /* PDFViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0226CEE0290063356B /* PDFViewer.swift */; };
 		0DA93A0926CEE8950063356B /* ManualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0826CEE8950063356B /* ManualView.swift */; };
 		0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0A26CEE9160063356B /* PillLabel.swift */; };
@@ -138,6 +139,7 @@
 		0D919AEB2651220B005AB7A7 /* SelectableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableText.swift; sourceTree = "<group>"; };
 		0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerOverlay.swift; sourceTree = "<group>"; };
 		0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEntryView.swift; sourceTree = "<group>"; };
+		0DA898A92841FAD100D7568F /* CoreDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataOperation.swift; sourceTree = "<group>"; };
 		0DA93A0226CEE0290063356B /* PDFViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewer.swift; sourceTree = "<group>"; };
 		0DA93A0826CEE8950063356B /* ManualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualView.swift; sourceTree = "<group>"; };
 		0DA93A0A26CEE9160063356B /* PillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLabel.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 			children = (
 				0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */,
 				0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */,
+				0DA898A92841FAD100D7568F /* CoreDataOperation.swift */,
 			);
 			path = ModelExtensions;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				0D7F23E0275CC99E005298E2 /* BrandIconView.swift in Sources */,
 				0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */,
 				0D07CBFE26B6B6BF00BCC3E6 /* Model.xcdatamodeld in Sources */,
+				0DA898AA2841FAD100D7568F /* CoreDataOperation.swift in Sources */,
 				0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */,
 				0D4071922656CD12001385D7 /* NotificationService.swift in Sources */,
 				0D0DFFA12688C49C00AEB2AD /* LogEntryView.swift in Sources */,

@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import UniformTypeIdentifiers
 
-extension LogEntry {
+extension LogEntry: Creatable {
     var logEntryDate: Date {
         get { date ?? Date.paraquipNow }
         set { date = newValue }
@@ -32,6 +32,10 @@ extension LogEntry {
         logEntry.id = UUID()
         logEntry.date = date
         return logEntry
+    }
+
+    static func create(context: NSManagedObjectContext) -> Self {
+        Self.create(context: context, date: .paraquipNow)
     }
 }
 

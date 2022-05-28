@@ -11,7 +11,7 @@ import CoreData
 struct ProfileView: View {
 
     @ObservedObject var profile: Profile
-    @State private var newEquipment: Equipment?
+    @State private var createEquipmentOperation: Operation<Equipment>?
     @State private var showWeightView = false
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
@@ -57,20 +57,17 @@ struct ProfileView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button(action: {
-                        newEquipment = Paraglider.create(context: managedObjectContext)
-                        profile.addToEquipment(newEquipment!)
+                        createEquipmentOperation(type: Paraglider.self)
                     }) {
                         Label("Paraglider", image: "paraglider")
                     }
                     Button(action: {
-                        newEquipment = Harness.create(context: managedObjectContext)
-                        profile.addToEquipment(newEquipment!)
+                        createEquipmentOperation(type: Harness.self)
                     }) {
                         Label("Harness", image: "harness")
                     }
                     Button(action: {
-                        newEquipment = Reserve.create(context: managedObjectContext)
-                        profile.addToEquipment(newEquipment!)
+                        createEquipmentOperation(type: Reserve.self)
                     }) {
                         Label("Reserve", image: "reserve")
                     }
@@ -79,10 +76,10 @@ struct ProfileView: View {
                 }
             }
         }
-        .sheet(item: $newEquipment) { equipment in
+        .sheet(item: $createEquipmentOperation) { operation in
             NavigationView {
-                EditEquipmentView(equipment: equipment, locale: locale)
-                // TODO: handle save/rollback here and only add equipment to profile on save
+                EditEquipmentView(equipment: operation.object, locale: locale)
+                    .environment(\.managedObjectContext, operation.childContext)
             }
         }
         .interactiveDismissDisabled(true)
@@ -98,6 +95,14 @@ struct ProfileView: View {
                     }
             }
         }
+    }
+
+    private func createEquipmentOperation(type: Equipment.Type) {
+        let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
+            type.create(context: context)
+        }
+        operation.object(for: profile).addToEquipment(operation.object)
+        createEquipmentOperation = operation
     }
 }
 

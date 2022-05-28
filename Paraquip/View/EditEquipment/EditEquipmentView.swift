@@ -50,7 +50,8 @@ struct EditEquipmentView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) var locale: Locale
 
-    @State private var showingCheckLogEntry = false
+    @State private var editLogEntryOperation: Operation<LogEntry>?
+    @State private var createLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
     @State private var showingPurchaseView = false
     @State private var manualURL: URL?
@@ -194,7 +195,14 @@ struct EditEquipmentView: View {
             }
             if equipment.isInserted {
                 Section(header: Text("Next steps")) {
-                    Button(action: { showingCheckLogEntry = true }) {
+                    Button(action: {
+                        if let logEntry = equipment.allChecks.first {
+                            editLogEntryOperation = Operation(editing: logEntry,
+                                                              withParentContext: managedObjectContext)
+                        } else {
+                            createLogEntryOperation = Operation(withParentContext: managedObjectContext)
+                        }
+                    }) {
                         HStack {
                             FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
                                 .padding(.trailing, 8)
@@ -236,7 +244,6 @@ struct EditEquipmentView: View {
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
-                    managedObjectContext.rollback()
                     dismiss()
                 }
             }
@@ -279,49 +286,46 @@ struct EditEquipmentView: View {
                 .disabled(equipment.equipmentBrand == .none || equipment.equipmentName.isEmpty)
             }
         }
-        .sheet(isPresented: $showingCheckLogEntry) {
+        .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
-                if let logEntry = equipment.allChecks.first {
-                    LogEntryView(logEntry: logEntry)
-                        .navigationTitle("Check")
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Delete") {
-                                    managedObjectContext.delete(logEntry)
-                                    showingCheckLogEntry = false
-                                }
-                            }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Close") {
-                                    showingCheckLogEntry = false
-                                }
+                LogEntryView(logEntry: operation.object)
+                    .environment(\.managedObjectContext, operation.childContext)
+                    .navigationTitle("Check")
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Delete") {
+                                operation.childContext.delete(operation.object)
+                                try! operation.childContext.save()
+                                editLogEntryOperation = nil
                             }
                         }
-                } else {
-                    let logEntry = LogEntry.create(context: managedObjectContext)
-                    LogEntryView(logEntry: logEntry)
-                        .navigationTitle("Check")
-                        .onDisappear {
-                            if logEntry.equipment == nil {
-                                // Delete temporary object on cancel or dismissal
-                                managedObjectContext.delete(logEntry)
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Save") {
+                                try! operation.childContext.save()
+                                editLogEntryOperation = nil
                             }
                         }
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Cancel") {
-                                    showingCheckLogEntry = false
-                                }
-                            }
-
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Log") {
-                                    equipment.addToCheckLog(logEntry)
-                                    showingCheckLogEntry = false
-                                }
+                    }
+            }
+        }
+        .sheet(item: $createLogEntryOperation) { operation in
+            NavigationView {
+                LogEntryView(logEntry: operation.object)
+                    .navigationTitle("Check")
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                createLogEntryOperation = nil
                             }
                         }
-                }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Log") {
+                                operation.object(for: equipment).addToCheckLog(operation.object)
+                                try! operation.childContext.save()
+                                createLogEntryOperation = nil
+                            }
+                        }
+                    }
             }
         }
         .sheet(isPresented: $showingManualPicker) {
