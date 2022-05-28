@@ -65,20 +65,6 @@ struct ProfileListView: View {
         .sheet(item: $editProfileOperation) { operation in
             NavigationView {
                 EditProfileView(profile: operation.object)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                editProfileOperation = nil
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Save") {
-                                try! operation.childContext.save()
-                                editProfileOperation = nil
-                            }
-                            .disabled(operation.object.profileName.isEmpty)
-                        }
-                    }
                     .environment(\.managedObjectContext, operation.childContext)
                     .onDisappear {
                         try? managedObjectContext.save()

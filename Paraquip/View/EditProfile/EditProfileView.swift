@@ -12,6 +12,9 @@ struct EditProfileView: View {
 
     @ObservedObject var profile: Profile
 
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var managedObjectContext
+
     @FetchRequest(sortDescriptors: [
         SortDescriptor(\.brand),
         SortDescriptor(\.name)
@@ -65,6 +68,20 @@ struct EditProfileView: View {
             }
         }
         .navigationTitle(profile.profileName.isEmpty ? NSLocalizedString("New Set", comment: "") : profile.profileName)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    try! managedObjectContext.save()
+                    dismiss()
+                }
+                .disabled(profile.profileName.isEmpty)
+            }
+        }
     }
 }
 
