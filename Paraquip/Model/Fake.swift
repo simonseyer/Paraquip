@@ -50,7 +50,7 @@ extension NSPersistentContainer {
 
         let profile = Profile(context: context)
         profile.id = UUID()
-        profile.name = "Your Equipment"
+        profile.name = NSLocalizedString("Your Equipment", comment: "")
         profile.pilotWeight = 70
         profile.additionalWeight = 10
         profile.profileIcon = .default
