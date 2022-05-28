@@ -49,7 +49,9 @@ struct EquipmentView: View {
 
             List {
                 NextCheckCell(urgency: equipment.checkUrgency) {
-                    createLogEntryOperation = Operation(withParentContext: managedObjectContext)
+                    let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                    operation.object(for: equipment).addToCheckLog(operation.object)
+                    createLogEntryOperation = operation
                 }
                 ForEach(checkLog) { logEntry in
                     LogEntryCell(logEntry: logEntry) {
@@ -80,44 +82,14 @@ struct EquipmentView: View {
             }
             .sheet(item: $editLogEntryOperation) { operation in
                 NavigationView {
-                    LogEntryView(logEntry: operation.object)
+                    LogEntryView(logEntry: operation.object, mode: .edit)
                         .environment(\.managedObjectContext, operation.childContext)
-                        .navigationTitle(operation.object.isPurchase ? "Purchase" : "Check")
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Delete") {
-                                    operation.childContext.delete(operation.object)
-                                    try! operation.childContext.save()
-                                    editLogEntryOperation = nil
-                                }
-                            }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Save") {
-                                    try! operation.childContext.save()
-                                    editLogEntryOperation = nil
-                                }
-                            }
-                        }
                 }
             }
             .sheet(item: $createLogEntryOperation) { operation in
                 NavigationView {
-                    LogEntryView(logEntry: operation.object)
-                        .navigationTitle(operation.object.isPurchase ? "Purchase" : "Check")
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Cancel") {
-                                    createLogEntryOperation = nil
-                                }
-                            }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Log") {
-                                    operation.object(for: equipment).addToCheckLog(operation.object)
-                                    try! operation.childContext.save()
-                                    createLogEntryOperation = nil
-                                }
-                            }
-                        }
+                    LogEntryView(logEntry: operation.object, mode: .create)
+                        .environment(\.managedObjectContext, operation.childContext)
                 }
             }
             .sheet(isPresented: $showingManual) {

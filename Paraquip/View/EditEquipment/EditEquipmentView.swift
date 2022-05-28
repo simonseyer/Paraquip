@@ -144,18 +144,20 @@ struct EditEquipmentView: View {
                         .foregroundColor(.secondary)
                 }
                 NavigationLink(isActive: $showingPurchaseView) {
-                    let logEntry = equipment.purchaseLog ?? LogEntry.create(context: managedObjectContext)
-                    LogEntryView(logEntry: logEntry)
-                        .navigationBarTitle("Purchase")
-                        .onAppear {
+                    if showingPurchaseView {
+                        let logEntry: LogEntry = {
+                            let logEntry = equipment.purchaseLog ?? LogEntry.create(context: managedObjectContext)
                             equipment.purchaseLog = logEntry
-                        }
-                        .toolbar {
-                            Button("Clear", role: .destructive) {
-                                managedObjectContext.delete(logEntry)
-                                showingPurchaseView = false
+                            return logEntry
+                        }()
+                        LogEntryView(logEntry: logEntry, mode: .inline)
+                            .toolbar {
+                                Button("Clear", role: .destructive) {
+                                    managedObjectContext.delete(logEntry)
+                                    showingPurchaseView = false
+                                }
                             }
-                        }
+                    }
                 } label: {
                     Text("Purchase")
                     Spacer()
@@ -288,44 +290,14 @@ struct EditEquipmentView: View {
         }
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
-                LogEntryView(logEntry: operation.object)
+                LogEntryView(logEntry: operation.object, mode: .edit)
                     .environment(\.managedObjectContext, operation.childContext)
-                    .navigationTitle("Check")
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Delete") {
-                                operation.childContext.delete(operation.object)
-                                try! operation.childContext.save()
-                                editLogEntryOperation = nil
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Save") {
-                                try! operation.childContext.save()
-                                editLogEntryOperation = nil
-                            }
-                        }
-                    }
             }
         }
         .sheet(item: $createLogEntryOperation) { operation in
             NavigationView {
-                LogEntryView(logEntry: operation.object)
-                    .navigationTitle("Check")
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") {
-                                createLogEntryOperation = nil
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Log") {
-                                operation.object(for: equipment).addToCheckLog(operation.object)
-                                try! operation.childContext.save()
-                                createLogEntryOperation = nil
-                            }
-                        }
-                    }
+                LogEntryView(logEntry: operation.object, mode: .create)
+                    .environment(\.managedObjectContext, operation.childContext)
             }
         }
         .sheet(isPresented: $showingManualPicker) {

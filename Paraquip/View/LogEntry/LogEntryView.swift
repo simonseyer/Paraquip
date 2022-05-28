@@ -9,9 +9,15 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct LogEntryView: View {
+    enum Mode {
+        case create, edit, inline
+    }
 
     @ObservedObject var logEntry: LogEntry
+    let mode: Mode
+
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.dismiss) private var dismiss
 
     @State private var showingDocumentPicker = false
     @State private var showingImagePicker = false
@@ -50,6 +56,31 @@ struct LogEntryView: View {
                             .font(.title)
                             .frame(width: 40)
                         Text("Attach image")
+                    }
+                }
+            }
+        }
+        .navigationTitle(logEntry.isPurchase ? "Purchase" : "Check")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                if mode != .inline {
+                    Button("Cancel") { dismiss() }
+                }
+            }
+            ToolbarItem(placement: .destructiveAction) {
+                if mode == .edit {
+                    Button("Delete") {
+                        managedObjectContext.delete(logEntry)
+                        try! managedObjectContext.save()
+                        dismiss()
+                    }
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                if mode != .inline {
+                    Button(mode == .create ? "Log" : "Save") {
+                        try! managedObjectContext.save()
+                        dismiss()
                     }
                 }
             }
@@ -106,17 +137,16 @@ struct PDFAttachmentView: View {
             .navigationTitle("Attachment")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                ToolbarItem(placement: .destructiveAction) {
+                    Button("Delete") {
+                        delete()
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        delete()
+
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
                         dismiss()
-                    }) {
-                        Image(systemName: "trash")
                     }
                 }
             }
@@ -142,7 +172,12 @@ struct LogEntryView_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        LogEntryView(logEntry: logEntry)
+        NavigationView {
+            LogEntryView(logEntry: logEntry, mode: .edit)
+        }
+        NavigationView {
+            LogEntryView(logEntry: logEntry, mode: .create)
+        }
     }
 }
 

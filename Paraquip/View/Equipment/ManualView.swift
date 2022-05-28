@@ -19,17 +19,15 @@ struct ManualView: View {
             .navigationTitle("Manual")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .destructiveAction) {
+                    Button("Delete", action: {
+                        deleteManual()
+                        dismiss()
+                    })
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         dismiss()
-                    }
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        deleteManual()
-                        dismiss()
-                    }) {
-                        Image(systemName: "trash")
                     }
                 }
             }
