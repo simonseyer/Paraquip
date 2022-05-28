@@ -151,6 +151,7 @@ struct EditEquipmentView: View {
                             return logEntry
                         }()
                         LogEntryView(logEntry: logEntry, mode: .inline)
+                            .environment(\.managedObjectContext, managedObjectContext)
                             .toolbar {
                                 Button("Clear", role: .destructive) {
                                     managedObjectContext.delete(logEntry)
@@ -202,7 +203,9 @@ struct EditEquipmentView: View {
                             editLogEntryOperation = Operation(editing: logEntry,
                                                               withParentContext: managedObjectContext)
                         } else {
-                            createLogEntryOperation = Operation(withParentContext: managedObjectContext)
+                            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                            operation.object(for: equipment).addToCheckLog(operation.object)
+                            createLogEntryOperation = operation
                         }
                     }) {
                         HStack {
