@@ -73,7 +73,7 @@ struct ProfileListView: View {
         }
         .interactiveDismissDisabled(true)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .primaryAction) {
                 Button {
                     editProfileOperation = Operation(withParentContext: managedObjectContext)
                 } label: {

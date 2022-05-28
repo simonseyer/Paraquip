@@ -101,7 +101,7 @@ struct NotificationSettingsView: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .automatic) {
                 if notificationService.state.isEnabled && !notificationService.state.configuration.isEmpty {
                     Button(editMode == .inactive ? "Edit" : "Done") {
                         withAnimation {

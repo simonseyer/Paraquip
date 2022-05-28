@@ -47,14 +47,14 @@ struct ProfileView: View {
         .listStyle(.insetGrouped)
         .navigationTitle(profile.profileName)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .automatic) {
                 Button {
                     showWeightView = true
                 } label: {
                     Image(systemName: "scalemass.fill")
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button(action: {
                         createEquipmentOperation(type: Paraglider.self)
@@ -90,7 +90,7 @@ struct ProfileView: View {
             NavigationView {
                 ProfileWeightView(profile: profile)
                     .toolbar {
-                        ToolbarItem(placement: .navigation) {
+                        ToolbarItem(placement: .confirmationAction) {
                             Button("Close") {
                                 showWeightView = false
                             }

@@ -55,7 +55,7 @@ struct MainView: View {
             NavigationView {
                 NotificationSettingsView()
                     .toolbar {
-                        ToolbarItem(placement: .navigation) {
+                        ToolbarItem(placement: .confirmationAction) {
                             Button("Close") {
                                 showNotificationSettings = false
                             }
@@ -67,7 +67,7 @@ struct MainView: View {
             NavigationView {
                 EquipmentView(equipment: equipment)
                     .toolbar {
-                        ToolbarItem(placement: .navigation) {
+                        ToolbarItem(placement: .confirmationAction) {
                             Button("Close") {
                                 presentedEquipment = nil
                             }

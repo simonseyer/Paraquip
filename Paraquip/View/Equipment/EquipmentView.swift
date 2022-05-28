@@ -69,9 +69,11 @@ struct EquipmentView: View {
             }
             .listStyle(.insetGrouped)
             .toolbar {
-                Button("Edit") {
-                    editEquipmentOperation = Operation(editing: equipment,
-                                                       withParentContext: managedObjectContext)
+                ToolbarItem(placement: .automatic) {
+                    Button("Edit") {
+                        editEquipmentOperation = Operation(editing: equipment,
+                                                           withParentContext: managedObjectContext)
+                    }
                 }
             }
             .navigationTitle(equipment.equipmentName)
