@@ -80,6 +80,9 @@ struct ProfileView: View {
             NavigationView {
                 EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
             }
         }
         .interactiveDismissDisabled(true)

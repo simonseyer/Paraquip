@@ -78,18 +78,27 @@ struct EquipmentView: View {
                 NavigationView {
                     EditEquipmentView(equipment: operation.object, locale: locale)
                         .environment(\.managedObjectContext, operation.childContext)
+                        .onDisappear {
+                            try? managedObjectContext.save()
+                        }
                 }
             }
             .sheet(item: $editLogEntryOperation) { operation in
                 NavigationView {
                     LogEntryView(logEntry: operation.object, mode: .edit)
                         .environment(\.managedObjectContext, operation.childContext)
+                        .onDisappear {
+                            try? managedObjectContext.save()
+                        }
                 }
             }
             .sheet(item: $createLogEntryOperation) { operation in
                 NavigationView {
                     LogEntryView(logEntry: operation.object, mode: .create)
                         .environment(\.managedObjectContext, operation.childContext)
+                        .onDisappear {
+                            try? managedObjectContext.save()
+                        }
                 }
             }
             .sheet(isPresented: $showingManual) {

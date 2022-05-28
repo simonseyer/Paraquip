@@ -14,7 +14,6 @@ struct ProfileListView: View {
     private var profiles: FetchedResults<Profile>
 
     @State private var editProfileOperation: Operation<Profile>?
-    @State private var isFirstAppearance = true
 
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -81,6 +80,9 @@ struct ProfileListView: View {
                         }
                     }
                     .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
             }
         }
         .interactiveDismissDisabled(true)
