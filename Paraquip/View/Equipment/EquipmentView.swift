@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import QuickLook
 
 struct EquipmentView: View {
 
@@ -54,16 +55,30 @@ struct EquipmentView: View {
                     createLogEntryOperation = operation
                 }
                 ForEach(checkLog) { logEntry in
-                    LogEntryCell(logEntry: logEntry) {
-                        editLogEntryOperation = Operation(editing: logEntry,
-                                                          withParentContext: managedObjectContext)
-                    }
+                    LogEntryCell(logEntry: logEntry)
+                        .swipeActions {
+                            Button {
+                                editLogEntryOperation = Operation(editing: logEntry,
+                                                                  withParentContext: managedObjectContext)
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            .tint(.blue)
+                        }
+                        .labelStyle(.titleOnly)
                 }
                 if let purchaseLog = equipment.purchaseLog {
-                    LogEntryCell(logEntry: purchaseLog) {
-                        editLogEntryOperation = Operation(editing: purchaseLog,
-                                                          withParentContext: managedObjectContext)
-                    }
+                    LogEntryCell(logEntry: purchaseLog)
+                        .swipeActions {
+                            Button {
+                                editLogEntryOperation = Operation(editing: purchaseLog,
+                                                                  withParentContext: managedObjectContext)
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
+                            .tint(.blue)
+                        }
+                        .labelStyle(.titleOnly)
                 }
             }
             .listStyle(.insetGrouped)

@@ -22,6 +22,7 @@ struct NextCheckCell: View {
             Image(systemName: "square.and.pencil")
                 .font(Font.body.weight(.medium))
                 .foregroundColor(.accentColor)
+                .padding(.trailing, 12)
         }
         .padding(LogEntryCellBackground.padding)
 
@@ -43,33 +44,31 @@ struct NextCheckCell: View {
 struct LogEntryCell: View {
 
     @ObservedObject var logEntry: LogEntry
-    let onTap: () -> Void
 
-    @State private var isHighlighted = false
+    @State private var previewedLogAttachment: URL?
 
     var body: some View {
         HStack {
             Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .long, time: .omitted))
+                .padding(LogEntryCellBackground.padding)
             Spacer()
             if logEntry.attachments?.count ?? 0 > 0 {
-                Image(systemName: "paperclip")
-                    .font(Font.body.weight(.medium))
-                    .foregroundColor(.accentColor)
+                Button(action: {
+                    previewedLogAttachment = logEntry.attachmentURLs.first
+                }) {
+                    Image(systemName: "paperclip")
+                        .font(Font.body.weight(.medium))
+                        .foregroundColor(.accentColor)
+                }.buttonStyle(.bordered)
             }
         }
-        .padding(LogEntryCellBackground.padding)
+        .quickLookPreview($previewedLogAttachment, in: logEntry.attachmentURLs)
         .listRowBackground(
             LogEntryCellBackground(color: Color(UIColor.systemGray3),
-                           position: logEntry.isPurchase ? .end : .middle,
-                           isHighlighted: $isHighlighted)
+                                   position: logEntry.isPurchase ? .end : .middle,
+                                   isHighlighted: .constant(false))
         )
-        .contentShape(Rectangle())
-        .onTapGesture(perform: onTap)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0.0)
-                .onChanged { _ in isHighlighted = true }
-                .onEnded { _ in isHighlighted = false }
-        )
+        .foregroundColor(.black)
     }
 }
 
@@ -132,9 +131,9 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .now, onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false, hasAttachment: true), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: true), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false))
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false, hasAttachment: true))
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true))
             }
             .listStyle(.insetGrouped)
         }
@@ -142,7 +141,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .soon(Date()), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: true, hasAttachment: true), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true, hasAttachment: true))
             }
             .listStyle(.insetGrouped)
         }
@@ -150,7 +149,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .later(Date()), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onTap: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false))
             }
             .listStyle(.insetGrouped)
         }
