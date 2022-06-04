@@ -42,6 +42,8 @@ extension NSPersistentContainer {
 
     func createFakeProfile() -> Profile {
         let context = viewContext
+        let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")!
+        let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")!
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
@@ -130,6 +132,7 @@ extension NSPersistentContainer {
                 weightRange.max = 95
                 return weightRange
             }()
+            equipment.manualAttachment = createAttachment(for: dummyPDFURL, context: context)
             profile.addToEquipment(equipment)
 
             let logEntry = LogEntry(context: context)
@@ -137,25 +140,23 @@ extension NSPersistentContainer {
             logEntry.date = dateFormatter.date(from: "12.08.2021")!
             equipment.addToCheckLog(logEntry)
 
-            let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")!
-            let attachment = Attachment(context: context)
-            attachment.filePath = dummyPDFURL.lastPathComponent
-            attachment.timestamp = Date.paraquipNow
-            logEntry.addToAttachments(attachment)
-
-            let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")!
-            let attachment2 = Attachment(context: context)
-            attachment2.filePath = dummyImageURL.lastPathComponent
-            attachment2.timestamp = Date.paraquipNow
-            logEntry.addToAttachments(attachment2)
-
-            try? FileManager.default.copyItem(at: dummyPDFURL, to: attachment.fileURL!)
-            try? FileManager.default.copyItem(at: dummyImageURL, to: attachment2.fileURL!)
+            logEntry.addToAttachments(createAttachment(for: dummyPDFURL, context: context))
+            logEntry.addToAttachments(createAttachment(for: dummyImageURL, context: context))
         }
 
         try! context.save()
 
         return profile
+    }
+
+    private func createAttachment(for url: URL, context: NSManagedObjectContext) -> Attachment {
+        let attachment = Attachment(context: context)
+        attachment.filePath = url.lastPathComponent
+        attachment.timestamp = Date.paraquipNow
+
+        try? FileManager.default.copyItem(at: url, to: attachment.fileURL!)
+
+        return attachment
     }
 }
 

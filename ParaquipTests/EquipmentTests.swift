@@ -21,7 +21,10 @@ class EquipmentTests: XCTestCase {
     private func equipment(checkCycle: Int = 1, checkLog: [Date] = [], purchaseDate: Date? = nil) -> Equipment {
         let equipment = Reserve(context: persistentContainer.viewContext)
         equipment.checkCycle = Int16(checkCycle)
-        equipment.purchaseDate = purchaseDate
+
+        if let purchaseDate = purchaseDate {
+            equipment.purchaseLog = LogEntry.create(context: persistentContainer.viewContext, date: purchaseDate)
+        }
 
         for check in checkLog {
             equipment.addToCheckLog(LogEntry.create(context: persistentContainer.viewContext, date: check))
