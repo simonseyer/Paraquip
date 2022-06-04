@@ -54,7 +54,6 @@ struct EditEquipmentView: View {
     @State private var createLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
     @State private var showingPurchaseView = false
-    @State private var manualURL: URL?
     @State private var weight: String = ""
     @State private var minWeight: String = ""
     @State private var maxWeight: String = ""
@@ -228,7 +227,7 @@ struct EditEquipmentView: View {
                                 .padding(.trailing, 8)
                             Text("Attach Manual")
                             Spacer()
-                            if manualURL != nil {
+                            if equipment.manualAttachment != nil {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(Color.green)
                             }
@@ -273,18 +272,6 @@ struct EditEquipmentView: View {
                         equipment.weightRangeMeasurement = nil
                     }
 
-                    if let url = manualURL {
-                        do {
-                            let data = try Data(contentsOf: url)
-                            let manual = Manual(context: managedObjectContext)
-                            manual.data = data
-                            equipment.manual = manual
-                        } catch {
-                            // TODO: error handling
-                            print(error)
-                        }
-                    }
-
                     try! managedObjectContext.save()
                     dismiss()
                 }
@@ -305,7 +292,9 @@ struct EditEquipmentView: View {
         }
         .sheet(isPresented: $showingManualPicker) {
             DocumentPicker(contentTypes: [.pdf]) { url in
-                manualURL = url
+                let attachment = Attachment.create(fileURL: url,
+                                                   context: managedObjectContext)
+                equipment.manualAttachment = attachment
             }
         }
     }

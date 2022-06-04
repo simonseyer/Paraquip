@@ -88,15 +88,6 @@ struct LogEntryView: View {
                     Button("Cancel") { dismiss() }
                 }
             }
-            ToolbarItem(placement: .destructiveAction) {
-                if mode == .edit {
-                    Button("Delete") {
-                        managedObjectContext.delete(logEntry)
-                        try! managedObjectContext.save()
-                        dismiss()
-                    }
-                }
-            }
             ToolbarItem(placement: .confirmationAction) {
                 if mode != .inline {
                     Button(mode == .create ? "Log" : "Save") {

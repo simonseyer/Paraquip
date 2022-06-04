@@ -43,6 +43,7 @@
 "by %@" = "von %@";
 "Size %@" = "Größe %@";
 "Manual" = "Betriebsanleitung";
+"Manual.pdf" = "Anleitung.pdf";
 "No check needed" = "Kein Check nötig";
 "Close" = "Schließen";
 

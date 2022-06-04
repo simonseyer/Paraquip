@@ -58,6 +58,13 @@ struct ParaquipApp: App {
                 equipment.purchaseLog = LogEntry.create(context: context, date: purchaseDate)
                 equipment.purchaseDate = nil
             }
+
+            if let manualData = equipment.manual?.data {
+                equipment.manualAttachment = Attachment.create(data: manualData,
+                                                               fileName: NSLocalizedString("Manual.pdf", comment: ""),
+                                                               context: context)
+                equipment.manual = nil
+            }
         }
 
         if profiles.count == 1,

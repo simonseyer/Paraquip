@@ -11,16 +11,13 @@ struct EquipmentHeaderView<TagView: View>: View {
 
     let brandName: String
     let icon: UIImage?
-    let showManualAction: () -> Void
     let tags: () -> TagView
 
     init(brandName: String,
          icon: UIImage?,
-         showManualAction: @escaping () -> Void,
          @ViewBuilder tags: @escaping () -> TagView) {
         self.brandName = brandName
         self.icon = icon
-        self.showManualAction = showManualAction
         self.tags = tags
     }
 
@@ -30,9 +27,6 @@ struct EquipmentHeaderView<TagView: View>: View {
                 HStack {
                     Text("by \(brandName)")
                         .font(.headline)
-                    Button(action: showManualAction) {
-                        Image(systemName: "book.fill")
-                    }
                 }
                 tags().padding([.top, .bottom], 10)
             }
@@ -53,8 +47,7 @@ struct EquipmentHeaderView_Previews: PreviewProvider {
             ForEach(Brand.allCases) { brand in
                 EquipmentHeaderView(
                     brandName: brand.name,
-                    icon: UIImage(named: brand.id),
-                    showManualAction: {}) {
+                    icon: UIImage(named: brand.id)) {
                         HStack {
                             PillLabel("Harness")
                             PillLabel("Size M")

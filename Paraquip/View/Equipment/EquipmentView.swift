@@ -18,7 +18,8 @@ struct EquipmentView: View {
     @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var editLogEntryOperation: Operation<LogEntry>?
     @State private var createLogEntryOperation: Operation<LogEntry>?
-    @State private var showingManual = false
+    @State private var previewedManual: URL? = nil
+    @State private var showingManualPicker = false
 
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -32,14 +33,13 @@ struct EquipmentView: View {
     init(equipment: Equipment) {
         self.equipment = equipment
         _checkLog = FetchRequest<LogEntry>(sortDescriptors: [SortDescriptor(\.date, order: .reverse)],
-                                        predicate: NSPredicate(format: "%K == %@", #keyPath(LogEntry.equipment), equipment))
+                                           predicate: NSPredicate(format: "%K == %@", #keyPath(LogEntry.equipment), equipment))
     }
 
     var body: some View {
         VStack(alignment: .leading) {
             EquipmentHeaderView(brandName: equipment.brandName,
-                            icon: equipment.icon,
-                            showManualAction: { showingManual.toggle() }) {
+                                icon: equipment.icon) {
                 HStack {
                     PillLabel(LocalizedStringKey(equipment.localizedType))
                     if let size = equipment.size {
@@ -49,95 +49,122 @@ struct EquipmentView: View {
             }
 
             List {
-                NextCheckCell(urgency: equipment.checkUrgency) {
-                    let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
-                    operation.object(for: equipment).addToCheckLog(operation.object)
-                    createLogEntryOperation = operation
-                }
-                ForEach(checkLog) { logEntry in
-                    LogEntryCell(logEntry: logEntry)
-                        .swipeActions {
-                            swipeButton(for: logEntry)
-                        }
-                }
-                if let purchaseLog = equipment.purchaseLog {
-                    LogEntryCell(logEntry: purchaseLog)
-                        .swipeActions {
-                            swipeButton(for: purchaseLog)
-                        }
-                }
-            }
-            .listStyle(.insetGrouped)
-            .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Button("Edit") {
-                        editEquipmentOperation = Operation(editing: equipment,
-                                                           withParentContext: managedObjectContext)
+                Section {
+                    NextCheckCell(urgency: equipment.checkUrgency) {
+                        let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                        operation.object(for: equipment).addToCheckLog(operation.object)
+                        createLogEntryOperation = operation
+                    }
+                    ForEach(checkLog) { logEntry in
+                        LogEntryCell(logEntry: logEntry)
+                            .swipeActions {
+                                swipeButton(for: logEntry)
+                            }
+                    }
+                    if let purchaseLog = equipment.purchaseLog {
+                        LogEntryCell(logEntry: purchaseLog)
+                            .swipeActions {
+                                swipeButton(for: purchaseLog)
+                            }
                     }
                 }
-            }
-            .navigationTitle(equipment.equipmentName)
-            .sheet(item: $editEquipmentOperation) { operation in
-                NavigationView {
-                    EditEquipmentView(equipment: operation.object, locale: locale)
-                        .environment(\.managedObjectContext, operation.childContext)
-                        .onDisappear {
-                            try? managedObjectContext.save()
+                Section {
+                    HStack {
+                        Text("Manual")
+                        Spacer()
+                        Button(action: {
+                            if let manual = equipment.manualAttachment {
+                                previewedManual = manual.fileURL
+                            } else {
+                                showingManualPicker = true
+                            }
+                        }) {
+                            Image(systemName: equipment.manualAttachment != nil ? "book.fill" : "book")
                         }
-                }
-            }
-            .sheet(item: $editLogEntryOperation) { operation in
-                NavigationView {
-                    LogEntryView(logEntry: operation.object, mode: .edit)
-                        .environment(\.managedObjectContext, operation.childContext)
-                        .onDisappear {
-                            try? managedObjectContext.save()
-                        }
-                }
-            }
-            .sheet(item: $createLogEntryOperation) { operation in
-                NavigationView {
-                    LogEntryView(logEntry: operation.object, mode: .create)
-                        .environment(\.managedObjectContext, operation.childContext)
-                        .onDisappear {
-                            try? managedObjectContext.save()
-                        }
-                }
-            }
-            .sheet(isPresented: $showingManual) {
-                if let manual = equipment.manual {
-                    NavigationView {
-                        ManualView(manual: manual.data!, deleteManual: {
-                            managedObjectContext.delete(manual)
-                            try! managedObjectContext.save()
-                        })
+                        .buttonStyle(.bordered)
                     }
-                } else {
-                    DocumentPicker(contentTypes: [.pdf]) { url in
-                        do {
-                            let data = try Data(contentsOf: url)
-                            let manual = Manual(context: managedObjectContext)
-                            manual.data = data
-                            equipment.manual = manual
-                            try managedObjectContext.save()
-                        } catch {
-                            // TODO: error handling
-                            print(error)
+                    .swipeActions {
+                        if equipment.manualAttachment != nil {
+                            Button(role: .destructive) {
+                                equipment.manualAttachment = nil
+                                try? managedObjectContext.save()
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         }
                     }
+                    .labelStyle(.titleOnly)
                 }
             }
+        }
+        .listStyle(.insetGrouped)
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button("Edit") {
+                    editEquipmentOperation = Operation(editing: equipment,
+                                                       withParentContext: managedObjectContext)
+                }
+            }
+        }
+        .navigationTitle(equipment.equipmentName)
+        .sheet(item: $editEquipmentOperation) { operation in
+            NavigationView {
+                EditEquipmentView(equipment: operation.object, locale: locale)
+                    .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
+            }
+        }
+        .sheet(item: $editLogEntryOperation) { operation in
+            NavigationView {
+                LogEntryView(logEntry: operation.object, mode: .edit)
+                    .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
+            }
+        }
+        .sheet(item: $createLogEntryOperation) { operation in
+            NavigationView {
+                LogEntryView(logEntry: operation.object, mode: .create)
+                    .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
+            }
+        }
+        .quickLookPreview($previewedManual)
+        .sheet(isPresented: $showingManualPicker) {
+            DocumentPicker(contentTypes: [.pdf]) { url in
+                let attachment = Attachment.create(fileURL: url,
+                                                   context: managedObjectContext)
+                equipment.manualAttachment = attachment
+                try? managedObjectContext.save()
+            }
+
         }
     }
 
     func swipeButton(for logEntry: LogEntry) -> some View {
-        return  Button {
-            editLogEntryOperation = Operation(editing: logEntry,
-                                              withParentContext: managedObjectContext)
-        } label: {
-            Label("Edit", systemImage: "pencil")
+        return Group {
+            Button {
+                editLogEntryOperation = Operation(editing: logEntry,
+                                                  withParentContext: managedObjectContext)
+            } label: {
+                Label("Edit", systemImage: "pencil")
+            }
+            .tint(.blue)
+
+            Button(role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(logEntry)
+                    try? managedObjectContext.save()
+                }
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
         }
-        .tint(.blue)
         .labelStyle(.titleOnly)
     }
 }

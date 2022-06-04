@@ -45,7 +45,7 @@ struct ProfileListView: View {
                         }
                         .tint(.blue)
 
-                        Button {
+                        Button(role: .destructive) {
                             withAnimation {
                                 managedObjectContext.delete(profile)
                                 try! managedObjectContext.save()
@@ -53,7 +53,6 @@ struct ProfileListView: View {
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
-                        .tint(.red)
                     }
                     .labelStyle(.titleOnly)
                 }
