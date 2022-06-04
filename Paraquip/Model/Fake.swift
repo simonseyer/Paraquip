@@ -138,13 +138,13 @@ extension NSPersistentContainer {
             equipment.addToCheckLog(logEntry)
 
             let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")!
-            let attachment = LogAttachment(context: context)
+            let attachment = Attachment(context: context)
             attachment.filePath = dummyPDFURL.lastPathComponent
             attachment.timestamp = Date.paraquipNow
             logEntry.addToAttachments(attachment)
 
             let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")!
-            let attachment2 = LogAttachment(context: context)
+            let attachment2 = Attachment(context: context)
             attachment2.filePath = dummyImageURL.lastPathComponent
             attachment2.timestamp = Date.paraquipNow
             logEntry.addToAttachments(attachment2)

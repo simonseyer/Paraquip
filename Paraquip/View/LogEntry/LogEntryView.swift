@@ -24,13 +24,13 @@ struct LogEntryView: View {
     @State private var previewURL: URL?
 
     @FetchRequest
-    private var attachments: FetchedResults<LogAttachment>
+    private var attachments: FetchedResults<Attachment>
 
     init(logEntry: LogEntry, mode: Mode) {
         self.logEntry = logEntry
         self.mode = mode
-        _attachments = FetchRequest<LogAttachment>(sortDescriptors: [SortDescriptor(\.timestamp)],
-                                                   predicate: NSPredicate(format: "%K == %@", #keyPath(LogAttachment.logEntry), logEntry))
+        _attachments = FetchRequest<Attachment>(sortDescriptors: [SortDescriptor(\.timestamp)],
+                                                   predicate: NSPredicate(format: "%K == %@", #keyPath(Attachment.logEntry), logEntry))
     }
 
     var body: some View {
@@ -116,7 +116,7 @@ struct LogEntryView: View {
     }
 
     private func addAttachment(url: URL) {
-        if let attachment = LogAttachment.create(fileURL: url, context: managedObjectContext) {
+        if let attachment = Attachment.create(fileURL: url, context: managedObjectContext) {
             logEntry.addToAttachments(attachment)
         }
     }

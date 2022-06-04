@@ -1,5 +1,5 @@
 //
-//  LogAttachment.swift
+//  Attachment.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 28.05.22.
@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import UniformTypeIdentifiers
 
-extension LogAttachment {
+extension Attachment {
 
     var contentType: UTType {
         guard let contentType = try? fileURL?.resourceValues(forKeys: [.contentTypeKey]).contentType else {
@@ -42,30 +42,50 @@ extension LogAttachment {
     }
 
     static func create(fileURL: URL, context: NSManagedObjectContext) -> Self? {
+        let fileManager = FileManager.default
+        let filePath = filePath(for: fileURL.lastPathComponent)
+        let tempFileURL = fileManager.temporaryDirectory.appendingPathComponent(filePath)
+
         do {
-            let fileManager = FileManager.default
-
-            let filePath = URL(string: UUID().uuidString)!
-                .appendingPathComponent(fileURL.lastPathComponent)
-                .relativeString
-                .removingPercentEncoding!
-
-            let tempFileURL = fileManager.temporaryDirectory
-                .appendingPathComponent(filePath)
-
             try fileManager.createDirectory(at: tempFileURL.deletingLastPathComponent(),
                                             withIntermediateDirectories: true)
             try fileManager.moveItem(at: fileURL, to: tempFileURL)
-
-            let attachment = Self(context: context)
-            attachment.filePath = filePath
-            attachment.isTemporary = true
-            attachment.timestamp = Date.paraquipNow
-            return attachment
+            return create(filePath: filePath, context: context)
         } catch {
             print(error)
             return nil
         }
+    }
+
+    static func create(data: Data, fileName: String, context: NSManagedObjectContext) -> Self? {
+        let fileManager = FileManager.default
+        let filePath = filePath(for: fileName)
+        let tempFileURL = fileManager.temporaryDirectory.appendingPathComponent(filePath)
+
+        do {
+            try fileManager.createDirectory(at: tempFileURL.deletingLastPathComponent(),
+                                            withIntermediateDirectories: true)
+            try data.write(to: tempFileURL)
+            return create(filePath: filePath, context: context)
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+
+    private static func filePath(for fileName: String) -> String {
+        URL(string: UUID().uuidString)!
+            .appendingPathComponent(fileName)
+            .relativeString
+            .removingPercentEncoding!
+    }
+
+    private static func create(filePath: String, context: NSManagedObjectContext) -> Self {
+        let attachment = Self(context: context)
+        attachment.filePath = filePath
+        attachment.isTemporary = true
+        attachment.timestamp = Date.paraquipNow
+        return attachment
     }
 
     public override func willSave() {

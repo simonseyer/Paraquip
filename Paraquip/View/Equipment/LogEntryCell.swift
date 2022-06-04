@@ -122,7 +122,7 @@ struct TimelineView_Previews: PreviewProvider {
             CoreData.fakeProfile.allEquipment.first?.purchaseLog = logEntry
         }
         if hasAttachment {
-            logEntry.addToAttachments(LogAttachment(context: CoreData.previewContext))
+            logEntry.addToAttachments(Attachment(context: CoreData.previewContext))
         }
         return logEntry
     }

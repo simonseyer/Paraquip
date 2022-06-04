@@ -52,9 +52,9 @@
 		0DA898AA2841FAD100D7568F /* CoreDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA898A92841FAD100D7568F /* CoreDataOperation.swift */; };
 		0DA898AC2842358900D7568F /* Dummy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0DA898AB2842358900D7568F /* Dummy.pdf */; };
 		0DA898AE284238F400D7568F /* Dummy.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0DA898AD284238F400D7568F /* Dummy.jpg */; };
-		0DA898B0284260A100D7568F /* LogAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA898AF284260A100D7568F /* LogAttachment.swift */; };
 		0DA93A0326CEE0290063356B /* PDFViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0226CEE0290063356B /* PDFViewer.swift */; };
 		0DA93A0926CEE8950063356B /* ManualView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0826CEE8950063356B /* ManualView.swift */; };
+		0DA898B0284260A100D7568F /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA898AF284260A100D7568F /* Attachment.swift */; };
 		0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0A26CEE9160063356B /* PillLabel.swift */; };
 		0DC585F0275CE0F7001B346E /* SharpImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585EF275CE0F7001B346E /* SharpImageView.swift */; };
 		0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */; };
@@ -145,9 +145,9 @@
 		0DA898A92841FAD100D7568F /* CoreDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataOperation.swift; sourceTree = "<group>"; };
 		0DA898AB2842358900D7568F /* Dummy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Dummy.pdf; sourceTree = "<group>"; };
 		0DA898AD284238F400D7568F /* Dummy.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Dummy.jpg; sourceTree = "<group>"; };
-		0DA898AF284260A100D7568F /* LogAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAttachment.swift; sourceTree = "<group>"; };
 		0DA93A0226CEE0290063356B /* PDFViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewer.swift; sourceTree = "<group>"; };
 		0DA93A0826CEE8950063356B /* ManualView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualView.swift; sourceTree = "<group>"; };
+		0DA898AF284260A100D7568F /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		0DA93A0A26CEE9160063356B /* PillLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLabel.swift; sourceTree = "<group>"; };
 		0DC585EF275CE0F7001B346E /* SharpImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharpImageView.swift; sourceTree = "<group>"; };
 		0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWeightView.swift; sourceTree = "<group>"; };
@@ -167,6 +167,7 @@
 		0DEE05CA271C268900407599 /* ProfileEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyView.swift; sourceTree = "<group>"; };
 		0DEE05CC271C371A00407599 /* ProfileSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionView.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
+		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,7 +283,7 @@
 				0D2B2D162646B1A9009873CE /* Brand.swift */,
 				0DDA569826ADA45B004A46F8 /* Date.swift */,
 				0D491CC22829A5EE001BB9EC /* LogEntry.swift */,
-				0DA898AF284260A100D7568F /* LogAttachment.swift */,
+				0DA898AF284260A100D7568F /* Attachment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -650,7 +651,7 @@
 				0DEE05CD271C371A00407599 /* ProfileSectionView.swift in Sources */,
 				0D5EDB17274FF52F00B3D134 /* EquipmentHeaderView.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
-				0DA898B0284260A100D7568F /* LogAttachment.swift in Sources */,
+				0DA898B0284260A100D7568F /* Attachment.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
 				0D0DFF9F26887C4900AEB2AD /* LogEntryCell.swift in Sources */,
 				0DA93A0326CEE0290063356B /* PDFViewer.swift in Sources */,
@@ -1026,13 +1027,14 @@
 		0D07CBFC26B6B6BF00BCC3E6 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */,
 				0D135B67283FE5D300FEB06F /* Model 5.xcdatamodel */,
 				0D491CC42829BC9C001BB9EC /* Model 4.xcdatamodel */,
 				0DC585F4275CF448001B346E /* Model 3.xcdatamodel */,
 				0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */,
 				0D07CBFD26B6B6BF00BCC3E6 /* Model.xcdatamodel */,
 			);
-			currentVersion = 0D135B67283FE5D300FEB06F /* Model 5.xcdatamodel */;
+			currentVersion = 0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

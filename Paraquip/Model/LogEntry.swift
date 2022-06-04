@@ -15,8 +15,8 @@ extension LogEntry: Creatable {
         set { date = newValue }
     }
 
-    var logEntryAttachments: [LogAttachment] {
-        (attachments?.allObjects as? [LogAttachment]) ?? []
+    var logEntryAttachments: [Attachment] {
+        (attachments?.allObjects as? [Attachment]) ?? []
     }
 
     var attachmentURLs: [URL] {
