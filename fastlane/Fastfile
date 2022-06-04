@@ -22,7 +22,9 @@ platform :ios do
 
     upload_to_app_store(
       overwrite_screenshots: true,
-      precheck_include_in_app_purchases: false
+      precheck_include_in_app_purchases: false,
+      submit_for_review: true,
+      automatic_release: true
     )
 
     git_commit(path: ["*/*.pbxproj", "*/*.plist"], message: "Version " + version)
