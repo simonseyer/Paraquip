@@ -8,6 +8,8 @@
 import SwiftUI
 import CoreData
 
+fileprivate let cellPadding = EdgeInsets(top: 13, leading: 36, bottom: 13, trailing: 0)
+
 struct NextCheckCell: View {
 
     let urgency: Equipment.CheckUrgency
@@ -24,12 +26,14 @@ struct NextCheckCell: View {
                 .foregroundColor(.accentColor)
                 .padding(.trailing, 12)
         }
-        .padding(LogEntryCellBackground.padding)
+        .padding(cellPadding)
 
         .listRowBackground(
-            LogEntryCellBackground(color: urgency.color,
-                           position: .start,
-                           isHighlighted: $isHighlighted)
+            LogEntryCellBackground(circleColor: urgency.color,
+                                   lineColor: urgency.color,
+                                   position: .start,
+                                   icon: nil as EmptyView?,
+                                   isHighlighted: $isHighlighted)
         )
         .contentShape(Rectangle())
         .onTapGesture(perform: onTap)
@@ -47,10 +51,24 @@ struct LogEntryCell: View {
 
     @State private var previewedLogAttachment: URL?
 
+    @ViewBuilder
+    private var icon: some View {
+        Group {
+            if logEntry.isPurchase {
+                Image(systemName: "dollarsign.circle")
+                    .resizable()
+            } else {
+                Image(systemName: "checkmark.circle")
+                    .resizable()
+            }
+        }
+        .font(.system(size: 56.0, weight: .light))
+    }
+
     var body: some View {
         HStack {
             Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .long, time: .omitted))
-                .padding(LogEntryCellBackground.padding)
+                .padding(cellPadding)
             Spacer()
             if logEntry.attachments?.count ?? 0 > 0 {
                 Button(action: {
@@ -64,25 +82,32 @@ struct LogEntryCell: View {
         }
         .quickLookPreview($previewedLogAttachment, in: logEntry.attachmentURLs)
         .listRowBackground(
-            LogEntryCellBackground(color: Color(UIColor.systemGray3),
+            LogEntryCellBackground(circleColor: Color(UIColor.systemGray6),
+                                   lineColor: Color(UIColor.systemGray3),
                                    position: logEntry.isPurchase ? .end : .middle,
+                                   icon: icon,
                                    isHighlighted: .constant(false))
         )
         .foregroundColor(.black)
     }
 }
 
-fileprivate struct LogEntryCellBackground: View {
+
+fileprivate struct LogEntryCellBackground<IconView: View>: View {
 
     enum Position {
         case start, middle, end
     }
 
-    let color: Color
+    let circleColor: Color
+    let lineColor: Color
     let position: Position
+    let icon: IconView?
     @Binding var isHighlighted: Bool
 
-    static let padding = EdgeInsets(top: 13, leading: 36, bottom: 13, trailing: 0)
+    var circleDiameter: CGFloat {
+        icon != nil ? 24 : 10
+    }
 
     var body: some View {
         GeometryReader { metrics in
@@ -92,23 +117,34 @@ fileprivate struct LogEntryCellBackground: View {
                 } else {
                     Color.white
                 }
-                Group {
+
                 Rectangle()
                     .frame(
                         width: 2,
                         height: metrics.size.height * (position == .middle ? 1.0 : 0.5))
-                    .foregroundColor(color)
+                    .foregroundColor(lineColor)
                     .opacity(0.4)
                     .padding(EdgeInsets(top: metrics.size.height * (position == .start ? 0.5 : 0.0),
-                                        leading: 4,
+                                        leading: 30,
                                         bottom: 0,
                                         trailing: 0))
-                Circle()
-                    .frame(width: 10, height: 10)
-                    .foregroundColor(color)
-                    .padding(.top, metrics.size.height / 2 - 5)
+
+                Group {
+                    Circle()
+                        .frame(width: circleDiameter, height: circleDiameter)
+                        .foregroundColor(circleColor)
+                    if let icon = icon {
+                        icon
+                            .frame(width: circleDiameter, height: circleDiameter)
+                            .foregroundColor(Color(UIColor.systemGray2))
+                    }
                 }
-                .padding(.leading, 27)
+                .padding(EdgeInsets(top: metrics.size.height / 2 - (circleDiameter / 2),
+                                    leading: 31 - (circleDiameter / 2.0),
+                                    bottom: 0,
+                                    trailing: 0))
+
+
             }
         }
     }
