@@ -29,8 +29,7 @@ struct NextCheckCell: View {
         .padding(cellPadding)
 
         .listRowBackground(
-            LogEntryCellBackground(circleColor: urgency.color,
-                                   lineColor: urgency.color,
+            LogEntryCellBackground(color: urgency.color,
                                    position: .start,
                                    icon: nil as EmptyView?,
                                    isHighlighted: $isHighlighted)
@@ -82,8 +81,7 @@ struct LogEntryCell: View {
         }
         .quickLookPreview($previewedLogAttachment, in: logEntry.attachmentURLs)
         .listRowBackground(
-            LogEntryCellBackground(circleColor: Color(UIColor.systemGray6),
-                                   lineColor: Color(UIColor.systemGray3),
+            LogEntryCellBackground(color: Color(UIColor.systemGray3),
                                    position: logEntry.isPurchase ? .end : .middle,
                                    icon: icon,
                                    isHighlighted: .constant(false))
@@ -99,14 +97,17 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
         case start, middle, end
     }
 
-    let circleColor: Color
-    let lineColor: Color
+    let color: Color
     let position: Position
     let icon: IconView?
     @Binding var isHighlighted: Bool
 
-    var circleDiameter: CGFloat {
+    private var circleDiameter: CGFloat {
         icon != nil ? 24 : 10
+    }
+
+    private var circleColor: Color {
+        icon != nil ? Color(UIColor.systemGray6) : color
     }
 
     var body: some View {
@@ -122,7 +123,7 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
                     .frame(
                         width: 2,
                         height: metrics.size.height * (position == .middle ? 1.0 : 0.5))
-                    .foregroundColor(lineColor)
+                    .foregroundColor(color)
                     .opacity(0.4)
                     .padding(EdgeInsets(top: metrics.size.height * (position == .start ? 0.5 : 0.0),
                                         leading: 30,
@@ -143,8 +144,6 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
                                     leading: 31 - (circleDiameter / 2.0),
                                     bottom: 0,
                                     trailing: 0))
-
-
             }
         }
     }
