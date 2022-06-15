@@ -24,16 +24,9 @@ struct ProfileListView: View {
                     NavigationLink {
                         ProfileView(profile: profile)
                     } label: {
-                        HStack {
-                            Image(profile.profileIcon.rawValue)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.accentColor)
-                                .frame(width: 35, height: 35)
-                                .padding(.trailing, 8)
 
-                            Text(profile.profileName)
-                        }
+                        Text("\(Image(systemName: profile.profileIcon.systemName)) \(profile.profileName)")
+                            .padding(EdgeInsets(top: 24, leading: 8, bottom: 24, trailing: 8))
                     }
                     .padding([.top, .bottom])
                     .swipeActions {
