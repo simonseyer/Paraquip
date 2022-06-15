@@ -159,10 +159,10 @@ struct EditEquipmentView: View {
                             }
                     }
                 } label: {
-                    Text("Purchase")
-                    Spacer()
-                    if let purchaseLog = equipment.purchaseLog {
-                        LogDateCell(logEntry: purchaseLog)
+                    LabeledContent("Purchase") {
+                        if let purchaseLog = equipment.purchaseLog {
+                            LogDateCell(logEntry: purchaseLog)
+                        }
                     }
                 }
             }
