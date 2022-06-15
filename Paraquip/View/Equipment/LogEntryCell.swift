@@ -134,7 +134,7 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
                     Circle()
                         .frame(width: circleDiameter, height: circleDiameter)
                         .foregroundColor(circleColor)
-                    if let icon = icon {
+                    if let icon {
                         icon
                             .frame(width: circleDiameter, height: circleDiameter)
                             .foregroundColor(Color(UIColor.systemGray2))

@@ -75,21 +75,21 @@ extension Equipment: Creatable {
 
     var weightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
         get {
-            guard let weightRange = weightRange else { return nil }
+            guard let weightRange else { return nil }
             let min = Measurement<UnitMass>(value: weightRange.min, unit: .baseUnit())
             let max = Measurement<UnitMass>(value: weightRange.max, unit: .baseUnit())
             return ClosedRange(uncheckedBounds: (min, max))
         }
         set {
-            guard let weightRange = newValue else {
-                if let oldWeightRange = weightRange {
-                    managedObjectContext?.delete(oldWeightRange)
+            guard let newValue else {
+                if let weightRange {
+                    managedObjectContext?.delete(weightRange)
                 }
                 return
             }
             let range = WeightRange(context: managedObjectContext!)
-            range.min = weightRange.lowerBound.converted(to: .baseUnit()).value
-            range.max = weightRange.upperBound.converted(to: .baseUnit()).value
+            range.min = newValue.lowerBound.converted(to: .baseUnit()).value
+            range.max = newValue.upperBound.converted(to: .baseUnit()).value
             self.weightRange = range
         }
     }
@@ -110,7 +110,7 @@ extension Equipment: Creatable {
             return nil
         }
 
-        guard let lastCheck = lastCheck else {
+        guard let lastCheck else {
             return Date.paraquipNow
         }
 
@@ -120,7 +120,7 @@ extension Equipment: Creatable {
     }
 
     var checkUrgency: CheckUrgency {
-        guard let nextCheck = nextCheck else {
+        guard let nextCheck else {
             return .never
         }
 

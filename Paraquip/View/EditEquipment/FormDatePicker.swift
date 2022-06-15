@@ -60,8 +60,8 @@ struct FormDatePicker: View {
             date = value
         }
         .onChange(of: date) { value in
-            if let date = value {
-                selectedDate = date
+            if let value {
+                selectedDate = value
             } else {
                 withAnimation {
                     datePickerShown = false

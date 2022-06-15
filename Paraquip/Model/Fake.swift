@@ -30,7 +30,7 @@ extension NSPersistentContainer {
         container.persistentStoreDescriptions = [description]
 
         container.loadPersistentStores { description, error in
-            if let error = error {
+            if let error {
                 fatalError("Unable to load persistent stores: \(error)")
             }
 

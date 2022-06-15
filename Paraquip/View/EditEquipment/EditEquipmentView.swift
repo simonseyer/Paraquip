@@ -261,7 +261,7 @@ struct EditEquipmentView: View {
 
                     let minWeight = weightFormatter.value(from: minWeight)
                     let maxWeight = weightFormatter.value(from: maxWeight)
-                    if let maxWeight = maxWeight {
+                    if let maxWeight {
                         let sanitizedMinWeight = minWeight ?? 0
                         let sanitizedMaxWeight = max(maxWeight, sanitizedMinWeight)
 

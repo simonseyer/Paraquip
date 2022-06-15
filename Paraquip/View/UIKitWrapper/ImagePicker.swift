@@ -47,10 +47,10 @@ struct ImagePicker: UIViewControllerRepresentable {
             }
 
             provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) {[weak self] url, error in
-                if let error = error {
+                if let error {
                     // TODO: error handling
                     print("Can't load image \(error.localizedDescription)")
-                } else if let url = url {
+                } else if let url {
                     self?.parent.selectFile(url)
 
                 }
