@@ -62,7 +62,7 @@ struct EditEquipmentView: View {
     private let weightUnitText: String
     private let weightFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 1
+        formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 1
         return formatter
     }()
@@ -259,8 +259,8 @@ struct EditEquipmentView: View {
                         equipment.weightMeasurement = nil
                     }
 
-                    let minWeight = weightFormatter.value(from: minWeight)
-                    let maxWeight = weightFormatter.value(from: maxWeight)
+                    let minWeight = weightRangeFormatter.value(from: minWeight)
+                    let maxWeight = weightRangeFormatter.value(from: maxWeight)
                     if let maxWeight = maxWeight {
                         let sanitizedMinWeight = minWeight ?? 0
                         let sanitizedMaxWeight = max(maxWeight, sanitizedMinWeight)
