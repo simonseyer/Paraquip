@@ -16,31 +16,45 @@ struct ProfileView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
 
+    @SectionedFetchRequest
+    private var equipment: SectionedFetchResults<Int16, Equipment>
+
     init(profile: Profile) {
         self.profile = profile
+        _equipment = SectionedFetchRequest(
+            sectionIdentifier: \Equipment.type,
+            sortDescriptors: [
+                SortDescriptor(\Equipment.type),
+                SortDescriptor(\.brand),
+                SortDescriptor(\.name)
+            ],
+            predicate: NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
+        )
     }
 
     var body: some View {
         Group {
-            if profile.allEquipment.isEmpty {
+            if equipment.isEmpty {
                 ProfileEmptyView()
             } else {
-                List {
-                    ProfileSectionView(
-                        title: "Paraglider",
-                        icon: "paraglider",
-                        equipment: profile.paraglider
-                    )
-                    ProfileSectionView(
-                        title: "Harness",
-                        icon: "harness",
-                        equipment: profile.harnesses
-                    )
-                    ProfileSectionView(
-                        title: "Reserve",
-                        icon: "reserve",
-                        equipment: profile.reserves
-                    )
+                List(equipment) { section in
+                    Section {
+                        ForEach(section) { equipment in
+                            NavigationLink {
+                                EquipmentView(equipment: equipment)
+                            } label: {
+                                EquipmentRow(equipment: equipment)
+                            }
+                        }
+                        .onDelete { indexSet in
+                            for index in indexSet {
+                                managedObjectContext.delete(section[index])
+                            }
+                            try! managedObjectContext.save()
+                        }
+                    } header: {
+                        ProfileSectionHeader(equipmentType: section.id)
+                    }
                 }
             }
         }

@@ -86,7 +86,6 @@ struct LogEntryCell: View {
                                    icon: icon,
                                    isHighlighted: .constant(false))
         )
-        .foregroundColor(.black)
     }
 }
 

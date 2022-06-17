@@ -54,6 +54,10 @@ struct ParaquipApp: App {
         let equipment = (try? context.fetch(equipmentFetchRequest)) ?? []
 
         for equipment in equipment {
+            if equipment.type == 0 {
+                equipment.type = Equipment.EquipmentType.type(for: equipment).rawValue
+            }
+            
             if let purchaseDate = equipment.purchaseDate, equipment.purchaseLog == nil {
                 equipment.purchaseLog = LogEntry.create(context: context, date: purchaseDate)
                 equipment.purchaseDate = nil
