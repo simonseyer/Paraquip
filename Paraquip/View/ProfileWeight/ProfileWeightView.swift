@@ -139,6 +139,8 @@ struct EquipmentWeightRow: View {
             ListIcon(image: Image(equipment.typeIconName))
                 .padding(.trailing, 6)
             Text(equipment.equipmentName)
+            Text(equipment.equipmentSize.rawValue)
+                .foregroundStyle(.secondary)
             Spacer()
             if let weight = equipment.weightMeasurement {
                 Text(formatter(weight))
