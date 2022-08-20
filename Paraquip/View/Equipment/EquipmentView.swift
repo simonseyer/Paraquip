@@ -41,7 +41,7 @@ struct EquipmentView: View {
             EquipmentHeaderView(brandName: equipment.brandName,
                                 icon: equipment.icon) {
                 HStack {
-                    PillLabel(LocalizedStringKey(equipment.localizedType))
+                    PillLabel(equipment.equipmentType.localizedName)
                     if let size = equipment.size {
                         PillLabel("Size \(size)")
                     }

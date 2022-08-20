@@ -73,10 +73,11 @@ struct EditEquipmentView: View {
     }()
 
     private var title: Text {
+        let type = NSLocalizedString(equipment.equipmentType.localizedNameString, comment: "")
         if !equipment.brandName.isEmpty {
-            return Text("\(equipment.brandName) \(NSLocalizedString(equipment.localizedType, comment: ""))")
+            return Text("\(equipment.brandName) \(type)")
         } else {
-            return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(equipment.localizedType, comment: ""))")
+            return Text(type)
         }
     }
 

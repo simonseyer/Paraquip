@@ -16,30 +16,27 @@ extension Equipment {
         }
         return UIImage(named: logo)
     }
+}
 
-    var localizedType: String {
+extension Equipment.EquipmentType {
+    
+    var localizedName: LocalizedStringKey {
+        LocalizedStringKey(localizedNameString)
+    }
+
+    var localizedNameString: String {
         switch self {
-        case is Paraglider:
-            return "Paraglider"
-        case is Reserve:
-            return "Reserve"
-        case is Harness:
-            return "Harness"
-        default:
-            preconditionFailure("Unknown equipment type")
+        case .paraglider: return "Paraglider"
+        case .harness: return "Harness"
+        case .reserve: return "Reserve"
         }
     }
 
-    var typeIconName: String {
+    var iconName: String {
         switch self {
-        case is Paraglider:
-            return "paraglider"
-        case is Reserve:
-            return "reserve"
-        case is Harness:
-            return "harness"
-        default:
-            preconditionFailure("Unknown equipment type")
+        case .paraglider: return "paraglider"
+        case .harness: return "harness"
+        case .reserve: return "reserve"
         }
     }
 }
