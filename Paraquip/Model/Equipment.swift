@@ -13,6 +13,7 @@ extension Equipment: Creatable {
         case paraglider = 1
         case harness = 2
         case reserve = 3
+        case gear = 4
 
         var id: Int16 {
             rawValue
@@ -26,6 +27,8 @@ extension Equipment: Creatable {
                 return .harness
             case is Reserve:
                 return .reserve
+            case is Gear:
+                return .gear
             default:
                 fatalError("Unknown equipment type: \(Swift.type(of: equipment))")
             }
@@ -74,6 +77,13 @@ extension Equipment: Creatable {
     var floatingCheckCycle: Double {
         get { Double(checkCycle) }
         set { checkCycle = Int16(newValue) }
+    }
+
+    var isCheckable: Bool {
+        switch equipmentType {
+        case .paraglider, .harness, .reserve: return true
+        case .gear: return false
+        }
     }
 
     var equipmentBrand: Brand {

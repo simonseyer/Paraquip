@@ -136,6 +136,18 @@ extension NSPersistentContainer {
             equipment.addToCheckLog(logEntry)
         }
 
+        do {
+            let equipment = Gear.create(context: context)
+            equipment.brand = "Woody Valley"
+            equipment.brandId = "woody-valley"
+            equipment.name = "Rucksack Light"
+            equipment.purchaseLog = LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.equipmentSize = .medium
+            equipment.weight = 1.05
+            profile.addToEquipment(equipment)
+        }
+
         try! context.save()
 
         return profile

@@ -29,6 +29,7 @@ extension Equipment.EquipmentType {
         case .paraglider: return "Paraglider"
         case .harness: return "Harness"
         case .reserve: return "Reserve"
+        case .gear: return "Gear"
         }
     }
 
@@ -37,6 +38,7 @@ extension Equipment.EquipmentType {
         case .paraglider: return "paraglider"
         case .harness: return "harness"
         case .reserve: return "reserve"
+        case .gear: return "paraglider" // TODO: create new icon
         }
     }
 }

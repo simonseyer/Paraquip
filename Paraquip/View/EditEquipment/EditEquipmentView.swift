@@ -193,33 +193,37 @@ struct EditEquipmentView: View {
                     }
                 }
             }
-            Section(header: Text("Check cycle")) {
-                CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
+            if equipment.isCheckable {
+                Section(header: Text("Check cycle")) {
+                    CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
+                }
             }
             if equipment.isInserted {
                 Section(header: Text("Next steps")) {
-                    Button(action: {
-                        if let logEntry = equipment.allChecks.first {
-                            editLogEntryOperation = Operation(editing: logEntry,
-                                                              withParentContext: managedObjectContext)
-                        } else {
-                            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
-                            operation.object(for: equipment).addToCheckLog(operation.object)
-                            createLogEntryOperation = operation
-                        }
-                    }) {
-                        HStack {
-                            FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
-                                .padding(.trailing, 8)
-                            Text("Log last check")
-                            Spacer()
-                            if !equipment.allChecks.isEmpty {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(Color.green)
+                    if equipment.isCheckable {
+                        Button(action: {
+                            if let logEntry = equipment.allChecks.first {
+                                editLogEntryOperation = Operation(editing: logEntry,
+                                                                  withParentContext: managedObjectContext)
+                            } else {
+                                let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                                operation.object(for: equipment).addToCheckLog(operation.object)
+                                createLogEntryOperation = operation
                             }
+                        }) {
+                            HStack {
+                                FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
+                                    .padding(.trailing, 8)
+                                Text("Log last check")
+                                Spacer()
+                                if !equipment.allChecks.isEmpty {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(Color.green)
+                                }
+                            }
+                            .foregroundColor(.primary)
+                            .padding([.top, .bottom], 6)
                         }
-                        .foregroundColor(.primary)
-                        .padding([.top, .bottom], 6)
                     }
 
                     Button(action: { showingManualPicker = true }) {

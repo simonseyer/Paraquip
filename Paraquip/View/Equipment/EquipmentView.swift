@@ -49,23 +49,28 @@ struct EquipmentView: View {
             }
 
             List {
-                Section {
-                    NextCheckCell(urgency: equipment.checkUrgency) {
-                        let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
-                        operation.object(for: equipment).addToCheckLog(operation.object)
-                        createLogEntryOperation = operation
-                    }
-                    ForEach(checkLog) { logEntry in
-                        LogEntryCell(logEntry: logEntry)
-                            .swipeActions {
-                                swipeButton(for: logEntry)
+                if equipment.isCheckable || equipment.purchaseLog != nil || !checkLog.isEmpty {
+                    Section {
+                        if equipment.isCheckable {
+                            NextCheckCell(urgency: equipment.checkUrgency) {
+                                let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                                operation.object(for: equipment).addToCheckLog(operation.object)
+                                createLogEntryOperation = operation
                             }
-                    }
-                    if let purchaseLog = equipment.purchaseLog {
-                        LogEntryCell(logEntry: purchaseLog)
-                            .swipeActions {
-                                swipeButton(for: purchaseLog)
-                            }
+                        }
+                        ForEach(checkLog) { logEntry in
+                            LogEntryCell(logEntry: logEntry)
+                                .swipeActions {
+                                    swipeButton(for: logEntry)
+                                }
+                        }
+                        
+                        if let purchaseLog = equipment.purchaseLog {
+                            LogEntryCell(logEntry: purchaseLog)
+                                .swipeActions {
+                                    swipeButton(for: purchaseLog)
+                                }
+                        }
                     }
                 }
                 Section {
