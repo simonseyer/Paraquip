@@ -62,18 +62,6 @@ extension Profile: Creatable {
         return Array<Equipment>(set).sorted { $0.equipmentName > $1.equipmentName }
     }
 
-    var paraglider: [Paraglider] {
-        allEquipment.compactMap { $0 as? Paraglider }
-    }
-
-    var harnesses: [Harness] {
-        allEquipment.compactMap { $0 as? Harness }
-    }
-
-    var reserves: [Reserve] {
-        allEquipment.compactMap { $0 as? Reserve }
-    }
-
     static func create(context: NSManagedObjectContext, name: String) -> Self {
         let profile = Self(context: context)
         profile.id = UUID()
@@ -83,5 +71,17 @@ extension Profile: Creatable {
 
     static func create(context: NSManagedObjectContext) -> Self {
         return create(context: context, name: "")
+    }
+
+    func contains(_ equipment: Equipment) -> Bool {
+        self.equipment?.contains(equipment) ?? false
+    }
+
+    func toggle(_ equipment: Equipment) {
+        if contains(equipment) {
+            removeFromEquipment(equipment)
+        } else {
+            addToEquipment(equipment)
+        }
     }
 }

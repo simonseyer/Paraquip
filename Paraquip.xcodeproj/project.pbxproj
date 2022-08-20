@@ -25,6 +25,9 @@
 		0D2B2D172646B1A9009873CE /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D162646B1A9009873CE /* Brand.swift */; };
 		0D2B2D192646BF5A009873CE /* BrandRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D182646BF5A009873CE /* BrandRow.swift */; };
 		0D2B2D2226484B52009873CE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
+		0D3B5A05285B3FAA00C1E37A /* ProfileSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */; };
+		0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A06285B450F00C1E37A /* IconSelectionView.swift */; };
+		0D3B5A09285B452A00C1E37A /* EquipmentSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */; };
 		0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* EquipmentView.swift */; };
 		0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1BA262C5BD800DA347B /* Fake.swift */; };
 		0D4071922656CD12001385D7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4071912656CD12001385D7 /* NotificationService.swift */; };
@@ -68,7 +71,6 @@
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CA271C268900407599 /* ProfileEmptyView.swift */; };
-		0DEE05CD271C371A00407599 /* ProfileSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CC271C371A00407599 /* ProfileSectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +117,9 @@
 		0D2B2D182646BF5A009873CE /* BrandRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandRow.swift; sourceTree = "<group>"; };
 		0D2B2D2326484B52009873CE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0D2B2D2526484B56009873CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionHeader.swift; sourceTree = "<group>"; };
+		0D3B5A06285B450F00C1E37A /* IconSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionView.swift; sourceTree = "<group>"; };
+		0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentSelectionRow.swift; sourceTree = "<group>"; };
 		0D3EE1B5262C58A700DA347B /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
 		0D3EE1BA262C5BD800DA347B /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fake.swift; sourceTree = "<group>"; };
 		0D4071912656CD12001385D7 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -161,7 +166,6 @@
 		0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPersistence.swift; sourceTree = "<group>"; };
 		0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCycleRow.swift; sourceTree = "<group>"; };
 		0DEE05CA271C268900407599 /* ProfileEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyView.swift; sourceTree = "<group>"; };
-		0DEE05CC271C371A00407599 /* ProfileSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionView.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,6 +200,8 @@
 			isa = PBXGroup;
 			children = (
 				0D09984A26D81BFD00E297F9 /* EditProfileView.swift */,
+				0D3B5A06285B450F00C1E37A /* IconSelectionView.swift */,
+				0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */,
 			);
 			path = EditProfile;
 			sourceTree = "<group>";
@@ -290,7 +296,7 @@
 				0D11FBCA2620BF45009D9349 /* ProfileView.swift */,
 				0D2B2D142646A04D009873CE /* EquipmentRow.swift */,
 				0DEE05CA271C268900407599 /* ProfileEmptyView.swift */,
-				0DEE05CC271C371A00407599 /* ProfileSectionView.swift */,
+				0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -612,6 +618,7 @@
 				0D2B2D172646B1A9009873CE /* Brand.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* MainView.swift in Sources */,
 				0D22A9A928415D9400AB4E23 /* ImagePicker.swift in Sources */,
+				0D3B5A09285B452A00C1E37A /* EquipmentSelectionRow.swift in Sources */,
 				0D77A35726D2692E002B24D6 /* FormIcon.swift in Sources */,
 				0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */,
 				0D11FBCB2620BF45009D9349 /* ProfileView.swift in Sources */,
@@ -622,6 +629,7 @@
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
+				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
 				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,
@@ -642,12 +650,12 @@
 				0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */,
 				0DC585F0275CE0F7001B346E /* SharpImageView.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,
-				0DEE05CD271C371A00407599 /* ProfileSectionView.swift in Sources */,
 				0D5EDB17274FF52F00B3D134 /* EquipmentHeaderView.swift in Sources */,
 				0D919AEC2651220B005AB7A7 /* SelectableText.swift in Sources */,
 				0DA898B0284260A100D7568F /* Attachment.swift in Sources */,
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
 				0D0DFF9F26887C4900AEB2AD /* LogEntryCell.swift in Sources */,
+				0D3B5A05285B3FAA00C1E37A /* ProfileSectionHeader.swift in Sources */,
 				0DD7FC27263DE1B60038B25D /* LegacyAppPersistence.swift in Sources */,
 				0D09984B26D81BFE00E297F9 /* EditProfileView.swift in Sources */,
 			);
@@ -824,7 +832,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Paraquip/Paraquip.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "\"Paraquip/Preview Content\"";
 				DEVELOPMENT_TEAM = V8Y4ZV4958;
 				ENABLE_PREVIEWS = YES;
@@ -850,7 +858,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Paraquip/Paraquip.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "\"Paraquip/Preview Content\"";
 				DEVELOPMENT_TEAM = V8Y4ZV4958;
 				ENABLE_PREVIEWS = YES;

@@ -17,7 +17,7 @@ struct CoreData {
     }
 
     static var fakeProfile: Profile {
-        return inMemoryPersistentContainer.createFakeProfile()
+        return try! previewContext.fetch(Profile.fetchRequest()).first!
     }
 }
 
@@ -50,21 +50,20 @@ extension NSPersistentContainer {
         dateFormatter.timeStyle = .none
         dateFormatter.locale = Locale(identifier: "de")
 
-        let profile = Profile(context: context)
-        profile.id = UUID()
+        let profile = Profile.create(context: context)
         profile.name = NSLocalizedString("Your Equipment", comment: "")
         profile.pilotWeight = 70
         profile.additionalWeight = 10
         profile.profileIcon = .default
 
         do {
-            let equipment = Reserve(context: context)
-            equipment.id = UUID()
+            let equipment = Reserve.create(context: context)
             equipment.brand = "Nova"
             equipment.brandId = "nova"
             equipment.name = "Beamer 3 light"
             equipment.checkCycle = 3
-            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 1.37
             equipment.weightRange = {
                 let weightRange = WeightRange(context: context)
@@ -76,13 +75,13 @@ extension NSPersistentContainer {
         }
 
         do {
-            let equipment = Reserve(context: context)
-            equipment.id = UUID()
+            let equipment = Reserve.create(context: context)
             equipment.brand = "Ozone"
             equipment.brandId = "ozone"
             equipment.name = "Angel SQ"
             equipment.checkCycle = 3
-            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 1.54
             equipment.weightRange = {
                 let weightRange = WeightRange(context: context)
@@ -92,39 +91,35 @@ extension NSPersistentContainer {
             }()
             profile.addToEquipment(equipment)
 
-            let logEntry = LogEntry(context: context)
-            logEntry.id = UUID()
-            logEntry.date = dateFormatter.date(from: "10.07.2021")!
-            equipment.addToCheckLog(logEntry)
+            equipment.addToCheckLog(LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "10.07.2021")!))
         }
 
         do {
-            let equipment = Harness(context: context)
-            equipment.id = UUID()
+            let equipment = Harness.create(context: context)
             equipment.brand = "Woody Valley"
             equipment.brandId = "woody-valley"
             equipment.name = "Wani Light 2"
             equipment.checkCycle = 12
-            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "30.09.2020")!)
             equipment.equipmentSize = .medium
             equipment.weight = 2.75
             profile.addToEquipment(equipment)
 
-            let logEntry = LogEntry(context: context)
-            logEntry.id = UUID()
-            logEntry.date = dateFormatter.date(from: "14.04.2021")!
-            equipment.addToCheckLog(logEntry)
+            equipment.addToCheckLog(LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "14.04.2021")!))
         }
 
         do {
-            let equipment = Paraglider(context: context)
-            equipment.id = UUID()
+            let equipment = Paraglider.create(context: context)
             equipment.brand = "Gin"
             equipment.brandId = "gin"
             equipment.name = "Explorer 2"
             equipment.equipmentSize = .small
             equipment.checkCycle = 12
-            equipment.purchaseLog = LogEntry.create(context: context, date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 3.7
             equipment.weightRange = {
                 let weightRange = WeightRange(context: context)
@@ -135,13 +130,10 @@ extension NSPersistentContainer {
             equipment.manualAttachment = createAttachment(for: dummyPDFURL, context: context)
             profile.addToEquipment(equipment)
 
-            let logEntry = LogEntry(context: context)
-            logEntry.id = UUID()
-            logEntry.date = dateFormatter.date(from: "12.08.2021")!
-            equipment.addToCheckLog(logEntry)
-
+            let logEntry = LogEntry.create(context: context, date: dateFormatter.date(from: "12.08.2021")!)
             logEntry.addToAttachments(createAttachment(for: dummyPDFURL, context: context))
             logEntry.addToAttachments(createAttachment(for: dummyImageURL, context: context))
+            equipment.addToCheckLog(logEntry)
         }
 
         try! context.save()

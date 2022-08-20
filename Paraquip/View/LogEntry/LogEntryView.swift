@@ -55,7 +55,7 @@ struct LogEntryView: View {
                                 Text(attachment.fileURL?.lastPathComponent ?? "")
                             }
                         }
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                     }
                     .onDelete { indexSet in
                         for index in indexSet {

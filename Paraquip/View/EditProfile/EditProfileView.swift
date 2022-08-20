@@ -15,11 +15,15 @@ struct EditProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var managedObjectContext
 
-    @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.brand),
-        SortDescriptor(\.name)
-    ])
-    private var allEquipment: FetchedResults<Equipment>
+    @SectionedFetchRequest(
+        sectionIdentifier: \Equipment.type,
+        sortDescriptors: [
+            SortDescriptor(\Equipment.type),
+            SortDescriptor(\.brand),
+            SortDescriptor(\.name)
+        ]
+    )
+    private var allEquipment: SectionedFetchResults<Int16, Equipment>
 
     var body: some View {
         Form {
@@ -39,29 +43,16 @@ struct EditProfileView: View {
                 }
             }
 
-            if !allEquipment.isEmpty {
-                Section(header: Text("Equipment")) {
-                    ForEach(allEquipment) { equipment in
-                        Button(action: {
-                            if profile.equipment?.contains(equipment) ?? false {
-                                profile.removeFromEquipment(equipment)
-                            } else {
-                                profile.addToEquipment(equipment)
-                            }
-                        }) {
-                            HStack {
-                                Text(equipment.brandName)
-                                    .foregroundColor(.secondary)
-                                Text(equipment.equipmentName)
-                                Spacer()
-                                if profile.equipment?.contains(equipment) ?? false {
-                                    Image(systemName: "checkmark")
-                                        .font(.system(.body).weight(.medium))
-                                        .foregroundColor(.accentColor)
-                                }}
-                        }
-                        .foregroundColor(.primary)
+            ForEach(allEquipment) { section in
+                Section {
+                    ForEach(section) { equipment in
+                        EquipmentSelectionRow(
+                            profile: profile,
+                            equipment: equipment
+                        )
                     }
+                } header: {
+                    ProfileSectionHeader(equipmentType: section.id)
                 }
             }
         }
@@ -90,24 +81,5 @@ struct EdiProfileView_Previews: PreviewProvider {
             EditProfileView(profile: CoreData.fakeProfile)
                 .environment(\.managedObjectContext, CoreData.previewContext)
         }
-    }
-}
-
-struct IconSelectionView: View {
-
-    let icon: Profile.Icon
-    let isSelected: Bool
-
-    var body: some View {
-        Image(systemName: icon.systemName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .padding(12)
-            .frame(width: 55, height: 55)
-            .background(
-                isSelected ? Color.accentColor :
-                    Color(UIColor.systemGray5)
-            )
-            .cornerRadius(10)
     }
 }

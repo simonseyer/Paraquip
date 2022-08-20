@@ -9,6 +9,25 @@ import Foundation
 import CoreData
 
 extension Equipment: Creatable {
+    enum EquipmentType: Int16 {
+        case paraglider = 1
+        case harness = 2
+        case reserve = 3
+
+        static func type(for equipment: Equipment) -> Self {
+            switch equipment {
+            case is Paraglider:
+                return .paraglider
+            case is Harness:
+                return .harness
+            case is Reserve:
+                return .reserve
+            default:
+                fatalError("Unknown equipment type: \(Swift.type(of: equipment))")
+            }
+        }
+    }
+
     enum CheckUrgency {
         case now
         case soon(Date)
@@ -32,6 +51,10 @@ extension Equipment: Creatable {
         static var allCases: [Equipment.Size] {
             [.extraExtraSmall, .extraSmall, .small, .smallMedium, .medium, .large, .extraLarge, .extraExtraLarge]
         }
+    }
+
+    var equipmentType: EquipmentType {
+        EquipmentType(rawValue: type)!
     }
 
     var equipmentName: String {
@@ -139,6 +162,7 @@ extension Equipment: Creatable {
     static func create(context: NSManagedObjectContext) -> Self {
         let equipment = Self(context: context)
         equipment.id = UUID()
+        equipment.type = EquipmentType.type(for: equipment).rawValue
         return equipment
     }
 }
