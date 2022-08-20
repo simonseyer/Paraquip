@@ -74,7 +74,11 @@ struct ProfileView: View {
                         Button(action: {
                             createEquipmentOperation(type: type)
                         }) {
-                            Label(type.localizedName, image: type.iconName)
+                            Label {
+                                Text(type.localizedName)
+                            } icon: {
+                                type.iconImage
+                            }
                         }
                     }
                 } label: {

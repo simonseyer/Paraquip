@@ -136,7 +136,7 @@ struct EquipmentWeightRow: View {
 
     var body: some View {
         HStack {
-            ListIcon(image: Image(equipment.equipmentType.iconName))
+            ListIcon(image: equipment.equipmentType.iconImage)
                 .padding(.trailing, 6)
             Text(equipment.equipmentName)
             Text(equipment.equipmentSize.rawValue)

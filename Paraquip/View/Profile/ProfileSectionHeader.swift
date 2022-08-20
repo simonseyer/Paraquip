@@ -21,7 +21,7 @@ struct ProfileSectionHeader: View {
 
     var body: some View {
         HStack {
-            Image(equipmentType.iconName)
+            equipmentType.iconImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(.accentColor)

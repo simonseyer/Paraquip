@@ -33,12 +33,12 @@ extension Equipment.EquipmentType {
         }
     }
 
-    var iconName: String {
+    var iconImage: Image {
         switch self {
-        case .paraglider: return "paraglider"
-        case .harness: return "harness"
-        case .reserve: return "reserve"
-        case .gear: return "paraglider" // TODO: create new icon
+        case .paraglider: return Image("paraglider")
+        case .harness: return Image("harness")
+        case .reserve: return Image("reserve")
+        case .gear: return Image(systemName: "backpack")
         }
     }
 }
