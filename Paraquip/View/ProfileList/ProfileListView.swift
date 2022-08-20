@@ -24,9 +24,7 @@ struct ProfileListView: View {
                     NavigationLink {
                         ProfileView(profile: profile)
                     } label: {
-
                         Text("\(Image(systemName: profile.profileIcon.systemName)) \(profile.profileName)")
-                            .padding(EdgeInsets(top: 24, leading: 8, bottom: 24, trailing: 8))
                     }
                     .padding([.top, .bottom])
                     .swipeActions {

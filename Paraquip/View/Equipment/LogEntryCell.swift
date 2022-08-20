@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-fileprivate let cellPadding = EdgeInsets(top: 13, leading: 36, bottom: 13, trailing: 0)
+fileprivate let cellPadding = EdgeInsets(top: 10, leading: 36, bottom: 10, trailing: 0)
 
 struct NextCheckCell: View {
 

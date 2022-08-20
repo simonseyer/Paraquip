@@ -218,7 +218,6 @@ struct EditEquipmentView: View {
                             }
                         }
                         .foregroundColor(.primary)
-                        .padding([.top, .bottom], 6)
                     }
 
                     Button(action: { showingManualPicker = true }) {
@@ -233,7 +232,6 @@ struct EditEquipmentView: View {
                             }
                         }
                         .foregroundColor(.primary)
-                        .padding([.top, .bottom], 6)
                     }
                 }
             }

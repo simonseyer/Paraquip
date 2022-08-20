@@ -33,7 +33,6 @@ struct EquipmentRow: View {
                 equipment.checkUrgency.icon
                     .foregroundColor(equipment.checkUrgency.color)
             }
-            .padding([.top, .bottom], 25)
         }
     }
 }
