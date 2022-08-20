@@ -12,17 +12,17 @@ struct CheckCycleRow: View {
     @Binding var checkCycle: Double
 
     var body: some View {
-        GeometryReader { metrics in
+        HStack {
+            Slider(value: $checkCycle, in: 0...36, step: 1) {
+                EmptyView()
+            }
             HStack {
-                Slider(value: $checkCycle, in: 0...36, step: 1) {
-                    EmptyView()
-                }
-                .frame(width: metrics.size.width * 0.65)
                 Spacer()
                 Text(checkCycle > 0 ? "\(Int(checkCycle)) months" : "Off")
                     .font(.body.monospacedDigit())
                     .foregroundColor(checkCycle > 0 ? .primary : Color(UIColor.systemGray))
             }
+            .frame(width: 100)
         }
     }
 }
