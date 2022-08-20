@@ -20,7 +20,7 @@ extension NumberFormatter {
 
 extension Locale {
     var weightUnit: UnitMass {
-        usesMetricSystem ? .kilograms : .pounds
+        measurementSystem == .metric ? .kilograms : .pounds
     }
 }
 
