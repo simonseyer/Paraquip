@@ -13,11 +13,11 @@ struct IconSelectionView: View {
     let isSelected: Bool
 
     var body: some View {
-        Image(icon.rawValue)
+        Image(systemName: icon.systemName)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(12)
-            .frame(width: 50, height: 50)
+            .frame(width: 55, height: 55)
             .background(
                 isSelected ? Color.accentColor :
                     Color(UIColor.systemGray5)
