@@ -38,7 +38,7 @@ extension Equipment.EquipmentType {
         case .paraglider: return Image("paraglider")
         case .harness: return Image("harness")
         case .reserve: return Image("reserve")
-        case .gear: return Image(systemName: "backpack")
+        case .gear: return Image(systemName: "backpack.fill")
         }
     }
 }
