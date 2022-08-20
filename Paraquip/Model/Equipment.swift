@@ -9,10 +9,14 @@ import Foundation
 import CoreData
 
 extension Equipment: Creatable {
-    enum EquipmentType: Int16 {
+    enum EquipmentType: Int16, CaseIterable, Identifiable {
         case paraglider = 1
         case harness = 2
         case reserve = 3
+
+        var id: Int16 {
+            rawValue
+        }
 
         static func type(for equipment: Equipment) -> Self {
             switch equipment {
@@ -163,6 +167,21 @@ extension Equipment: Creatable {
         let equipment = Self(context: context)
         equipment.id = UUID()
         equipment.type = EquipmentType.type(for: equipment).rawValue
+        return equipment
+    }
+
+    static func create(type: EquipmentType, context: NSManagedObjectContext) -> Equipment {
+        let classType: Equipment.Type = {
+            switch type {
+            case .paraglider: return Paraglider.self
+            case .harness: return Harness.self
+            case .reserve: return Reserve.self
+            case .gear: return Gear.self
+            }
+        }()
+        let equipment = classType.init(context: context)
+        equipment.id = UUID()
+        equipment.type = type.rawValue
         return equipment
     }
 }
