@@ -59,7 +59,6 @@ extension NSPersistentContainer {
         do {
             let equipment = Reserve.create(context: context)
             equipment.brand = "Nova"
-            equipment.brandId = "nova"
             equipment.name = "Beamer 3 light"
             equipment.checkCycle = 3
             equipment.purchaseLog = LogEntry.create(context: context,
@@ -77,7 +76,6 @@ extension NSPersistentContainer {
         do {
             let equipment = Reserve.create(context: context)
             equipment.brand = "Ozone"
-            equipment.brandId = "ozone"
             equipment.name = "Angel SQ"
             equipment.checkCycle = 3
             equipment.purchaseLog = LogEntry.create(context: context,
@@ -98,12 +96,11 @@ extension NSPersistentContainer {
         do {
             let equipment = Harness.create(context: context)
             equipment.brand = "Woody Valley"
-            equipment.brandId = "woody-valley"
             equipment.name = "Wani Light 2"
             equipment.checkCycle = 12
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
-            equipment.equipmentSize = .medium
+            equipment.equipmentSize = "M"
             equipment.weight = 2.75
             profile.addToEquipment(equipment)
 
@@ -114,9 +111,8 @@ extension NSPersistentContainer {
         do {
             let equipment = Paraglider.create(context: context)
             equipment.brand = "Gin"
-            equipment.brandId = "gin"
             equipment.name = "Explorer 2"
-            equipment.equipmentSize = .small
+            equipment.equipmentSize = "20"
             equipment.checkCycle = 12
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
@@ -139,11 +135,10 @@ extension NSPersistentContainer {
         do {
             let equipment = Gear.create(context: context)
             equipment.brand = "Woody Valley"
-            equipment.brandId = "woody-valley"
             equipment.name = "Rucksack Light"
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
-            equipment.equipmentSize = .medium
+            equipment.equipmentSize = "M"
             equipment.weight = 1.05
             profile.addToEquipment(equipment)
         }

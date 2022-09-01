@@ -11,10 +11,10 @@ import SwiftUI
 extension Equipment {
 
     var icon: UIImage? {
-        guard case .known(_, let logo) = equipmentBrand else {
+        guard Self.brandIdentifier.contains(brandName.slugified()) else {
             return nil
         }
-        return UIImage(named: logo)
+        return UIImage(named: brandName.slugified())
     }
 }
 

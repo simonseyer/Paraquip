@@ -105,34 +105,17 @@ struct EditEquipmentView: View {
     var body: some View {
         Form {
             Section(header: Text("")) {
-                Picker(selection: $equipment.equipmentBrand, label: Text("Brand")) {
-                    ForEach(Brand.allCases) { brand in
-                        BrandRow(brand: brand)
-                            .tag(brand)
-                    }
-                }
-                if case .custom = equipment.equipmentBrand {
-                    HStack {
-                        Text("Custom brand")
-                        Spacer()
-                        TextField("", text: $equipment.brandName)
-                            .multilineTextAlignment(.trailing)
-                            .focused($focusedField, equals: .customBrand)
-                    }
-                }
+                AutocompletingTextField("Brand", text: $equipment.brandName, completions: Equipment.brandSuggestions)
                 HStack {
                     Text("Name")
                     Spacer()
                     TextField("", text: $equipment.equipmentName)
                         .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
                         .focused($focusedField, equals: .name)
                 }
-                Picker(selection: $equipment.equipmentSize, label: Text("Size")) {
-                    ForEach(Equipment.Size.allCases) { size in
-                        Text(size.rawValue)
-                            .tag(size)
-                    }
-                }
+                AutocompletingTextField("Size", text: $equipment.equipmentSize, completions: Equipment.sizeSuggestions)
+                    .textInputAutocapitalization(.characters)
                 HStack {
                     Text("Weight")
                     Spacer()
@@ -280,7 +263,7 @@ struct EditEquipmentView: View {
                     try! managedObjectContext.save()
                     dismiss()
                 }
-                .disabled(equipment.equipmentBrand == .none || equipment.equipmentName.isEmpty)
+                .disabled(equipment.brandName.isEmpty || equipment.equipmentName.isEmpty)
             }
         }
         .sheet(item: $editLogEntryOperation) { operation in

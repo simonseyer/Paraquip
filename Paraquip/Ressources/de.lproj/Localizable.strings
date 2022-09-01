@@ -54,7 +54,7 @@
 "%lld months" = "%lld Monate";
 "Last check" = "Letzter Check";
 "Custom brand" = "Markennamen";
-"Custom" = "Andere";
+"Custom" = "Andere Marke";
 "None" = "Auswählen";
 "Purchase" = "Kauf";
 "Next steps" = "Nächste Schritte";
@@ -68,6 +68,7 @@
 "Clear" = "Zurücksetzen";
 "Log" = "Eintragen";
 "Check" = "Check";
+"None" = "Keine";
 
 // Profile Weight View
 "Weight Check" = "Gewichtsrechner";

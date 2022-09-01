@@ -43,11 +43,10 @@ struct EquipmentHeaderView<TagView: View>: View {
 struct EquipmentHeaderView_Previews: PreviewProvider {
 
     static var previews: some View {
-
-            ForEach(Brand.allCases) { brand in
+        ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
                 EquipmentHeaderView(
-                    brandName: brand.name,
-                    icon: UIImage(named: brand.id)) {
+                    brandName: brand,
+                    icon: UIImage(named: brand.slugified())) {
                         HStack {
                             PillLabel("Harness")
                             PillLabel("Size M")
