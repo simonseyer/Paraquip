@@ -50,8 +50,18 @@ struct AutocompletingTextField: View {
                     .autocorrectionDisabled()
                     .focused($focused)
             }
+            if focused {
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(completions, id: \.hashValue) { completion in
+                            Button(action:  { text = completion }) {
+                                Text(completion)
+                            }.buttonStyle(.borderedProminent)
+                        }
+                    }
+                }
+            }
         }
-        .frame(height: focused ? 100 : 50)
     }
 }
 
