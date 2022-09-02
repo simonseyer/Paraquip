@@ -53,8 +53,11 @@ struct AutocompletingTextField: View {
             if focused {
                 ScrollView(.horizontal) {
                     HStack {
-                        ForEach(completions, id: \.hashValue) { completion in
-                            Button(action:  { text = completion }) {
+                        ForEach(filteredCompletions, id: \.hashValue) { completion in
+                            Button(action:  {
+                                text = completion
+                                focused = false
+                            }) {
                                 Text(completion)
                             }.buttonStyle(.borderedProminent)
                         }
