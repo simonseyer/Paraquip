@@ -19,6 +19,7 @@ struct EquipmentView: View {
     @State private var createLogEntryOperation: Operation<LogEntry>?
     @State private var deleteLogEntry: LogEntry?
     @State private var isDeletingLogEntry = false
+    @State private var isDeletingManual = false
     @State private var previewedManual: URL? = nil
     @State private var showingManualPicker = false
 
@@ -91,12 +92,12 @@ struct EquipmentView: View {
                     }
                     .swipeActions {
                         if equipment.manualAttachment != nil {
-                            Button(role: .destructive) {
-                                equipment.manualAttachment = nil
-                                try? managedObjectContext.save()
+                            Button {
+                                isDeletingManual = true
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
+                            .tint(.red)
                         }
                     }
                     .labelStyle(.titleOnly)
@@ -139,6 +140,13 @@ struct EquipmentView: View {
                     managedObjectContext.delete(logEntry)
                     try! managedObjectContext.save()
                 }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .confirmationDialog(Text("Delete manual"), isPresented: $isDeletingManual) {
+            Button("Delete", role: .destructive) {
+                equipment.manualAttachment = nil
+                try? managedObjectContext.save()
             }
             Button("Cancel", role: .cancel) {}
         }
