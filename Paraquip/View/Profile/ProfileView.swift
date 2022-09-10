@@ -21,15 +21,27 @@ struct ProfileView: View {
 
     init(profile: Profile) {
         self.profile = profile
-        _equipment = SectionedFetchRequest(
-            sectionIdentifier: \Equipment.type,
-            sortDescriptors: [
-                SortDescriptor(\Equipment.type),
-                SortDescriptor(\.brand),
-                SortDescriptor(\.name)
-            ],
-            predicate: NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
-        )
+        if ProcessInfo.isPreview {
+            _equipment = SectionedFetchRequest(
+                entity: NSEntityDescription.entity(forEntityName: "Equipment", in: CoreData.previewContext)!,
+                sectionIdentifier: \Equipment.type,
+                sortDescriptors: [
+                    NSSortDescriptor(key: "type", ascending: true),
+                    NSSortDescriptor(key: "brand", ascending: true),
+                    NSSortDescriptor(key: "name", ascending: true)
+                ]
+            )
+        } else {
+            _equipment = SectionedFetchRequest(
+                sectionIdentifier: \Equipment.type,
+                sortDescriptors: [
+                    SortDescriptor(\Equipment.type),
+                    SortDescriptor(\.brand),
+                    SortDescriptor(\.name)
+                ],
+                predicate: NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
+            )
+        }
     }
 
     var body: some View {

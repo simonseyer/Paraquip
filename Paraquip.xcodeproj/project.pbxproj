@@ -71,6 +71,7 @@
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEBE6C228B55D8900D46470 /* Slugify.swift */; };
 		0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CA271C268900407599 /* ProfileEmptyView.swift */; };
+		F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +169,7 @@
 		0DEE05CA271C268900407599 /* ProfileEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyView.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
+		F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +299,7 @@
 				0D2B2D142646A04D009873CE /* EquipmentRow.swift */,
 				0DEE05CA271C268900407599 /* ProfileEmptyView.swift */,
 				0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */,
+				F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -612,6 +615,7 @@
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */,
+				F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
