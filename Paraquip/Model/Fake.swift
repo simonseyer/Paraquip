@@ -142,6 +142,12 @@ extension NSPersistentContainer {
             equipment.weight = 1.05
             profile.addToEquipment(equipment)
         }
+        
+        let profile2 = Profile.create(context: context)
+        profile2.name = NSLocalizedString("Dune Flying", comment: "")
+        profile2.pilotWeight = 70
+        profile2.additionalWeight = 10
+        profile2.profileIcon = .beach
 
         try! context.save()
 
