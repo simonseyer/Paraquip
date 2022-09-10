@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AutocompletingTextField: View {
 
-    let label: String
+    let label: LocalizedStringKey
     @Binding var text: String
     let completions: [String]
 
@@ -31,7 +31,7 @@ struct AutocompletingTextField: View {
         completionSlugs.contains(text.slugified())
     }
 
-    init(_ label: String, text: Binding<String>, completions: [String]) {
+    init(_ label: LocalizedStringKey, text: Binding<String>, completions: [String]) {
         self.label = label
         self._text = text
         self.completions = completions
