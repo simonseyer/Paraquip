@@ -21,6 +21,9 @@ struct SelectableText<T: StringProtocol>: View {
                             leading: 14,
                             bottom: 5,
                             trailing: 14))
+        .alignmentGuide(.listRowSeparatorLeading) {
+            $0[.leading]
+        }
         .buttonStyle(.plain)
         .background(Color(UIColor.systemGray6))
         .cornerRadius(6)

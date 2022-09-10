@@ -71,6 +71,7 @@
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEBE6C228B55D8900D46470 /* Slugify.swift */; };
 		0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CA271C268900407599 /* ProfileEmptyView.swift */; };
+		F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F409B09128CC82EA00BD8E05 /* ListIcon.swift */; };
 		F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -169,6 +170,7 @@
 		0DEE05CA271C268900407599 /* ProfileEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyView.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
+		F409B09128CC82EA00BD8E05 /* ListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIcon.swift; sourceTree = "<group>"; };
 		F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -411,6 +413,7 @@
 				0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */,
 				0D919AEB2651220B005AB7A7 /* SelectableText.swift */,
 				0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */,
+				F409B09128CC82EA00BD8E05 /* ListIcon.swift */,
 			);
 			path = NotificationSettings;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 			files = (
 				0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */,
 				0D135B692840013700FEB06F /* PDFPreviewView.swift in Sources */,
+				F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */,
 				0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */,
 				0D6E9C6F281D9C6A00EC585C /* RoundedCorner.swift in Sources */,
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,

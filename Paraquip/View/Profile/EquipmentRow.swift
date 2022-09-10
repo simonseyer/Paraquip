@@ -25,7 +25,7 @@ struct EquipmentRow: View {
                 }
             }
             .frame(width: 70, height: 50, alignment: .center)
-            .padding(.trailing, 12)
+            .padding(.trailing, 8)
 
             HStack {
                 Text(equipment.equipmentName)

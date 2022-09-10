@@ -205,7 +205,6 @@ struct EditEquipmentView: View {
                                 }
                             }
                             .foregroundColor(.primary)
-                            .padding([.top, .bottom], 6)
                         }
                     }
 

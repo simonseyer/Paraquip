@@ -24,9 +24,17 @@ struct ProfileListView: View {
                     NavigationLink {
                         ProfileView(profile: profile)
                     } label: {
-                        Text("\(Image(systemName: profile.profileIcon.systemName)) \(profile.profileName)")
+                        HStack {
+                            Image(systemName: profile.profileIcon.systemName)
+                                .resizable()
+                                .fontWeight(.medium)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 26, height: 26)
+                                .padding(.trailing, 8)
+                            Text(profile.profileName)
+                        }
                     }
-                    .padding([.top, .bottom])
+                    .padding([.top, .bottom], 10)
                     .swipeActions {
                         Button {
                             editProfileOperation = Operation(editing: profile,

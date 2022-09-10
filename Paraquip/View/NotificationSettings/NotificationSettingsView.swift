@@ -42,34 +42,27 @@ struct NotificationSettingsView: View {
                         ) { newConfig in
                             notificationService.update(notificationConfig: newConfig)
                         }
-                        .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
                     }
-                    .onDelete(perform: { indexSet in
+                    .onDelete { indexSet in
                         notificationService.removeNotificationConfigs(atOffsets: indexSet)
                         if notificationService.state.configuration.isEmpty {
                             withAnimation {
                                 editMode = .inactive
                             }
                         }
-                    })
+                    }
                     Button(action: {
                         withAnimation {
                             notificationService.addNotificationConfig()
                         }
                     }) {
                         HStack {
-                            ZStack {
-                                RoundedRectangle(cornerSize: CGSize(width: 6, height: 6))
-                                    .foregroundColor(Color(UIColor.systemGray2))
-                                    .frame(width: 30, height: 30)
-                                Image(systemName: "plus")
-                                    .foregroundColor(Color.white)
-                                    .font(.system(size: 18).bold())
-                            }
+                            ListIcon(image: Image(systemName: "plus"))
+                                .padding(.trailing, 8)
 
                             Text("Add notification")
-                                .padding([.leading], 5)
                                 .disabled(editMode == .active)
+                                .fontWeight(.medium)
                         }
                     }
                 }

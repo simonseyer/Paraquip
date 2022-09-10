@@ -80,6 +80,7 @@ struct LogEntryView: View {
                     }
                 }
             }
+            .fontWeight(.medium)
         }
         .navigationTitle(logEntry.isPurchase ? "Purchase" : "Check")
         .toolbar {

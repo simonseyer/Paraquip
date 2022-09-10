@@ -41,6 +41,7 @@ struct NotificationEntryView: View {
     var body: some View {
         HStack {
             ListIcon(image: Image(systemName: "bell.fill"))
+                .padding(.trailing, 8)
             ZStack {
                 PickerOverlay(
                     options: $multiplierOptions,
@@ -116,24 +117,5 @@ struct NotificationEntryView_Previews: PreviewProvider {
         )
         .previewLayout(.fixed(width: 350, height: 60))
         .environment(\.locale, .init(identifier: "de"))
-    }
-}
-
-struct ListIcon: View {
-
-    let image: Image
-
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerSize: CGSize(width: 6, height: 6))
-                .foregroundColor(Color.accentColor)
-                .frame(width: 30, height: 30)
-            image
-                .resizable()
-                .scaledToFit()
-                .foregroundColor(Color.white)
-                .font(.system(size: 15))
-                .frame(width: 16, height: 16)
-        }
     }
 }
