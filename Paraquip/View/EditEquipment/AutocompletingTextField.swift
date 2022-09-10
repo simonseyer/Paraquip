@@ -63,6 +63,7 @@ struct AutocompletingTextField: View {
                         }
                     }
                 }
+                .frame(minHeight: 35)
             }
         }
     }
