@@ -21,6 +21,8 @@
 // Profile List View
 "All Sets" = "Alle Sets";
 "Delete" = "Löschen";
+"Delete set" = "Set löschen";
+"Delete with equipment" = "Mit Ausrüstung löschen";
 "set_footer" = "Organsiere deine Ausrüstung in Sets, z.B. zum Strecken- oder Dünen-Fliegen.";
 
 // Edit Profile View

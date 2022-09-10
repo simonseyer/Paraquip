@@ -14,6 +14,8 @@ struct ProfileListView: View {
     private var profiles: FetchedResults<Profile>
 
     @State private var editProfileOperation: Operation<Profile>?
+    @State private var isDeletingProfile = false
+    @State private var deleteProfile: Profile?
 
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -44,14 +46,13 @@ struct ProfileListView: View {
                         }
                         .tint(.blue)
 
-                        Button(role: .destructive) {
-                            withAnimation {
-                                managedObjectContext.delete(profile)
-                                try! managedObjectContext.save()
-                            }
+                        Button {
+                            deleteProfile = profile
+                            isDeletingProfile = true
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
+                        .tint(.red)
                     }
                     .labelStyle(.titleOnly)
                 }
@@ -81,6 +82,24 @@ struct ProfileListView: View {
                         try? managedObjectContext.save()
                     }
             }
+        }
+        .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
+            Button("Delete", role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(profile)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Delete with equipment", role: .destructive) {
+                withAnimation {
+                    profile.allEquipment.forEach {
+                        managedObjectContext.delete($0)
+                    }
+                    managedObjectContext.delete(profile)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .interactiveDismissDisabled(true)
         .toolbar {
