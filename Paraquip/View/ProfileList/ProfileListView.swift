@@ -84,13 +84,13 @@ struct ProfileListView: View {
             }
         }
         .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
-            Button("Delete", role: .destructive) {
+            Button("Delete set", role: .destructive) {
                 withAnimation {
                     managedObjectContext.delete(profile)
                     try! managedObjectContext.save()
                 }
             }
-            Button("Delete with equipment", role: .destructive) {
+            Button("Delete set & equipment", role: .destructive) {
                 withAnimation {
                     profile.allEquipment.forEach {
                         managedObjectContext.delete($0)
