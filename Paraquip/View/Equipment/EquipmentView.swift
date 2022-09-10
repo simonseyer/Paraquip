@@ -16,7 +16,6 @@ struct EquipmentView: View {
     @Environment(\.locale) var locale: Locale
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
-    @State private var createLogEntryOperation: Operation<LogEntry>?
     @State private var deleteLogEntry: LogEntry?
     @State private var isDeletingLogEntry = false
     @State private var isDeletingManual = false
@@ -57,7 +56,7 @@ struct EquipmentView: View {
                             NextCheckCell(urgency: equipment.checkUrgency) {
                                 let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
                                 operation.object(for: equipment).addToCheckLog(operation.object)
-                                createLogEntryOperation = operation
+                                editLogEntryOperation = operation
                             }
                         }
                         ForEach(checkLog) { logEntry in
@@ -108,16 +107,7 @@ struct EquipmentView: View {
         .navigationTitle(equipment.equipmentName)
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
-                LogEntryView(logEntry: operation.object, mode: .edit)
-                    .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
-            }
-        }
-        .sheet(item: $createLogEntryOperation) { operation in
-            NavigationView {
-                LogEntryView(logEntry: operation.object, mode: .create)
+                LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
                     .onDisappear {
                         try? managedObjectContext.save()
