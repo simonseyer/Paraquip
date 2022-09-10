@@ -73,10 +73,11 @@ struct EditEquipmentView: View {
     }()
 
     private var title: Text {
+        let type = NSLocalizedString(equipment.equipmentType.localizedNameString, comment: "")
         if !equipment.brandName.isEmpty {
-            return Text("\(equipment.brandName) \(NSLocalizedString(equipment.localizedType, comment: ""))")
+            return Text("\(equipment.brandName) \(type)")
         } else {
-            return Text("\(NSLocalizedString("New", comment: "")) \(NSLocalizedString(equipment.localizedType, comment: ""))")
+            return Text(type)
         }
     }
 
@@ -104,34 +105,17 @@ struct EditEquipmentView: View {
     var body: some View {
         Form {
             Section(header: Text("")) {
-                Picker(selection: $equipment.equipmentBrand, label: Text("Brand")) {
-                    ForEach(Brand.allCases) { brand in
-                        BrandRow(brand: brand)
-                            .tag(brand)
-                    }
-                }
-                if case .custom = equipment.equipmentBrand {
-                    HStack {
-                        Text("Custom brand")
-                        Spacer()
-                        TextField("", text: $equipment.brandName)
-                            .multilineTextAlignment(.trailing)
-                            .focused($focusedField, equals: .customBrand)
-                    }
-                }
+                AutocompletingTextField("Brand", text: $equipment.brandName, completions: Equipment.brandSuggestions)
                 HStack {
                     Text("Name")
                     Spacer()
                     TextField("", text: $equipment.equipmentName)
                         .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
                         .focused($focusedField, equals: .name)
                 }
-                Picker(selection: $equipment.equipmentSize, label: Text("Size")) {
-                    ForEach(Equipment.Size.allCases) { size in
-                        Text(size.rawValue)
-                            .tag(size)
-                    }
-                }
+                AutocompletingTextField("Size", text: $equipment.equipmentSize, completions: Equipment.sizeSuggestions)
+                    .textInputAutocapitalization(.characters)
                 HStack {
                     Text("Weight")
                     Spacer()
@@ -192,32 +176,37 @@ struct EditEquipmentView: View {
                     }
                 }
             }
-            Section(header: Text("Check cycle")) {
-                CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
+            if equipment.isCheckable {
+                Section(header: Text("Check cycle")) {
+                    CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
+                }
             }
             if equipment.isInserted {
                 Section(header: Text("Next steps")) {
-                    Button(action: {
-                        if let logEntry = equipment.allChecks.first {
-                            editLogEntryOperation = Operation(editing: logEntry,
-                                                              withParentContext: managedObjectContext)
-                        } else {
-                            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
-                            operation.object(for: equipment).addToCheckLog(operation.object)
-                            createLogEntryOperation = operation
-                        }
-                    }) {
-                        HStack {
-                            FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
-                                .padding(.trailing, 8)
-                            Text("Log last check")
-                            Spacer()
-                            if !equipment.allChecks.isEmpty {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(Color.green)
+                    if equipment.isCheckable {
+                        Button(action: {
+                            if let logEntry = equipment.allChecks.first {
+                                editLogEntryOperation = Operation(editing: logEntry,
+                                                                  withParentContext: managedObjectContext)
+                            } else {
+                                let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                                operation.object(for: equipment).addToCheckLog(operation.object)
+                                createLogEntryOperation = operation
                             }
+                        }) {
+                            HStack {
+                                FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
+                                    .padding(.trailing, 8)
+                                Text("Log last check")
+                                Spacer()
+                                if !equipment.allChecks.isEmpty {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(Color.green)
+                                }
+                            }
+                            .foregroundColor(.primary)
+                            .padding([.top, .bottom], 6)
                         }
-                        .foregroundColor(.primary)
                     }
 
                     Button(action: { showingManualPicker = true }) {
@@ -273,7 +262,7 @@ struct EditEquipmentView: View {
                     try! managedObjectContext.save()
                     dismiss()
                 }
-                .disabled(equipment.equipmentBrand == .none || equipment.equipmentName.isEmpty)
+                .disabled(equipment.brandName.isEmpty || equipment.equipmentName.isEmpty)
             }
         }
         .sheet(item: $editLogEntryOperation) { operation in

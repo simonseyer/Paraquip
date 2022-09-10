@@ -9,10 +9,15 @@ import Foundation
 import CoreData
 
 extension Equipment: Creatable {
-    enum EquipmentType: Int16 {
+    enum EquipmentType: Int16, CaseIterable, Identifiable {
         case paraglider = 1
         case harness = 2
         case reserve = 3
+        case gear = 4
+
+        var id: Int16 {
+            rawValue
+        }
 
         static func type(for equipment: Equipment) -> Self {
             switch equipment {
@@ -22,6 +27,8 @@ extension Equipment: Creatable {
                 return .harness
             case is Reserve:
                 return .reserve
+            case is Gear:
+                return .gear
             default:
                 fatalError("Unknown equipment type: \(Swift.type(of: equipment))")
             }
@@ -35,23 +42,11 @@ extension Equipment: Creatable {
         case never
     }
 
-    enum Size: String, CaseIterable, Identifiable {
-        case none = ""
-        case extraExtraSmall = "XXS"
-        case extraSmall = "XS"
-        case small = "S"
-        case smallMedium = "SM"
-        case medium = "M"
-        case large = "L"
-        case extraLarge = "XL"
-        case extraExtraLarge = "XXL"
+    static var sizeSuggestions = ["XXS", "XS", "S", "SM", "M", "L", "XL", "XXL"] + (20...30).map { "\($0)" }
 
-        var id: String { rawValue }
-        
-        static var allCases: [Equipment.Size] {
-            [.extraExtraSmall, .extraSmall, .small, .smallMedium, .medium, .large, .extraLarge, .extraExtraLarge]
-        }
-    }
+    static var brandSuggestions = ["Advance", "Air G", "Aeros", "Air Cross", "Airdesign", "Axis", "Basisrausch", "BGD", "Charly", "Dudek", "Fly Products", "Gin", "Icaro", "Independence", "ITT", "ITV", "Mac Para", "Neo", "Nervures", "Nirvana", "Niviuk", "Nova", "NZ Aerosports", "Olympus", "Ozone", "Phi", "Pro design", "Sky Country", "Sky Paragliders", "Skyline", "Skywalk", "SOL Paragliders", "Squirrel", "Supair", "Swing", "Trekking Parapentes", "Triple Seven Gliders", "U-Turn", "Up", "Windtech", "Woody Valley"]
+
+    static var brandIdentifier = brandSuggestions.map { $0.slugified() }
 
     var equipmentType: EquipmentType {
         EquipmentType(rawValue: type)!
@@ -62,9 +57,9 @@ extension Equipment: Creatable {
         set { name = newValue }
     }
 
-    var equipmentSize: Equipment.Size {
-        get { Equipment.Size(rawValue: size ?? "") ?? .none }
-        set { size = newValue.rawValue }
+    var equipmentSize: String {
+        get { size ?? "" }
+        set { size = newValue }
     }
 
     var floatingCheckCycle: Double {
@@ -72,11 +67,10 @@ extension Equipment: Creatable {
         set { checkCycle = Int16(newValue) }
     }
 
-    var equipmentBrand: Brand {
-        get { Brand(name: brand, id: brandId) }
-        set {
-            brand = newValue.name
-            brandId = newValue.id
+    var isCheckable: Bool {
+        switch equipmentType {
+        case .paraglider, .harness, .reserve: return true
+        case .gear: return false
         }
     }
 
@@ -163,6 +157,21 @@ extension Equipment: Creatable {
         let equipment = Self(context: context)
         equipment.id = UUID()
         equipment.type = EquipmentType.type(for: equipment).rawValue
+        return equipment
+    }
+
+    static func create(type: EquipmentType, context: NSManagedObjectContext) -> Equipment {
+        let classType: Equipment.Type = {
+            switch type {
+            case .paraglider: return Paraglider.self
+            case .harness: return Harness.self
+            case .reserve: return Reserve.self
+            case .gear: return Gear.self
+            }
+        }()
+        let equipment = classType.init(context: context)
+        equipment.id = UUID()
+        equipment.type = type.rawValue
         return equipment
     }
 }

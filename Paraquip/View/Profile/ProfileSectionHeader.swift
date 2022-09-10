@@ -11,22 +11,6 @@ struct ProfileSectionHeader: View {
     
     let equipmentType: Equipment.EquipmentType
     
-    private var icon: String {
-        switch equipmentType {
-        case .paraglider: return "paraglider"
-        case .harness: return "harness"
-        case .reserve: return "reserve"
-        }
-    }
-    
-    private var title: LocalizedStringKey {
-        switch equipmentType {
-        case .paraglider: return "Paraglider"
-        case .harness: return "Harness"
-        case .reserve: return "Reserve"
-        }
-    }
-    
     init(equipmentType: Equipment.EquipmentType) {
         self.equipmentType = equipmentType
     }
@@ -37,12 +21,12 @@ struct ProfileSectionHeader: View {
 
     var body: some View {
         HStack {
-            Image(icon)
+            equipmentType.iconImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(.accentColor)
                 .frame(width: 20, height: 20)
-            Text(title)
+            Text(equipmentType.localizedName)
         }
     }
 }

@@ -12,6 +12,7 @@
 "Paraglider" = "Gleitschirm";
 "Harness" = "Gurtzeug";
 "Reserve" = "Rettung";
+"Gear" = "Zubehör";
 "Equipment" = "Ausrüstung";
 "Your Equipment" = "Deine Ausrüstung";
 "Notifications" = "Benachrichtungen";
@@ -53,9 +54,8 @@
 "%lld months" = "%lld Monate";
 "Last check" = "Letzter Check";
 "Custom brand" = "Markennamen";
-"Custom" = "Andere";
+"Custom" = "Andere Marke";
 "None" = "Auswählen";
-"New" = "Neuer";
 "Purchase" = "Kauf";
 "Next steps" = "Nächste Schritte";
 "Log last check" = "Letzen Check eintragen";
@@ -68,6 +68,7 @@
 "Clear" = "Zurücksetzen";
 "Log" = "Eintragen";
 "Check" = "Check";
+"None" = "Keine";
 
 // Profile Weight View
 "Weight Check" = "Gewichtsrechner";

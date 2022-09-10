@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21223.11" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName="Attachment" elementID="LogAttachment" syncable="YES" codeGenerationType="class">
         <attribute name="filePath" optional="YES" attributeType="String"/>
         <attribute name="isTemporary" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -24,6 +24,7 @@
         <relationship name="purchaseLog" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="LogEntry" inverseName="equipmentPurchase" inverseEntity="LogEntry"/>
         <relationship name="weightRange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WeightRange" inverseName="equipment" inverseEntity="WeightRange"/>
     </entity>
+    <entity name="Gear" representedClassName="Gear" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <entity name="Harness" representedClassName="Harness" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <entity name="LogEntry" representedClassName="LogEntry" elementID="Check" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
@@ -54,15 +55,4 @@
         <attribute name="min" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" inverseName="weightRange" inverseEntity="Equipment"/>
     </entity>
-    <elements>
-        <element name="Attachment" positionX="-189" positionY="-108" width="128" height="104"/>
-        <element name="Equipment" positionX="-135" positionY="-54" width="128" height="254"/>
-        <element name="Harness" positionX="-247.60888671875" positionY="201.7550659179688" width="128" height="29"/>
-        <element name="LogEntry" positionX="30.0057373046875" positionY="352.1790771484375" width="128" height="104"/>
-        <element name="Manual" positionX="-189" positionY="-108" width="128" height="59"/>
-        <element name="Paraglider" positionX="-63" positionY="-18" width="128" height="29"/>
-        <element name="Profile" positionX="-392.4204711914062" positionY="-269.9826965332031" width="128" height="140"/>
-        <element name="Reserve" positionX="-21.1131591796875" positionY="-227.8502502441406" width="128" height="29"/>
-        <element name="WeightRange" positionX="-189" positionY="-108" width="128" height="74"/>
-    </elements>
 </model>

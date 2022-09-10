@@ -36,7 +36,7 @@ class SnapshotUITests: XCTestCase {
         snapshot("04NotificationsScreen")
 
         app.navigationBars.element(boundBy: 1).buttons.element(boundBy: 1).tap()
-        app.tables.buttons.element(boundBy: 0).tap()
+        app.collectionViews.buttons.element(boundBy: 0).tap()
 
         snapshot("01ProfileScreen")
 
@@ -44,7 +44,7 @@ class SnapshotUITests: XCTestCase {
         snapshot("03ProfileWeightScreen")
 
         app.navigationBars.element(boundBy: 1).buttons.element(boundBy: 0).tap()
-        app.tables.buttons["Explorer 2"].tap()
+        app.collectionViews.buttons["Explorer 2"].tap()
 
         snapshot("02EquipmentScreen")
     }

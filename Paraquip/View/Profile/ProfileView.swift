@@ -70,20 +70,16 @@ struct ProfileView: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    Button(action: {
-                        createEquipmentOperation(type: Paraglider.self)
-                    }) {
-                        Label("Paraglider", image: "paraglider")
-                    }
-                    Button(action: {
-                        createEquipmentOperation(type: Harness.self)
-                    }) {
-                        Label("Harness", image: "harness")
-                    }
-                    Button(action: {
-                        createEquipmentOperation(type: Reserve.self)
-                    }) {
-                        Label("Reserve", image: "reserve")
+                    ForEach(Equipment.EquipmentType.allCases) { type in
+                        Button(action: {
+                            createEquipmentOperation(type: type)
+                        }) {
+                            Label {
+                                Text(type.localizedName)
+                            } icon: {
+                                type.iconImage
+                            }
+                        }
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -114,9 +110,9 @@ struct ProfileView: View {
         }
     }
 
-    private func createEquipmentOperation(type: Equipment.Type) {
+    private func createEquipmentOperation(type: Equipment.EquipmentType) {
         let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
-            type.create(context: context)
+            Equipment.create(type: type, context: context)
         }
         operation.object(for: profile).addToEquipment(operation.object)
         createEquipmentOperation = operation

@@ -11,35 +11,34 @@ import SwiftUI
 extension Equipment {
 
     var icon: UIImage? {
-        guard case .known(_, let logo) = equipmentBrand else {
+        guard Self.brandIdentifier.contains(brandName.slugified()) else {
             return nil
         }
-        return UIImage(named: logo)
+        return UIImage(named: brandName.slugified())
+    }
+}
+
+extension Equipment.EquipmentType {
+    
+    var localizedName: LocalizedStringKey {
+        LocalizedStringKey(localizedNameString)
     }
 
-    var localizedType: String {
+    var localizedNameString: String {
         switch self {
-        case is Paraglider:
-            return "Paraglider"
-        case is Reserve:
-            return "Reserve"
-        case is Harness:
-            return "Harness"
-        default:
-            preconditionFailure("Unknown equipment type")
+        case .paraglider: return "Paraglider"
+        case .harness: return "Harness"
+        case .reserve: return "Reserve"
+        case .gear: return "Gear"
         }
     }
 
-    var typeIconName: String {
+    var iconImage: Image {
         switch self {
-        case is Paraglider:
-            return "paraglider"
-        case is Reserve:
-            return "reserve"
-        case is Harness:
-            return "harness"
-        default:
-            preconditionFailure("Unknown equipment type")
+        case .paraglider: return Image("paraglider")
+        case .harness: return Image("harness")
+        case .reserve: return Image("reserve")
+        case .gear: return Image("gear")
         }
     }
 }
