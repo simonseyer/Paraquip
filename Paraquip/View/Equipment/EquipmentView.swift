@@ -15,7 +15,6 @@ struct EquipmentView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
 
-    @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var editLogEntryOperation: Operation<LogEntry>?
     @State private var createLogEntryOperation: Operation<LogEntry>?
     @State private var previewedManual: URL? = nil
@@ -103,24 +102,7 @@ struct EquipmentView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button("Edit") {
-                    editEquipmentOperation = Operation(editing: equipment,
-                                                       withParentContext: managedObjectContext)
-                }
-            }
-        }
         .navigationTitle(equipment.equipmentName)
-        .sheet(item: $editEquipmentOperation) { operation in
-            NavigationView {
-                EditEquipmentView(equipment: operation.object, locale: locale)
-                    .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
-            }
-        }
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
                 LogEntryView(logEntry: operation.object, mode: .edit)

@@ -11,7 +11,9 @@ import CoreData
 struct ProfileView: View {
 
     let profile: Profile?
-    @State private var createEquipmentOperation: Operation<Equipment>?
+    @State private var editEquipmentOperation: Operation<Equipment>?
+    @State private var deleteEquipment: Equipment?
+    @State private var isDeletingEquipment = false
     @State private var showWeightView = false
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
@@ -67,12 +69,23 @@ struct ProfileView: View {
                             } label: {
                                 EquipmentRow(equipment: equipment)
                             }
-                        }
-                        .onDelete { indexSet in
-                            for index in indexSet {
-                                managedObjectContext.delete(section[index])
+                            .swipeActions {
+                                Button {
+                                    editEquipmentOperation = Operation(editing: equipment,
+                                                                       withParentContext: managedObjectContext)
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                                
+                                Button {
+                                    deleteEquipment = equipment
+                                    isDeletingEquipment = true
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                                .tint(.red)
                             }
-                            try! managedObjectContext.save()
                         }
                     } header: {
                         ProfileSectionHeader(equipmentType: section.id)
@@ -110,7 +123,7 @@ struct ProfileView: View {
                 }
             }
         }
-        .sheet(item: $createEquipmentOperation) { operation in
+        .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
                 EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
@@ -118,6 +131,15 @@ struct ProfileView: View {
                         try? managedObjectContext.save()
                     }
             }
+        }
+        .confirmationDialog(Text("Delete equipment"), isPresented: $isDeletingEquipment, presenting: deleteEquipment) { equipment in
+            Button("Delete", role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(equipment)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .interactiveDismissDisabled(true)
         .sheet(isPresented: $showWeightView) {
@@ -143,7 +165,7 @@ struct ProfileView: View {
         if let profile {
             operation.object(for: profile).addToEquipment(operation.object)
         }
-        createEquipmentOperation = operation
+        editEquipmentOperation = operation
     }
 }
 
