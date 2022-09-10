@@ -45,25 +45,38 @@ struct AutocompletingTextField: View {
                 Spacer()
                 TextField("", text: $text)
                     .foregroundColor(matched ? .accentColor : .primary)
-                    .font(matched ? .body.bold() : .body)
+                    .bold(matched)
                     .multilineTextAlignment(.trailing)
                     .autocorrectionDisabled()
                     .focused($focused)
             }
             if focused {
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(filteredCompletions, id: \.hashValue) { completion in
-                            Button(action:  {
-                                text = completion
-                                focused = false
-                            }) {
-                                Text(completion)
-                            }.buttonStyle(.borderedProminent)
+                Group {
+                    if filteredCompletions.isEmpty {
+                        Text("No completions")
+                            .foregroundColor(.secondary)
+                            .font(.caption)
+                            .italic()
+                    } else {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(filteredCompletions, id: \.hashValue) { completion in
+                                    Button(action:  {
+                                        text = completion
+                                        focused = false
+                                    }) {
+                                        Text(completion)
+                                    }.buttonStyle(.borderedProminent)
+                                }
+                                
+                            }
+                            .padding(8)
                         }
                     }
                 }
-                .frame(minHeight: 35)
+                .frame(maxWidth: .infinity, minHeight: 51)
+                .background(Color(UIColor.systemGray6))
+                .cornerRadius(6)
             }
         }
     }

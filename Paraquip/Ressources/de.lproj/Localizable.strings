@@ -75,6 +75,7 @@
 "Log" = "Eintragen";
 "Check" = "Check";
 "None" = "Keine";
+"No completions" = "Keine Vorschläge";
 
 // Profile Weight View
 "Weight Check" = "Gewichtsrechner";
