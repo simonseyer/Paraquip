@@ -139,6 +139,12 @@ struct ProfileView: View {
                     try! managedObjectContext.save()
                 }
             }
+            Button("Remove from set") {
+                withAnimation {
+                    profile?.removeFromEquipment(equipment)
+                    try! managedObjectContext.save()
+                }
+            }
             Button("Cancel", role: .cancel) {}
         }
         .interactiveDismissDisabled(true)
