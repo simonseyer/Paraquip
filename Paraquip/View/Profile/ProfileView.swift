@@ -10,7 +10,7 @@ import CoreData
 
 struct ProfileView: View {
 
-    @ObservedObject var profile: Profile
+    let profile: Profile?
     @State private var createEquipmentOperation: Operation<Equipment>?
     @State private var showWeightView = false
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -18,8 +18,12 @@ struct ProfileView: View {
 
     @SectionedFetchRequest
     private var equipment: SectionedFetchResults<Int16, Equipment>
+    
+    private var title: String {
+        profile?.profileName ?? NSLocalizedString( "All Equipment", comment: "")
+    }
 
-    init(profile: Profile) {
+    init(profile: Profile?) {
         self.profile = profile
         if ProcessInfo.isPreview {
             _equipment = SectionedFetchRequest(
@@ -32,6 +36,12 @@ struct ProfileView: View {
                 ]
             )
         } else {
+            let predicate: NSPredicate?
+            if let profile {
+                predicate = NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
+            } else {
+                predicate = nil
+            }
             _equipment = SectionedFetchRequest(
                 sectionIdentifier: \Equipment.type,
                 sortDescriptors: [
@@ -39,7 +49,7 @@ struct ProfileView: View {
                     SortDescriptor(\.brand),
                     SortDescriptor(\.name)
                 ],
-                predicate: NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
+                predicate: predicate
             )
         }
     }
@@ -71,13 +81,15 @@ struct ProfileView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(profile.profileName)
+        .navigationTitle(title)
         .toolbar {
             ToolbarItem(placement: .automatic) {
-                Button {
-                    showWeightView = true
-                } label: {
-                    Image(systemName: "scalemass.fill")
+                if profile != nil {
+                    Button {
+                        showWeightView = true
+                    } label: {
+                        Image(systemName: "scalemass.fill")
+                    }
                 }
             }
             ToolbarItem(placement: .primaryAction) {
@@ -110,14 +122,16 @@ struct ProfileView: View {
         .interactiveDismissDisabled(true)
         .sheet(isPresented: $showWeightView) {
             NavigationView {
-                ProfileWeightView(profile: profile)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Close") {
-                                showWeightView = false
+                if let profile {
+                    ProfileWeightView(profile: profile)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Close") {
+                                    showWeightView = false
+                                }
                             }
                         }
-                    }
+                }
             }
         }
     }
@@ -126,7 +140,9 @@ struct ProfileView: View {
         let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
             Equipment.create(type: type, context: context)
         }
-        operation.object(for: profile).addToEquipment(operation.object)
+        if let profile {
+            operation.object(for: profile).addToEquipment(operation.object)
+        }
         createEquipmentOperation = operation
     }
 }
@@ -141,6 +157,10 @@ struct ProfileView_Previews: PreviewProvider {
 
             NavigationView {
                 ProfileView(profile: Profile.create(context: CoreData.previewContext, name: "Empty"))
+            }
+            
+            NavigationView {
+                ProfileView(profile: nil)
             }
         }
         .environment(\.locale, .init(identifier: "de"))

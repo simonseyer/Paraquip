@@ -34,7 +34,7 @@ struct ProfileListView: View {
                             Text(profile.profileName)
                         }
                     }
-                    .padding([.top, .bottom], 10)
+                    .padding([.top, .bottom], 6)
                     .swipeActions {
                         Button {
                             editProfileOperation = Operation(editing: profile,
@@ -54,6 +54,19 @@ struct ProfileListView: View {
                         }
                     }
                     .labelStyle(.titleOnly)
+                }
+                NavigationLink {
+                    ProfileView(profile: nil)
+                } label: {
+                    HStack {
+                        Image(systemName: "tray.full.fill")
+                            .resizable()
+                            .fontWeight(.medium)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
+                            .padding(EdgeInsets(top: 0, leading: 3, bottom: 0, trailing: 11))
+                        Text("All Equipment")
+                    }
                 }
             } footer: {
                 Text("set_footer")
