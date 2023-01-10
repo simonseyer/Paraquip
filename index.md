@@ -11,7 +11,7 @@ So that even for spontaneous paragliding trips the equipment is always ready.
 
 ## Contact
 
-For feedback, questions or issues, please reach me under [paraquip.app@gmail.com](mailto:paraquip.app@gmail.com).
+For feedback, questions or issues, please reach me under [paraquip@comeup.ch](mailto:paraquip@comeup.ch).
 
 ## Privacy policy
 
