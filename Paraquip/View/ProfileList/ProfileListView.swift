@@ -8,12 +8,24 @@
 import SwiftUI
 import CoreData
 
+extension Image {
+    fileprivate func resized() -> some View {
+        self.resizable()
+            .fontWeight(.medium)
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
+            .padding(.trailing, 8)
+    }
+}
+
 struct ProfileListView: View {
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
 
     @State private var editProfileOperation: Operation<Profile>?
+    @State private var isDeletingProfile = false
+    @State private var deleteProfile: Profile?
 
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -25,17 +37,12 @@ struct ProfileListView: View {
                         ProfileView(profile: profile)
                     } label: {
                         HStack {
-                            Image(profile.profileIcon.rawValue)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.accentColor)
-                                .frame(width: 35, height: 35)
-                                .padding(.trailing, 8)
-
+                            Image(systemName: profile.profileIcon.systemName)
+                                .resized()
                             Text(profile.profileName)
                         }
                     }
-                    .padding([.top, .bottom])
+                    .padding([.top, .bottom], 8)
                     .swipeActions {
                         Button {
                             editProfileOperation = Operation(editing: profile,
@@ -45,17 +52,26 @@ struct ProfileListView: View {
                         }
                         .tint(.blue)
 
-                        Button(role: .destructive) {
-                            withAnimation {
-                                managedObjectContext.delete(profile)
-                                try! managedObjectContext.save()
-                            }
+                        Button {
+                            deleteProfile = profile
+                            isDeletingProfile = true
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
+                        .tint(.red)
                     }
                     .labelStyle(.titleOnly)
                 }
+                NavigationLink {
+                    ProfileView(profile: nil)
+                } label: {
+                    HStack {
+                        Image(systemName: "tray.full.fill")
+                            .resized()
+                        Text("All Equipment")
+                    }
+                }
+                .padding([.top, .bottom], 6)
             } footer: {
                 Text("set_footer")
             }
@@ -70,6 +86,24 @@ struct ProfileListView: View {
                     }
             }
         }
+        .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
+            Button("Delete set", role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(profile)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Delete set & equipment", role: .destructive) {
+                withAnimation {
+                    profile.allEquipment.forEach {
+                        managedObjectContext.delete($0)
+                    }
+                    managedObjectContext.delete(profile)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
         .interactiveDismissDisabled(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -80,6 +114,7 @@ struct ProfileListView: View {
                 }
             }
         }
+        .defaultBackground()
     }
 }
 

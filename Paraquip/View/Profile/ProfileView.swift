@@ -10,26 +10,50 @@ import CoreData
 
 struct ProfileView: View {
 
-    @ObservedObject var profile: Profile
-    @State private var createEquipmentOperation: Operation<Equipment>?
+    let profile: Profile?
+    @State private var editEquipmentOperation: Operation<Equipment>?
+    @State private var deleteEquipment: Equipment?
+    @State private var isDeletingEquipment = false
     @State private var showWeightView = false
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
 
     @SectionedFetchRequest
     private var equipment: SectionedFetchResults<Int16, Equipment>
+    
+    private var title: String {
+        profile?.profileName ?? NSLocalizedString( "All Equipment", comment: "")
+    }
 
-    init(profile: Profile) {
+    init(profile: Profile?) {
         self.profile = profile
-        _equipment = SectionedFetchRequest(
-            sectionIdentifier: \Equipment.type,
-            sortDescriptors: [
-                SortDescriptor(\Equipment.type),
-                SortDescriptor(\.brand),
-                SortDescriptor(\.name)
-            ],
-            predicate: NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
-        )
+        if ProcessInfo.isPreview {
+            _equipment = SectionedFetchRequest(
+                entity: NSEntityDescription.entity(forEntityName: "Equipment", in: CoreData.previewContext)!,
+                sectionIdentifier: \Equipment.type,
+                sortDescriptors: [
+                    NSSortDescriptor(key: "type", ascending: true),
+                    NSSortDescriptor(key: "brand", ascending: true),
+                    NSSortDescriptor(key: "name", ascending: true)
+                ]
+            )
+        } else {
+            let predicate: NSPredicate?
+            if let profile {
+                predicate = NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
+            } else {
+                predicate = nil
+            }
+            _equipment = SectionedFetchRequest(
+                sectionIdentifier: \Equipment.type,
+                sortDescriptors: [
+                    SortDescriptor(\Equipment.type),
+                    SortDescriptor(\.brand),
+                    SortDescriptor(\.name)
+                ],
+                predicate: predicate
+            )
+        }
     }
 
     var body: some View {
@@ -45,12 +69,23 @@ struct ProfileView: View {
                             } label: {
                                 EquipmentRow(equipment: equipment)
                             }
-                        }
-                        .onDelete { indexSet in
-                            for index in indexSet {
-                                managedObjectContext.delete(section[index])
+                            .swipeActions {
+                                Button {
+                                    editEquipmentOperation = Operation(editing: equipment,
+                                                                       withParentContext: managedObjectContext)
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                                
+                                Button {
+                                    deleteEquipment = equipment
+                                    isDeletingEquipment = true
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                                .tint(.red)
                             }
-                            try! managedObjectContext.save()
                         }
                     } header: {
                         ProfileSectionHeader(equipmentType: section.id)
@@ -59,13 +94,15 @@ struct ProfileView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(profile.profileName)
+        .navigationTitle(title)
         .toolbar {
             ToolbarItem(placement: .automatic) {
-                Button {
-                    showWeightView = true
-                } label: {
-                    Image(systemName: "scalemass.fill")
+                if profile != nil {
+                    Button {
+                        showWeightView = true
+                    } label: {
+                        Image(systemName: "scalemass.fill")
+                    }
                 }
             }
             ToolbarItem(placement: .primaryAction) {
@@ -86,7 +123,7 @@ struct ProfileView: View {
                 }
             }
         }
-        .sheet(item: $createEquipmentOperation) { operation in
+        .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
                 EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
@@ -95,27 +132,47 @@ struct ProfileView: View {
                     }
             }
         }
+        .confirmationDialog(Text("Delete equipment"), isPresented: $isDeletingEquipment, presenting: deleteEquipment) { equipment in
+            Button("Delete", role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(equipment)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Remove from set") {
+                withAnimation {
+                    profile?.removeFromEquipment(equipment)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
         .interactiveDismissDisabled(true)
         .sheet(isPresented: $showWeightView) {
             NavigationView {
-                ProfileWeightView(profile: profile)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Close") {
-                                showWeightView = false
+                if let profile {
+                    ProfileWeightView(profile: profile)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Close") {
+                                    showWeightView = false
+                                }
                             }
                         }
-                    }
+                }
             }
         }
+        .defaultBackground()
     }
 
     private func createEquipmentOperation(type: Equipment.EquipmentType) {
         let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
             Equipment.create(type: type, context: context)
         }
-        operation.object(for: profile).addToEquipment(operation.object)
-        createEquipmentOperation = operation
+        if let profile {
+            operation.object(for: profile).addToEquipment(operation.object)
+        }
+        editEquipmentOperation = operation
     }
 }
 
@@ -129,6 +186,10 @@ struct ProfileView_Previews: PreviewProvider {
 
             NavigationView {
                 ProfileView(profile: Profile.create(context: CoreData.previewContext, name: "Empty"))
+            }
+            
+            NavigationView {
+                ProfileView(profile: nil)
             }
         }
         .environment(\.locale, .init(identifier: "de"))

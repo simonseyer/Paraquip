@@ -16,10 +16,13 @@
 "Equipment" = "Ausrüstung";
 "Your Equipment" = "Deine Ausrüstung";
 "Notifications" = "Benachrichtungen";
+"All Equipment" = "Gesamte Ausrüstung";
 
 // Profile List View
 "All Sets" = "Alle Sets";
 "Delete" = "Löschen";
+"Delete set" = "Set löschen";
+"Delete set & equipment" = "Set & Ausrüstung löschen";
 "set_footer" = "Organsiere deine Ausrüstung in Sets, z.B. zum Strecken- oder Dünen-Fliegen.";
 
 // Edit Profile View
@@ -29,6 +32,8 @@
 // Profile View
 "Check now" = "Jetzt checken";
 "profile_empty_text" = "Füge mit dem + oben rechts deine Ausrüstung hinzu";
+"Delete equipment" = "Ausrüstung löschen";
+"Remove from set" = "Aus Set entfernen";
 
 // Equipment View
 "Type" = "Typ";
@@ -47,6 +52,8 @@
 "Manual.pdf" = "Anleitung.pdf";
 "No check needed" = "Kein Check nötig";
 "Close" = "Schließen";
+"Delete log entry" = "Check löschen";
+"Delete manual" = "Betriebsanleitung löschen";
 
 // Edit Equipment View
 "Cancel" = "Abbrechen";
@@ -69,6 +76,7 @@
 "Log" = "Eintragen";
 "Check" = "Check";
 "None" = "Keine";
+"No completions" = "Keine Vorschläge";
 
 // Profile Weight View
 "Weight Check" = "Gewichtsrechner";

@@ -9,13 +9,8 @@ import SwiftUI
 import QuickLook
 
 struct LogEntryView: View {
-    enum Mode {
-        case create, edit, inline
-    }
 
     @ObservedObject var logEntry: LogEntry
-    let mode: Mode
-
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.dismiss) private var dismiss
 
@@ -26,9 +21,8 @@ struct LogEntryView: View {
     @FetchRequest
     private var attachments: FetchedResults<Attachment>
 
-    init(logEntry: LogEntry, mode: Mode) {
+    init(logEntry: LogEntry) {
         self.logEntry = logEntry
-        self.mode = mode
         _attachments = FetchRequest<Attachment>(sortDescriptors: [SortDescriptor(\.timestamp)],
                                                    predicate: NSPredicate(format: "%K == %@", #keyPath(Attachment.logEntry), logEntry))
     }
@@ -80,20 +74,17 @@ struct LogEntryView: View {
                     }
                 }
             }
+            .fontWeight(.medium)
         }
         .navigationTitle(logEntry.isPurchase ? "Purchase" : "Check")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                if mode != .inline {
-                    Button("Cancel") { dismiss() }
-                }
+                Button("Cancel") { dismiss() }
             }
             ToolbarItem(placement: .confirmationAction) {
-                if mode != .inline {
-                    Button(mode == .create ? "Log" : "Save") {
-                        try! managedObjectContext.save()
-                        dismiss()
-                    }
+                Button("Save") {
+                    try! managedObjectContext.save()
+                    dismiss()
                 }
             }
         }
@@ -104,6 +95,7 @@ struct LogEntryView: View {
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectFile: addAttachment)
         }
+        .defaultBackground()
     }
 
     private func addAttachment(url: URL) {
@@ -128,11 +120,11 @@ struct LogEntryView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {
-            LogEntryView(logEntry: logEntry1, mode: .edit)
+            LogEntryView(logEntry: logEntry1)
                 .environment(\.managedObjectContext, CoreData.previewContext)
         }
         NavigationView {
-            LogEntryView(logEntry: logEntry2, mode: .create)
+            LogEntryView(logEntry: logEntry2)
                 .environment(\.managedObjectContext, CoreData.previewContext)
         }
     }

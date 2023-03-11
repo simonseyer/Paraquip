@@ -120,7 +120,7 @@ class NotificationService: ObservableObject {
                 fetchRequest.fetchLimit = 1
                 let equipmentModel = try? self?.managedObjectContext.fetch(fetchRequest).first
                 
-                if let equipmentModel = equipmentModel {
+                if let equipmentModel {
                     self?.navigationState = .equipment(equipmentModel)
                 } else {
                     self?.logger.error("Unable to fetch equipment: \(equipment)")
@@ -146,7 +146,7 @@ class NotificationService: ObservableObject {
 
     func enable(completion: @escaping () -> Void)  {
         notifications.requestAuthorization() {[weak self, logger] success, error in
-            if let error = error {
+            if let error {
                 logger.error("Failed to enable notifications: \(error.localizedDescription)")
             }
 
@@ -232,7 +232,7 @@ class NotificationService: ObservableObject {
 
         logger.info("Adding: \(notification)")
         notifications.add(notification: notification) {[logger] error in
-            if let error = error {
+            if let error {
                 logger.error("Failed to add notification \(notification.id): \(error.description)")
             }
         }

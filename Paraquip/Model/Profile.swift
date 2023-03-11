@@ -13,6 +13,18 @@ extension Profile: Creatable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
 
         var id: String { rawValue }
+        var systemName: String {
+            switch self {
+            case .campground: return "tent.fill"
+            case .feather: return "backpack.fill"
+            case .mountain: return "photo.fill"
+            case .beach: return "beach.umbrella.fill"
+            case .cloud: return "cloud.fill"
+            case .hiking: return "figure.hiking"
+            case .trophy: return "trophy.fill"
+            case .wind: return "wind"
+            }
+        }
 
         static var `default`: Icon { .mountain }
     }

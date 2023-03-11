@@ -31,12 +31,13 @@ struct EquipmentHeaderView<TagView: View>: View {
                 tags().padding([.top, .bottom], 10)
             }
             Spacer()
-            if let icon = icon {
+            if let icon {
                 BrandIconView(image: icon, area: 4000, alignment: .trailing)
                     .frame(maxWidth: 130, maxHeight: 80, alignment: .trailing)
             }
         }
         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+        .background(.white)
     }
 }
 

@@ -20,7 +20,7 @@ extension NumberFormatter {
 
 extension Locale {
     var weightUnit: UnitMass {
-        usesMetricSystem ? .kilograms : .pounds
+        measurementSystem == .metric ? .kilograms : .pounds
     }
 }
 
@@ -29,7 +29,13 @@ fileprivate struct LogDateCell: View {
     @ObservedObject var logEntry: LogEntry
 
     var body: some View {
-        Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
+        HStack {
+            if !logEntry.logEntryAttachments.isEmpty {
+                Image(systemName: "paperclip")
+            }
+            Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
+        }
+        .foregroundColor(.secondary)
     }
 }
 
@@ -51,9 +57,7 @@ struct EditEquipmentView: View {
     @Environment(\.locale) var locale: Locale
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
-    @State private var createLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
-    @State private var showingPurchaseView = false
     @State private var weight: String = ""
     @State private var minWeight: String = ""
     @State private var maxWeight: String = ""
@@ -126,27 +130,29 @@ struct EditEquipmentView: View {
                     Text(weightUnitText)
                         .foregroundColor(.secondary)
                 }
-                NavigationLink(isActive: $showingPurchaseView) {
-                    if showingPurchaseView {
-                        let logEntry: LogEntry = {
-                            let logEntry = equipment.purchaseLog ?? LogEntry.create(context: managedObjectContext)
-                            equipment.purchaseLog = logEntry
-                            return logEntry
-                        }()
-                        LogEntryView(logEntry: logEntry, mode: .inline)
-                            .environment(\.managedObjectContext, managedObjectContext)
-                            .toolbar {
-                                Button("Clear", role: .destructive) {
-                                    managedObjectContext.delete(logEntry)
-                                    showingPurchaseView = false
-                                }
-                            }
+                Button(action: {
+                    if let logEntry = equipment.purchaseLog {
+                        editLogEntryOperation = Operation(editing: logEntry,
+                                                          withParentContext: managedObjectContext)
+                    } else {
+                        let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                        operation.object(for: equipment).purchaseLog = operation.object
+                        editLogEntryOperation = operation
                     }
-                } label: {
-                    Text("Purchase")
-                    Spacer()
-                    if let purchaseLog = equipment.purchaseLog {
-                        LogDateCell(logEntry: purchaseLog)
+                }) {
+                    LabeledContent("Purchase") {
+                        if let purchaseLog = equipment.purchaseLog {
+                            LogDateCell(logEntry: purchaseLog)
+                        }
+                    }.foregroundColor(.primary)
+                }
+                .swipeActions {
+                    if equipment.purchaseLog != nil {
+                        Button {
+                            equipment.purchaseLog = nil
+                        } label: {
+                            Label("Clear", systemImage: "clear")
+                        }
                     }
                 }
             }
@@ -191,7 +197,7 @@ struct EditEquipmentView: View {
                             } else {
                                 let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
                                 operation.object(for: equipment).addToCheckLog(operation.object)
-                                createLogEntryOperation = operation
+                                editLogEntryOperation = operation
                             }
                         }) {
                             HStack {
@@ -205,7 +211,6 @@ struct EditEquipmentView: View {
                                 }
                             }
                             .foregroundColor(.primary)
-                            .padding([.top, .bottom], 6)
                         }
                     }
 
@@ -221,7 +226,6 @@ struct EditEquipmentView: View {
                             }
                         }
                         .foregroundColor(.primary)
-                        .padding([.top, .bottom], 6)
                     }
                 }
             }
@@ -249,7 +253,7 @@ struct EditEquipmentView: View {
 
                     let minWeight = weightRangeFormatter.value(from: minWeight)
                     let maxWeight = weightRangeFormatter.value(from: maxWeight)
-                    if let maxWeight = maxWeight {
+                    if let maxWeight {
                         let sanitizedMinWeight = minWeight ?? 0
                         let sanitizedMaxWeight = max(maxWeight, sanitizedMinWeight)
 
@@ -268,13 +272,7 @@ struct EditEquipmentView: View {
         }
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
-                LogEntryView(logEntry: operation.object, mode: .edit)
-                    .environment(\.managedObjectContext, operation.childContext)
-            }
-        }
-        .sheet(item: $createLogEntryOperation) { operation in
-            NavigationView {
-                LogEntryView(logEntry: operation.object, mode: .create)
+                LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }
@@ -285,6 +283,7 @@ struct EditEquipmentView: View {
                 equipment.manualAttachment = attachment
             }
         }
+        .defaultBackground()
     }
 }
 

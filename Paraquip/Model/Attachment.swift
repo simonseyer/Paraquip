@@ -23,17 +23,13 @@ extension Attachment {
     }
 
     private var temporaryFileURL: URL? {
-        guard let filePath = filePath else {
-            return nil
-        }
+        guard let filePath else { return nil }
 
         return FileManager.default.temporaryDirectory.appendingPathComponent(filePath)
     }
 
     private var documentsFileURL: URL? {
-        guard let filePath = filePath else {
-            return nil
-        }
+        guard let filePath else { return nil }
 
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let attachmentsDirectory = documentsDirectory.appendingPathComponent("attachments")

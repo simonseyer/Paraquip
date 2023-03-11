@@ -71,6 +71,9 @@
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEBE6C228B55D8900D46470 /* Slugify.swift */; };
 		0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CA271C268900407599 /* ProfileEmptyView.swift */; };
+		F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F409B09128CC82EA00BD8E05 /* ListIcon.swift */; };
+		F41FE15229BCDF1F007E69A5 /* DefaultBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */; };
+		F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +171,9 @@
 		0DEE05CA271C268900407599 /* ProfileEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEmptyView.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
+		F409B09128CC82EA00BD8E05 /* ListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIcon.swift; sourceTree = "<group>"; };
+		F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackground.swift; sourceTree = "<group>"; };
+		F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +414,7 @@
 				0D919AF126514F84005AB7A7 /* NotificationEntryView.swift */,
 				0D919AEB2651220B005AB7A7 /* SelectableText.swift */,
 				0D919AEF26513B27005AB7A7 /* PickerOverlay.swift */,
+				F409B09128CC82EA00BD8E05 /* ListIcon.swift */,
 			);
 			path = NotificationSettings;
 			sourceTree = "<group>";
@@ -432,9 +439,11 @@
 		0DC585EE275CE0E9001B346E /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */,
 				0D7F23DF275CC99E005298E2 /* BrandIconView.swift */,
 				0DC585EF275CE0F7001B346E /* SharpImageView.swift */,
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
+				F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -606,15 +615,18 @@
 			files = (
 				0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */,
 				0D135B692840013700FEB06F /* PDFPreviewView.swift in Sources */,
+				F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */,
 				0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */,
 				0D6E9C6F281D9C6A00EC585C /* RoundedCorner.swift in Sources */,
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */,
+				F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
+				F41FE15229BCDF1F007E69A5 /* DefaultBackground.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* MainView.swift in Sources */,
 				0D22A9A928415D9400AB4E23 /* ImagePicker.swift in Sources */,
 				0D3B5A09285B452A00C1E37A /* EquipmentSelectionRow.swift in Sources */,
@@ -837,7 +849,7 @@
 				DEVELOPMENT_TEAM = V8Y4ZV4958;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Paraquip/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -863,7 +875,7 @@
 				DEVELOPMENT_TEAM = V8Y4ZV4958;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Paraquip/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

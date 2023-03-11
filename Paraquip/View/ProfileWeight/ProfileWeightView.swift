@@ -60,20 +60,22 @@ struct ProfileWeightView: View {
                 }
                 HStack {
                     ListIcon(image: Image(systemName: "sum"))
-                        .padding(.trailing, 6)
+                        .padding(.trailing, 8)
                     Text("Sum")
-                        .bold()
                     Spacer()
                     Text(formatted(value: equipmentSumMeasurement))
                         .monospacedDigit()
-                        .bold()
                 }
+                .fontWeight(.medium)
             }
             Section(header: Text("Pilot")) {
                 HStack {
                     ListIcon(image: Image(systemName: "person.fill"))
-                        .padding(.trailing, 6)
+                        .padding(.trailing, 8)
                     Slider(value: $profile.pilotWeight, in: 50...150, step: 1)
+                        .alignmentGuide(.listRowSeparatorLeading) {
+                            $0[.leading]
+                        }
                     Text(formatted(value: profile.pilotWeightMeasurement))
                         .monospacedDigit()
                         .foregroundColor(.secondary)
@@ -81,7 +83,7 @@ struct ProfileWeightView: View {
                 }
                 HStack {
                     ListIcon(image: Image(systemName: "takeoutbag.and.cup.and.straw.fill"))
-                        .padding(.trailing, 6)
+                        .padding(.trailing, 8)
                     Slider(value: $profile.additionalWeight, in: 0...20)
                     Text(formatted(value: profile.additionalWeightMeasurement))
                         .monospacedDigit()
@@ -92,16 +94,18 @@ struct ProfileWeightView: View {
             Section {
                 HStack {
                     ListIcon(image: Image(systemName: "sum"))
-                        .padding(.trailing, 6)
+                        .padding(.trailing, 8)
                     Text("Takeoff weight")
-                        .bold()
                     Spacer()
                     Text(formatted(value: sumMeasurement))
                         .monospacedDigit()
-                        .bold()
                 }
+                .fontWeight(.medium)
                 ForEach(profile.allEquipment) { equipment in
                     EquipmentWeightRangeRow(equipment: equipment, sumMeasurement: sumMeasurement)
+                        .alignmentGuide(.listRowSeparatorLeading) {
+                            $0[.leading]
+                        }
                 }
             }
         }
@@ -126,6 +130,7 @@ struct ProfileWeightView: View {
         .onDisappear {
             try! managedObjectContext.save()
         }
+        .defaultBackground()
     }
 }
 
@@ -137,7 +142,7 @@ struct EquipmentWeightRow: View {
     var body: some View {
         HStack {
             ListIcon(image: equipment.equipmentType.iconImage)
-                .padding(.trailing, 6)
+                .padding(.trailing, 8)
             Text(equipment.equipmentName)
             Text(equipment.equipmentSize)
                 .foregroundStyle(.secondary)
@@ -160,6 +165,7 @@ struct EquipmentWeightRangeRow: View {
             if let weightRange = equipment.weightRangeMeasurement {
                 VStack {
                     Text("\(equipment.brandName) \(equipment.equipmentName)")
+                        .fontWeight(.medium)
                     WeightRangeView(minWeight: weightRange.lowerBound,
                                     maxWeight: weightRange.upperBound,
                                     weight: sumMeasurement)

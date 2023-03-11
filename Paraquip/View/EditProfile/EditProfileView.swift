@@ -15,15 +15,32 @@ struct EditProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var managedObjectContext
 
-    @SectionedFetchRequest(
-        sectionIdentifier: \Equipment.type,
-        sortDescriptors: [
-            SortDescriptor(\Equipment.type),
-            SortDescriptor(\.brand),
-            SortDescriptor(\.name)
-        ]
-    )
+    @SectionedFetchRequest
     private var allEquipment: SectionedFetchResults<Int16, Equipment>
+    
+    init(profile: Profile) {
+        self.profile = profile
+        if ProcessInfo.isPreview {
+            _allEquipment = SectionedFetchRequest(
+                entity: NSEntityDescription.entity(forEntityName: "Equipment", in: CoreData.previewContext)!,
+                sectionIdentifier: \Equipment.type,
+                sortDescriptors: [
+                    NSSortDescriptor(key: "type", ascending: true),
+                    NSSortDescriptor(key: "brand", ascending: true),
+                    NSSortDescriptor(key: "name", ascending: true)
+                ]
+            )
+        } else {
+            _allEquipment = SectionedFetchRequest(
+                sectionIdentifier: \Equipment.type,
+                sortDescriptors: [
+                    SortDescriptor(\Equipment.type),
+                    SortDescriptor(\.brand),
+                    SortDescriptor(\.name)
+                ]
+            )
+        }
+    }
 
     var body: some View {
         Form {
@@ -41,8 +58,6 @@ struct EditProfileView: View {
                         }
                     }
                 }
-            } footer: {
-                Text("icon_attribution")
             }
 
             ForEach(allEquipment) { section in
@@ -73,10 +88,11 @@ struct EditProfileView: View {
                 .disabled(profile.profileName.isEmpty)
             }
         }
+        .defaultBackground()
     }
 }
 
-struct EdiProfileView_Previews: PreviewProvider {
+struct EditProfileView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView {

@@ -31,7 +31,7 @@ struct ParaquipApp: App {
         } else {
             let container = NSPersistentContainer(name: "Model")
             container.loadPersistentStores { description, error in
-                if let error = error {
+                if let error {
                     fatalError("Unable to load persistent stores: \(error)")
                 }
             }

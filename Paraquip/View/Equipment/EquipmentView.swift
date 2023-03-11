@@ -15,9 +15,10 @@ struct EquipmentView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
 
-    @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var editLogEntryOperation: Operation<LogEntry>?
-    @State private var createLogEntryOperation: Operation<LogEntry>?
+    @State private var deleteLogEntry: LogEntry?
+    @State private var isDeletingLogEntry = false
+    @State private var isDeletingManual = false
     @State private var previewedManual: URL? = nil
     @State private var showingManualPicker = false
 
@@ -55,7 +56,7 @@ struct EquipmentView: View {
                             NextCheckCell(urgency: equipment.checkUrgency) {
                                 let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
                                 operation.object(for: equipment).addToCheckLog(operation.object)
-                                createLogEntryOperation = operation
+                                editLogEntryOperation = operation
                             }
                         }
                         ForEach(checkLog) { logEntry in
@@ -90,12 +91,12 @@ struct EquipmentView: View {
                     }
                     .swipeActions {
                         if equipment.manualAttachment != nil {
-                            Button(role: .destructive) {
-                                equipment.manualAttachment = nil
-                                try? managedObjectContext.save()
+                            Button {
+                                isDeletingManual = true
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
+                            .tint(.red)
                         }
                     }
                     .labelStyle(.titleOnly)
@@ -103,36 +104,10 @@ struct EquipmentView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button("Edit") {
-                    editEquipmentOperation = Operation(editing: equipment,
-                                                       withParentContext: managedObjectContext)
-                }
-            }
-        }
         .navigationTitle(equipment.equipmentName)
-        .sheet(item: $editEquipmentOperation) { operation in
-            NavigationView {
-                EditEquipmentView(equipment: operation.object, locale: locale)
-                    .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
-            }
-        }
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
-                LogEntryView(logEntry: operation.object, mode: .edit)
-                    .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
-            }
-        }
-        .sheet(item: $createLogEntryOperation) { operation in
-            NavigationView {
-                LogEntryView(logEntry: operation.object, mode: .create)
+                LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
                     .onDisappear {
                         try? managedObjectContext.save()
@@ -149,6 +124,23 @@ struct EquipmentView: View {
             }
 
         }
+        .confirmationDialog(Text("Delete log entry"), isPresented: $isDeletingLogEntry, presenting: deleteLogEntry) { logEntry in
+            Button("Delete", role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(logEntry)
+                    try! managedObjectContext.save()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .confirmationDialog(Text("Delete manual"), isPresented: $isDeletingManual) {
+            Button("Delete", role: .destructive) {
+                equipment.manualAttachment = nil
+                try? managedObjectContext.save()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .defaultBackground()
     }
 
     func swipeButton(for logEntry: LogEntry) -> some View {
@@ -160,15 +152,14 @@ struct EquipmentView: View {
                 Label("Edit", systemImage: "pencil")
             }
             .tint(.blue)
-
-            Button(role: .destructive) {
-                withAnimation {
-                    managedObjectContext.delete(logEntry)
-                    try? managedObjectContext.save()
-                }
+            
+            Button {
+                deleteLogEntry = logEntry
+                isDeletingLogEntry = true
             } label: {
                 Label("Delete", systemImage: "trash")
             }
+            .tint(.red)
         }
         .labelStyle(.titleOnly)
     }

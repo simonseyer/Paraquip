@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AutocompletingTextField: View {
 
-    let label: String
+    let label: LocalizedStringKey
     @Binding var text: String
     let completions: [String]
 
@@ -31,7 +31,7 @@ struct AutocompletingTextField: View {
         completionSlugs.contains(text.slugified())
     }
 
-    init(_ label: String, text: Binding<String>, completions: [String]) {
+    init(_ label: LocalizedStringKey, text: Binding<String>, completions: [String]) {
         self.label = label
         self._text = text
         self.completions = completions
@@ -45,24 +45,38 @@ struct AutocompletingTextField: View {
                 Spacer()
                 TextField("", text: $text)
                     .foregroundColor(matched ? .accentColor : .primary)
-                    .font(matched ? .body.bold() : .body)
+                    .bold(matched)
                     .multilineTextAlignment(.trailing)
                     .autocorrectionDisabled()
                     .focused($focused)
             }
             if focused {
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(filteredCompletions, id: \.hashValue) { completion in
-                            Button(action:  {
-                                text = completion
-                                focused = false
-                            }) {
-                                Text(completion)
-                            }.buttonStyle(.borderedProminent)
+                Group {
+                    if filteredCompletions.isEmpty {
+                        Text("No completions")
+                            .foregroundColor(.secondary)
+                            .font(.caption)
+                            .italic()
+                    } else {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(filteredCompletions, id: \.hashValue) { completion in
+                                    Button(action:  {
+                                        text = completion
+                                        focused = false
+                                    }) {
+                                        Text(completion)
+                                    }.buttonStyle(.borderedProminent)
+                                }
+                                
+                            }
+                            .padding(8)
                         }
                     }
                 }
+                .frame(maxWidth: .infinity, minHeight: 51)
+                .background(Color(UIColor.systemGray6))
+                .cornerRadius(6)
             }
         }
     }

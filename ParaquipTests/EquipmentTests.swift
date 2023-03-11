@@ -22,7 +22,7 @@ class EquipmentTests: XCTestCase {
         let equipment = Reserve(context: persistentContainer.viewContext)
         equipment.checkCycle = Int16(checkCycle)
 
-        if let purchaseDate = purchaseDate {
+        if let purchaseDate {
             equipment.purchaseLog = LogEntry.create(context: persistentContainer.viewContext, date: purchaseDate)
         }
 

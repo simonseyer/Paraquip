@@ -13,21 +13,26 @@ struct IconSelectionView: View {
     let isSelected: Bool
 
     var body: some View {
-        Image(icon.rawValue)
+        Image(systemName: icon.systemName)
             .resizable()
+            .fontWeight(.medium)
             .aspectRatio(contentMode: .fit)
-            .padding(12)
-            .frame(width: 50, height: 50)
+            .padding(10)
+            .frame(width: 40, height: 40)
             .background(
                 isSelected ? Color.accentColor :
                     Color(UIColor.systemGray5)
             )
-            .cornerRadius(10)
+            .foregroundColor(isSelected ? .white : .black)
+            .cornerRadius(6)
     }
 }
 
 struct IconSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        IconSelectionView(icon: .default, isSelected: true)
+        HStack {
+            IconSelectionView(icon: .default, isSelected: true)
+            IconSelectionView(icon: .default, isSelected: false)
+        }
     }
 }
