@@ -36,5 +36,5 @@ platform :ios do
 end
 
 error do
-  reset_git_repo()
+  reset_git_repo(skip_clean: true)
 end
