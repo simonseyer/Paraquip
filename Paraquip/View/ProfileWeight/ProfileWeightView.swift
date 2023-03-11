@@ -183,12 +183,12 @@ struct EquipmentWeightRangeRow: View {
                     if equipment is Paraglider {
                         HStack(spacing: 4) {
                             if let wingLoad {
-                                Text("Wing Load").fontWeight(.bold) +
+                                Text("Wing load").fontWeight(.bold) +
                                 Text(": ").fontWeight(.bold) +
                                 Text(wingLoad, format: .number.precision(.fractionLength(2)))
                                     .monospacedDigit()
                             } else {
-                                Text("Wing Load").fontWeight(.bold)
+                                Text("Wing load").fontWeight(.bold)
                             }
                             Button("\(Image(systemName: "info.circle.fill"))") {
                                 showingWingLoadHelp.toggle()
@@ -201,7 +201,7 @@ struct EquipmentWeightRangeRow: View {
                 }
                 .sheet(isPresented: $showingWingLoadHelp) {
                     VStack(spacing: 10) {
-                        Text("Wing Load")
+                        Text("Wing load")
                             .font(.headline)
                         if equipment.projectedAreaMeasurement == nil {
                             Text("wing_load_explanation") +

@@ -85,7 +85,7 @@
 "Takeoff weight" = "Abbfluggewicht";
 "Pilot" = "Pilot";
 "Sum" = "Summe";
-"Wing Load" = "Flächenbelastung";
+"Wing load" = "Flächenbelastung";
 "wing_load_explanation" = "Die Flächenbelastung wird berechnet über das (Startgewicht) / (Projizierte Fläche des Gleitschirms). Sie bestimmt die Geschwindigkeit des besten Gleitens und die Manövrierfähigkeit des Schirms. Der optimale Wert ist abhängig von der Schirmklasse und persönlichen Präferenzen.";
 "missing_projected_area_hint" = "Tippe in der Liste oben auf deinen Gleitschirm, um die projizierte Fläche einzugeben.";
 
