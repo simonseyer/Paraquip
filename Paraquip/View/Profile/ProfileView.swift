@@ -27,6 +27,12 @@ struct ProfileView: View {
 
     init(profile: Profile?) {
         self.profile = profile
+        let predicate: NSPredicate?
+        if let profile {
+            predicate = NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
+        } else {
+            predicate = nil
+        }
         if ProcessInfo.isPreview {
             _equipment = SectionedFetchRequest(
                 entity: NSEntityDescription.entity(forEntityName: "Equipment", in: CoreData.previewContext)!,
@@ -35,15 +41,10 @@ struct ProfileView: View {
                     NSSortDescriptor(key: "type", ascending: true),
                     NSSortDescriptor(key: "brand", ascending: true),
                     NSSortDescriptor(key: "name", ascending: true)
-                ]
+                ],
+                predicate: predicate
             )
         } else {
-            let predicate: NSPredicate?
-            if let profile {
-                predicate = NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
-            } else {
-                predicate = nil
-            }
             _equipment = SectionedFetchRequest(
                 sectionIdentifier: \Equipment.type,
                 sortDescriptors: [
@@ -187,10 +188,12 @@ struct ProfileView_Previews: PreviewProvider {
             NavigationView {
                 ProfileView(profile: Profile.create(context: CoreData.previewContext, name: "Empty"))
             }
+            .previewDisplayName("Empty Profile")
             
             NavigationView {
                 ProfileView(profile: nil)
             }
+            .previewDisplayName("All Equipment")
         }
         .environment(\.locale, .init(identifier: "de"))
         .environment(\.managedObjectContext, CoreData.previewContext)
