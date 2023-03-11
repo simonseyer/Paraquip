@@ -8,6 +8,16 @@
 import SwiftUI
 import CoreData
 
+extension Image {
+    fileprivate func resized() -> some View {
+        self.resizable()
+            .fontWeight(.medium)
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
+            .padding(.trailing, 8)
+    }
+}
+
 struct ProfileListView: View {
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
@@ -28,15 +38,11 @@ struct ProfileListView: View {
                     } label: {
                         HStack {
                             Image(systemName: profile.profileIcon.systemName)
-                                .resizable()
-                                .fontWeight(.medium)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 26, height: 26)
-                                .padding(.trailing, 8)
+                                .resized()
                             Text(profile.profileName)
                         }
                     }
-                    .padding([.top, .bottom], 6)
+                    .padding([.top, .bottom], 8)
                     .swipeActions {
                         Button {
                             editProfileOperation = Operation(editing: profile,
@@ -61,14 +67,11 @@ struct ProfileListView: View {
                 } label: {
                     HStack {
                         Image(systemName: "tray.full.fill")
-                            .resizable()
-                            .fontWeight(.medium)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20, height: 20)
-                            .padding(EdgeInsets(top: 0, leading: 3, bottom: 0, trailing: 11))
+                            .resized()
                         Text("All Equipment")
                     }
                 }
+                .padding([.top, .bottom], 6)
             } footer: {
                 Text("set_footer")
             }
