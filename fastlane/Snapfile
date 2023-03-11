@@ -1,8 +1,9 @@
 devices([
-    "iPhone 12 Pro Max",
-    "iPhone 12 Pro",
-    "iPhone 8 Plus",
-    "iPhone 8",
+    "iPhone 14 Pro Max",
+    "iPhone 14 Pro",
+    "iPhone 14 Plus",
+    "iPhone 14",
+    "iPhone SE (3rd generation)"
 ])
 
 languages([
