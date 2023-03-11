@@ -35,17 +35,22 @@ class SnapshotUITests: XCTestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
         snapshot("04NotificationsScreen")
 
-        app.navigationBars.element(boundBy: 1).buttons.element(boundBy: 1).tap()
-        app.collectionViews.buttons.element(boundBy: 1).tap()
+        app.buttons[localized("Close")].tap()
+        app.buttons[localized("Your Equipment")].tap()
 
         snapshot("01ProfileScreen")
 
         app.navigationBars.buttons.element(boundBy: 1).tap()
         snapshot("03ProfileWeightScreen")
 
-        app.navigationBars.element(boundBy: 1).buttons.element(boundBy: 0).tap()
+        app.buttons[localized("Close")].tap()
         app.collectionViews.buttons["Explorer 2"].tap()
 
         snapshot("02EquipmentScreen")
+    }
+    
+    func localized(_ key: String) -> String {
+        let testBundle = Bundle(for: type(of: self))
+        return NSLocalizedString(key, bundle: testBundle, comment: "")
     }
 }
