@@ -34,3 +34,7 @@ platform :ios do
     add_git_tag(tag: version)
   end
 end
+
+error do
+  reset_git_repo()
+end
