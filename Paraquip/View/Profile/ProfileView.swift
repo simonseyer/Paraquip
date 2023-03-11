@@ -162,6 +162,7 @@ struct ProfileView: View {
                 }
             }
         }
+        .defaultBackground()
     }
 
     private func createEquipmentOperation(type: Equipment.EquipmentType) {

@@ -130,6 +130,7 @@ struct ProfileWeightView: View {
         .onDisappear {
             try! managedObjectContext.save()
         }
+        .defaultBackground()
     }
 }
 

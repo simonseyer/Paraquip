@@ -140,6 +140,7 @@ struct EquipmentView: View {
             }
             Button("Cancel", role: .cancel) {}
         }
+        .defaultBackground()
     }
 
     func swipeButton(for logEntry: LogEntry) -> some View {

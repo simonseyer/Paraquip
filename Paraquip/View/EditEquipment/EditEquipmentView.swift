@@ -283,6 +283,7 @@ struct EditEquipmentView: View {
                 equipment.manualAttachment = attachment
             }
         }
+        .defaultBackground()
     }
 }
 

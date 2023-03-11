@@ -8,24 +8,12 @@
 import SwiftUI
 import CoreData
 
-extension UIColor {
-    static let grayBackground = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.0)
-}
-
 struct MainView: View {
 
     @EnvironmentObject var notificationService: NotificationService
 
     @State private var showNotificationSettings = false
     @State private var presentedEquipment: Equipment? = nil
-
-    init() {
-        applyGlobalStyles()
-    }
-
-    private func applyGlobalStyles() {
-        UITableView.appearance().backgroundColor = .grayBackground
-    }
 
     var body: some View {
         NavigationView {
