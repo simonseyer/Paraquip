@@ -38,7 +38,7 @@ struct WeightRangeView: View {
         let maxWithBuffer = max + buffer
 
         let relativeValue = (value - minWithBuffer) / (maxWithBuffer - minWithBuffer)
-        return (0.01...0.99).clamp(relativeValue)
+        return (0.0...1.0).clamp(relativeValue)
     }
 
     private var dotColor: Color {
@@ -73,9 +73,8 @@ struct WeightRangeView: View {
                     Circle()
                         .foregroundColor(dotColor)
                         .frame(width: circleSize)
-                        .padding(.leading, relativeValue * geometry.size.width - 4)
+                        .padding(.leading, relativeValue * (geometry.size.width - 4 - circleSize) + 2)
                 }
-
 
                 HStack {
                     if bufferCount > 1 {
