@@ -112,8 +112,9 @@ extension NSPersistentContainer {
             let equipment = Paraglider.create(context: context)
             equipment.brand = "Gin"
             equipment.name = "Explorer 2"
-            equipment.equipmentSize = "20"
+            equipment.equipmentSize = "S"
             equipment.checkCycle = 12
+            equipment.projectedAreaMeasurement = .init(value: 20.43, unit: .squareMeters)
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 3.7

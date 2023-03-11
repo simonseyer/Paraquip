@@ -89,6 +89,17 @@ extension Equipment: Creatable {
             weight = NSNumber(value: weightMeasurement.converted(to: .baseUnit()).value)
         }
     }
+    
+    var projectedAreaMeasurement: Measurement<UnitArea>? {
+        get {
+            guard let projectedArea = projectedArea?.doubleValue else { return nil }
+            return Measurement<UnitArea>(value: projectedArea, unit: .baseUnit())
+        }
+        set {
+            guard let projectedAreaMeasurement = newValue else { projectedArea = nil; return }
+            projectedArea = NSNumber(value: projectedAreaMeasurement.converted(to: .baseUnit()).value)
+        }
+    }
 
     var weightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
         get {

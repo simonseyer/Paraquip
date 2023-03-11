@@ -35,6 +35,7 @@ struct ProfileWeightView: View {
     @State private var editEquipment: Equipment?
     @State private var equipmentSumMeasurement: Measurement<UnitMass> = .zero
     @State private var sumMeasurement: Measurement<UnitMass> = .zero
+    @State private var wingLoad: Double = 0
 
     private func updateSum() {
         equipmentSumMeasurement = profile.allEquipment
@@ -159,8 +160,18 @@ struct EquipmentWeightRow: View {
 struct EquipmentWeightRangeRow: View {
 
     @ObservedObject var equipment: Equipment
+    @State private var showingWingLoadHelp = false
     var sumMeasurement: Measurement<UnitMass>
 
+    var wingLoad: Double? {
+        guard let projectedArea = equipment.projectedAreaMeasurement else {
+            return nil
+        }
+        let weightValue = sumMeasurement.converted(to: .kilograms).value
+        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
+        return weightValue / projectedAreaValue
+    }
+    
     var body: some View {
             if let weightRange = equipment.weightRangeMeasurement {
                 VStack {
@@ -169,6 +180,40 @@ struct EquipmentWeightRangeRow: View {
                     WeightRangeView(minWeight: weightRange.lowerBound,
                                     maxWeight: weightRange.upperBound,
                                     weight: sumMeasurement)
+                    if equipment is Paraglider {
+                        HStack(spacing: 4) {
+                            if let wingLoad {
+                                Text("Wing Load").fontWeight(.bold) +
+                                Text(": ").fontWeight(.bold) +
+                                Text(wingLoad, format: .number.precision(.fractionLength(2)))
+                                    .monospacedDigit()
+                            } else {
+                                Text("Wing Load").fontWeight(.bold)
+                            }
+                            Button("\(Image(systemName: "info.circle.fill"))") {
+                                showingWingLoadHelp.toggle()
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    }
+                }
+                .sheet(isPresented: $showingWingLoadHelp) {
+                    VStack(spacing: 10) {
+                        Text("Wing Load")
+                            .font(.headline)
+                        if equipment.projectedAreaMeasurement == nil {
+                            Text("wing_load_explanation") +
+                            Text("\n\n") +
+                            Text("missing_projected_area_hint")
+                        } else {
+                            Text("wing_load_explanation")
+                        }
+                        Spacer()
+                    }
+                    .padding(40)
+                    .presentationDetents([.medium])
                 }
             } else {
                 EmptyView()

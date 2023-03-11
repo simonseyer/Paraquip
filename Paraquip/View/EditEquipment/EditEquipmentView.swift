@@ -48,6 +48,7 @@ struct EditEquipmentView: View {
         case purchaseDate
         case minimumWeight
         case maximumWeight
+        case projectedArea
     }
 
     @ObservedObject var equipment: Equipment
@@ -61,6 +62,7 @@ struct EditEquipmentView: View {
     @State private var weight: String = ""
     @State private var minWeight: String = ""
     @State private var maxWeight: String = ""
+    @State private var projectedArea: String = ""
     @FocusState private var focusedField: Field?
 
     private let weightUnitText: String
@@ -103,6 +105,11 @@ struct EditEquipmentView: View {
             let maxValue = weightRange.upperBound.converted(to: locale.weightUnit).value
             _minWeight = State(initialValue: weightRangeFormatter.string(from: minValue) ?? "")
             _maxWeight = State(initialValue: weightRangeFormatter.string(from: maxValue) ?? "")
+        }
+        
+        if let projectedArea = equipment.projectedAreaMeasurement {
+            let value = projectedArea.converted(to: .squareMeters).value
+            _projectedArea = State(initialValue: weightFormatter.string(from: value) ?? "")
         }
     }
 
@@ -178,6 +185,20 @@ struct EditEquipmentView: View {
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .maximumWeight)
                         Text(weightUnitText)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            if equipment is Paraglider {
+                Section(header: Text("Specifications")) {
+                    HStack {
+                        Text("Projected area")
+                        Spacer()
+                        TextField("", text: $projectedArea)
+                            .multilineTextAlignment(.trailing)
+                            .keyboardType(.decimalPad)
+                            .focused($focusedField, equals: .projectedArea)
+                        Text("m²")
                             .foregroundColor(.secondary)
                     }
                 }
@@ -262,6 +283,12 @@ struct EditEquipmentView: View {
                         equipment.weightRangeMeasurement = minMeasurement...maxMeasurement
                     } else {
                         equipment.weightRangeMeasurement = nil
+                    }
+                    
+                    if let weight = weightFormatter.value(from: projectedArea) {
+                        equipment.projectedAreaMeasurement = .init(value: weight, unit: .squareMeters)
+                    } else {
+                        equipment.projectedAreaMeasurement = nil
                     }
 
                     try! managedObjectContext.save()

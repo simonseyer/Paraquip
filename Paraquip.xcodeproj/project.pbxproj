@@ -387,8 +387,8 @@
 		0DA93A0426CEE7220063356B /* EditEquipment */ = {
 			isa = PBXGroup;
 			children = (
-				0DD7317B28C11E3F006475FA /* AutocompletingTextField.swift */,
 				0D5E7A53262C43270002A67B /* EditEquipmentView.swift */,
+				0DD7317B28C11E3F006475FA /* AutocompletingTextField.swift */,
 				0D919AE526503E47005AB7A7 /* FormDatePicker.swift */,
 				0D77A35626D2692E002B24D6 /* FormIcon.swift */,
 				0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */,
