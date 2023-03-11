@@ -1,6 +1,6 @@
 devices([
     "iPhone 14 Pro Max",
-    "iPhone 14 Pro",
+    # "iPhone 14 Pro", // Skipped until https://github.com/fastlane/fastlane/pull/20777 is merged 
     "iPhone 14 Plus",
     "iPhone 14",
     "iPhone SE (3rd generation)"
