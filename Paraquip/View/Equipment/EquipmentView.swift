@@ -102,6 +102,7 @@ struct EquipmentView: View {
                     .labelStyle(.titleOnly)
                 }
             }
+            .defaultBackground()
         }
         .listStyle(.insetGrouped)
         .navigationTitle(equipment.equipmentName)
@@ -140,7 +141,6 @@ struct EquipmentView: View {
             }
             Button("Cancel", role: .cancel) {}
         }
-        .defaultBackground()
     }
 
     func swipeButton(for logEntry: LogEntry) -> some View {

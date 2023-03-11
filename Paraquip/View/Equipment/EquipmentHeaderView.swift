@@ -37,7 +37,6 @@ struct EquipmentHeaderView<TagView: View>: View {
             }
         }
         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-        .background(.white)
     }
 }
 

@@ -92,6 +92,7 @@ struct ProfileView: View {
                         ProfileSectionHeader(equipmentType: section.id)
                     }
                 }
+                .defaultBackground()
             }
         }
         .listStyle(.insetGrouped)
@@ -163,7 +164,6 @@ struct ProfileView: View {
                 }
             }
         }
-        .defaultBackground()
     }
 
     private func createEquipmentOperation(type: Equipment.EquipmentType) {
