@@ -18,6 +18,7 @@ struct ParaquipApp: App {
 
     init() {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
+            UIView.setAnimationsEnabled(false)
             self.container = CoreData.inMemoryPersistentContainer
             self.notificationService = NotificationService(
                 state: .fake(),
