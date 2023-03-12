@@ -27,10 +27,9 @@ platform :ios do
 
     build_app(scheme: "Paraquip", xcargs: "-allowProvisioningUpdates")
 
-    capture_screenshots
+    capture_screenshots()
 
-    git_commit(path: ["*/*.pbxproj", "*/*.plist"], 
-               message: "Version #{version} (#{build_number})")
+    commit_version_bump(message: "Version #{version} (#{build_number})")
     add_git_tag(sign: true)
 
     upload_to_app_store(
