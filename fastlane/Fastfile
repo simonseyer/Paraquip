@@ -13,12 +13,25 @@ platform :ios do
       key_filepath: "./fastlane/AuthKey_BR9339CXSN.p8"
     )
 
+    if not prompt(text: "Release notes up to date?", boolean: true)
+      UI.user_error! "Update your release notes first :)"
+    end
+
     version = increment_version_number(bump_type: "minor")
-    increment_build_number(xcodeproj: "Paraquip.xcodeproj")
+    user_version = prompt(text: "Version (default: #{version}):")
+    if not user_version.empty?
+      version = increment_version_number(version_number: user_version)
+    end
+
+    build_number = increment_build_number(xcodeproj: "Paraquip.xcodeproj")
 
     build_app(scheme: "Paraquip", xcargs: "-allowProvisioningUpdates")
 
     capture_screenshots
+
+    git_commit(path: ["*/*.pbxproj", "*/*.plist"], 
+               message: "Version #{version} (#{build_number})")
+    add_git_tag(sign: true)
 
     upload_to_app_store(
       overwrite_screenshots: true,
@@ -29,8 +42,5 @@ platform :ios do
         add_id_info_uses_idfa: false
       }
     )
-
-    git_commit(path: ["*/*.pbxproj", "*/*.plist"], message: "Version " + version)
-    add_git_tag(tag: version)
   end
 end
