@@ -1,9 +1,8 @@
 devices([
-    "iPhone 14 Pro Max",
-    "iPhone 12 Pro", # Using iPhone 12 pro until https://github.com/fastlane/fastlane/pull/20777 is merged 
-    "iPhone 14 Plus",
-    "iPhone 14",
-    "iPhone SE (3rd generation)"
+    "iPhone 12 Pro Max",
+    "iPhone 12 Pro",
+    "iPhone 8 Plus",
+    "iPhone 8",
 ])
 
 languages([
