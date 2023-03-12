@@ -18,8 +18,8 @@ platform :ios do
     end
 
     version = increment_version_number(bump_type: "minor")
-    user_version = prompt(text: "Version (default: #{version}):")
-    if not user_version.empty?
+    user_version = prompt(text: "Version ('y' for default: #{version}):")
+    if not user_version == 'y'
       version = increment_version_number(version_number: user_version)
     end
 
