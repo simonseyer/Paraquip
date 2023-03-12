@@ -1,1 +1,1 @@
-Füge jetzt beliebiges weiteres Paragliding-Zubehör in der App hinzu, um das Gesamtgewicht genau zu bestimmen und die Handbücher immer parat zu haben.
+Paraquip berechnet jetzt auch die Flächenbelastung für dich. Einfach die projizierte Fläche für deinen Gleitschirm eintragen und sie wird im Gewichtsrechner angezeigt.

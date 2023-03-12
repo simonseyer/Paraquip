@@ -1,1 +1,1 @@
-Now add any other paragliding gear in the app to accurately determine the total weight and always have the manuals at hand.
+Paraquip now calculates the wing load for you. Just add the projected area of your glider and it will show up in the weight check.
