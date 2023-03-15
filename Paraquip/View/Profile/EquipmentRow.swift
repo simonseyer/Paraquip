@@ -19,9 +19,12 @@ struct EquipmentRow: View {
                 if let icon = equipment.icon {
                     BrandIconView(image: icon, area: 1500, alignment: .center)
                 } else {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color(UIColor.systemGray3))
-                        .font(.system(size: 24))
+                    equipment.equipmentType.iconImage
+                        .resizable()
+                        .scaledToFit()
+                        .padding(10)
+                        .opacity(0.4)
+                        .foregroundColor(.accentColor)
                 }
             }
             .frame(width: 70, height: 50, alignment: .center)
@@ -41,14 +44,18 @@ struct EquipmentRow_Previews: PreviewProvider {
 
     static var previews: some View {
         List {
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider))
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .harness))
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve))
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .gear))
             ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
                 EquipmentRow(equipment: equipment(for: brand))
             }
         }
     }
 
-    private static func equipment(for brand: String) -> Equipment {
-        let equipment = Reserve.create(context: CoreData.previewContext)
+    private static func equipment(for brand: String, type: Equipment.EquipmentType = .reserve) -> Equipment {
+        let equipment = Equipment.create(type: type, context: CoreData.previewContext)
         equipment.brandName = brand
         equipment.name = brand
         return equipment
