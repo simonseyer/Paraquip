@@ -16,6 +16,7 @@ struct EquipmentView: View {
     @Environment(\.locale) var locale: Locale
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
+    @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var deleteLogEntry: LogEntry?
     @State private var isDeletingLogEntry = false
     @State private var isDeletingManual = false
@@ -106,9 +107,28 @@ struct EquipmentView: View {
         }
         .listStyle(.insetGrouped)
         .navigationTitle(equipment.equipmentName)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: {
+                    editEquipmentOperation = Operation(editing: equipment,
+                                                     withParentContext: managedObjectContext)
+                }) {
+                    Label("Edit", systemImage: "slider.vertical.3")
+                }
+            }
+        }
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationView {
                 LogEntryView(logEntry: operation.object)
+                    .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
+            }
+        }
+        .sheet(item: $editEquipmentOperation) { operation in
+            NavigationView {
+                EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
                     .onDisappear {
                         try? managedObjectContext.save()
@@ -149,7 +169,7 @@ struct EquipmentView: View {
                 editLogEntryOperation = Operation(editing: logEntry,
                                                   withParentContext: managedObjectContext)
             } label: {
-                Label("Edit", systemImage: "pencil")
+                Label("Edit", systemImage: "slider.vertical.3")
             }
             .tint(.blue)
             
@@ -172,6 +192,7 @@ struct EquipmentView_Previews: PreviewProvider {
             NavigationView {
                 EquipmentView(equipment: equipment)
             }
+            .previewDisplayName(equipment.equipmentName)
         }
         .environment(\.locale, .init(identifier: "de"))
         .environment(\.managedObjectContext, CoreData.previewContext)

@@ -48,7 +48,7 @@ struct ProfileListView: View {
                             editProfileOperation = Operation(editing: profile,
                                                              withParentContext: managedObjectContext)
                         } label: {
-                            Label("Edit", systemImage: "pencil")
+                            Label("Edit", systemImage: "slider.vertical.3")
                         }
                         .tint(.blue)
 

@@ -12,6 +12,7 @@ struct ProfileView: View {
 
     let profile: Profile?
     @State private var editEquipmentOperation: Operation<Equipment>?
+    @State private var editProfileOperation: Operation<Profile>?
     @State private var deleteEquipment: Equipment?
     @State private var isDeletingEquipment = false
     @State private var showWeightView = false
@@ -75,7 +76,7 @@ struct ProfileView: View {
                                     editEquipmentOperation = Operation(editing: equipment,
                                                                        withParentContext: managedObjectContext)
                                 } label: {
-                                    Label("Edit", systemImage: "pencil")
+                                    Label("Edit", systemImage: "slider.vertical.3")
                                 }
                                 .tint(.blue)
                                 
@@ -120,6 +121,15 @@ struct ProfileView: View {
                             }
                         }
                     }
+                    if let profile {
+                        Divider()
+                        Button(action: {
+                            editProfileOperation = Operation(editing: profile,
+                                                             withParentContext: managedObjectContext)
+                        }) {
+                            Label("Edit", systemImage: "slider.vertical.3")
+                        }
+                    }
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -128,6 +138,15 @@ struct ProfileView: View {
         .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
                 EditEquipmentView(equipment: operation.object, locale: locale)
+                    .environment(\.managedObjectContext, operation.childContext)
+                    .onDisappear {
+                        try? managedObjectContext.save()
+                    }
+            }
+        }
+        .sheet(item: $editProfileOperation) { operation in
+            NavigationView {
+                EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
                     .onDisappear {
                         try? managedObjectContext.save()
