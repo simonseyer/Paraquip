@@ -65,6 +65,7 @@ struct EquipmentView: View {
                                 .swipeActions {
                                     swipeButton(for: logEntry)
                                 }
+                                .labelStyle(.titleOnly)
                         }
                         
                         if let purchaseLog = equipment.purchaseLog {
@@ -72,6 +73,7 @@ struct EquipmentView: View {
                                 .swipeActions {
                                     swipeButton(for: purchaseLog)
                                 }
+                                .labelStyle(.titleOnly)
                         }
                     }
                 }

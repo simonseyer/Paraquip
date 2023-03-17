@@ -162,6 +162,7 @@ struct EditEquipmentView: View {
                         }
                     }
                 }
+                .labelStyle(.titleOnly)
             }
             if equipment is Paraglider || equipment is Reserve {
                 Section(header: Text("Weight range")) {

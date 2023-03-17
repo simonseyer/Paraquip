@@ -88,6 +88,7 @@ struct ProfileView: View {
                                 }
                                 .tint(.red)
                             }
+                            .labelStyle(.titleOnly)
                         }
                     } header: {
                         ProfileSectionHeader(equipmentType: section.id)
