@@ -28,32 +28,18 @@ struct ProfileView: View {
 
     init(profile: Profile?) {
         self.profile = profile
-        let predicate: NSPredicate?
-        if let profile {
-            predicate = NSPredicate(format: "%@ IN %K", profile, #keyPath(Equipment.profiles))
-        } else {
-            predicate = nil
-        }
         if ProcessInfo.isPreview {
             _equipment = SectionedFetchRequest(
-                entity: NSEntityDescription.entity(forEntityName: "Equipment", in: CoreData.previewContext)!,
+                entity: Equipment.previewEntity,
                 sectionIdentifier: \Equipment.type,
-                sortDescriptors: [
-                    NSSortDescriptor(key: "type", ascending: true),
-                    NSSortDescriptor(key: "brand", ascending: true),
-                    NSSortDescriptor(key: "name", ascending: true)
-                ],
-                predicate: predicate
+                sortDescriptors: Equipment.defaultNSSortDescriptors,
+                predicate: profile?.equipmentPredicate
             )
         } else {
             _equipment = SectionedFetchRequest(
                 sectionIdentifier: \Equipment.type,
-                sortDescriptors: [
-                    SortDescriptor(\Equipment.type),
-                    SortDescriptor(\.brand),
-                    SortDescriptor(\.name)
-                ],
-                predicate: predicate
+                sortDescriptors: Equipment.defaultSortDescriptors,
+                predicate: profile?.equipmentPredicate
             )
         }
     }

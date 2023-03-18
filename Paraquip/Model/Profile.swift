@@ -28,6 +28,10 @@ extension Profile: Creatable {
 
         static var `default`: Icon { .mountain }
     }
+    
+    var equipmentPredicate: NSPredicate {
+        .init(format: "%@ IN %K", self, #keyPath(Equipment.profiles))
+    }
 
     var profileName: String {
         get { name ?? "" }

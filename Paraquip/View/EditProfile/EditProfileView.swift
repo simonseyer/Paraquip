@@ -22,22 +22,14 @@ struct EditProfileView: View {
         self.profile = profile
         if ProcessInfo.isPreview {
             _allEquipment = SectionedFetchRequest(
-                entity: NSEntityDescription.entity(forEntityName: "Equipment", in: CoreData.previewContext)!,
+                entity: Equipment.previewEntity,
                 sectionIdentifier: \Equipment.type,
-                sortDescriptors: [
-                    NSSortDescriptor(key: "type", ascending: true),
-                    NSSortDescriptor(key: "brand", ascending: true),
-                    NSSortDescriptor(key: "name", ascending: true)
-                ]
+                sortDescriptors: Equipment.defaultNSSortDescriptors
             )
         } else {
             _allEquipment = SectionedFetchRequest(
                 sectionIdentifier: \Equipment.type,
-                sortDescriptors: [
-                    SortDescriptor(\Equipment.type),
-                    SortDescriptor(\.brand),
-                    SortDescriptor(\.name)
-                ]
+                sortDescriptors: Equipment.defaultSortDescriptors
             )
         }
     }
