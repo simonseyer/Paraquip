@@ -7,23 +7,17 @@
 
 import Foundation
 import CoreData
-import UIKit
 
 struct CoreData {
-    static let inMemoryPersistentContainer: NSPersistentContainer = .fake(name: "Model")
+    
+    private static let fake: (NSPersistentContainer, Profile) = createFakePersistentContainer()
 
-    static var previewContext: NSManagedObjectContext {
-        inMemoryPersistentContainer.viewContext
-    }
+    static var inMemoryPersistentContainer: NSPersistentContainer { fake.0 }
+    static var previewContext: NSManagedObjectContext { inMemoryPersistentContainer.viewContext }
+    static var fakeProfile: Profile { fake.1 }
 
-    static var fakeProfile: Profile {
-        return try! previewContext.fetch(Profile.fetchRequest()).first!
-    }
-}
-
-extension NSPersistentContainer {
-    static func fake(name: String) -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: name)
+    private static func createFakePersistentContainer() -> (NSPersistentContainer, Profile) {
+        let container = NSPersistentContainer(name: "Model")
 
         let description = NSPersistentStoreDescription()
         description.type = NSInMemoryStoreType
@@ -33,15 +27,12 @@ extension NSPersistentContainer {
             if let error {
                 fatalError("Unable to load persistent stores: \(error)")
             }
-
-            _ = container.createFakeProfile()
         }
-
-        return container
+        
+        return (container, createFakeProfile(context: container.viewContext))
     }
 
-    func createFakeProfile() -> Profile {
-        let context = viewContext
+    private static func createFakeProfile(context: NSManagedObjectContext) -> Profile {
         let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")!
         let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")!
 
@@ -150,12 +141,10 @@ extension NSPersistentContainer {
         profile2.additionalWeight = 10
         profile2.profileIcon = .beach
 
-        try! context.save()
-
         return profile
     }
 
-    private func createAttachment(for url: URL, context: NSManagedObjectContext) -> Attachment {
+    private static func createAttachment(for url: URL, context: NSManagedObjectContext) -> Attachment {
         let attachment = Attachment(context: context)
         attachment.filePath = url.lastPathComponent
         attachment.timestamp = Date.paraquipNow
