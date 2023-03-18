@@ -8,6 +8,12 @@
 import Foundation
 import CoreData
 
+extension Measurement where UnitType == UnitMass {
+    static var zero: Self {
+        .init(value: 0, unit: .baseUnit())
+    }
+}
+
 extension Profile: Creatable {
     enum Icon: String, CaseIterable, Identifiable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
@@ -87,5 +93,13 @@ extension Profile: Creatable {
         } else {
             addToEquipment(equipment)
         }
+    }
+    
+    var equipmentWeightMeasurement: Measurement<UnitMass> {
+        allEquipment.compactMap { $0.weightMeasurement }.reduce(.zero, +)
+    }
+    
+    var takeoffWeightMeasurement: Measurement<UnitMass> {
+        equipmentWeightMeasurement + pilotWeightMeasurement + additionalWeightMeasurement
     }
 }

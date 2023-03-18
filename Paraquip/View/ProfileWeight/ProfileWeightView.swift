@@ -6,18 +6,16 @@
 //
 
 import SwiftUI
-
-extension Measurement where UnitType == UnitMass {
-    static var zero: Self {
-        .init(value: 0, unit: .baseUnit())
-    }
-}
+import CoreData
 
 struct ProfileWeightView: View {
 
     @ObservedObject var profile: Profile
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
+    
+    @FetchRequest
+    private var equipment: FetchedResults<Equipment>
 
     private var formatter: MeasurementFormatter {
         let numberFormatter = NumberFormatter()
@@ -33,15 +31,21 @@ struct ProfileWeightView: View {
     }
 
     @State private var editEquipment: Equipment?
-    @State private var equipmentSumMeasurement: Measurement<UnitMass> = .zero
-    @State private var sumMeasurement: Measurement<UnitMass> = .zero
-    @State private var wingLoad: Double = 0
-
-    private func updateSum() {
-        equipmentSumMeasurement = profile.allEquipment
-            .compactMap { $0.weightMeasurement }
-            .reduce(.zero, +)
-        sumMeasurement = equipmentSumMeasurement + profile.pilotWeightMeasurement + profile.additionalWeightMeasurement
+    
+    init(profile: Profile) {
+        self.profile = profile
+        if ProcessInfo.isPreview {
+            _equipment = FetchRequest(
+                entity: Equipment.previewEntity,
+                sortDescriptors: Equipment.defaultNSSortDescriptors,
+                predicate: profile.equipmentPredicate
+            )
+        } else {
+            _equipment = FetchRequest(
+                sortDescriptors: Equipment.defaultSortDescriptors,
+                predicate: profile.equipmentPredicate
+            )
+        }
     }
 
     private func formatted(value: Measurement<UnitMass>) -> String {
@@ -51,7 +55,7 @@ struct ProfileWeightView: View {
     var body: some View {
         List {
             Section(header: Text("Equipment")) {
-                ForEach(profile.allEquipment) { equipment in
+                ForEach(equipment) { equipment in
                     Button {
                         editEquipment = equipment
                     } label: {
@@ -64,7 +68,7 @@ struct ProfileWeightView: View {
                         .padding(.trailing, 8)
                     Text("Sum")
                     Spacer()
-                    Text(formatted(value: equipmentSumMeasurement))
+                    Text(formatted(value: profile.equipmentWeightMeasurement))
                         .monospacedDigit()
                 }
                 .fontWeight(.medium)
@@ -98,12 +102,12 @@ struct ProfileWeightView: View {
                         .padding(.trailing, 8)
                     Text("Takeoff weight")
                     Spacer()
-                    Text(formatted(value: sumMeasurement))
+                    Text(formatted(value: profile.takeoffWeightMeasurement))
                         .monospacedDigit()
                 }
                 .fontWeight(.medium)
-                ForEach(profile.allEquipment) { equipment in
-                    EquipmentWeightRangeRow(equipment: equipment, sumMeasurement: sumMeasurement)
+                ForEach(equipment) { equipment in
+                    EquipmentWeightRangeRow(equipment: equipment, sumMeasurement: profile.takeoffWeightMeasurement)
                         .alignmentGuide(.listRowSeparatorLeading) {
                             $0[.leading]
                         }
@@ -115,21 +119,6 @@ struct ProfileWeightView: View {
             NavigationView {
                 EditEquipmentView(equipment: equipment, locale: locale)
             }
-        }
-        .onAppear {
-            updateSum()
-        }
-        .onChange(of: profile.pilotWeightMeasurement) { _ in
-            updateSum()
-        }
-        .onChange(of: profile.additionalWeightMeasurement) { _ in
-            updateSum()
-        }
-        .onChange(of: editEquipment) { _ in
-            updateSum()
-        }
-        .onDisappear {
-            try! managedObjectContext.save()
         }
         .defaultBackground()
     }
