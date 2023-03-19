@@ -30,7 +30,7 @@ struct ProfileWeightView: View {
         return formatter
     }
 
-    @State private var editEquipment: Equipment?
+    @State private var editEquipmentOperation: Operation<Equipment>?
     
     init(profile: Profile) {
         self.profile = profile
@@ -57,7 +57,8 @@ struct ProfileWeightView: View {
             Section(header: Text("Equipment")) {
                 ForEach(equipment) { equipment in
                     Button {
-                        editEquipment = equipment
+                        editEquipmentOperation = Operation(editing: equipment,
+                                                           withParentContext: managedObjectContext)
                     } label: {
                         EquipmentWeightRow(equipment: equipment, formatter: formatted(value:))
                             .foregroundColor(.primary)
@@ -115,9 +116,10 @@ struct ProfileWeightView: View {
             }
         }
         .navigationBarTitle("Weight Check")
-        .sheet(item: $editEquipment) { equipment in
+        .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
-                EditEquipmentView(equipment: equipment, locale: locale)
+                EditEquipmentView(equipment: operation.object, locale: locale)
+                    .environment(\.managedObjectContext, operation.childContext)
             }
         }
         .defaultBackground()
