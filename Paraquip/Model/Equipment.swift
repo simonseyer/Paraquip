@@ -65,7 +65,7 @@ extension Equipment: Creatable {
     }
 
     var equipmentType: EquipmentType {
-        EquipmentType(rawValue: type)!
+        EquipmentType(rawValue: type) ?? .paraglider
     }
 
     var equipmentName: String {
