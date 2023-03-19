@@ -66,6 +66,7 @@ struct EditEquipmentView: View {
     @State private var projectedArea: String = ""
     @FocusState private var focusedField: Field?
 
+    private let initialFocusedField: Field?
     private let weightUnitText: String
     private let weightFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -88,8 +89,9 @@ struct EditEquipmentView: View {
         }
     }
 
-    init(equipment: Equipment, locale: Locale) {
+    init(equipment: Equipment, locale: Locale, focusedField: Field? = nil) {
         self.equipment = equipment
+        self.initialFocusedField = focusedField
 
         let formatter = MeasurementFormatter()
         formatter.locale = locale
@@ -323,6 +325,13 @@ struct EditEquipmentView: View {
             }
         }
         .defaultBackground()
+        .onAppear {
+            if let initialFocusedField {
+                focusedField = initialFocusedField
+            } else if equipment.isInserted {
+                focusedField = .brand
+            }
+        }
     }
 }
 
