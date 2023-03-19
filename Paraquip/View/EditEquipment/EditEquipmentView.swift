@@ -42,8 +42,9 @@ fileprivate struct LogDateCell: View {
 struct EditEquipmentView: View {
 
     enum Field {
-        case customBrand
+        case brand
         case name
+        case size
         case weight
         case purchaseDate
         case minimumWeight
@@ -117,6 +118,7 @@ struct EditEquipmentView: View {
         Form {
             Section(header: Text("")) {
                 AutocompletingTextField("Brand", text: $equipment.brandName, completions: Equipment.brandSuggestions)
+                    .focused($focusedField, equals: .brand)
                 HStack {
                     Text("Name")
                     Spacer()
@@ -124,9 +126,14 @@ struct EditEquipmentView: View {
                         .multilineTextAlignment(.trailing)
                         .autocorrectionDisabled()
                         .focused($focusedField, equals: .name)
+                        .submitLabel(.next)
+                        .onSubmit { focusedField = .size }
                 }
                 AutocompletingTextField("Size", text: $equipment.equipmentSize, completions: Equipment.sizeSuggestions)
                     .textInputAutocapitalization(.characters)
+                    .focused($focusedField, equals: .size)
+                    .submitLabel(.next)
+                    .onSubmit { focusedField = .weight }
                 HStack {
                     Text("Weight")
                     Spacer()
@@ -174,6 +181,8 @@ struct EditEquipmentView: View {
                                 .multilineTextAlignment(.trailing)
                                 .keyboardType(.numberPad)
                                 .focused($focusedField, equals: .minimumWeight)
+                                .submitLabel(.next)
+                                .onSubmit { focusedField = .maximumWeight }
                             Text(weightUnitText)
                                 .foregroundColor(.secondary)
                         }
@@ -185,6 +194,8 @@ struct EditEquipmentView: View {
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .maximumWeight)
+                            .submitLabel(.next)
+                            .onSubmit { focusedField = .projectedArea }
                         Text(weightUnitText)
                             .foregroundColor(.secondary)
                     }
