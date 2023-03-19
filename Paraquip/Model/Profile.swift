@@ -71,6 +71,10 @@ extension Profile: Creatable {
         let set = equipment as? Set<Equipment> ?? []
         return Array<Equipment>(set).sorted { $0.equipmentName > $1.equipmentName }
     }
+    
+    var paraglider: Paraglider? {
+        allEquipment.first(where: { $0.equipmentType == .paraglider }) as? Paraglider
+    }
 
     static func create(context: NSManagedObjectContext, name: String) -> Self {
         let profile = Self(context: context)
@@ -101,5 +105,14 @@ extension Profile: Creatable {
     
     var takeoffWeightMeasurement: Measurement<UnitMass> {
         equipmentWeightMeasurement + pilotWeightMeasurement + additionalWeightMeasurement
+    }
+    
+    var wingLoad: Double? {
+        guard let projectedArea = paraglider?.projectedAreaMeasurement else {
+            return nil
+        }
+        let weightValue = takeoffWeightMeasurement.converted(to: .kilograms).value
+        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
+        return weightValue / projectedAreaValue
     }
 }

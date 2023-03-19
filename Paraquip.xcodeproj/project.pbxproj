@@ -73,6 +73,7 @@
 		0DEE05CB271C268900407599 /* ProfileEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEE05CA271C268900407599 /* ProfileEmptyView.swift */; };
 		F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F409B09128CC82EA00BD8E05 /* ListIcon.swift */; };
 		F41FE15229BCDF1F007E69A5 /* DefaultBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */; };
+		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
 		F4AF006F29BD15DC00EFA602 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
 		F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */; };
 /* End PBXBuildFile section */
@@ -174,6 +175,7 @@
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
 		F409B09128CC82EA00BD8E05 /* ListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIcon.swift; sourceTree = "<group>"; };
 		F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackground.swift; sourceTree = "<group>"; };
+		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
 		F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -348,6 +350,7 @@
 				0D09984926D81BEA00E297F9 /* EditProfile */,
 				0D2B2D132646A03F009873CE /* Profile */,
 				0DC585F1275CE8BD001B346E /* ProfileWeight */,
+				F496828E29C685410061CC7E /* WingLoad */,
 				0DA93A0526CEE75C0063356B /* Equipment */,
 				0DA93A0726CEE7A90063356B /* LogEntry */,
 				0DA93A0426CEE7220063356B /* EditEquipment */,
@@ -473,6 +476,14 @@
 				0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */,
 			);
 			path = Legacy;
+			sourceTree = "<group>";
+		};
+		F496828E29C685410061CC7E /* WingLoad */ = {
+			isa = PBXGroup;
+			children = (
+				F496828F29C6854D0061CC7E /* WingLoadView.swift */,
+			);
+			path = WingLoad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -644,6 +655,7 @@
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
+				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
 				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,

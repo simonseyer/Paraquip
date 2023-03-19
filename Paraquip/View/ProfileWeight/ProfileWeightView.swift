@@ -31,6 +31,7 @@ struct ProfileWeightView: View {
     }
 
     @State private var editEquipmentOperation: Operation<Equipment>?
+    @State private var showingWingLoad = false
     
     init(profile: Profile) {
         self.profile = profile
@@ -107,11 +108,38 @@ struct ProfileWeightView: View {
                         .monospacedDigit()
                 }
                 .fontWeight(.medium)
+                HStack {
+                    ListIcon(image: Image(systemName: "scalemass.fill"))
+                        .padding(.trailing, 8)
+                    HStack(spacing: 4) {
+                        Text("Wing load")
+                        Button("\(Image(systemName: "info.circle"))") {
+                            showingWingLoad.toggle()
+                        }
+                    }
+                    Spacer()
+                    if let wingLoad = profile.wingLoad {
+                        Text(wingLoad, format: .number.precision(.fractionLength(2)))
+                            .monospacedDigit()
+                    } else {
+                        Text("—")
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .fontWeight(.medium)
                 ForEach(equipment) { equipment in
-                    EquipmentWeightRangeRow(equipment: equipment, sumMeasurement: profile.takeoffWeightMeasurement)
+                    if let weightRange = equipment.weightRangeMeasurement {
+                        VStack {
+                            Text("\(equipment.brandName) \(equipment.equipmentName)")
+                                .fontWeight(.medium)
+                            WeightRangeView(minWeight: weightRange.lowerBound,
+                                            maxWeight: weightRange.upperBound,
+                                            weight: profile.takeoffWeightMeasurement)
+                        }
                         .alignmentGuide(.listRowSeparatorLeading) {
                             $0[.leading]
                         }
+                    }
                 }
             }
         }
@@ -121,6 +149,10 @@ struct ProfileWeightView: View {
                 EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
             }
+        }
+        .sheet(isPresented: $showingWingLoad) {
+            WingLoadView(profile: profile)
+                .presentationDetents([.medium, .large])
         }
         .defaultBackground()
     }
@@ -145,70 +177,6 @@ struct EquipmentWeightRow: View {
                     .foregroundColor(.secondary)
             }
         }
-    }
-}
-
-struct EquipmentWeightRangeRow: View {
-
-    @ObservedObject var equipment: Equipment
-    @State private var showingWingLoadHelp = false
-    var sumMeasurement: Measurement<UnitMass>
-
-    var wingLoad: Double? {
-        guard let projectedArea = equipment.projectedAreaMeasurement else {
-            return nil
-        }
-        let weightValue = sumMeasurement.converted(to: .kilograms).value
-        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
-        return weightValue / projectedAreaValue
-    }
-    
-    var body: some View {
-            if let weightRange = equipment.weightRangeMeasurement {
-                VStack {
-                    Text("\(equipment.brandName) \(equipment.equipmentName)")
-                        .fontWeight(.medium)
-                    WeightRangeView(minWeight: weightRange.lowerBound,
-                                    maxWeight: weightRange.upperBound,
-                                    weight: sumMeasurement)
-                    if equipment is Paraglider {
-                        HStack(spacing: 4) {
-                            if let wingLoad {
-                                Text("Wing load").fontWeight(.bold) +
-                                Text(": ").fontWeight(.bold) +
-                                Text(wingLoad, format: .number.precision(.fractionLength(2)))
-                                    .monospacedDigit()
-                            } else {
-                                Text("Wing load").fontWeight(.bold)
-                            }
-                            Button("\(Image(systemName: "info.circle.fill"))") {
-                                showingWingLoadHelp.toggle()
-                            }
-                            .buttonStyle(.plain)
-                        }
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    }
-                }
-                .sheet(isPresented: $showingWingLoadHelp) {
-                    VStack(spacing: 10) {
-                        Text("Wing load")
-                            .font(.headline)
-                        if equipment.projectedAreaMeasurement == nil {
-                            Text("wing_load_explanation") +
-                            Text("\n\n") +
-                            Text("missing_projected_area_hint")
-                        } else {
-                            Text("wing_load_explanation")
-                        }
-                        Spacer()
-                    }
-                    .padding(40)
-                    .presentationDetents([.medium])
-                }
-            } else {
-                EmptyView()
-            }
     }
 }
 
