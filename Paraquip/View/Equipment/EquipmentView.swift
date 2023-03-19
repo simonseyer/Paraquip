@@ -123,27 +123,23 @@ struct EquipmentView: View {
             NavigationView {
                 LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
             }
         }
         .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
                 EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
             }
         }
         .quickLookPreview($previewedManual)
         .sheet(isPresented: $showingManualPicker) {
             DocumentPicker(contentTypes: [.pdf]) { url in
-                let attachment = Attachment.create(fileURL: url,
-                                                   context: managedObjectContext)
-                equipment.manualAttachment = attachment
-                try? managedObjectContext.save()
+                withAnimation {
+                    let attachment = Attachment.create(fileURL: url,
+                                                       context: managedObjectContext)
+                    equipment.manualAttachment = attachment
+                    try? managedObjectContext.save()
+                }
             }
 
         }
@@ -158,8 +154,10 @@ struct EquipmentView: View {
         }
         .confirmationDialog(Text("Delete manual"), isPresented: $isDeletingManual) {
             Button("Delete", role: .destructive) {
-                equipment.manualAttachment = nil
-                try? managedObjectContext.save()
+                withAnimation {
+                    equipment.manualAttachment = nil
+                    try? managedObjectContext.save()
+                }
             }
             Button("Cancel", role: .cancel) {}
         }

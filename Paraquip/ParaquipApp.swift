@@ -15,6 +15,8 @@ struct ParaquipApp: App {
     private let container: NSPersistentContainer
     private let notificationService: NotificationService
     private let logger = Logger(category: "ParaquipApp")
+    
+    @Environment(\.scenePhase) var scenePhase
 
     init() {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
@@ -110,6 +112,11 @@ struct ParaquipApp: App {
             MainView()
                 .environmentObject(notificationService)
                 .environment(\.managedObjectContext, container.viewContext)
+        }
+        .onChange(of: scenePhase) { _ in
+            if container.viewContext.hasChanges {
+                try? container.viewContext.save()
+            }
         }
     }
 }

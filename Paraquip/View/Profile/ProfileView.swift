@@ -126,18 +126,12 @@ struct ProfileView: View {
             NavigationView {
                 EditEquipmentView(equipment: operation.object, locale: locale)
                     .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
             }
         }
         .sheet(item: $editProfileOperation) { operation in
             NavigationView {
                 EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
             }
         }
         .confirmationDialog(Text("Delete equipment"), isPresented: $isDeletingEquipment, presenting: deleteEquipment) { equipment in

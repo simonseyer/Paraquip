@@ -81,9 +81,6 @@ struct ProfileListView: View {
             NavigationView {
                 EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
-                    .onDisappear {
-                        try? managedObjectContext.save()
-                    }
             }
         }
         .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
