@@ -16,6 +16,7 @@ struct AutocompletingTextField: View {
     private let completionSlugs: [String]
 
     @FocusState private var focused: Bool
+    @State private var isAutocompletionShown = false
 
     private var filteredCompletions: [String] {
         if text.isEmpty {
@@ -50,7 +51,7 @@ struct AutocompletingTextField: View {
                     .autocorrectionDisabled()
                     .focused($focused)
             }
-            if focused {
+            if isAutocompletionShown {
                 Group {
                     if filteredCompletions.isEmpty {
                         Text("No completions")
@@ -68,7 +69,6 @@ struct AutocompletingTextField: View {
                                         Text(completion)
                                     }.buttonStyle(.borderedProminent)
                                 }
-                                
                             }
                             .padding(8)
                         }
@@ -77,6 +77,12 @@ struct AutocompletingTextField: View {
                 .frame(maxWidth: .infinity, minHeight: 51)
                 .background(Color(UIColor.systemGray6))
                 .cornerRadius(6)
+            }
+        }
+        .animatingCellHeight(isAutocompletionShown ? 85 : 14)
+        .onChange(of: focused) { newValue in
+            withAnimation {
+                isAutocompletionShown = newValue
             }
         }
     }
@@ -91,6 +97,7 @@ fileprivate struct AutocompletingTextField_PreviewView: View {
         NavigationView {
             Form {
                 AutocompletingTextField("Test", text: $text, completions: completions)
+                TextField("Non-completing", text: $text)
             }
         }
     }
