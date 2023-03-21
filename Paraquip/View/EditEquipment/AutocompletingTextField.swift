@@ -79,7 +79,8 @@ struct AutocompletingTextField: View {
                 .cornerRadius(6)
             }
         }
-        .animatingCellHeight(isAutocompletionShown ? 85 : 14)
+        // Fixes cell height animation (makes the cell larger than needed to avoid some strange glitch)
+        .animatingCellHeight(isAutocompletionShown ? 88 : 38)
         .onChange(of: focused) { newValue in
             withAnimation {
                 isAutocompletionShown = newValue
@@ -91,13 +92,14 @@ struct AutocompletingTextField: View {
 fileprivate struct AutocompletingTextField_PreviewView: View {
 
     @State var text = ""
+    @State var text2 = ""
     let completions = ["test", "Abc", "123", "aBCdef", "test", "Abc", "123", "aBCdef"]
 
     var body: some View {
         NavigationView {
             Form {
                 AutocompletingTextField("Test", text: $text, completions: completions)
-                TextField("Non-completing", text: $text)
+                TextField("Non-completing", text: $text2)
             }
         }
     }
