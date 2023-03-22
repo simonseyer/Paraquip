@@ -29,7 +29,7 @@ struct EditProfileView: View {
         } else {
             _allEquipment = SectionedFetchRequest(
                 sectionIdentifier: \Equipment.type,
-                sortDescriptors: Equipment.defaultSortDescriptors
+                sortDescriptors: Equipment.defaultSortDescriptors()
             )
         }
     }

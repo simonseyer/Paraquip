@@ -38,7 +38,7 @@ struct ProfileView: View {
         } else {
             _equipment = SectionedFetchRequest(
                 sectionIdentifier: \Equipment.type,
-                sortDescriptors: Equipment.defaultSortDescriptors,
+                sortDescriptors: Equipment.defaultSortDescriptors(),
                 predicate: profile?.equipmentPredicate
             )
         }

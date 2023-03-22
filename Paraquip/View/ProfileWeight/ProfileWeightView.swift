@@ -43,7 +43,7 @@ struct ProfileWeightView: View {
             )
         } else {
             _equipment = FetchRequest(
-                sortDescriptors: Equipment.defaultSortDescriptors,
+                sortDescriptors: Equipment.defaultSortDescriptors(),
                 predicate: profile.equipmentPredicate
             )
         }
