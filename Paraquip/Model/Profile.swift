@@ -73,7 +73,9 @@ extension Profile: Creatable {
     }
     
     var paraglider: Paraglider? {
-        allEquipment.first(where: { $0.equipmentType == .paraglider }) as? Paraglider
+        equipment?.first(where: { element in
+            element is Paraglider
+        }) as? Paraglider
     }
 
     static func create(context: NSManagedObjectContext, name: String) -> Self {
@@ -95,6 +97,11 @@ extension Profile: Creatable {
         if contains(equipment) {
             removeFromEquipment(equipment)
         } else {
+            if [.paraglider, .harness].contains(equipment.equipmentType) {
+                for equipment in self.allEquipment.filter({ $0.equipmentType == equipment.equipmentType }) {
+                    removeFromEquipment(equipment)
+                }
+            }
             addToEquipment(equipment)
         }
     }

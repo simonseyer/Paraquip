@@ -31,9 +31,10 @@
 
 // Profile View
 "Check now" = "Jetzt checken";
-"profile_empty_text" = "Füge mit dem + oben rechts deine Ausrüstung hinzu";
 "Delete equipment" = "Ausrüstung löschen";
 "Remove from set" = "Aus Set entfernen";
+"Add existing %@" = "%@ zum Set hinzufügen";
+"Create new %@" = "%@ anlegen";
 
 // Equipment View
 "Type" = "Typ";

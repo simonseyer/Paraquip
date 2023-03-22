@@ -141,6 +141,14 @@ struct CoreData {
         profile2.additionalWeight = 10
         profile2.profileIcon = .beach
 
+        do {
+            let equipment = Paraglider.create(context: context)
+            equipment.brand = "Gin"
+            equipment.name = "Calypso"
+            equipment.equipmentSize = "M"
+            profile2.addToEquipment(equipment)
+        }
+
         return profile
     }
 

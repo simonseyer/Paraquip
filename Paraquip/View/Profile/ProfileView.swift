@@ -16,12 +16,17 @@ struct ProfileView: View {
     @State private var deleteEquipment: Equipment?
     @State private var isDeletingEquipment = false
     @State private var showWeightView = false
+    @State private var showAddEquipmentSheet = false
+    @State private var addEquipmentType: Equipment.EquipmentType?
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
 
-    @SectionedFetchRequest
-    private var equipment: SectionedFetchResults<Int16, Equipment>
-    
+    @FetchRequest
+    private var equipment: FetchedResults<Equipment>
+
+    @FetchRequest
+    private var allEquipment: FetchedResults<Equipment>
+
     private var title: String {
         profile?.profileName ?? LocalizedString("All Equipment")
     }
@@ -29,60 +34,92 @@ struct ProfileView: View {
     init(profile: Profile?) {
         self.profile = profile
         if ProcessInfo.isPreview {
-            _equipment = SectionedFetchRequest(
+            _equipment = FetchRequest(
                 entity: Equipment.previewEntity,
-                sectionIdentifier: \Equipment.type,
                 sortDescriptors: Equipment.defaultNSSortDescriptors,
                 predicate: profile?.equipmentPredicate
             )
+            _allEquipment = FetchRequest(
+                entity: Equipment.previewEntity,
+                sortDescriptors: Equipment.defaultNSSortDescriptors
+            )
         } else {
-            _equipment = SectionedFetchRequest(
-                sectionIdentifier: \Equipment.type,
+            _equipment = FetchRequest(
                 sortDescriptors: Equipment.defaultSortDescriptors(),
                 predicate: profile?.equipmentPredicate
+            )
+            _allEquipment = FetchRequest(
+                sortDescriptors: Equipment.defaultSortDescriptors()
             )
         }
     }
 
-    var body: some View {
-        Group {
-            if equipment.isEmpty {
-                ProfileEmptyView()
+    @ViewBuilder
+    func singleSection(type: Equipment.EquipmentType) -> some View {
+        let filteredEquipment = equipment.first { $0.equipmentType == type }
+        Section {
+            if let equipment = filteredEquipment {
+                EquipmentRow(equipment: equipment) {
+                    editEquipmentOperation = .init(editing: equipment,
+                                                   withParentContext: managedObjectContext)
+                } onDelete: {
+                    deleteEquipment = equipment
+                    isDeletingEquipment = true
+                }
             } else {
-                List(equipment) { section in
-                    Section {
-                        ForEach(section) { equipment in
-                            NavigationLink {
-                                EquipmentView(equipment: equipment)
-                            } label: {
-                                EquipmentRow(equipment: equipment)
-                            }
-                            .swipeActions {
-                                Button {
-                                    editEquipmentOperation = Operation(editing: equipment,
-                                                                       withParentContext: managedObjectContext)
-                                } label: {
-                                    Label("Edit", systemImage: "slider.vertical.3")
-                                }
-                                .tint(.blue)
-                                
-                                Button {
-                                    deleteEquipment = equipment
-                                    isDeletingEquipment = true
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                                .tint(.red)
-                            }
-                            .labelStyle(.titleOnly)
-                        }
-                    } header: {
-                        ProfileSectionHeader(equipmentType: section.id)
+                Button(action: {
+                    addEquipment(type: type)
+                }) {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "plus")
+                        Spacer()
                     }
                 }
-                .defaultBackground()
+                .frame(height: 50)
+                .font(.title)
+                .listRowBackground(Color.accentColor.opacity(0.25))
             }
+        } header: {
+            ProfileSectionHeader(equipmentType: type)
         }
+    }
+
+    @ViewBuilder
+    func listSection(type: Equipment.EquipmentType) -> some View {
+        let filteredEquipment = equipment.filter { $0.equipmentType == type }
+        if !filteredEquipment.isEmpty {
+            Section {
+                ForEach(filteredEquipment) { equipment in
+                    EquipmentRow(equipment: equipment) {
+                        editEquipmentOperation = .init(editing: equipment,
+                                                       withParentContext: managedObjectContext)
+                    } onDelete: {
+                        deleteEquipment = equipment
+                        isDeletingEquipment = true
+                    }
+                }
+            } header: {
+                ProfileSectionHeader(equipmentType: type)
+            }
+        } else {
+            EmptyView()
+        }
+    }
+
+    var body: some View {
+        List {
+            if profile != nil {
+                singleSection(type: .paraglider)
+                singleSection(type: .harness)
+            } else {
+                listSection(type: .paraglider)
+                listSection(type: .harness)
+            }
+            listSection(type: .reserve)
+            listSection(type: .gear)
+        }
+        .defaultBackground()
         .listStyle(.insetGrouped)
         .navigationTitle(title)
         .toolbar {
@@ -97,9 +134,9 @@ struct ProfileView: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    ForEach(Equipment.EquipmentType.allCases) { type in
+                    ForEach([Equipment.EquipmentType.reserve, Equipment.EquipmentType.gear]) { type in
                         Button(action: {
-                            createEquipmentOperation(type: type)
+                            addEquipment(type: type)
                         }) {
                             Label {
                                 Text(type.localizedName)
@@ -108,12 +145,9 @@ struct ProfileView: View {
                             }
                         }
                     }
-                    if let profile {
+                    if profile != nil {
                         Divider()
-                        Button(action: {
-                            editProfileOperation = Operation(editing: profile,
-                                                             withParentContext: managedObjectContext)
-                        }) {
+                        Button(action: editProfile) {
                             Label("Edit", systemImage: "slider.vertical.3")
                         }
                     }
@@ -164,9 +198,29 @@ struct ProfileView: View {
                 }
             }
         }
+        .confirmationDialog("Add equipment", isPresented: $showAddEquipmentSheet, presenting: $addEquipmentType) { equipmentType in
+            let type = equipmentType.wrappedValue!
+            let typeName = LocalizedString(type.localizedNameString)
+            Button("Add existing \(typeName)") {
+                editProfile()
+            }
+            Button("Create new \(typeName)") {
+                createEquipment(type: type)
+            }
+        }
     }
 
-    private func createEquipmentOperation(type: Equipment.EquipmentType) {
+    func addEquipment(type: Equipment.EquipmentType) {
+        let filteredEquipment = allEquipment.filter { $0.equipmentType == type }
+        guard profile != nil, !filteredEquipment.isEmpty else {
+            createEquipment(type: type)
+            return
+        }
+        addEquipmentType = type
+        showAddEquipmentSheet = true
+    }
+
+    func createEquipment(type: Equipment.EquipmentType) {
         let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
             Equipment.create(type: type, context: context)
         }
@@ -174,6 +228,12 @@ struct ProfileView: View {
             operation.object(for: profile).addToEquipment(operation.object)
         }
         editEquipmentOperation = operation
+    }
+
+    func editProfile() {
+        guard let profile else { return }
+        editProfileOperation = Operation(editing: profile,
+                                         withParentContext: managedObjectContext)
     }
 }
 

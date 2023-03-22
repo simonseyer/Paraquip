@@ -13,7 +13,6 @@
 "icon_attribution" = "Icons by Font Awesome used without modification — see [license](https://fontawesome.com/license)";
 
 // Notification View
-"profile_empty_text" = "Add your first equipment by tapping the + in the top right";
 "notification_info" = "Never forget a check again by enabling notifications for your equipment.";
 "notification_denied_info" = "Go to the Settings app and enable notifications for Paraquip.";
 
