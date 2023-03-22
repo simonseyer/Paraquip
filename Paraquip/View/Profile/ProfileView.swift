@@ -33,25 +33,15 @@ struct ProfileView: View {
 
     init(profile: Profile?) {
         self.profile = profile
-        if ProcessInfo.isPreview {
-            _equipment = FetchRequest(
-                entity: Equipment.previewEntity,
-                sortDescriptors: Equipment.defaultNSSortDescriptors,
-                predicate: profile?.equipmentPredicate
-            )
-            _allEquipment = FetchRequest(
-                entity: Equipment.previewEntity,
-                sortDescriptors: Equipment.defaultNSSortDescriptors
-            )
-        } else {
-            _equipment = FetchRequest(
-                sortDescriptors: Equipment.defaultSortDescriptors(),
-                predicate: profile?.equipmentPredicate
-            )
-            _allEquipment = FetchRequest(
-                sortDescriptors: Equipment.defaultSortDescriptors()
-            )
-        }
+        _equipment = FetchRequest(
+            previewEntity: Equipment.previewEntity,
+            sortDescriptors: Equipment.defaultSortDescriptors(),
+            predicate: profile?.equipmentPredicate
+        )
+        _allEquipment = FetchRequest(
+            previewEntity: Equipment.previewEntity,
+            sortDescriptors: Equipment.defaultSortDescriptors()
+        )
     }
 
     @ViewBuilder

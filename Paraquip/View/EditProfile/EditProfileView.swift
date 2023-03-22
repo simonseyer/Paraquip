@@ -20,18 +20,11 @@ struct EditProfileView: View {
     
     init(profile: Profile) {
         self.profile = profile
-        if ProcessInfo.isPreview {
-            _allEquipment = SectionedFetchRequest(
-                entity: Equipment.previewEntity,
-                sectionIdentifier: \Equipment.type,
-                sortDescriptors: Equipment.defaultNSSortDescriptors
-            )
-        } else {
-            _allEquipment = SectionedFetchRequest(
-                sectionIdentifier: \Equipment.type,
-                sortDescriptors: Equipment.defaultSortDescriptors()
-            )
-        }
+        _allEquipment = SectionedFetchRequest(
+            previewEntity: Equipment.previewEntity,
+            sectionIdentifier: \Equipment.type,
+            sortDescriptors: Equipment.defaultSortDescriptors()
+        )
     }
 
     var body: some View {

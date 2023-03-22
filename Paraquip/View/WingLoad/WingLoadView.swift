@@ -19,18 +19,11 @@ struct WingLoadView: View {
     
     init(profile: Profile) {
         self.profile = profile
-        if ProcessInfo.isPreview {
-            _equipment = FetchRequest(
-                entity: Equipment.previewEntity,
-                sortDescriptors: Equipment.defaultNSSortDescriptors,
-                predicate: profile.equipmentPredicate
-            )
-        } else {
-            _equipment = FetchRequest(
-                sortDescriptors: Equipment.defaultSortDescriptors(),
-                predicate: profile.equipmentPredicate
-            )
-        }
+        _equipment = FetchRequest(
+            previewEntity: Equipment.previewEntity,
+            sortDescriptors: Equipment.defaultSortDescriptors(),
+            predicate: profile.equipmentPredicate
+        )
     }
     
     var body: some View {
