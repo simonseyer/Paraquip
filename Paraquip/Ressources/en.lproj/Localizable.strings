@@ -30,3 +30,6 @@
 // Profile Weight View
 "wing_load_explanation" = "The wing load is the (takeoff weight) / (projected area of the wing). It determines the speed with the best glide and how well the glider handles. The ideal value depends on the wing class and personal preferences.";
 "missing_projected_area_hint" = "Tap on your glider in the list above to enter the projected area of your wing.";
+
+// Migrations
+"single_equipment_migration_info" = "Going forward, only one paraglider and harness are supported per set.\n\nDuplicate equipment has been removed from sets but nothing has been deleted.\n\nJust create new sets and add the existing equipment.";

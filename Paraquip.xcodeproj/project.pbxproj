@@ -79,6 +79,7 @@
 		F4C6A4B229CB9A410017EC0E /* FetchRequestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */; };
 		F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */; };
 		F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */; };
+		F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +184,7 @@
 		F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequestExtensions.swift; sourceTree = "<group>"; };
 		F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
 		F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentMenu.swift; sourceTree = "<group>"; };
+		F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -301,6 +303,7 @@
 				0D491CC22829A5EE001BB9EC /* LogEntry.swift */,
 				0DA898AF284260A100D7568F /* Attachment.swift */,
 				0DEBE6C228B55D8900D46470 /* Slugify.swift */,
+				F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -640,6 +643,7 @@
 				0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */,
 				0D6E9C6F281D9C6A00EC585C /* RoundedCorner.swift in Sources */,
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
+				F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */,

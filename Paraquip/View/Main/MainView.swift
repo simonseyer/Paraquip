@@ -11,9 +11,11 @@ import CoreData
 struct MainView: View {
 
     @EnvironmentObject var notificationService: NotificationService
+    @EnvironmentObject var databaseMigration: DatabaseMigration
 
     @State private var showNotificationSettings = false
     @State private var presentedEquipment: Equipment? = nil
+    @State private var isShowingSingleEquipmentMigrationInfo = false
 
     var body: some View {
         NavigationView {
@@ -63,6 +65,15 @@ struct MainView: View {
                     }
             }
         }
+        .alert("Sets updated",
+               isPresented: $isShowingSingleEquipmentMigrationInfo) {
+            Button("Ok") {}
+        } message: {
+            Text("single_equipment_migration_info")
+        }
+        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) { newValue in
+            isShowingSingleEquipmentMigrationInfo = newValue
+        }
     }
 }
 
@@ -73,6 +84,7 @@ struct ContentView_Previews: PreviewProvider {
             .environment(\.managedObjectContext, CoreData.previewContext)
             .environmentObject(NotificationService(managedObjectContext: CoreData.previewContext,
                                                    notifications: FakeNotificationPlugin()))
+            .environmentObject(DatabaseMigration(context: CoreData.previewContext))
     }
 }
 

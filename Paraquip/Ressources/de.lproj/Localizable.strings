@@ -120,3 +120,8 @@
 "notification_check_due_days_body_one" = "%@ %@ muss in einem Tag gecheckt werden";
 "notification_check_due_days_body_two" = "%@ %@ muss in zwei Tagen gecheckt werden";
 "notification_check_due_days_body_other" = "%@ %@ muss in %@ Tagen gecheckt werden";
+
+// Migrations
+"Ok" = "Ok";
+"Sets updated" = "Sets aktualisiert";
+"single_equipment_migration_info" = "Ab jetzt werden nur noch ein Gleitschirm und Gurtzeug pro Set unterstützt.\n\nZusätzliche Ausrüstung wurde aus Sets entfernt, aber nichts wurde gelöscht.\n\nLege einfach neue Sets an und weise die existierende Ausrüstung zu.";
