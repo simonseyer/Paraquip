@@ -78,6 +78,10 @@ extension Profile: Creatable {
         }) as? Paraglider
     }
 
+    func singleEquipment(of type: Equipment.EquipmentType) -> Equipment? {
+        allEquipment.first { $0.equipmentType == type }
+    }
+
     static func create(context: NSManagedObjectContext, name: String) -> Self {
         let profile = Self(context: context)
         profile.id = UUID()

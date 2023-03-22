@@ -77,6 +77,8 @@
 		F4AF006F29BD15DC00EFA602 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
 		F4C6A4B029CB93670017EC0E /* LocalizationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */; };
 		F4C6A4B229CB9A410017EC0E /* FetchRequestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */; };
+		F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */; };
+		F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -179,6 +181,8 @@
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
 		F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationExtensions.swift; sourceTree = "<group>"; };
 		F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequestExtensions.swift; sourceTree = "<group>"; };
+		F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
+		F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +311,8 @@
 				0D11FBCA2620BF45009D9349 /* ProfileView.swift */,
 				0D2B2D142646A04D009873CE /* EquipmentRow.swift */,
 				0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */,
+				F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */,
+				F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -657,6 +663,8 @@
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
+				F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */,
+				F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */,
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
 				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
