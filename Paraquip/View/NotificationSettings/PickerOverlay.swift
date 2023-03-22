@@ -29,7 +29,7 @@ struct PickerOverlay : UIViewRepresentable {
         view.textField.layer.opacity = 0
 
         let toolBar: UIToolbar = {
-            let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""),
+            let doneButton = UIBarButtonItem(title: LocalizedString("Done"),
                                              style: .done,
                                              target: context.coordinator,
                                              action: #selector(Coordinator.dismiss))

@@ -68,7 +68,7 @@ struct ParaquipApp: App {
 
             if let manualData = equipment.manual?.data {
                 equipment.manualAttachment = Attachment.create(data: manualData,
-                                                               fileName: NSLocalizedString("Manual.pdf", comment: ""),
+                                                               fileName: LocalizedString("Manual.pdf"),
                                                                context: context)
                 equipment.manual = nil
             }
@@ -78,7 +78,7 @@ struct ParaquipApp: App {
            let profile = profiles.first,
            profile.name == "Paraquip",
            profile.equipment?.count ?? 0 == 0 {
-            profile.name = NSLocalizedString("Your Equipment", comment: "")
+            profile.name = LocalizedString("Your Equipment")
 
             for equipment in equipment {
                 profile.addToEquipment(equipment)
@@ -98,7 +98,7 @@ struct ParaquipApp: App {
             return
         }
 
-        _ = Profile.create(context: context, name: NSLocalizedString("Your Equipment", comment: ""))
+        _ = Profile.create(context: context, name: LocalizedString("Your Equipment"))
 
         do {
             try context.save()

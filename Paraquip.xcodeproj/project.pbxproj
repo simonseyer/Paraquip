@@ -76,6 +76,7 @@
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
 		F4AF006F29BD15DC00EFA602 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
+		F4C6A4B029CB93670017EC0E /* LocalizationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */; };
 		F4F8893328CC99B900E16AF5 /* ProcessInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -178,6 +179,7 @@
 		F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackground.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
+		F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationExtensions.swift; sourceTree = "<group>"; };
 		F4F8893228CC99B900E16AF5 /* ProcessInfoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -367,6 +369,7 @@
 			children = (
 				0D80E1CC2662B7ED00305B23 /* LoggerExtensions.swift */,
 				0D80E1D42663F49200305B23 /* ErrorExtensions.swift */,
+				F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -677,6 +680,7 @@
 				0D09984826D81B9200E297F9 /* ProfileListView.swift in Sources */,
 				0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */,
 				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
+				F4C6A4B029CB93670017EC0E /* LocalizationExtensions.swift in Sources */,
 				0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */,
 				0DC585F0275CE0F7001B346E /* SharpImageView.swift in Sources */,
 				0D919AF026513B27005AB7A7 /* PickerOverlay.swift in Sources */,

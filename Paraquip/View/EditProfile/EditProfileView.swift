@@ -65,7 +65,7 @@ struct EditProfileView: View {
                 }
             }
         }
-        .navigationTitle(profile.profileName.isEmpty ? NSLocalizedString("New Set", comment: "") : profile.profileName)
+        .navigationTitle(profile.profileName.isEmpty ? LocalizedString("New Set") : profile.profileName)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {

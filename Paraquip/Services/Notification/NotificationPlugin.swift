@@ -75,6 +75,6 @@ extension Notification: CustomStringConvertible {
 
 extension String {
     init(key: String, arguments: [String]) {
-        self.init(format: NSLocalizedString(key, comment: ""), arguments: arguments)
+        self.init(format: LocalizedString(key), arguments: arguments)
     }
 }

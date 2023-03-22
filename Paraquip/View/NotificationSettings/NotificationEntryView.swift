@@ -96,7 +96,7 @@ struct NotificationEntryView: View {
     private static func unitOptions(for multiplier: Int) -> [String] {
         let plural = multiplier != 1
         let units = plural ? ["days", "months"] : ["day", "month"]
-        return units.map { NSLocalizedString($0, comment: "") }
+        return units.map { LocalizedString($0) }
     }
 
     private static func multiplierOptions(for unit: NotificationConfig.Unit) -> [String] {

@@ -42,7 +42,7 @@ struct CoreData {
         dateFormatter.locale = Locale(identifier: "de")
 
         let profile = Profile.create(context: context)
-        profile.name = NSLocalizedString("Your Equipment", comment: "")
+        profile.name = LocalizedString("Your Equipment")
         profile.pilotWeight = 70
         profile.additionalWeight = 10
         profile.profileIcon = .default
@@ -136,7 +136,7 @@ struct CoreData {
         }
         
         let profile2 = Profile.create(context: context)
-        profile2.name = NSLocalizedString("Dune Flying", comment: "")
+        profile2.name = LocalizedString("Dune Flying")
         profile2.pilotWeight = 70
         profile2.additionalWeight = 10
         profile2.profileIcon = .beach

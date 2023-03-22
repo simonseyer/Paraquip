@@ -23,7 +23,7 @@ struct ProfileView: View {
     private var equipment: SectionedFetchResults<Int16, Equipment>
     
     private var title: String {
-        profile?.profileName ?? NSLocalizedString( "All Equipment", comment: "")
+        profile?.profileName ?? LocalizedString("All Equipment")
     }
 
     init(profile: Profile?) {
