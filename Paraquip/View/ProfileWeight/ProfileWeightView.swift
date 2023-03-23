@@ -112,8 +112,8 @@ struct ProfileWeightView: View {
                     }
                     Spacer()
                     if let wingLoad = profile.wingLoad {
-                        Text(wingLoad, format: .number.precision(.fractionLength(2)))
-                            .monospacedDigit()
+                        WingLoadText(wingLoad: wingLoad,
+                                     desiredWingLoad: profile.desiredWingLoad)
                     } else {
                         Text("—")
                             .foregroundColor(.secondary)

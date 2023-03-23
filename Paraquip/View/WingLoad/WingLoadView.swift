@@ -25,6 +25,14 @@ struct WingLoadView: View {
             predicate: profile.equipmentPredicate
         )
     }
+
+    let wingLoadRanges: [(String, Color)] = [
+        ("Very low", .accentColor.opacity(0.25)),
+        ("Low", .accentColor.opacity(0.7)),
+        ("Middle", .accentColor.opacity(1.0)),
+        ("High", .accentColor.opacity(0.7)),
+        ("Very high", .accentColor.opacity(0.25))
+    ]
     
     var body: some View {
         VStack {
@@ -34,6 +42,35 @@ struct WingLoadView: View {
             Text("wing_load_explanation")
                 // fixes glitch when closing sheet
                 .fixedSize(horizontal: false, vertical: true)
+
+            VStack(spacing: 8) {
+                HStack {
+                    Text("Desired wing load:")
+                        .bold()
+                    Text(profile.desiredWingLoad, format: .number.precision(.fractionLength(2)))
+                        .monospacedDigit()
+                }
+
+                Slider(value: $profile.desiredWingLoad, in: (3.8)...(4.9))
+
+                GeometryReader { geometry in
+                    HStack(alignment: .top, spacing: 0) {
+                        ForEach(wingLoadRanges, id: \.0) { range in
+                            VStack {
+                                Rectangle()
+                                    .foregroundColor(range.1)
+                                    .frame(height: 10)
+                                Text(LocalizedStringKey(range.0))
+                                    .lineLimit(2)
+                                    .multilineTextAlignment(.center)
+                            }.frame(width: 0.2 * geometry.size.width)
+                        }
+                    }
+                    .font(.caption)
+                }
+
+            }.padding([.top])
+
             Spacer()
             if profile.paraglider == nil {
                 Button(action: {
@@ -60,7 +97,7 @@ struct WingLoadView: View {
         }
         .buttonStyle(.bordered)
         .controlSize(.large)
-        .padding([.top, .leading, .trailing], 40)
+        .padding([.top, .leading, .trailing], 30)
         .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
                 EditEquipmentView(equipment: operation.object,
@@ -98,5 +135,6 @@ struct WingLoadView_Previews: PreviewProvider {
             .previewDisplayName("No Wing Load")
         }
         .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.locale, .init(identifier: "de"))
     }
 }

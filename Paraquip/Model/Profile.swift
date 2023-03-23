@@ -34,6 +34,8 @@ extension Profile: Creatable {
 
         static var `default`: Icon { .mountain }
     }
+
+    static let defaultWingLoad = 4.35
     
     var equipmentPredicate: NSPredicate {
         .init(format: "%@ IN %K", self, #keyPath(Equipment.profiles))
@@ -86,6 +88,7 @@ extension Profile: Creatable {
         let profile = Self(context: context)
         profile.id = UUID()
         profile.name = name
+        profile.desiredWingLoad = defaultWingLoad
         return profile
     }
 

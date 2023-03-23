@@ -90,9 +90,15 @@
 "Wing load" = "Flächenbelastung";
 
 // Wing Load View
-"wing_load_explanation" = "Die Flächenbelastung wird berechnet über das (Startgewicht) / (Projizierte Fläche des Gleitschirms). Sie bestimmt die Geschwindigkeit des besten Gleitens und die Manövrierfähigkeit des Schirms. Der optimale Wert ist abhängig von der Schirmklasse und persönlichen Präferenzen.";
+"wing_load_explanation" = "Die Flächenbelastung wird berechnet durch: `Startgewicht / Projizierte Fläche des Gleitschirms`.\n\nSie bestimmt die Geschwindigkeit des besten Gleitens und die Manövrierfähigkeit des Schirms. Der optimale Wert ist abhängig von der Schirmklasse und persönlichen Präferenzen.";
+"Desired wing load:" = "Gewünschte Flächenbelastung:";
 "Add paraglider" = "Gleitschirm anlegen";
 "Enter projected area" = "Projizierte Fläche eingeben";
+"Very low" = "Sehr niedrig";
+"Low" = "Niedrig";
+"Middle" = "Mittig";
+"High" = "Hoch";
+"Very high" = "Sehr hoch";
 
 // Log Entry View
 "Attachments" = "Anhänge";

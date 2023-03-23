@@ -80,6 +80,7 @@
 		F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */; };
 		F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */; };
 		F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */; };
+		F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,6 +186,7 @@
 		F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
 		F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentMenu.swift; sourceTree = "<group>"; };
 		F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigration.swift; sourceTree = "<group>"; };
+		F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadText.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -469,6 +471,7 @@
 			children = (
 				0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */,
 				0DC585F5275D08FA001B346E /* WeightRangeView.swift */,
+				F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */,
 			);
 			path = ProfileWeight;
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,
 				0D491CC32829A5EE001BB9EC /* LogEntry.swift in Sources */,
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
+				F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
 				0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */,
 				0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */,

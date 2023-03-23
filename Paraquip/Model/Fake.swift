@@ -45,6 +45,7 @@ struct CoreData {
         profile.name = LocalizedString("Your Equipment")
         profile.pilotWeight = 70
         profile.additionalWeight = 10
+        profile.desiredWingLoad = 4.5
         profile.profileIcon = .default
 
         do {

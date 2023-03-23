@@ -59,6 +59,10 @@ class DatabaseMigration: ObservableObject {
         for profile in profiles {
             hasRemovedEquipment = removeDuplicateEquipment(from: profile, type: .paraglider) || hasRemovedEquipment
             hasRemovedEquipment = removeDuplicateEquipment(from: profile, type: .harness) || hasRemovedEquipment
+
+            if profile.desiredWingLoad == 0 {
+                profile.desiredWingLoad = Profile.defaultWingLoad
+            }
         }
         DispatchQueue.main.async {
             self.hasRemovedDuplicateEquipment = hasRemovedEquipment
