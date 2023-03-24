@@ -106,7 +106,7 @@ struct ProfileView: View {
                     Button {
                         isShowingWeightView = true
                     } label: {
-                        Image(systemName: "scalemass.fill")
+                        Label("Weight Check", systemImage: "scalemass.fill")
                     }
                 }
             }

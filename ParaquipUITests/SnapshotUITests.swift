@@ -32,17 +32,21 @@ class SnapshotUITests: XCTestCase {
         setupSnapshot(app)
         app.launch()
 
-        app.navigationBars.buttons.element(boundBy: 0).tap()
-        snapshot("04NotificationsScreen")
+        app.navigationBars.buttons[localized("Notifications")].tap()
+        snapshot("05NotificationsScreen")
 
         app.buttons[localized("Close")].tap()
         app.buttons[localized("Your Equipment")].tap()
 
         snapshot("01ProfileScreen")
 
-        app.navigationBars.buttons.element(boundBy: 1).tap()
+        app.navigationBars.buttons[localized("Weight Check")].tap()
         snapshot("03ProfileWeightScreen")
 
+        app.staticTexts[localized("Wing load")].tap()
+        snapshot("04WingLoadScreen")
+
+        app.scrollViews.element(boundBy: 0).swipeDown()
         app.buttons[localized("Close")].tap()
         app.collectionViews.buttons["Explorer 2"].tap()
 

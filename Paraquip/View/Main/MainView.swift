@@ -25,7 +25,7 @@ struct MainView: View {
                         Button {
                             showNotificationSettings = true
                         } label: {
-                            Image(systemName: "bell.fill")
+                            Label("Notifications", systemImage: "bell.fill")
                         }
                     }
                 }
