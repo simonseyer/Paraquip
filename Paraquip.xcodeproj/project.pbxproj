@@ -81,6 +81,7 @@
 		F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */; };
 		F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */; };
 		F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */; };
+		F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +188,7 @@
 		F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentMenu.swift; sourceTree = "<group>"; };
 		F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigration.swift; sourceTree = "<group>"; };
 		F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadText.swift; sourceTree = "<group>"; };
+		F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingClassPill.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -497,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				F496828F29C6854D0061CC7E /* WingLoadView.swift */,
+				F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */,
 			);
 			path = WingLoad;
 			sourceTree = "<group>";
@@ -651,6 +654,7 @@
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
+				F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
 				F41FE15229BCDF1F007E69A5 /* DefaultBackground.swift in Sources */,

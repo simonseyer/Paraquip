@@ -90,8 +90,18 @@
 "Wing load" = "Flächenbelastung";
 
 // Wing Load View
-"wing_load_explanation" = "Die Flächenbelastung wird berechnet durch: `Startgewicht / Projizierte Fläche des Gleitschirms`.\n\nSie bestimmt die Geschwindigkeit des besten Gleitens und die Manövrierfähigkeit des Schirms. Der optimale Wert ist abhängig von der Schirmklasse und persönlichen Präferenzen.";
-"Desired wing load:" = "Gewünschte Flächenbelastung:";
+"wing_load_calculation" = "Die Flächenbelastung wird berechnet durch:";
+"Full takeoff weight (kg)" = "Komplettes Startgewicht (kg)";
+"Projected area of the wing (m²)" = "Projizierte Fläche des Gleitschirms (m²)";
+"wing_load_explanation" = "Sie bestimmt die Geschwindigkeit des bestens Gleitens und weitere Charakteristiken. Der optimale Wert ist abhängig von Schirm und persönlichen Präferenzen.";
+"Desired wing load:" = "Erwünschte Flächenbelastung:";
+"wing_load_disclaimer" = "Ausschließlich Richtwerte. Quellen: THERMIK 11-12/2020 (Einordnung), DHV Info 220/2019 (Schirm-Klassen)";
+"weight_range_warning" = "In keinem Fall darf der zugelassene Gewichtsbereich verlassen werden";
+"Guidance" = "Entscheidungshilfe";
+"Lower wing load %@" = "Niedrigere Flächenbelastung %@";
+"Higher wing load %@" = "Höhere Flächenbelastung %@";
+"lower_wing_load_list" = "• Thermik-Einsteiger & Flachland-Flieger\n• Gut in schwacher/ruhiger Thermik\n• Niedrigerer Trimm/Top-Speed\n• Gedämpftere Kappe\n• Schwammigere Steuerung\n• Extremflugverhalten weniger ausgeprägt";
+"higher_wing_load_list" = "• Streckenfliegen & Freestyle\n• Große Streckung des Schirms\n• Begünstigt beschleunigtes Fliegen\n• Präziseres, satteres Handling\n• Stabiler in bewegter Luft\n• Penetriert Gegenwind besser\n• Dynamischer (auch in Extremsituationen)";
 "Add paraglider" = "Gleitschirm anlegen";
 "Enter projected area" = "Projizierte Fläche eingeben";
 "Very low" = "Sehr niedrig";
@@ -99,6 +109,8 @@
 "Middle" = "Mittig";
 "High" = "Hoch";
 "Very high" = "Sehr hoch";
+"Further reading" = "Weitere Informationen";
+"further_reading_text" = "Ich empfehle, sich noch tiefer mit dem Thema zu beschäftigen. Zum Beispiel über folgende Artikel:\n• [Der richtige Gewichtsbereich (DHV Info 220)](https://issuu.com/dhv-info/docs/4a577405?fr=sYmY4YTIxOTA5Mg)\n• [Fliegen am „Sweetspot“ (THERMIK 11/2020)](https://www.thermik.at/thermik-11-12-2020/)\n• [Weight Ranges & Wing Loading (Flybubble)](https://flybubble.com/blog/paragliders-weight-ranges)";
 
 // Log Entry View
 "Attachments" = "Anhänge";
