@@ -43,6 +43,7 @@ class SnapshotUITests: XCTestCase {
         app.navigationBars.buttons[localized("Weight Check")].tap()
         snapshot("03ProfileWeightScreen")
 
+        app.collectionViews.element(boundBy: 0).swipeUp()
         app.staticTexts[localized("Wing load")].tap()
         snapshot("04WingLoadScreen")
 
