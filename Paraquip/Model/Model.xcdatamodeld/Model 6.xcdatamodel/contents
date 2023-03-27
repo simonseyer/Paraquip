@@ -41,7 +41,7 @@
     <entity name="Paraglider" representedClassName="Paraglider" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <entity name="Profile" representedClassName="Profile" syncable="YES" codeGenerationType="class">
         <attribute name="additionalWeight" optional="YES" attributeType="Double" defaultValueString="10" usesScalarValueType="YES"/>
-        <attribute name="desiredWingLoad" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="desiredWingLoadNumber" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
         <attribute name="icon" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String" defaultValueString=""/>

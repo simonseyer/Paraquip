@@ -31,7 +31,6 @@
 "wing_load_calculation" = "The wing load is defined as:";
 "wing_load_explanation" = "It determines the speed of best glide and other characteristics. The ideal value depends on the wing and personal preferences.";
 "wing_load_disclaimer" = "Indicative values only. Sources: THERMIK 11-12/2020 (classification), DHV Info 220/2019 (wing classes).";
-"weight_range_warning" = "In no case is it allowed to fly outside the certified weight range";
 "lower_wing_load_list" = "• Pilots new to thermals & for flying in flatland\n• Good in weak/soft thermals\n• Lower trim/top speed\n• Damped wing\n• Spongy controls\n• Extreme flight behaviour less pronounced";
 "higher_wing_load_list" = "• XC-flying & freestyle\n• Higher aspect ratio wings\n• Favours accelerated flying\n• More precise, firmer handling\n• More stable in turbulent air\n• Penetrates headwind better\n• More dynamic (also in extreme situations)";
 "further_reading_text" = "I recommend to dive deeper into the topic, for example with the following articles:\n• [Der richtige Gewichtsbereich (DHV Info 220)](https://issuu.com/dhv-info/docs/4a577405?fr=sYmY4YTIxOTA5Mg)\n• [Fliegen am „Sweetspot“ (THERMIK 11/2020)](https://www.thermik.at/thermik-11-12-2020/)\n• [Weight Ranges & Wing Loading (Flybubble)](https://flybubble.com/blog/paragliders-weight-ranges)";

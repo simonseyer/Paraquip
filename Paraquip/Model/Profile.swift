@@ -35,8 +35,8 @@ extension Profile: Creatable {
         static var `default`: Icon { .mountain }
     }
 
-    static let defaultWingLoad = 4.35
-    
+    private static let defaultWingLoad = 4.35
+
     var equipmentPredicate: NSPredicate {
         .init(format: "%@ IN %K", self, #keyPath(Equipment.profiles))
     }
@@ -88,7 +88,6 @@ extension Profile: Creatable {
         let profile = Self(context: context)
         profile.id = UUID()
         profile.name = name
-        profile.desiredWingLoad = defaultWingLoad
         return profile
     }
 
@@ -126,6 +125,39 @@ extension Profile: Creatable {
             return nil
         }
         let weightValue = takeoffWeightMeasurement.converted(to: .kilograms).value
+        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
+        return weightValue / projectedAreaValue
+    }
+
+    var desiredWingLoad: Double {
+        get {
+            if let desiredWingLoadNumber {
+                return desiredWingLoadNumber.doubleValue
+            } else if let minimumWingLoad, let maximumWingLoad {
+                return (minimumWingLoad + maximumWingLoad) / 2.0
+            } else {
+                return Self.defaultWingLoad
+            }
+        }
+        set { desiredWingLoadNumber = NSNumber(value: newValue) }
+    }
+
+    var minimumWingLoad: Double? {
+        guard let projectedArea = paraglider?.projectedAreaMeasurement,
+                let weightRange = paraglider?.weightRangeMeasurement else {
+            return nil
+        }
+        let weightValue = weightRange.lowerBound.converted(to: .kilograms).value
+        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
+        return weightValue / projectedAreaValue
+    }
+
+    var maximumWingLoad: Double? {
+        guard let projectedArea = paraglider?.projectedAreaMeasurement,
+                let weightRange = paraglider?.weightRangeMeasurement else {
+            return nil
+        }
+        let weightValue = weightRange.upperBound.converted(to: .kilograms).value
         let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
         return weightValue / projectedAreaValue
     }
