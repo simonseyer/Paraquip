@@ -111,7 +111,7 @@ struct ProfileWeightView: View {
                         }
                     }
                     Spacer()
-                    if let wingLoad = profile.wingLoad {
+                    if let wingLoad = profile.wingLoad.current {
                         WingLoadText(wingLoad: wingLoad,
                                      desiredWingLoad: profile.desiredWingLoad)
                     } else {

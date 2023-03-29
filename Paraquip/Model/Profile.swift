@@ -14,6 +14,12 @@ extension Measurement where UnitType == UnitMass {
     }
 }
 
+extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
 extension Profile: Creatable {
     enum Icon: String, CaseIterable, Identifiable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
@@ -120,45 +126,23 @@ extension Profile: Creatable {
         equipmentWeightMeasurement + pilotWeightMeasurement + additionalWeightMeasurement
     }
     
-    var wingLoad: Double? {
-        guard let projectedArea = paraglider?.projectedAreaMeasurement else {
-            return nil
-        }
-        let weightValue = takeoffWeightMeasurement.converted(to: .kilograms).value
-        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
-        return weightValue / projectedAreaValue
+    var wingLoad: WingLoad {
+        WingLoad(takeoffWeight: takeoffWeightMeasurement,
+                 projectedWingArea: paraglider?.projectedAreaMeasurement,
+                 wingWeightRange: paraglider?.weightRangeMeasurement)
     }
 
     var desiredWingLoad: Double {
         get {
             if let desiredWingLoadNumber {
-                return desiredWingLoadNumber.doubleValue
-            } else if let minimumWingLoad, let maximumWingLoad {
-                return (minimumWingLoad + maximumWingLoad) / 2.0
+                // Clamp to exentededRange to make sure it does not exceed it when weight range changes
+                return desiredWingLoadNumber.doubleValue.clamped(to: wingLoad.extendedRange)
+            } else if let certifiedWingLoadRange = wingLoad.certifiedRange {
+                return (certifiedWingLoadRange.lowerBound + certifiedWingLoadRange.upperBound) / 2.0
             } else {
                 return Self.defaultWingLoad
             }
         }
         set { desiredWingLoadNumber = NSNumber(value: newValue) }
-    }
-
-    var minimumWingLoad: Double? {
-        guard let projectedArea = paraglider?.projectedAreaMeasurement,
-                let weightRange = paraglider?.weightRangeMeasurement else {
-            return nil
-        }
-        let weightValue = weightRange.lowerBound.converted(to: .kilograms).value
-        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
-        return weightValue / projectedAreaValue
-    }
-
-    var maximumWingLoad: Double? {
-        guard let projectedArea = paraglider?.projectedAreaMeasurement,
-                let weightRange = paraglider?.weightRangeMeasurement else {
-            return nil
-        }
-        let weightValue = weightRange.upperBound.converted(to: .kilograms).value
-        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
-        return weightValue / projectedAreaValue
     }
 }
