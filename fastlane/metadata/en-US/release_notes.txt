@@ -1,1 +1,1 @@
-Paraquip now calculates the wing load for you. Just add the projected area of your glider and it will show up in the weight check.
+Paraquip now helps you choose your perfect wing loading. Simply enter the projected area for your paraglider and tap on "Wing load" in the weight check screen.

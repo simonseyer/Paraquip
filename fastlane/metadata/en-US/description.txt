@@ -1,7 +1,5 @@
-With Paraquip you will never forget to check your paragliding equipment again. Easily keep track and get notified about upcoming checks.
+With Paraquip you'll never forget to check your paragliding equipment again. It's easy to keep a record and be notified of upcoming checks.
 
-Simply set up your paraglider, harness and rescue in the app and enter your checks. You right away see you when the next check is due.
+Simply put your paraglider, harness, and rescue into the app and enter your checks. The app shows you directly when the next check is due and notifies you in advance. So that your equipment is always ready, even for spontaneous paragliding trips.
 
-With the flexible notifications you will always be notified when it suits you. So that even for spontaneous paragliding trips the equipment is always ready.
-
-And with the handy weight check you always know if the weight range of your paraglider & rescue fit.
+To optimize performance and safety, the app automatically calculates whether the paraglider & rescue are within the weight range and helps you choose a good wing loading.

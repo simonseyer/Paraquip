@@ -1,1 +1,1 @@
-Paraquip berechnet jetzt auch die Flächenbelastung für dich. Einfach die projizierte Fläche für deinen Gleitschirm eintragen und sie wird im Gewichtsrechner angezeigt.
+Paraquip hilft dir jetzt, deine perfekte Flächenbelastung zu wählen. Einfach die projizierte Fläche für deinen Gleitschirm eintragen und im Gewichtsrechner auf "Flächenbelastung" tippen.
