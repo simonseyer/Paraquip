@@ -45,8 +45,10 @@ class SnapshotUITests: XCTestCase {
 
         app.collectionViews.element(boundBy: 0).swipeUp()
         app.staticTexts[localized("Wing load")].tap()
+        app.scrollViews.element(boundBy: 0).swipeUp()
         snapshot("04WingLoadScreen")
 
+        app.scrollViews.element(boundBy: 0).swipeDown()
         app.scrollViews.element(boundBy: 0).swipeDown()
         app.buttons[localized("Close")].tap()
         app.collectionViews.buttons["Explorer 2"].tap()
@@ -56,6 +58,6 @@ class SnapshotUITests: XCTestCase {
     
     func localized(_ key: String) -> String {
         let testBundle = Bundle(for: type(of: self))
-        return NSLocalizedString(key, bundle: testBundle, comment: "")
+        return testBundle.localizedString(forKey: key, value: nil, table: nil)
     }
 }
