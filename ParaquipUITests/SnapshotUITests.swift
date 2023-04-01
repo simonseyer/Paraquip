@@ -40,6 +40,10 @@ class SnapshotUITests: XCTestCase {
 
         snapshot("01ProfileScreen")
 
+        app.collectionViews.buttons["Explorer 2"].tap()
+        snapshot("02EquipmentScreen")
+
+        app.buttons[localized("Your Equipment")].tap()
         app.navigationBars.buttons[localized("Weight Check")].tap()
         snapshot("03ProfileWeightScreen")
 
@@ -47,13 +51,6 @@ class SnapshotUITests: XCTestCase {
         app.staticTexts[localized("Wing load")].tap()
         app.scrollViews.element(boundBy: 0).swipeUp()
         snapshot("04WingLoadScreen")
-
-        app.scrollViews.element(boundBy: 0).swipeDown()
-        app.scrollViews.element(boundBy: 0).swipeDown()
-        app.buttons[localized("Close")].tap()
-        app.collectionViews.buttons["Explorer 2"].tap()
-
-        snapshot("02EquipmentScreen")
     }
     
     func localized(_ key: String) -> String {
