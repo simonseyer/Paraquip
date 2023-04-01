@@ -10,7 +10,6 @@ import SwiftUI
 struct DesiredWingLoadView: View {
 
     @ObservedObject var profile: Profile
-    let wingLoad: WingLoad
 
     @State private var isCertifiedWingLoadVisible = true
     @State private var isWingClassIndicationVisible = true
@@ -18,9 +17,8 @@ struct DesiredWingLoadView: View {
     @FetchRequest
     private var equipment: FetchedResults<Equipment>
 
-    init(profile: Profile, wingLoad: WingLoad) {
+    init(profile: Profile) {
         self.profile = profile
-        self.wingLoad = wingLoad
         _equipment = FetchRequest(
             previewEntity: Equipment.previewEntity,
             sortDescriptors: Equipment.defaultSortDescriptors(),
@@ -35,7 +33,7 @@ struct DesiredWingLoadView: View {
                 .padding(.bottom)
 
             WingLoadGraphic(
-                wingLoad: wingLoad,
+                wingLoad: profile.wingLoad,
                 desiredWingLoad: profile.desiredWingLoad,
                 isCertifiedWingLoadVisible: isCertifiedWingLoadVisible,
                 isWingClassIndicationVisible: isWingClassIndicationVisible
@@ -43,7 +41,7 @@ struct DesiredWingLoadView: View {
 
             HStack(spacing: 2) {
                 Slider(value: $profile.desiredWingLoad,
-                       in: wingLoad.extendedRange)
+                       in: profile.wingLoad.extendedRange)
                     .padding(.trailing, 8)
                 Text(profile.desiredWingLoad, format: .number.precision(.fractionLength(2)))
                     .monospacedDigit()
@@ -53,7 +51,7 @@ struct DesiredWingLoadView: View {
             .padding([.top, .bottom], 24)
 
             WingLoadLegendView(
-                isCertifiedWingLoadAvailable: wingLoad.certifiedRange != nil,
+                isCertifiedWingLoadAvailable: profile.wingLoad.certifiedRange != nil,
                 isCertifiedWingLoadVisible: $isCertifiedWingLoadVisible,
                 isWingClassIndicationVisible: $isWingClassIndicationVisible
             )
@@ -71,10 +69,7 @@ struct DesiredWingLoadView: View {
 
 struct DesiredWingLoadView_Previews: PreviewProvider {
     static var previews: some View {
-        DesiredWingLoadView(
-            profile: CoreData.fakeProfile,
-            wingLoad: CoreData.fakeProfile.wingLoad
-        )
+        DesiredWingLoadView(profile: CoreData.fakeProfile)
         .padding()
         .environment(\.managedObjectContext, CoreData.previewContext)
     }

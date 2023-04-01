@@ -17,34 +17,48 @@ struct WingLoadView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text("Wing load")
-                    .font(.title)
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Wing load")
+                        .font(.title)
 
-                Text("wing_load_calculation")
+                    Text("wing_load_calculation")
 
-                WingLoadCalculationGraphic()
+                    WingLoadCalculationGraphic()
 
-                Text("wing_load_explanation")
-
-                if let wingLoad = profile.wingLoad {
-                    DesiredWingLoadView(
-                        profile: profile,
-                        wingLoad: wingLoad
-                    )
-                    .padding([.leading, .trailing], -8)
-                } else if let paraglider = profile.paraglider {
-                    ProminentButton(text: "Enter projected area") {
-                        editEquipment(equipment: paraglider)
-                    }
-                } else {
-                    ProminentButton(text: "Add paraglider") {
-                        createEquipment(type: .paraglider)
-                    }
+                    Text("wing_load_explanation")
                 }
+
+                DesiredWingLoadView(profile: profile)
+                    .padding([.leading, .trailing], -8)
 
                 WingLoadGuidanceView()
             }
             .padding()
+        }
+        .safeAreaInset(edge: .bottom) {
+            if profile.wingLoad.current == nil {
+                Group {
+                    if let paraglider = profile.paraglider {
+                        Button {
+                            editEquipment(equipment: paraglider)
+                        } label: {
+                            Text("Enter projected area")
+                                .frame(maxWidth: .infinity)
+                        }
+                    } else {
+                        Button {
+                            createEquipment(type: .paraglider)
+                        } label: {
+                            Text("Add paraglider")
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
         }
         .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
@@ -67,22 +81,6 @@ struct WingLoadView: View {
         }
         operation.object(for: profile).addToEquipment(operation.object)
         editEquipmentOperation = operation
-    }
-}
-
-fileprivate struct ProminentButton: View {
-
-    let text: LocalizedStringKey
-    let action: () -> Void
-
-    @ViewBuilder
-    var body: some View {
-        Button(action: action) {
-            Text(text)
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.borderedProminent)
-        .controlSize(.large)
     }
 }
 

@@ -20,7 +20,7 @@ struct WingLoadCalculationGraphic: View {
         }
         .fixedSize()
         .monospaced()
-        .font(.caption)
+        .font(.footnote)
     }
 }
 
