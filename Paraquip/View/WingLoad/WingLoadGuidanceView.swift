@@ -30,6 +30,7 @@ struct WingLoadGuidanceView: View {
 
         }
         .font(.body.leading(.loose))
+        .textSelection(.enabled)
     }
 }
 

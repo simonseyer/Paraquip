@@ -27,6 +27,7 @@ struct WingLoadView: View {
 
                     Text("wing_load_explanation")
                 }
+                .textSelection(.enabled)
 
                 DesiredWingLoadView(profile: profile)
                     .padding([.leading, .trailing], -8)
