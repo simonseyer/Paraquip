@@ -21,9 +21,9 @@ struct IconSelectionView: View {
             .frame(width: 40, height: 40)
             .background(
                 isSelected ? Color.accentColor :
-                    Color(UIColor.systemGray5)
+                    Color(UIColor.secondarySystemBackground)
             )
-            .foregroundColor(isSelected ? .white : .black)
+            .foregroundColor(isSelected ? .white : .secondary)
             .cornerRadius(6)
     }
 }

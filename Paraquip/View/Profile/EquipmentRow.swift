@@ -28,7 +28,7 @@ struct EquipmentRow: View {
                             .resizable()
                             .scaledToFit()
                             .padding(10)
-                            .opacity(0.4)
+                            .opacity(0.5)
                             .foregroundColor(.accentColor)
                     }
                 }
@@ -65,13 +65,15 @@ struct EquipmentRow: View {
 struct EquipmentRow_Previews: PreviewProvider {
 
     static var previews: some View {
-        List {
-            EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider), onEdit: {}, onDelete: {})
-            EquipmentRow(equipment: equipment(for: "Unknown", type: .harness), onEdit: {}, onDelete: {})
-            EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve), onEdit: {}, onDelete: {})
-            EquipmentRow(equipment: equipment(for: "Unknown", type: .gear), onEdit: {}, onDelete: {})
-            ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
-                EquipmentRow(equipment: equipment(for: brand), onEdit: {}, onDelete: {})
+        NavigationStack {
+            List {
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider), onEdit: {}, onDelete: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .harness), onEdit: {}, onDelete: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve), onEdit: {}, onDelete: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .gear), onEdit: {}, onDelete: {})
+                ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
+                    EquipmentRow(equipment: equipment(for: brand), onEdit: {}, onDelete: {})
+                }
             }
         }
     }

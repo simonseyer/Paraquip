@@ -113,9 +113,9 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
         GeometryReader { metrics in
             ZStack(alignment: .topLeading) {
                 if isHighlighted {
-                    Color(UIColor.systemGray4)
+                    Color(uiColor: .systemGray5)
                 } else {
-                    Color.white
+                    Color(uiColor: .secondarySystemGroupedBackground)
                 }
 
                 Rectangle()

@@ -24,14 +24,17 @@ struct BrandIconView: View {
             .frame(maxWidth: iconSize.width * scale,
                    maxHeight: iconSize.height * scale,
                    alignment: alignment)
+            .shadow(color: Color(uiColor: .white), radius: 0.5, x: 0.5, y: 0.5)
     }
 }
 
 struct BrandIconView_Previews: PreviewProvider {
     static var previews: some View {
-        BrandIconView(image: UIImage(named: "phi")!, area: 3000, alignment: .center)
-            .previewLayout(.sizeThatFits)
-        BrandIconView(image: UIImage(named: "bgd")!, area: 3000, alignment: .center)
-            .previewLayout(.sizeThatFits)
+        VStack(spacing: 20) {
+            BrandIconView(image: UIImage(named: "phi")!, area: 3000, alignment: .center)
+            BrandIconView(image: UIImage(named: "bgd")!, area: 3000, alignment: .center)
+            BrandIconView(image: UIImage(named: "gin")!, area: 3000, alignment: .center)
+            BrandIconView(image: UIImage(named: "advance")!, area: 3000, alignment: .center)
+        }
     }
 }
