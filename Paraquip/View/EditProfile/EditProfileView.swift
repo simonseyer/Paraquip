@@ -73,7 +73,6 @@ struct EditProfileView: View {
                 .disabled(profile.profileName.isEmpty)
             }
         }
-        .defaultBackground()
     }
 }
 

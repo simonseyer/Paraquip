@@ -95,7 +95,6 @@ struct LogEntryView: View {
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectFile: addAttachment)
         }
-        .defaultBackground()
     }
 
     private func addAttachment(url: URL) {

@@ -73,7 +73,6 @@
 		F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F409B09128CC82EA00BD8E05 /* ListIcon.swift */; };
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
-		F41FE15229BCDF1F007E69A5 /* DefaultBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
@@ -190,7 +189,6 @@
 		F409B09128CC82EA00BD8E05 /* ListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIcon.swift; sourceTree = "<group>"; };
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
-		F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBackground.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
 		F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGraphic.swift; sourceTree = "<group>"; };
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
@@ -482,7 +480,6 @@
 				0D7F23DF275CC99E005298E2 /* BrandIconView.swift */,
 				0DC585EF275CE0F7001B346E /* SharpImageView.swift */,
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
-				F41FE15129BCDF1F007E69A5 /* DefaultBackground.swift */,
 				F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */,
 			);
 			path = Shared;
@@ -693,7 +690,6 @@
 				F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
-				F41FE15229BCDF1F007E69A5 /* DefaultBackground.swift in Sources */,
 				F4DFE72B29D4EBA800394F15 /* CertifiedWingLoadRangeView.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* MainView.swift in Sources */,
 				0D22A9A928415D9400AB4E23 /* ImagePicker.swift in Sources */,

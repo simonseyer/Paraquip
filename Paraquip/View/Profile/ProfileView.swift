@@ -97,7 +97,6 @@ struct ProfileView: View {
             listSection(.reserve)
             listSection(.gear)
         }
-        .defaultBackground()
         .listStyle(.insetGrouped)
         .navigationTitle(title)
         .toolbar {

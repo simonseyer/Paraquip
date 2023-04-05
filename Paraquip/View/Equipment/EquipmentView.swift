@@ -105,7 +105,6 @@ struct EquipmentView: View {
                     .labelStyle(.titleOnly)
                 }
             }
-            .defaultBackground()
         }
         .listStyle(.insetGrouped)
         .navigationTitle(equipment.equipmentName)

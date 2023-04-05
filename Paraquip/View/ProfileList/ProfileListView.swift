@@ -111,7 +111,6 @@ struct ProfileListView: View {
                 }
             }
         }
-        .defaultBackground()
     }
 }
 

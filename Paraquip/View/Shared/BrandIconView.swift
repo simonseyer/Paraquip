@@ -25,6 +25,7 @@ struct BrandIconView: View {
                    maxHeight: iconSize.height * scale,
                    alignment: alignment)
             .shadow(color: Color(uiColor: .white), radius: 0.5, x: 0.5, y: 0.5)
+            .cornerRadius(1)
     }
 }
 

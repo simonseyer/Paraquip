@@ -104,7 +104,6 @@ struct NotificationSettingsView: View {
                 }
             }
         }
-        .defaultBackground()
     }
 }
 

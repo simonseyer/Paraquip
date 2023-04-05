@@ -324,7 +324,6 @@ struct EditEquipmentView: View {
                 equipment.manualAttachment = attachment
             }
         }
-        .defaultBackground()
         .onAppear {
             if let initialFocusedField {
                 focusedField = initialFocusedField

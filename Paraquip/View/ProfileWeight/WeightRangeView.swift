@@ -57,7 +57,7 @@ struct WeightRangeView: View {
                         if bufferCount > 1 {
                             Rectangle()
                                 .frame(width: bufferRatio * geometry.size.width)
-                                .foregroundColor(Color(UIColor.systemGray5))
+                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
                                 .cornerRadius(circleSize, corners: [.topLeft, .bottomLeft])
                         }
                         Rectangle()
@@ -67,7 +67,7 @@ struct WeightRangeView: View {
                         Rectangle()
                             .frame(width: bufferRatio * geometry.size.width)
                             .cornerRadius(circleSize, corners: [.topRight, .bottomRight])
-                            .foregroundColor(Color(UIColor.systemGray5))
+                            .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
 
                     }
                     Circle()
@@ -110,13 +110,16 @@ struct WeightRangeView_Previews: PreviewProvider {
     ]
 
     static var previews: some View {
-        ForEach(values, id: \.value) { value in
-            WeightRangeView(minWeight: minWeight, maxWeight: maxWeight, weight: value)
-                .previewLayout(.sizeThatFits)
+        VStack(spacing: 20) {
+            ForEach(values, id: \.value) { value in
+                WeightRangeView(minWeight: minWeight, maxWeight: maxWeight, weight: value)
+                    .previewLayout(.sizeThatFits)
+            }
+            ForEach(values, id: \.value) { value in
+                WeightRangeView(minWeight: minWeightI, maxWeight: maxWeight, weight: value)
+                    .previewLayout(.sizeThatFits)
+            }
         }
-        ForEach(values, id: \.value) { value in
-            WeightRangeView(minWeight: minWeightI, maxWeight: maxWeight, weight: value)
-                .previewLayout(.sizeThatFits)
-        }
+        .padding()
     }
 }

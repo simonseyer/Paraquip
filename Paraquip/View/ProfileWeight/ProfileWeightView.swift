@@ -147,7 +147,6 @@ struct ProfileWeightView: View {
             WingLoadView(profile: profile)
                 .presentationDetents([.medium, .large])
         }
-        .defaultBackground()
     }
 }
 
