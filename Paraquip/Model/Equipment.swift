@@ -140,6 +140,27 @@ extension Equipment: Creatable {
         }
     }
 
+    var recommendedWeightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
+        get {
+            guard let recommendedWeightRange else { return nil }
+            let min = Measurement<UnitMass>(value: recommendedWeightRange.min, unit: .baseUnit())
+            let max = Measurement<UnitMass>(value: recommendedWeightRange.max, unit: .baseUnit())
+            return ClosedRange(uncheckedBounds: (min, max))
+        }
+        set {
+            guard let newValue else {
+                if let recommendedWeightRange {
+                    managedObjectContext?.delete(recommendedWeightRange)
+                }
+                return
+            }
+            let range = WeightRange(context: managedObjectContext!)
+            range.min = newValue.lowerBound.converted(to: .baseUnit()).value
+            range.max = newValue.upperBound.converted(to: .baseUnit()).value
+            self.recommendedWeightRange = range
+        }
+    }
+
     var allChecks: Set<LogEntry> {
         checkLog as! Set<LogEntry>
     }

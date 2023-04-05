@@ -72,8 +72,10 @@
 "Off" = "Aus";
 "Weight" = "Gewicht";
 "Weight range" = "Gewichtsbereich";
-"Minimum weight" = "Minimalgewicht";
-"Maximum weight" = "Maximalgewicht";
+"Recommended weight range" = "Empfohlener Gewichtsbereich";
+"Minimum" = "Minimum";
+"Maximum" = "Maximum";
+"%@ Recommended weight range" = "%@ Empfohlener Gewichtsbereich";
 "Clear" = "Zurücksetzen";
 "Log" = "Eintragen";
 "Check" = "Check";
