@@ -71,10 +71,16 @@
             ReferencedContainer = "container:Paraquip.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-com.apple.CoreData.ConcurrencyDebug 1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "simulated_notification_date"
-            value = "1632985185"
+            value = "1657634385"
             isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable

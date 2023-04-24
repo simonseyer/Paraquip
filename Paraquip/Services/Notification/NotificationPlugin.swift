@@ -16,24 +16,30 @@ enum AuthorizationStatus: String, CustomStringConvertible {
     }
 }
 
-protocol NotificationPlugin {
+protocol NotificationsPluginDelegate: AnyObject {
+    func authorizationStatusDidChange(_ authorizationStatus: AuthorizationStatus) async
+    func didReceiveNotification(_ notification: NotificationResponse) async
+    func didReceiveOpenSettings() async
+}
 
-    var authorizationStatus: AnyPublisher<AuthorizationStatus, Never> { get }
-    var notificationReceived: AnyPublisher<NotificationResponse, Never> { get }
-    var openSettingsReceived: AnyPublisher<Void, Never> { get }
+protocol NotificationPlugin: AnyObject {
 
-    func requestAuthorization(completion: @escaping (Bool, Error?) -> Void)
-    func reset()
-    func setBadge(count: Int)
-    func add(notification: Notification, completion: @escaping (Error?) -> Void)
+    typealias Delegate = any NotificationsPluginDelegate & Sendable
+
+    var delegate: Delegate? { get set }
+
+    func requestAuthorization() async throws
+    func reset() async
+    func setBadge(count: Int) async
+    func add(notification: Notification) async throws
 }
 
 struct Notification {
-    var equipmentId: UUID
-    var notificationConfigId: UUID
-    var title: LocalizedNotificationString
-    var body: LocalizedNotificationString
-    var date: Date
+    let equipmentId: UUID
+    let notificationConfigId: UUID
+    let title: LocalizedNotificationString
+    let body: LocalizedNotificationString
+    let date: Date
 }
 
 struct LocalizedNotificationString: ExpressibleByStringLiteral {
@@ -58,8 +64,8 @@ extension Notification: Identifiable {
 }
 
 struct NotificationResponse {
-    var equipmentId: UUID
-    var notificationConfigId: UUID
+    let equipmentId: UUID
+    let notificationConfigId: UUID
 }
 
 extension Notification: CustomStringConvertible {

@@ -10,19 +10,13 @@ import Combine
 
 class FakeNotificationPlugin: NotificationPlugin {
 
-    var authorizationStatus = PassthroughSubject<AuthorizationStatus, Never>().eraseToAnyPublisher()
-    var notificationReceived = PassthroughSubject<NotificationResponse, Never>().eraseToAnyPublisher()
-    var openSettingsReceived = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
+    weak var delegate: (any NotificationsPluginDelegate & Sendable)?
 
-    func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
-        completion(true, nil)
-    }
+    func requestAuthorization() async throws {}
 
-    func reset() {}
+    func reset() async {}
 
-    func setBadge(count: Int) {}
+    func setBadge(count: Int) async {}
 
-    func add(notification: Notification, completion: @escaping (Error?) -> Void) {
-        completion(nil)
-    }
+    func add(notification: Notification) async throws {}
 }

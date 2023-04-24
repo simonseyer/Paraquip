@@ -10,10 +10,11 @@ import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
+@MainActor
 struct DocumentPicker: UIViewControllerRepresentable {
 
     let contentTypes: [UTType]
-    let selectFile: (URL) -> Void
+    let selectFile: @MainActor (URL) -> Void
 
     func makeCoordinator() -> DocumentPicker.Coordinator {
         return DocumentPicker.Coordinator(parent: self)

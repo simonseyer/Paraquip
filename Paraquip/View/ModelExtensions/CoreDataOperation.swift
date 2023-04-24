@@ -24,8 +24,8 @@ struct Operation<Object: NSManagedObject>: Identifiable {
     init(withParentContext parentContext: NSManagedObjectContext) {
         childContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         childContext.parent = parentContext
-        if Object.self is Creatable.Type {
-            object = (Object.self as! Creatable.Type).create(context: childContext) as! Object
+        if Object.self is any Creatable.Type {
+            object = (Object.self as! any Creatable.Type).create(context: childContext) as! Object
         } else {
             object = Object(context: childContext)
         }

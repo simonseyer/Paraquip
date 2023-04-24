@@ -73,7 +73,8 @@ struct NotificationSettingsView: View {
         .environment(\.editMode, $editMode)
         .onChange(of: notificationsOn) { value in
             if value {
-                notificationService.enable {
+                Task {
+                    await notificationService.enable()
                     withAnimation {
                         notificationsOn = notificationService.state.isEnabled
                     }

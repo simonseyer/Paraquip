@@ -11,69 +11,54 @@ import UIKit
 import OSLog
 import Combine
 
-class AppleNotificationPlugin: NotificationPlugin {
+class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationCenterDelegate {
 
-    var authorizationStatus: AnyPublisher<AuthorizationStatus, Never> {
-        authorizationStatusSubject.eraseToAnyPublisher()
-    }
-
-    var notificationReceived: AnyPublisher<NotificationResponse, Never> {
-        notificationReceivedSubject.eraseToAnyPublisher()
-    }
-
-    var openSettingsReceived: AnyPublisher<Void, Never> {
-        openSettingsReceivedSubject.eraseToAnyPublisher()
-    }
-
-    private let authorizationStatusSubject = PassthroughSubject<AuthorizationStatus, Never>()
-    private let notificationReceivedSubject = PassthroughSubject<NotificationResponse, Never>()
-    private let openSettingsReceivedSubject = PassthroughSubject<Void, Never>()
-
-    private let center = UNUserNotificationCenter.current()
-    private let notificationDelegateHandler: NotificationDelegateHandler
-    private let badgeIdentifier = "badge"
-    private let logger = Logger(category: "NotificationPlugin")
-
-    init() {
-        self.notificationDelegateHandler = NotificationDelegateHandler(
-            notificationReceivedSubject: notificationReceivedSubject,
-            openSettingsReceivedSubject: openSettingsReceivedSubject
-        )
-
-        precondition(center.delegate == nil)
-        center.delegate = self.notificationDelegateHandler
-
-        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification,
-                                               object: nil,
-                                               queue: nil) {[weak self] _ in
-            self?.refreshNotificationAuthorization()
+    weak var delegate: Delegate? {
+        didSet {
+            observeAuthorizationStatus(for: delegate)
         }
     }
 
-    private func refreshNotificationAuthorization() {
-        center.getNotificationSettings {[weak self] settings in
-            DispatchQueue.main.async {
+    private let center = UNUserNotificationCenter.current()
+    private let badgeIdentifier = "badge"
+    private let logger = Logger(category: "NotificationPlugin")
+    private var becomeActiveObserverationTask: Task<(), Never>?
+
+    override init() {
+        super.init()
+        precondition(center.delegate == nil)
+        center.delegate = self
+    }
+
+    func observeAuthorizationStatus(for delegate: Delegate?) {
+        becomeActiveObserverationTask?.cancel()
+        guard let delegate else { return }
+
+        becomeActiveObserverationTask = Task { [delegate] in
+            for await _ in NotificationCenter.default.notifications(named: await UIApplication.didBecomeActiveNotification) {
+                let settings = await UNUserNotificationCenter.current().notificationSettings()
                 let authorizationStatus = settings.authorizationStatus.toAuthorizationStatus()
-                self?.authorizationStatusSubject.send(authorizationStatus)
+                await delegate.authorizationStatusDidChange(authorizationStatus)
             }
         }
     }
 
-    func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
-        center.requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings],
-                                    completionHandler: completion)
+    func requestAuthorization() async throws {
+        try await center.requestAuthorization(options: [.alert, .badge, .providesAppNotificationSettings])
     }
 
-    func reset() {
-        setBadge(count: 0)
+    func reset() async {
+        await setBadge(count: 0)
         center.removeAllPendingNotificationRequests()
     }
 
-    func setBadge(count: Int) {
-        UIApplication.shared.applicationIconBadgeNumber = count
+    func setBadge(count: Int) async {
+        await MainActor.run {
+            UIApplication.shared.applicationIconBadgeNumber = count
+        }
     }
 
-    func add(notification: Notification, completion: @escaping (Error?) -> Void) {
+    func add(notification: Notification) async throws {
         let content = UNMutableNotificationContent()
         content.title = notification.title.localizedUserNotificationString
         content.body = notification.body.localizedUserNotificationString
@@ -95,7 +80,38 @@ class AppleNotificationPlugin: NotificationPlugin {
         let request = UNNotificationRequest(identifier: notification.id,
                                             content: content,
                                             trigger: trigger)
-        center.add(request, withCompletionHandler: completion)
+        return try await center.add(request)
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                openSettingsFor notification: UNNotification?) {
+        Task { [delegate] in
+            await delegate?.didReceiveOpenSettings()
+        }
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let userInfo = response.notification.request.content.userInfo
+        guard let equipmentIdString = userInfo["equipment"] as? String,
+              let notificationConfigIdString = userInfo["notificationConfig"] as? String,
+              let equipmentId = UUID(uuidString: equipmentIdString),
+              let notificationConfigId = UUID(uuidString: notificationConfigIdString) else {
+            logger.warning("Unrecognized notification received")
+            return
+        }
+
+        let response = NotificationResponse(
+            equipmentId: equipmentId,
+            notificationConfigId: notificationConfigId)
+
+        // Detached task required to work around crash when opening notification
+        Task.detached { [delegate] in
+            await delegate?.didReceiveNotification(response)
+        }
+    }
+
+    deinit {
+        becomeActiveObserverationTask?.cancel()
     }
 }
 
@@ -117,40 +133,5 @@ fileprivate extension UNAuthorizationStatus {
         @unknown default:
             return .notDetermined
         }
-    }
-}
-
-private class NotificationDelegateHandler: NSObject, UNUserNotificationCenterDelegate {
-
-    private let notificationReceivedSubject: PassthroughSubject<NotificationResponse, Never>
-    private let openSettingsReceivedSubject: PassthroughSubject<Void, Never>
-    private let logger = Logger(category: "NotificationPlugin")
-
-    init(notificationReceivedSubject: PassthroughSubject<NotificationResponse, Never>,
-         openSettingsReceivedSubject: PassthroughSubject<Void, Never>) {
-        self.notificationReceivedSubject = notificationReceivedSubject
-        self.openSettingsReceivedSubject = openSettingsReceivedSubject
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                openSettingsFor notification: UNNotification?) {
-        openSettingsReceivedSubject.send()
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
-        let userInfo = response.notification.request.content.userInfo
-        guard let equipmentIdString = userInfo["equipment"] as? String,
-              let notificationConfigIdString = userInfo["notificationConfig"] as? String,
-              let equipmentId = UUID(uuidString: equipmentIdString),
-              let notificationConfigId = UUID(uuidString: notificationConfigIdString) else {
-            logger.warning("Unrecognized notification received")
-            return
-        }
-
-        let response = NotificationResponse(
-            equipmentId: equipmentId,
-            notificationConfigId: notificationConfigId)
-        notificationReceivedSubject.send(response)
     }
 }

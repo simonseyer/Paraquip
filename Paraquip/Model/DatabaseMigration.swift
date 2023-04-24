@@ -9,6 +9,7 @@ import Foundation
 import CoreData
 import OSLog
 
+@MainActor
 class DatabaseMigration: ObservableObject {
     @Published private(set) var hasRemovedDuplicateEquipment = false
 
@@ -60,7 +61,7 @@ class DatabaseMigration: ObservableObject {
             hasRemovedEquipment = removeDuplicateEquipment(from: profile, type: .paraglider) || hasRemovedEquipment
             hasRemovedEquipment = removeDuplicateEquipment(from: profile, type: .harness) || hasRemovedEquipment
         }
-        DispatchQueue.main.async {
+        Task {
             self.hasRemovedDuplicateEquipment = hasRemovedEquipment
         }
 

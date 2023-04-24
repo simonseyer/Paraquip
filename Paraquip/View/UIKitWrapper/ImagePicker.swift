@@ -9,9 +9,10 @@ import Foundation
 import SwiftUI
 import PhotosUI
 
+@MainActor
 struct ImagePicker: UIViewControllerRepresentable {
 
-    let selectFile: (URL) -> Void
+    let selectFile: @MainActor (URL) -> Void
 
     @Environment(\.dismiss) private var dismiss
 
@@ -46,13 +47,14 @@ struct ImagePicker: UIViewControllerRepresentable {
                 return
             }
 
-            provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) {[weak self] url, error in
+            provider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) {[parent] url, error in
                 if let error {
                     // TODO: error handling
                     print("Can't load image \(error.localizedDescription)")
                 } else if let url {
-                    self?.parent.selectFile(url)
-
+                    Task { @MainActor in
+                        parent.selectFile(url)
+                    }
                 }
             }
         }

@@ -54,7 +54,7 @@ struct ProfileWeightView: View {
                         editEquipmentOperation = Operation(editing: equipment,
                                                            withParentContext: managedObjectContext)
                     } label: {
-                        EquipmentWeightRow(equipment: equipment, formatter: formatted(value:))
+                        EquipmentWeightRow(equipment: equipment, formatter: formatter)
                             .foregroundColor(.primary)
                     }
                 }
@@ -153,7 +153,8 @@ struct ProfileWeightView: View {
 struct EquipmentWeightRow: View {
 
     @ObservedObject var equipment: Equipment
-    let formatter: (Measurement<UnitMass>) -> String
+    @Environment(\.locale) var locale: Locale
+    let formatter: MeasurementFormatter
 
     var body: some View {
         HStack {
@@ -164,7 +165,7 @@ struct EquipmentWeightRow: View {
                 .foregroundStyle(.secondary)
             Spacer()
             if let weight = equipment.weightMeasurement {
-                Text(formatter(weight))
+                Text(formatter.string(from: weight.converted(to: locale.weightUnit)))
                     .monospacedDigit()
                     .foregroundColor(.secondary)
             }

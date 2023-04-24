@@ -10,7 +10,7 @@ import Combine
 import OSLog
 import CoreData
 
-struct NotificationState {
+struct NotificationState: Equatable {
 
     var isEnabled: Bool
     var wasRequestRejected: Bool
@@ -46,119 +46,73 @@ struct NotificationConfig: Identifiable, Hashable {
     var multiplier: Int
 }
 
+@MainActor
 class NotificationService: ObservableObject {
 
     private let persistence: NotificationPersistence
-    private let notifications: NotificationPlugin
+    private let notifications: any NotificationPlugin
     private let managedObjectContext: NSManagedObjectContext
     private let logger = Logger(category: "NotificationsStore")
 
-    private var subscriptions = Set<AnyCancellable>()
+    private var coreDataObserverationTask: Task<(), Never>?
 
-    private static let notificationHour = 9
-    private static let notificationSchedulingDebounce: TimeInterval = 2
+    private let notificationHour = 9
 
     @Published private(set) var state: NotificationState {
         didSet {
+            guard state != oldValue else { return }
             persistence.save(notificationState: state.toPersistence())
-            scheduleNotifications(configuration: state.configuration)
+            Task {
+                await scheduleNotifications(configuration: state.configuration)
+            }
         }
     }
     @Published private(set) var navigationState = NavigationState.none
 
-    init(managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
+    init(managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: any NotificationPlugin = AppleNotificationPlugin()) {
         self.managedObjectContext = managedObjectContext
         self.persistence = persistence
         self.notifications = notifications
         self.state = persistence.load()?.toModel() ?? .default
 
-        setupNotificationHandler()
+        notifications.delegate = self
         setupNotificationScheduling()
     }
 
-    init(state: NotificationState, managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: NotificationPlugin = AppleNotificationPlugin()) {
+    init(state: NotificationState, managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: any NotificationPlugin = AppleNotificationPlugin()) {
         self.managedObjectContext = managedObjectContext
         self.persistence = persistence
         self.notifications = notifications
         self.state = state
 
-        setupNotificationHandler()
+        notifications.delegate = self
         setupNotificationScheduling()
-        scheduleNotifications(configuration: state.configuration)
-    }
-
-    private func setupNotificationHandler() {
-        notifications
-            .authorizationStatus
-            .sink { [weak self] status in
-                self?.logger.info("Authorization status updated: \(status)")
-                if status == .denied {
-                    self?.state.isEnabled = false
-                    self?.state.wasRequestRejected = true
-                } else {
-                    self?.state.wasRequestRejected = false
-                }
-            }
-            .store(in: &subscriptions)
-
-        notifications
-            .openSettingsReceived
-            .sink { [weak self] in
-                self?.logger.info("Handling open settings")
-                self?.navigationState = .notificationSettings
-            }
-            .store(in: &subscriptions)
-
-        notifications
-            .notificationReceived
-            .map { $0.equipmentId }
-            .sink { [weak self] equipment in
-                self?.logger.info("Handling notification for equipment: \(equipment)")
-                
-                let fetchRequest = Equipment.fetchRequest()
-                fetchRequest.predicate = .init(format: "id == %@", equipment as CVarArg)
-                fetchRequest.fetchLimit = 1
-                let equipmentModel = try? self?.managedObjectContext.fetch(fetchRequest).first
-                
-                if let equipmentModel {
-                    self?.navigationState = .equipment(equipmentModel)
-                } else {
-                    self?.logger.error("Unable to fetch equipment: \(equipment)")
-                }
-            }
-            .store(in: &subscriptions)
     }
 
     private func setupNotificationScheduling() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(managedObjectContextDidSave), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext)
+        coreDataObserverationTask = Task {
+            for await _ in NotificationCenter.default.notifications(named: .NSManagedObjectContextDidSave, object: managedObjectContext) {
+                await scheduleNotifications(configuration: state.configuration)
+            }
+        }
+        Task {
+            await scheduleNotifications(configuration: state.configuration)
+        }
     }
 
-    @objc private func managedObjectContextDidSave() {
-        scheduleNotifications(configuration: state.configuration)
-    }
-
-    private func scheduleNotifications(configuration: [NotificationConfig]) {
+    private func scheduleNotifications(configuration: [NotificationConfig]) async {
         let fetchRequest = Equipment.fetchRequest()
         let equipment: [Equipment] = (try? managedObjectContext.fetch(fetchRequest)) ?? []
-        scheduleNotifications(for: equipment, configuration: configuration)
+        await scheduleNotifications(for: equipment, configuration: configuration)
     }
 
-    func enable(completion: @escaping () -> Void)  {
-        notifications.requestAuthorization() {[weak self, logger] success, error in
-            if let error {
-                logger.error("Failed to enable notifications: \(error.localizedDescription)")
-            }
-
-            DispatchQueue.main.async {
-                if success {
-                    self?.state.isEnabled = true
-                } else {
-                    self?.state.wasRequestRejected = true
-                }
-
-                completion()
-            }
+    func enable() async {
+        do {
+            try await notifications.requestAuthorization()
+            state.isEnabled = true
+        } catch {
+            logger.error("Failed to enable notifications: \(error.localizedDescription)")
+            state.wasRequestRejected = true
         }
     }
 
@@ -185,8 +139,8 @@ class NotificationService: ObservableObject {
         navigationState = .none
     }
 
-    private func scheduleNotifications(for equipment: [Equipment], configuration: [NotificationConfig]) {
-        notifications.reset()
+    private func scheduleNotifications(for equipment: [Equipment], configuration: [NotificationConfig]) async {
+        await notifications.reset()
 
         guard state.isEnabled else {
             return
@@ -196,21 +150,21 @@ class NotificationService: ObservableObject {
 
         for equipment in equipment {
             for notificationConfig in configuration {
-                scheduleNotification(for: equipment, config: notificationConfig)
+                await scheduleNotification(for: equipment, config: notificationConfig)
             }
         }
 
-        updateBadge(for: equipment)
+        await updateBadge(for: equipment)
     }
 
-    private func scheduleNotification(for equipment: Equipment, config: NotificationConfig) {
+    private func scheduleNotification(for equipment: Equipment, config: NotificationConfig) async {
         guard let nextCheck = equipment.nextCheck else {
             logger.info("Skipping notifications for equipment since check is off: \(equipment.id!)")
             return
         }
 
         let date = Calendar.current.date(byAdding: config.dateComponents,
-                                         to: nextCheck.settingTimeTo(hour: Self.notificationHour))!
+                                         to: nextCheck.settingTimeTo(hour: notificationHour))!
 
         guard date > Date.paraquipNow else {
             logger.info("Ignoring notification config because it lies in the past: \(config)")
@@ -231,14 +185,14 @@ class NotificationService: ObservableObject {
         )
 
         logger.info("Adding: \(notification)")
-        notifications.add(notification: notification) {[logger] error in
-            if let error {
-                logger.error("Failed to add notification \(notification.id): \(error.description)")
-            }
+        do {
+            try await notifications.add(notification: notification)
+        } catch {
+            logger.error("Failed to add notification \(notification.id): \(error.description)")
         }
     }
 
-    private func updateBadge(for equipment: [Equipment]) {
+    private func updateBadge(for equipment: [Equipment]) async {
         let badgeCount = equipment.filter {
             if case .now = $0.checkUrgency {
                 return true
@@ -246,8 +200,45 @@ class NotificationService: ObservableObject {
             return false
         }.count
 
-        notifications.setBadge(count: badgeCount)
+        await notifications.setBadge(count: badgeCount)
         logger.info("Set badge count: \(badgeCount)")
+    }
+
+    deinit {
+        coreDataObserverationTask?.cancel()
+    }
+}
+
+extension NotificationService: NotificationsPluginDelegate {
+    func authorizationStatusDidChange(_ authorizationStatus: AuthorizationStatus) async {
+        logger.info("Authorization status updated: \(authorizationStatus)")
+        if authorizationStatus == .denied {
+            state.isEnabled = false
+            state.wasRequestRejected = true
+        } else {
+            state.wasRequestRejected = false
+        }
+    }
+
+    func didReceiveNotification(_ notification: NotificationResponse) async {
+        let equipment = notification.equipmentId
+        logger.info("Handling notification for equipment: \(equipment)")
+
+        let fetchRequest = Equipment.fetchRequest()
+        fetchRequest.predicate = .init(format: "id == %@", equipment as CVarArg)
+        fetchRequest.fetchLimit = 1
+        let equipmentModel = try? managedObjectContext.fetch(fetchRequest).first
+
+        if let equipmentModel {
+            navigationState = .equipment(equipmentModel)
+        } else {
+            logger.error("Unable to fetch equipment: \(equipment)")
+        }
+    }
+
+    func didReceiveOpenSettings() async {
+        logger.info("Handling open settings")
+        navigationState = .notificationSettings
     }
 }
 
