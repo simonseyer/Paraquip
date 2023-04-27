@@ -371,8 +371,15 @@ struct EditEquipmentView: View {
                         equipment.weightRangeMeasurement = nil
                     }
 
-                    let minRecommendedWeight = weightRangeFormatter.value(from: minRecommendedWeight)
-                    let maxRecommendedWeight = weightRangeFormatter.value(from: maxRecommendedWeight)
+                    var minRecommendedWeight = weightRangeFormatter.value(from: minRecommendedWeight)
+                    var maxRecommendedWeight = weightRangeFormatter.value(from: maxRecommendedWeight)
+
+                    // Skipping one value defaults to the certified weight range
+                    if minRecommendedWeight != nil || maxRecommendedWeight != nil {
+                        minRecommendedWeight = minRecommendedWeight ?? minWeight
+                        maxRecommendedWeight = maxRecommendedWeight ?? maxWeight
+                    }
+
                     if let minRecommendedWeight, let maxRecommendedWeight, maxRecommendedWeight >= minRecommendedWeight {
                         let minMeasurement = Measurement<UnitMass>(value: minRecommendedWeight, unit: locale.weightUnit)
                         let maxMeasurement = Measurement<UnitMass>(value: maxRecommendedWeight, unit: locale.weightUnit)
