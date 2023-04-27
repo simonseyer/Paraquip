@@ -12,6 +12,7 @@ struct DesiredWingLoadView: View {
     @ObservedObject var profile: Profile
 
     @State private var isCertifiedWingLoadVisible = true
+    @State private var isRecommendedWingLoadVisible = true
     @State private var isWingClassIndicationVisible = true
 
     @FetchRequest
@@ -36,6 +37,7 @@ struct DesiredWingLoadView: View {
                 wingLoad: profile.wingLoad,
                 desiredWingLoad: profile.desiredWingLoad,
                 isCertifiedWingLoadVisible: isCertifiedWingLoadVisible,
+                isRecommendedWingLoadVisible: isRecommendedWingLoadVisible,
                 isWingClassIndicationVisible: isWingClassIndicationVisible
             )
 
@@ -52,7 +54,9 @@ struct DesiredWingLoadView: View {
 
             WingLoadLegendView(
                 isCertifiedWingLoadAvailable: profile.wingLoad.certifiedRange != nil,
+                isRecommendedWingLoadAvailable: profile.wingLoad.recommendedRange != nil,
                 isCertifiedWingLoadVisible: $isCertifiedWingLoadVisible,
+                isRecommendedWingLoadVisible: $isRecommendedWingLoadVisible,
                 isWingClassIndicationVisible: $isWingClassIndicationVisible
             )
             .padding([.leading, .trailing], 6)

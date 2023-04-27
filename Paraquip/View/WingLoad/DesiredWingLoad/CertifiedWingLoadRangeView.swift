@@ -9,16 +9,26 @@ import SwiftUI
 
 struct CertifiedWingLoadRangeView: View {
 
-    let isLower: Bool
+    enum Configuration {
+        case certifiedLower, certifiedHigher, recommmended
+    }
+
+    let config: Configuration
+
+    private var isLower: Bool {
+        config == .certifiedLower
+    }
 
     @ViewBuilder
     var body: some View {
         Rectangle()
             .overlay(alignment: isLower ? .trailing : .leading) {
-                arrowOverlay
+                if config != .recommmended {
+                    arrowOverlay
+                }
             }
             .foregroundColor(Color(UIColor.systemOrange))
-            .opacity(0.6)
+            .opacity(config == .recommmended ? 0.3 : 0.6)
     }
 
     @ViewBuilder
@@ -37,8 +47,8 @@ struct CertifiedWingLoadRangeView: View {
 struct CertifiedWingLoadRangeView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            CertifiedWingLoadRangeView(isLower: true)
-            CertifiedWingLoadRangeView(isLower: false)
+            CertifiedWingLoadRangeView(config: .certifiedLower)
+            CertifiedWingLoadRangeView(config: .certifiedHigher)
         }
         .frame(height: 100)
         .padding()

@@ -21,6 +21,7 @@ struct WingLoadGraphic: View {
     let desiredWingLoad: Double
 
     let isCertifiedWingLoadVisible: Bool
+    let isRecommendedWingLoadVisible: Bool
     let isWingClassIndicationVisible: Bool
 
     private var wingLoadRanges: [WingLoadRange] { [
@@ -67,17 +68,36 @@ struct WingLoadGraphic: View {
                         }
                     }
 
-                    if isCertifiedWingLoadVisible, let certifiedRange = wingLoad.certifiedRange {
-                        CertifiedWingLoadRangeView(isLower: true)
-                            .frame(
-                                width: width * relativePosition(of: certifiedRange.lowerBound),
-                                height: height)
+                    HStack(spacing: 0) {
+                        if isCertifiedWingLoadVisible, let certifiedRange = wingLoad.certifiedRange {
+                            CertifiedWingLoadRangeView(config: .certifiedLower)
+                                .frame(
+                                    width: width * relativeWidth(of: wingLoad.extendedRange.lowerBound...certifiedRange.lowerBound),
+                                    height: height)
+                        }
 
-                        CertifiedWingLoadRangeView(isLower: false)
-                            .frame(
-                                width: width - width * relativePosition(of: certifiedRange.upperBound),
-                                height: height)
-                            .padding(.leading, width * relativePosition(of: certifiedRange.upperBound))
+                        if isRecommendedWingLoadVisible, let certifiedRange = wingLoad.certifiedRange, let range = wingLoad.recommendedRange {
+                            CertifiedWingLoadRangeView(config: .recommmended)
+                                .frame(
+                                    width: width * relativeWidth(of: certifiedRange.lowerBound...range.lowerBound),
+                                    height: height)
+                        }
+
+                        Spacer()
+
+                        if isRecommendedWingLoadVisible, let certifiedRange = wingLoad.certifiedRange, let range = wingLoad.recommendedRange {
+                            CertifiedWingLoadRangeView(config: .recommmended)
+                                .frame(
+                                    width: width * relativeWidth(of: range.upperBound...certifiedRange.upperBound),
+                                    height: height)
+                        }
+
+                        if isCertifiedWingLoadVisible, let certifiedRange = wingLoad.certifiedRange {
+                            CertifiedWingLoadRangeView(config: .certifiedHigher)
+                                .frame(
+                                    width: width * relativeWidth(of: certifiedRange.upperBound...wingLoad.extendedRange.upperBound),
+                                    height: height)
+                        }
                     }
 
                     if isWingClassIndicationVisible {
@@ -124,11 +144,12 @@ struct WingLoadGraphic: View {
 }
 
 fileprivate extension WingLoad {
-    init(tw: Double? = nil, pwa: Double? = nil, wr: ClosedRange<Double>? =  nil) {
+    init(tw: Double? = nil, pwa: Double? = nil, wr: ClosedRange<Double>? =  nil, rwr: ClosedRange<Double>? =  nil) {
         self.init(
             takeoffWeight: tw != nil ? .init(value: tw!, unit: .kilograms) : nil,
             projectedWingArea: pwa != nil ? .init(value: pwa!, unit: .squareMeters) : nil,
-            wingWeightRange: wr != nil ? (.init(value: wr!.lowerBound, unit: .kilograms))...(.init(value: wr!.upperBound, unit: .kilograms)) :  nil
+            wingWeightRange: wr != nil ? (.init(value: wr!.lowerBound, unit: .kilograms))...(.init(value: wr!.upperBound, unit: .kilograms)) :  nil,
+            wingReconmmendedWeightRange: rwr != nil ? (.init(value: rwr!.lowerBound, unit: .kilograms))...(.init(value: rwr!.upperBound, unit: .kilograms)) :  nil
         )
     }
 }
@@ -152,9 +173,9 @@ struct WingLoadGraphic_Previews: PreviewProvider {
         ("Nova Prion 5 S", WingLoad(pwa: 23, wr: 75...100)),
         ("Nova Prion 5 M", WingLoad(pwa: 25.3, wr: 90...115)),
         ("Nova Prion 5 L", WingLoad(pwa: 28.3, wr: 105...140)),
-        ("Nova Mentor 7 XS", WingLoad(pwa: 19.8, wr: 70...95)),
-        ("Nova Mentor 7 S", WingLoad(pwa: 21.77, wr: 80...105)),
-        ("Nova Mentor 7 M", WingLoad(pwa: 23.72, wr: 90...115)),
+        ("Nova Mentor 7 XS", WingLoad(pwa: 19.8, wr: 70...95, rwr: 80...90)),
+        ("Nova Mentor 7 S", WingLoad(pwa: 21.77, wr: 80...105, rwr: 90...100)),
+        ("Nova Mentor 7 M", WingLoad(pwa: 23.72, wr: 90...115, rwr: 100...110)),
         ("Nova Xenon 17", WingLoad(pwa: 17.35, wr: 65...80)),
         ("Nova Xenon 18", WingLoad(pwa: 18.42, wr: 75...90)),
         ("Nova Xenon 20", WingLoad(pwa: 20.47, wr: 80...105)),
@@ -174,6 +195,7 @@ struct WingLoadGraphic_Previews: PreviewProvider {
                                 wingLoad: data.1,
                                 desiredWingLoad: (data.1.certifiedRange!.lowerBound + data.1.certifiedRange!.upperBound) / 2,
                                 isCertifiedWingLoadVisible: true,
+                                isRecommendedWingLoadVisible: true,
                                 isWingClassIndicationVisible: true
                             )
                         }
@@ -185,6 +207,7 @@ struct WingLoadGraphic_Previews: PreviewProvider {
                         wingLoad: explorer2S,
                         desiredWingLoad: 4.16,
                         isCertifiedWingLoadVisible: false,
+                        isRecommendedWingLoadVisible: false,
                         isWingClassIndicationVisible: false
                     )
 
@@ -192,6 +215,7 @@ struct WingLoadGraphic_Previews: PreviewProvider {
                         wingLoad: explorer2S,
                         desiredWingLoad: 4.14,
                         isCertifiedWingLoadVisible: true,
+                        isRecommendedWingLoadVisible: false,
                         isWingClassIndicationVisible: true
                     )
                 }

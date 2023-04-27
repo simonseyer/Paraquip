@@ -11,6 +11,7 @@ struct WingLoad {
     let takeoffWeight: Measurement<UnitMass>?
     let projectedWingArea: Measurement<UnitArea>?
     let wingWeightRange: ClosedRange<Measurement<UnitMass>>?
+    let wingReconmmendedWeightRange: ClosedRange<Measurement<UnitMass>>?
 
     var current: Double? {
         guard let projectedWingArea, let takeoffWeight else {
@@ -24,6 +25,17 @@ struct WingLoad {
     var certifiedRange: ClosedRange<Double>? {
         guard let projectedArea = projectedWingArea,
                 let weightRange = wingWeightRange else {
+            return nil
+        }
+        let minWeightValue = weightRange.lowerBound.converted(to: .kilograms).value
+        let maxWeightValue = weightRange.upperBound.converted(to: .kilograms).value
+        let projectedAreaValue = projectedArea.converted(to: .squareMeters).value
+        return (minWeightValue / projectedAreaValue)...(maxWeightValue / projectedAreaValue)
+    }
+
+    var recommendedRange: ClosedRange<Double>? {
+        guard let projectedArea = projectedWingArea,
+                let weightRange = wingReconmmendedWeightRange else {
             return nil
         }
         let minWeightValue = weightRange.lowerBound.converted(to: .kilograms).value

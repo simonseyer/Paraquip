@@ -129,7 +129,8 @@ extension Profile: Creatable {
     var wingLoad: WingLoad {
         WingLoad(takeoffWeight: takeoffWeightMeasurement,
                  projectedWingArea: paraglider?.projectedAreaMeasurement,
-                 wingWeightRange: paraglider?.weightRangeMeasurement)
+                 wingWeightRange: paraglider?.weightRangeMeasurement,
+                 wingReconmmendedWeightRange: paraglider?.recommendedWeightRangeMeasurement)
     }
 
     var desiredWingLoad: Double {
