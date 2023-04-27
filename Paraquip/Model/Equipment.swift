@@ -137,6 +137,7 @@ extension Equipment: Creatable {
             range.min = newValue.lowerBound.converted(to: .baseUnit()).value
             range.max = newValue.upperBound.converted(to: .baseUnit()).value
             self.weightRange = range
+            sanitizeRecommendedWeightRange()
         }
     }
 
@@ -158,6 +159,7 @@ extension Equipment: Creatable {
             range.min = newValue.lowerBound.converted(to: .baseUnit()).value
             range.max = newValue.upperBound.converted(to: .baseUnit()).value
             self.recommendedWeightRange = range
+            sanitizeRecommendedWeightRange()
         }
     }
 
@@ -201,6 +203,19 @@ extension Equipment: Creatable {
         } else {
             return .later(nextCheck)
         }
+    }
+
+    private func sanitizeRecommendedWeightRange() {
+        guard let weightRange, let recommendedWeightRange else {
+            recommendedWeightRange = nil
+            return
+        }
+        guard recommendedWeightRange.min != weightRange.min || recommendedWeightRange.max != weightRange.max else {
+            self.recommendedWeightRange = nil
+            return
+        }
+        recommendedWeightRange.min = min(max(recommendedWeightRange.min, weightRange.min), weightRange.max)
+        recommendedWeightRange.max = max(min(recommendedWeightRange.max, weightRange.max), weightRange.min)
     }
 
     static func create(context: NSManagedObjectContext) -> Self {
