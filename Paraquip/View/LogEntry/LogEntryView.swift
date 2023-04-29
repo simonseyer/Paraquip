@@ -120,11 +120,11 @@ struct LogEntryView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             LogEntryView(logEntry: logEntry1)
-                .environment(\.managedObjectContext, CoreData.previewContext)
+                .environment(\.managedObjectContext, .preview)
         }
         NavigationView {
             LogEntryView(logEntry: logEntry2)
-                .environment(\.managedObjectContext, CoreData.previewContext)
+                .environment(\.managedObjectContext, .preview)
         }
     }
 }

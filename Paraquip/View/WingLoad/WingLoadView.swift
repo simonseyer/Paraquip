@@ -99,8 +99,8 @@ struct WingLoadView: View {
 struct WingLoadView_Previews: PreviewProvider {
     
     static var noWingLoadProfile: Profile {
-        let profile = Profile.create(context: CoreData.previewContext, name: "")
-        let paraglider = Paraglider.create(context: CoreData.previewContext)
+        let profile = Profile.create(context: .preview, name: "")
+        let paraglider = Paraglider.create(context: .preview)
         paraglider.brandName = "Gin"
         paraglider.name = "Explorer 2"
         profile.addToEquipment(paraglider)
@@ -113,7 +113,7 @@ struct WingLoadView_Previews: PreviewProvider {
                 WingLoadView(profile: CoreData.fakeProfile)
             }
             NavigationStack {
-                WingLoadView(profile: Profile.create(context: CoreData.previewContext, name: "Empty"))
+                WingLoadView(profile: Profile.create(context: .preview, name: "Empty"))
             }
             .previewDisplayName("No Paraglider")
             NavigationStack {
@@ -121,7 +121,7 @@ struct WingLoadView_Previews: PreviewProvider {
             }
             .previewDisplayName("No Wing Load")
         }
-        .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.managedObjectContext, .preview)
         .environment(\.locale, .init(identifier: "de"))
     }
 }

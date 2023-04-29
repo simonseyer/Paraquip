@@ -67,7 +67,7 @@ extension Equipment: Creatable {
     ]
     
     static var previewEntity: NSEntityDescription {
-        NSEntityDescription.entity(forEntityName: String(describing: Self.self), in: CoreData.previewContext)!
+        NSEntityDescription.entity(forEntityName: String(describing: Self.self), in: .preview)!
     }
 
     var equipmentType: EquipmentType {

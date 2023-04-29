@@ -216,7 +216,7 @@ struct ProfileView_Previews: PreviewProvider {
             }
 
             NavigationView {
-                ProfileView(profile: Profile.create(context: CoreData.previewContext, name: "Empty"))
+                ProfileView(profile: Profile.create(context: .preview, name: "Empty"))
             }
             .previewDisplayName("Empty Profile")
             
@@ -226,6 +226,6 @@ struct ProfileView_Previews: PreviewProvider {
             .previewDisplayName("All Equipment")
         }
         .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.managedObjectContext, .preview)
     }
 }

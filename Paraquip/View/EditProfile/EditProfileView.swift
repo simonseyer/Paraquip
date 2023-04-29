@@ -81,7 +81,7 @@ struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             EditProfileView(profile: CoreData.fakeProfile)
-                .environment(\.managedObjectContext, CoreData.previewContext)
+                .environment(\.managedObjectContext, .preview)
         }
     }
 }

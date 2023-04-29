@@ -185,6 +185,6 @@ struct ProfileWeightView_Previews: PreviewProvider {
             ProfileWeightView(profile: CoreData.fakeProfile)
         }
         .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.managedObjectContext, .preview)
     }
 }

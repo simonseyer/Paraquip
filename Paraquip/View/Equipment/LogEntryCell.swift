@@ -151,12 +151,12 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
 struct TimelineView_Previews: PreviewProvider {
 
     private static func fakeEntry(isPurchase: Bool, hasAttachment: Bool = false) -> LogEntry {
-        let logEntry = LogEntry.create(context: CoreData.previewContext)
+        let logEntry = LogEntry.create(context: .preview)
         if isPurchase {
             CoreData.fakeProfile.allEquipment.first?.purchaseLog = logEntry
         }
         if hasAttachment {
-            logEntry.addToAttachments(Attachment(context: CoreData.previewContext))
+            logEntry.addToAttachments(Attachment(context: .preview))
         }
         return logEntry
     }

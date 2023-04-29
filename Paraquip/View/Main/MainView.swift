@@ -81,10 +81,10 @@ struct ContentView_Previews: PreviewProvider {
 
     static var previews: some View {
         MainView()
-            .environment(\.managedObjectContext, CoreData.previewContext)
-            .environmentObject(NotificationService(managedObjectContext: CoreData.previewContext,
+            .environment(\.managedObjectContext, .preview)
+            .environmentObject(NotificationService(managedObjectContext: .preview,
                                                    notifications: FakeNotificationPlugin()))
-            .environmentObject(DatabaseMigration(context: CoreData.previewContext))
+            .environmentObject(DatabaseMigration(context: .preview))
     }
 }
 

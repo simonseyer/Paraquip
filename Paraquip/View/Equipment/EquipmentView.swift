@@ -194,6 +194,6 @@ struct EquipmentView_Previews: PreviewProvider {
             .previewDisplayName(equipment.equipmentName)
         }
         .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.managedObjectContext, .preview)
     }
 }

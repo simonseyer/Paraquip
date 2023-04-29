@@ -119,7 +119,7 @@ struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             ProfileListView()
-                .environment(\.managedObjectContext, CoreData.previewContext)
+                .environment(\.managedObjectContext, .preview)
         }
     }
 }

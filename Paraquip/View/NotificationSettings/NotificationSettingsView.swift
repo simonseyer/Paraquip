@@ -118,7 +118,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: true,
                                         wasRequestRejected: false,
                                         configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
-                                       managedObjectContext: CoreData.previewContext,
+                                       managedObjectContext: .preview,
                                        notifications: FakeNotificationPlugin()
                     )
                 )
@@ -131,7 +131,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                                         isEnabled: false,
                                         wasRequestRejected: true,
                                         configuration: []),
-                                       managedObjectContext: CoreData.previewContext,
+                                       managedObjectContext: .preview,
                                        notifications: FakeNotificationPlugin()
                     )
                 )

@@ -408,7 +408,7 @@ struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                EditEquipmentView(equipment: Paraglider.create(context: CoreData.previewContext),
+                EditEquipmentView(equipment: Paraglider.create(context: .preview),
                                   focusedField: .minimumWeight)
             }
             ForEach(CoreData.fakeProfile.allEquipment) { equipment in
@@ -419,6 +419,6 @@ struct AddEquipmentView_Previews: PreviewProvider {
                 .previewDisplayName(equipment.equipmentName)
             }
         }
-        .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.managedObjectContext, .preview)
     }
 }

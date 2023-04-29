@@ -79,7 +79,7 @@ struct EquipmentRow_Previews: PreviewProvider {
     }
 
     private static func equipment(for brand: String, type: Equipment.EquipmentType = .reserve) -> Equipment {
-        let equipment = Equipment.create(type: type, context: CoreData.previewContext)
+        let equipment = Equipment.create(type: type, context: .preview)
         equipment.brandName = brand
         equipment.name = brand
         return equipment
