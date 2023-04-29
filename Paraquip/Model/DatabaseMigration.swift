@@ -43,6 +43,16 @@ class DatabaseMigration: ObservableObject {
                                                                context: context)
                 equipment.manual = nil
             }
+
+            if let weightRange = equipment.weightRange {
+                equipment.minWeight = weightRange.min
+                equipment.maxWeight = weightRange.max
+                context.delete(weightRange)
+
+                if equipment.minWeightValue == 0 {
+                    equipment.minWeight = nil
+                }
+            }
         }
 
         if profiles.count == 1,

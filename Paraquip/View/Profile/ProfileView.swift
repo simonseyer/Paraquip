@@ -119,8 +119,7 @@ struct ProfileView: View {
         }
         .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
-                EditEquipmentView(equipment: operation.object,
-                                  locale: locale)
+                EditEquipmentView(equipment: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }

@@ -17,27 +17,23 @@ extension ClosedRange {
 
 struct WeightRangeView: View {
 
-    let minWeight: Measurement<UnitMass>
-    let maxWeight: Measurement<UnitMass>
-    let weight: Measurement<UnitMass>
+    let minWeight: Double
+    let maxWeight: Double
+    let weight: Double
 
     private let bufferRatio = 0.3
     private let circleSize: CGFloat = 8
 
     private var bufferCount: Double {
-        minWeight.value == 0 ? 1 : 2
+        minWeight == 0 ? 1 : 2
     }
 
     private var relativeValue: Double {
-        let min = minWeight.converted(to: .baseUnit()).value
-        let max = maxWeight.converted(to: .baseUnit()).value
-        let value = weight.converted(to: .baseUnit()).value
+        let buffer = (bufferRatio * (maxWeight - minWeight)) / (1.0 - bufferCount * bufferRatio)
+        let minWithBuffer = minWeight - (bufferCount - 1) * buffer
+        let maxWithBuffer = maxWeight + buffer
 
-        let buffer = (bufferRatio * (max - min)) / (1.0 - bufferCount * bufferRatio)
-        let minWithBuffer = min - (bufferCount - 1) * buffer
-        let maxWithBuffer = max + buffer
-
-        let relativeValue = (value - minWithBuffer) / (maxWithBuffer - minWithBuffer)
+        let relativeValue = (weight - minWithBuffer) / (maxWithBuffer - minWithBuffer)
         return (0.0...1.0).clamp(relativeValue)
     }
 
@@ -78,10 +74,10 @@ struct WeightRangeView: View {
 
                 HStack {
                     if bufferCount > 1 {
-                        Text(minWeight, format: .measurement(width: .abbreviated))
+                        Text("\(Int(minWeight)) kg")
                     }
                     Spacer()
-                    Text(maxWeight, format: .measurement(width: .abbreviated))
+                    Text("\(Int(maxWeight)) kg")
 
                 }
                 .font(.footnote)
@@ -96,26 +92,18 @@ struct WeightRangeView: View {
 
 struct WeightRangeView_Previews: PreviewProvider {
 
-    static let minWeight = Measurement<UnitMass>(value: 90, unit: .kilograms)
-    static let minWeightI = Measurement<UnitMass>(value: 0, unit: .kilograms)
-    static let maxWeight = Measurement<UnitMass>(value: 120, unit: .kilograms)
-    static let values: [Measurement<UnitMass>] = [
-        .init(value: 50, unit: .kilograms),
-        .init(value: 90, unit: .kilograms),
-        .init(value: 100, unit: .kilograms),
-        .init(value: 110, unit: .kilograms),
-        .init(value: 120, unit: .kilograms),
-        .init(value: 130, unit: .kilograms),
-        .init(value: 160, unit: .kilograms)
-    ]
+    static let minWeight = 90.0
+    static let minWeightI = 0.0
+    static let maxWeight = 120.0
+    static let values: [Double] = [50, 90, 100, 110, 120, 130, 160]
 
     static var previews: some View {
         VStack(spacing: 20) {
-            ForEach(values, id: \.value) { value in
+            ForEach(values, id: \.hashValue) { value in
                 WeightRangeView(minWeight: minWeight, maxWeight: maxWeight, weight: value)
                     .previewLayout(.sizeThatFits)
             }
-            ForEach(values, id: \.value) { value in
+            ForEach(values, id: \.hashValue) { value in
                 WeightRangeView(minWeight: minWeightI, maxWeight: maxWeight, weight: value)
                     .previewLayout(.sizeThatFits)
             }

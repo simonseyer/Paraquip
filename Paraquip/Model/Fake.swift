@@ -8,6 +8,12 @@
 import Foundation
 import CoreData
 
+extension NSManagedObjectContext {
+    static var preview: NSManagedObjectContext {
+        CoreData.previewContext
+    }
+}
+
 struct CoreData {
     
     private static let fake: (NSPersistentContainer, Profile) = createFakePersistentContainer()
@@ -56,12 +62,7 @@ struct CoreData {
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 1.37
-            equipment.weightRange = {
-                let weightRange = WeightRange(context: context)
-                weightRange.min = 0
-                weightRange.max = 130
-                return weightRange
-            }()
+            equipment.maxWeight = 130
             profile.addToEquipment(equipment)
         }
 
@@ -73,12 +74,7 @@ struct CoreData {
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 1.54
-            equipment.weightRange = {
-                let weightRange = WeightRange(context: context)
-                weightRange.min = 0
-                weightRange.max = 120
-                return weightRange
-            }()
+            equipment.maxWeight = 120
             profile.addToEquipment(equipment)
 
             equipment.addToCheckLog(LogEntry.create(context: context,
@@ -106,16 +102,14 @@ struct CoreData {
             equipment.name = "Explorer 2"
             equipment.equipmentSize = "S"
             equipment.checkCycle = 12
-            equipment.projectedAreaMeasurement = .init(value: 20.43, unit: .squareMeters)
+            equipment.projectedAreaValue = 20.43
             equipment.purchaseLog = LogEntry.create(context: context,
                                                     date: dateFormatter.date(from: "30.09.2020")!)
             equipment.weight = 3.7
-            equipment.weightRange = {
-                let weightRange = WeightRange(context: context)
-                weightRange.min = 75
-                weightRange.max = 95
-                return weightRange
-            }()
+            equipment.minWeightValue = 75
+            equipment.maxWeightValue = 95
+            equipment.minRecommendedWeightValue = 80
+            equipment.maxRecommendedWeightValue = 90
             equipment.manualAttachment = createAttachment(for: dummyPDFURL, context: context)
             profile.addToEquipment(equipment)
 

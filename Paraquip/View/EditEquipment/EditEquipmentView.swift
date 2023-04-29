@@ -18,12 +18,6 @@ extension NumberFormatter {
     }
 }
 
-extension Locale {
-    var weightUnit: UnitMass {
-        measurementSystem == .metric ? .kilograms : .pounds
-    }
-}
-
 fileprivate struct LogDateCell: View {
 
     @ObservedObject var logEntry: LogEntry
@@ -58,32 +52,56 @@ struct EditEquipmentView: View {
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.locale) var locale: Locale
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
     @State private var isShowingRecommendedWeightRange: Bool
-    @State private var weight: String = ""
-    @State private var minWeight: String = ""
-    @State private var maxWeight: String = ""
-    @State private var minRecommendedWeight: String = ""
-    @State private var maxRecommendedWeight: String = ""
-    @State private var projectedArea: String = ""
+    @State private var isShowingValidationAlert = false
+    @State private var validationAlertMessage: LocalizedStringKey?
     @FocusState private var focusedField: Field?
 
     private let initialFocusedField: Field?
-    private let weightUnitText: String
-    private let weightFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 1
-        return formatter
-    }()
-    private let weightRangeFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 0
-        return formatter
-    }()
+
+    private var isMaxWeightValid: Bool {
+        equipment.maxWeightValue ?? .greatestFiniteMagnitude >= equipment.minWeightValue ?? 0
+    }
+
+    private var isRecommendedWeightValid: Bool {
+        guard isMaxWeightValid else { return true }
+        let min = equipment.minWeightValue ?? 0
+        let max = equipment.maxWeightValue ?? .greatestFiniteMagnitude
+        let minRecommended = equipment.minRecommendedWeightValue ?? min
+        let maxRecommended = equipment.maxRecommendedWeightValue ?? max
+        return minRecommended >= min && maxRecommended >= minRecommended && maxRecommended <= max
+    }
+
+    private var maxWeightValidationColor: UIColor {
+        if [.minimumWeight, .maximumWeight].contains(focusedField) {
+            return .systemGray
+        } else {
+            return .systemRed
+        }
+    }
+
+    private var recommendedWeightValidationColor: UIColor {
+        if [.minimumRecommendedWeight, .maximumRecommendedWeight].contains(focusedField) {
+            return .systemGray
+        } else {
+            return .systemRed
+        }
+    }
+
+    private var weightRangeFormat: FloatingPointFormatStyle<Double> {
+        .number.precision(.fractionLength(0))
+    }
+
+    private var formattedMinWeight: String {
+        equipment.minWeightValue?.formatted(weightRangeFormat) ?? ""
+    }
+
+    private var formattedMaxWeight: String {
+        equipment.maxWeightValue?.formatted(weightRangeFormat) ?? ""
+    }
 
     private var title: Text {
         let type = LocalizedString(equipment.equipmentType.localizedNameString)
@@ -94,41 +112,10 @@ struct EditEquipmentView: View {
         }
     }
 
-    init(equipment: Equipment, locale: Locale, focusedField: Field? = nil) {
+    init(equipment: Equipment, focusedField: Field? = nil) {
         self.equipment = equipment
         self.initialFocusedField = focusedField
-
-        let formatter = MeasurementFormatter()
-        formatter.locale = locale
-        formatter.unitStyle = .short
-        weightUnitText = formatter.string(from: locale.weightUnit)
-
-        if let equipmentWeight = equipment.weightMeasurement {
-            let value = equipmentWeight.converted(to: locale.weightUnit).value
-            _weight = State(initialValue: weightFormatter.string(from: value) ?? "")
-        }
-        
-        if let weightRange = equipment.weightRangeMeasurement {
-            let minValue = weightRange.lowerBound.converted(to: locale.weightUnit).value
-            let maxValue = weightRange.upperBound.converted(to: locale.weightUnit).value
-            _minWeight = State(initialValue: weightRangeFormatter.string(from: minValue) ?? "")
-            _maxWeight = State(initialValue: weightRangeFormatter.string(from: maxValue) ?? "")
-        }
-
-        if let weightRange = equipment.recommendedWeightRangeMeasurement {
-            let minValue = weightRange.lowerBound.converted(to: locale.weightUnit).value
-            let maxValue = weightRange.upperBound.converted(to: locale.weightUnit).value
-            _minRecommendedWeight = State(initialValue: weightRangeFormatter.string(from: minValue) ?? "")
-            _maxRecommendedWeight = State(initialValue: weightRangeFormatter.string(from: maxValue) ?? "")
-            _isShowingRecommendedWeightRange = .init(initialValue: true)
-        } else {
-            _isShowingRecommendedWeightRange = .init(initialValue: false)
-        }
-        
-        if let projectedArea = equipment.projectedAreaMeasurement {
-            let value = projectedArea.converted(to: .squareMeters).value
-            _projectedArea = State(initialValue: weightFormatter.string(from: value) ?? "")
-        }
+        _isShowingRecommendedWeightRange = .init(initialValue: equipment.hasRecommendedWeightRange)
     }
 
     var body: some View {
@@ -154,11 +141,11 @@ struct EditEquipmentView: View {
                 HStack {
                     Text("Weight")
                     Spacer()
-                    TextField("", text: $weight)
+                    TextField("", value: $equipment.weightValue, format: .number.precision(.fractionLength(1...2)))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
                         .focused($focusedField, equals: .weight)
-                    Text(weightUnitText)
+                    Text("kg")
                         .foregroundColor(.secondary)
                 }
                 Button(action: {
@@ -194,20 +181,20 @@ struct EditEquipmentView: View {
                         HStack {
                             Text("Minimum")
                             Spacer()
-                            TextField("", text: $minWeight)
+                            TextField("", value: $equipment.minWeightValue, format: weightRangeFormat)
                                 .multilineTextAlignment(.trailing)
                                 .keyboardType(.numberPad)
                                 .focused($focusedField, equals: .minimumWeight)
                                 .submitLabel(.next)
                                 .onSubmit { focusedField = .maximumWeight }
-                            Text(weightUnitText)
+                            Text("kg")
                                 .foregroundColor(.secondary)
                         }
                     }
                     HStack {
                         Text("Maximum")
                         Spacer()
-                        TextField("", text: $maxWeight)
+                        TextField("", value: $equipment.maxWeightValue, format: weightRangeFormat)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .maximumWeight)
@@ -219,11 +206,24 @@ struct EditEquipmentView: View {
                                     focusedField = .projectedArea
                                 }
                             }
-                        Text(weightUnitText)
+                        Text("kg")
                             .foregroundColor(.secondary)
                     }
                 } header: {
-                    Text("Weight range")
+                    HStack {
+                        Text("Weight range")
+                        Spacer()
+                        if !isMaxWeightValid {
+                            Button("\(Image(systemName: "exclamationmark.triangle.fill"))") {
+                                withAnimation {
+                                    validationAlertMessage = "The maximum weight must be larger then the mimimum weight."
+                                    isShowingValidationAlert.toggle()
+                                }
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundColor(Color(maxWeightValidationColor))
+                        }
+                    }
                 } footer: {
                     if equipment is Paraglider && !isShowingRecommendedWeightRange {
                         Button("\(Image(systemName: "plus")) Recommended weight range") {
@@ -241,25 +241,25 @@ struct EditEquipmentView: View {
                     HStack {
                         Text("Minimum")
                         Spacer()
-                        TextField("\(minWeight)", text: $minRecommendedWeight)
+                        TextField(formattedMinWeight, value: $equipment.minRecommendedWeightValue, format: weightRangeFormat)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .minimumRecommendedWeight)
                             .submitLabel(.next)
                             .onSubmit { focusedField = .maximumRecommendedWeight }
-                        Text(weightUnitText)
+                        Text("kg")
                             .foregroundColor(.secondary)
                     }
                     HStack {
                         Text("Maximum")
                         Spacer()
-                        TextField("\(maxWeight)", text: $maxRecommendedWeight)
+                        TextField(formattedMaxWeight, value: $equipment.maxRecommendedWeightValue, format: weightRangeFormat)
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .maximumRecommendedWeight)
                             .submitLabel(.next)
                             .onSubmit { focusedField = .projectedArea }
-                        Text(weightUnitText)
+                        Text("kg")
                             .foregroundColor(.secondary)
                     }
                 } header: {
@@ -267,11 +267,22 @@ struct EditEquipmentView: View {
                         Text("Recommended weight range")
                         Button("\(Image(systemName: "minus.circle.fill"))") {
                             withAnimation {
-                                minRecommendedWeight = ""
-                                maxRecommendedWeight = ""
+                                // TODO: fix value not cleared when field selected
+                                equipment.clearRecommendedWeightRange()
                                 isShowingRecommendedWeightRange.toggle()
                             }
                         }.buttonStyle(.plain)
+                        Spacer()
+                        if !isRecommendedWeightValid {
+                            Button("\(Image(systemName: "exclamationmark.triangle.fill"))") {
+                                withAnimation {
+                                    validationAlertMessage = "The recommended weight range must lie within the certified weight range."
+                                    isShowingValidationAlert.toggle()
+                                }
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundColor(Color(recommendedWeightValidationColor))
+                        }
                     }
                 }
             }
@@ -280,7 +291,7 @@ struct EditEquipmentView: View {
                     HStack {
                         Text("Projected area")
                         Spacer()
-                        TextField("", text: $projectedArea)
+                        TextField("", value: $equipment.projectedAreaValue, format: .number.precision(.fractionLength(0)))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.decimalPad)
                             .focused($focusedField, equals: .projectedArea)
@@ -352,52 +363,14 @@ struct EditEquipmentView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    if let weight = weightFormatter.value(from: weight) {
-                        equipment.weightMeasurement = .init(value: weight, unit: locale.weightUnit)
-                    } else {
-                        equipment.weightMeasurement = nil
-                    }
-
-                    let minWeight = weightRangeFormatter.value(from: minWeight)
-                    let maxWeight = weightRangeFormatter.value(from: maxWeight)
-                    if let maxWeight {
-                        let sanitizedMinWeight = minWeight ?? 0
-                        let sanitizedMaxWeight = max(maxWeight, sanitizedMinWeight)
-
-                        let minMeasurement = Measurement<UnitMass>(value: sanitizedMinWeight, unit: locale.weightUnit)
-                        let maxMeasurement = Measurement<UnitMass>(value: sanitizedMaxWeight, unit: locale.weightUnit)
-                        equipment.weightRangeMeasurement = minMeasurement...maxMeasurement
-                    } else {
-                        equipment.weightRangeMeasurement = nil
-                    }
-
-                    var minRecommendedWeight = weightRangeFormatter.value(from: minRecommendedWeight)
-                    var maxRecommendedWeight = weightRangeFormatter.value(from: maxRecommendedWeight)
-
-                    // Skipping one value defaults to the certified weight range
-                    if minRecommendedWeight != nil || maxRecommendedWeight != nil {
-                        minRecommendedWeight = minRecommendedWeight ?? minWeight
-                        maxRecommendedWeight = maxRecommendedWeight ?? maxWeight
-                    }
-
-                    if let minRecommendedWeight, let maxRecommendedWeight, maxRecommendedWeight >= minRecommendedWeight {
-                        let minMeasurement = Measurement<UnitMass>(value: minRecommendedWeight, unit: locale.weightUnit)
-                        let maxMeasurement = Measurement<UnitMass>(value: maxRecommendedWeight, unit: locale.weightUnit)
-                        equipment.recommendedWeightRangeMeasurement = minMeasurement...maxMeasurement
-                    } else {
-                        equipment.recommendedWeightRangeMeasurement = nil
-                    }
-                    
-                    if let weight = weightFormatter.value(from: projectedArea) {
-                        equipment.projectedAreaMeasurement = .init(value: weight, unit: .squareMeters)
-                    } else {
-                        equipment.projectedAreaMeasurement = nil
-                    }
-
                     try! managedObjectContext.save()
                     dismiss()
                 }
-                .disabled(equipment.brandName.isEmpty || equipment.equipmentName.isEmpty)
+                .disabled(
+                    equipment.brandName.isEmpty ||
+                    equipment.equipmentName.isEmpty ||
+                    !isMaxWeightValid ||
+                    !isRecommendedWeightValid)
             }
         }
         .sheet(item: $editLogEntryOperation) { operation in
@@ -413,6 +386,13 @@ struct EditEquipmentView: View {
                 equipment.manualAttachment = attachment
             }
         }
+        .alert("Invalid weight range", isPresented: $isShowingValidationAlert, presenting: $validationAlertMessage) { _ in
+            Button("Ok", role: .cancel) { }
+        } message: { message in
+            if let message = message.wrappedValue {
+                Text(message)
+            }
+        }
         .onAppear {
             if let initialFocusedField {
                 focusedField = initialFocusedField
@@ -425,20 +405,20 @@ struct EditEquipmentView: View {
 
 struct AddEquipmentView_Previews: PreviewProvider {
 
-    static var locale: Locale = .init(identifier: "de")
-
     static var previews: some View {
         Group {
-            NavigationView {
-                EditEquipmentView(equipment: Paraglider.create(context: CoreData.previewContext), locale: locale)
+            NavigationStack {
+                EditEquipmentView(equipment: Paraglider.create(context: CoreData.previewContext),
+                                  focusedField: .minimumWeight)
             }
             ForEach(CoreData.fakeProfile.allEquipment) { equipment in
-                NavigationView {
-                    EditEquipmentView(equipment: equipment, locale: locale)
+                NavigationStack {
+                    EditEquipmentView(equipment: equipment,
+                                      focusedField: .minimumWeight)
                 }
+                .previewDisplayName(equipment.equipmentName)
             }
         }
-        .environment(\.locale, locale)
         .environment(\.managedObjectContext, CoreData.previewContext)
     }
 }

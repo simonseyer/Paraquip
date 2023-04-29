@@ -83,6 +83,9 @@
 "No completions" = "Keine Vorschläge";
 "Specifications" = "Technische Daten";
 "Projected area" = "Projizierte Fläche";
+"Invalid weight range" = "Invalider Gewichtsbereich";
+"The maximum weight must be larger then the mimimum weight." = "Das maximale Gewicht muss größer sein als das minimale Gewicht.";
+"The recommended weight range must lie within the certified weight range." = "Der empfohlene Gewichtsbereich muss im zertifizierten Gewichtsbereich liegen.";
 
 // Profile Weight View
 "Weight Check" = "Gewichtsrechner";
@@ -98,8 +101,8 @@
 "wing_load_explanation" = "Sie bestimmt die Geschwindigkeit des bestens Gleitens und weitere Charakteristiken. Der optimale Wert ist abhängig von Schirm und persönlichen Präferenzen.";
 "Desired wing load" = "Angestrebte Flächenbelastung";
 "Current wing load" = "Aktuelle Flächenbelastung";
-"Certified weight range %@" = "Zertifizierter Gewichtsbereich %@";
-"Recommended weight range %@" = "Empfohlener Gewichtsbereich %@";
+"Current wing load %@" = "Aktuelle Flächenbelastung %@";
+"Certified/recommended weight range %@" = "Zertifizierter/Empfohlener Gewichtsbereich %@";
 "Common wing load by EN-class %@" = "Übliche Flächenbelastung per EN-Klasse %@";
 "wing_load_disclaimer" = "Ausschließlich Richtwerte. Quellen: THERMIK 11-12/2020 (Einordnung), DHV Info 220/2019 (Schirm-Klassen)";
 "Guidance" = "Entscheidungshilfe";

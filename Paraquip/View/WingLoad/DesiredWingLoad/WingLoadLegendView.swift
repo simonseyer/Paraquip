@@ -9,11 +9,10 @@ import SwiftUI
 
 struct WingLoadLegendView: View {
 
-    let isCertifiedWingLoadAvailable: Bool
-    let isRecommendedWingLoadAvailable: Bool
+    let isWingLoadAvailable: Bool
+    let isWeightRangeAvailable: Bool
 
-    @Binding var isCertifiedWingLoadVisible: Bool
-    @Binding var isRecommendedWingLoadVisible: Bool
+    @Binding var isWeightRangeVisible: Bool
     @Binding var isWingClassIndicationVisible: Bool
 
     private let rangeLegend: [(String, LocalizedStringKey)] = [
@@ -24,59 +23,32 @@ struct WingLoadLegendView: View {
         ("++", "Very high")
     ]
 
-    private var certifiedWingLoadIcon: Image {
-        if isCertifiedWingLoadAvailable {
-            if isCertifiedWingLoadVisible {
-                return Image(systemName: "eye.fill")
-            } else {
-                return Image(systemName: "eye.slash.fill")
-            }
-        } else {
-            return Image(systemName: "x.circle.fill")
-        }
-    }
+    private let unavailableIcon = Image(systemName: "x.circle.fill")
+    private let visibleIcon = Image(systemName: "eye.fill")
+    private let hiddenIcon = Image(systemName: "eye.slash.fill")
+    private let visibleOpactity = 1.0
+    private let hiddenOpacity = 0.3
 
-    private var recommendedWingLoadIcon: Image {
-        if isRecommendedWingLoadAvailable {
-            if isRecommendedWingLoadVisible {
-                return Image(systemName: "eye.fill")
+    private var weightRangeIcon: Image {
+        if isWeightRangeAvailable {
+            if isWeightRangeVisible {
+                return visibleIcon
             } else {
-                return Image(systemName: "eye.slash.fill")
+                return hiddenIcon
             }
         } else {
-            return Image(systemName: "x.circle.fill")
+            return unavailableIcon
         }
     }
 
     private var wingClassIndicationIcon: Image {
-        if isWingClassIndicationVisible {
-            return Image(systemName: "eye.fill")
-        } else {
-            return Image(systemName: "eye.slash.fill")
-        }
+        isWingClassIndicationVisible ? visibleIcon : hiddenIcon
     }
 
-    private var certifiedWingLoadOpacity: Double {
-        if isCertifiedWingLoadVisible && isCertifiedWingLoadAvailable {
-            return 1.0
+    private var weightRangeOpacity: Double {
+        if isWeightRangeAvailable && isWeightRangeVisible { return visibleOpactity
         } else {
-            return 0.3
-        }
-    }
-
-    private var recommendedWingLoadOpacity: Double {
-        if isRecommendedWingLoadVisible {
-            return 1.0
-        } else {
-            return 0.3
-        }
-    }
-
-    private var wingClassIndicationOpacity: Double {
-        if isWingClassIndicationVisible {
-            return 1.0
-        } else {
-            return 0.3
+            return hiddenOpacity
         }
     }
 
@@ -90,30 +62,23 @@ struct WingLoadLegendView: View {
 
                 HStack {
                     CurrentWingLoadMarker()
-                    Text("Current wing load")
+                    if isWingLoadAvailable {
+                        Text("Current wing load")
+                    } else {
+                        Text("Current wing load \(unavailableIcon)")
+                    }
+
                 }
+                .opacity(isWingLoadAvailable ? visibleOpactity : hiddenOpacity)
 
                 HStack {
                     CertifiedWingLoadMarker(recommended: false)
-                    Text("Certified weight range \(certifiedWingLoadIcon)")
+                    Text("Certified/recommended weight range \(weightRangeIcon)")
                 }
-                .opacity(certifiedWingLoadOpacity)
+                .opacity(weightRangeOpacity)
                 .onTapGesture {
                     withAnimation {
-                        isCertifiedWingLoadVisible.toggle()
-                    }
-                }
-
-                if isRecommendedWingLoadAvailable {
-                    HStack {
-                        CertifiedWingLoadMarker(recommended: true)
-                        Text("Recommended weight range \(recommendedWingLoadIcon)")
-                    }
-                    .opacity(recommendedWingLoadOpacity)
-                    .onTapGesture {
-                        withAnimation {
-                            isRecommendedWingLoadVisible.toggle()
-                        }
+                        isWeightRangeVisible.toggle()
                     }
                 }
 
@@ -121,7 +86,7 @@ struct WingLoadLegendView: View {
                     WingClassPill(text: Text("A"))
                     Text("Common wing load by EN-class \(wingClassIndicationIcon)")
                 }
-                .opacity(wingClassIndicationOpacity)
+                .opacity(isWingClassIndicationVisible ? visibleOpactity : hiddenOpacity)
                 .onTapGesture {
                     withAnimation {
                         isWingClassIndicationVisible.toggle()
@@ -198,20 +163,18 @@ struct WingLoadLegendView_Previews: PreviewProvider {
 
     struct PreviewContainer: View {
 
-        let isCertifiedWingLoadAvailable: Bool
-        let isRecommendedWingLoadAvailable: Bool
+        let isWingLoadAvailable: Bool
+        let isWeightRangeAvailable: Bool
 
-        @State var isCertifiedWingLoadVisible: Bool = true
-        @State var isRecommendedWingLoadVisible: Bool = true
+        @State var isWeightRangeVisible: Bool = true
         @State var isWingClassIndicationVisible: Bool = true
 
         @ViewBuilder
         var body: some View {
             WingLoadLegendView(
-                isCertifiedWingLoadAvailable: isCertifiedWingLoadAvailable,
-                isRecommendedWingLoadAvailable: isRecommendedWingLoadAvailable,
-                isCertifiedWingLoadVisible: $isCertifiedWingLoadVisible,
-                isRecommendedWingLoadVisible: $isRecommendedWingLoadVisible,
+                isWingLoadAvailable: isWingLoadAvailable,
+                isWeightRangeAvailable: isWeightRangeAvailable,
+                isWeightRangeVisible: $isWeightRangeVisible,
                 isWingClassIndicationVisible: $isWingClassIndicationVisible)
         }
     }
@@ -219,14 +182,12 @@ struct WingLoadLegendView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             PreviewContainer(
-                isCertifiedWingLoadAvailable: true,
-                isRecommendedWingLoadAvailable: true
-            )
+                isWingLoadAvailable: true,
+                isWeightRangeAvailable: true)
             .padding()
             PreviewContainer(
-                isCertifiedWingLoadAvailable: false,
-                isRecommendedWingLoadAvailable: false
-            )
+                isWingLoadAvailable: false,
+                isWeightRangeAvailable: false)
             .padding()
         }
         .background(Color(uiColor: .systemGroupedBackground))

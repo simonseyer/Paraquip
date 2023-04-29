@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E252" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E261" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName="Attachment" elementID="LogAttachment" syncable="YES" codeGenerationType="class">
         <attribute name="filePath" optional="YES" attributeType="String"/>
         <attribute name="isTemporary" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -12,6 +12,10 @@
         <attribute name="brandId" optional="YES" attributeType="String"/>
         <attribute name="checkCycle" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="maxRecommendedWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="maxWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="minRecommendedWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="minWeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String" defaultValueString=""/>
         <attribute name="projectedArea" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
         <attribute name="purchaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -42,7 +46,7 @@
     <entity name="Paraglider" representedClassName="Paraglider" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <entity name="Profile" representedClassName="Profile" syncable="YES" codeGenerationType="class">
         <attribute name="additionalWeight" optional="YES" attributeType="Double" defaultValueString="10" usesScalarValueType="YES"/>
-        <attribute name="desiredWingLoadNumber" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="desiredWingLoad" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
         <attribute name="icon" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String" defaultValueString=""/>
@@ -54,8 +58,8 @@
     </entity>
     <entity name="Reserve" representedClassName="Reserve" parentEntity="Equipment" syncable="YES" codeGenerationType="class"/>
     <entity name="WeightRange" representedClassName="WeightRange" syncable="YES" codeGenerationType="class">
-        <attribute name="max" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="min" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="max" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="min" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
         <relationship name="equipment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" inverseName="weightRange" inverseEntity="Equipment"/>
         <relationship name="equipmentRecommended" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Equipment" inverseName="recommendedWeightRange" inverseEntity="Equipment"/>
     </entity>

@@ -9,6 +9,10 @@ import Foundation
 import CoreData
 
 extension Equipment: Creatable {
+    enum ValidationError: Error {
+        case invalidWeightRanges
+    }
+
     enum EquipmentType: Int16, CaseIterable, Identifiable {
         case paraglider = 1
         case harness = 2
@@ -107,60 +111,48 @@ extension Equipment: Creatable {
             weight = NSNumber(value: weightMeasurement.converted(to: .baseUnit()).value)
         }
     }
-    
-    var projectedAreaMeasurement: Measurement<UnitArea>? {
-        get {
-            guard let projectedArea = projectedArea?.doubleValue else { return nil }
-            return Measurement<UnitArea>(value: projectedArea, unit: .baseUnit())
-        }
-        set {
-            guard let projectedAreaMeasurement = newValue else { projectedArea = nil; return }
-            projectedArea = NSNumber(value: projectedAreaMeasurement.converted(to: .baseUnit()).value)
-        }
+
+    var weightValue: Double? {
+        get { weight?.doubleValue }
+        set { weight = .init(value: newValue) }
     }
 
-    var weightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
-        get {
-            guard let weightRange else { return nil }
-            let min = Measurement<UnitMass>(value: weightRange.min, unit: .baseUnit())
-            let max = Measurement<UnitMass>(value: weightRange.max, unit: .baseUnit())
-            return ClosedRange(uncheckedBounds: (min, max))
-        }
-        set {
-            guard let newValue else {
-                if let weightRange {
-                    managedObjectContext?.delete(weightRange)
-                }
-                return
-            }
-            let range = WeightRange(context: managedObjectContext!)
-            range.min = newValue.lowerBound.converted(to: .baseUnit()).value
-            range.max = newValue.upperBound.converted(to: .baseUnit()).value
-            self.weightRange = range
-            sanitizeRecommendedWeightRange()
-        }
+    var minWeightValue: Double? {
+        get { minWeight?.doubleValue }
+        set { minWeight = .init(value: newValue)}
     }
 
-    var recommendedWeightRangeMeasurement: ClosedRange<Measurement<UnitMass>>? {
-        get {
-            guard let recommendedWeightRange else { return nil }
-            let min = Measurement<UnitMass>(value: recommendedWeightRange.min, unit: .baseUnit())
-            let max = Measurement<UnitMass>(value: recommendedWeightRange.max, unit: .baseUnit())
-            return ClosedRange(uncheckedBounds: (min, max))
-        }
-        set {
-            guard let newValue else {
-                if let recommendedWeightRange {
-                    managedObjectContext?.delete(recommendedWeightRange)
-                }
-                return
-            }
-            let range = WeightRange(context: managedObjectContext!)
-            range.min = newValue.lowerBound.converted(to: .baseUnit()).value
-            range.max = newValue.upperBound.converted(to: .baseUnit()).value
-            self.recommendedWeightRange = range
-            sanitizeRecommendedWeightRange()
-        }
+    var maxWeightValue: Double? {
+        get { maxWeight?.doubleValue }
+        set { maxWeight = .init(value: newValue) }
+    }
+
+    var minRecommendedWeightValue: Double? {
+        get { minRecommendedWeight?.doubleValue }
+        set { minRecommendedWeight = .init(value: newValue) }
+    }
+
+    var maxRecommendedWeightValue: Double? {
+        get { maxRecommendedWeight?.doubleValue }
+        set { maxRecommendedWeight = .init(value: newValue) }
+    }
+
+    var projectedAreaValue: Double? {
+        get { projectedArea?.doubleValue }
+        set { projectedArea = .init(value: newValue) }
+    }
+
+    var weightRanges: [Double] {
+        [
+            minWeightValue,
+            minRecommendedWeightValue,
+            maxRecommendedWeightValue,
+            maxWeightValue
+        ].compactMap { $0 }
+    }
+
+    var hasRecommendedWeightRange: Bool {
+        minRecommendedWeight != nil || maxRecommendedWeight != nil
     }
 
     var allChecks: Set<LogEntry> {
@@ -205,19 +197,6 @@ extension Equipment: Creatable {
         }
     }
 
-    private func sanitizeRecommendedWeightRange() {
-        guard let weightRange, let recommendedWeightRange else {
-            recommendedWeightRange = nil
-            return
-        }
-        guard recommendedWeightRange.min != weightRange.min || recommendedWeightRange.max != weightRange.max else {
-            self.recommendedWeightRange = nil
-            return
-        }
-        recommendedWeightRange.min = min(max(recommendedWeightRange.min, weightRange.min), weightRange.max)
-        recommendedWeightRange.max = max(min(recommendedWeightRange.max, weightRange.max), weightRange.min)
-    }
-
     static func create(context: NSManagedObjectContext) -> Self {
         let equipment = Self(context: context)
         equipment.id = UUID()
@@ -238,5 +217,26 @@ extension Equipment: Creatable {
         equipment.id = UUID()
         equipment.type = type.rawValue
         return equipment
+    }
+
+    func clearRecommendedWeightRange() {
+        minRecommendedWeight = nil
+        maxRecommendedWeight = nil
+    }
+
+    public override func validateForInsert() throws {
+        try super.validateForInsert()
+        try validateWeightRanges()
+    }
+
+    public override func validateForUpdate() throws {
+        try super.validateForUpdate()
+        try validateWeightRanges()
+    }
+
+    private func validateWeightRanges() throws {
+        if weightRanges.sorted() != weightRanges {
+            throw ValidationError.invalidWeightRanges
+        }
     }
 }

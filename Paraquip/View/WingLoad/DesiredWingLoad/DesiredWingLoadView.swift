@@ -11,12 +11,18 @@ struct DesiredWingLoadView: View {
 
     @ObservedObject var profile: Profile
 
-    @State private var isCertifiedWingLoadVisible = true
-    @State private var isRecommendedWingLoadVisible = true
+    @State private var isWeightRangeVisible = true
     @State private var isWingClassIndicationVisible = true
 
     @FetchRequest
     private var equipment: FetchedResults<Equipment>
+
+    private var isWeightRangeAvailable: Bool {
+        guard let paraglider = profile.paraglider else {
+            return false
+        }
+        return paraglider.projectedArea != nil && !paraglider.weightRanges.isEmpty
+    }
 
     init(profile: Profile) {
         self.profile = profile
@@ -34,18 +40,16 @@ struct DesiredWingLoadView: View {
                 .padding(.bottom)
 
             WingLoadGraphic(
-                wingLoad: profile.wingLoad,
-                desiredWingLoad: profile.desiredWingLoad,
-                isCertifiedWingLoadVisible: isCertifiedWingLoadVisible,
-                isRecommendedWingLoadVisible: isRecommendedWingLoadVisible,
+                profile: profile,
+                isWeightRangeVisible: isWeightRangeVisible,
                 isWingClassIndicationVisible: isWingClassIndicationVisible
             )
 
             HStack(spacing: 2) {
-                Slider(value: $profile.desiredWingLoad,
-                       in: profile.wingLoad.extendedRange)
+                Slider(value: $profile.desiredWingLoadValue,
+                       in: profile.visualizedWingLoadRange)
                     .padding(.trailing, 8)
-                Text(profile.desiredWingLoad, format: .number.precision(.fractionLength(2)))
+                Text(profile.desiredWingLoadValue, format: .number.precision(.fractionLength(2)))
                     .monospacedDigit()
                 Text("kg/m²")
             }
@@ -53,10 +57,9 @@ struct DesiredWingLoadView: View {
             .padding([.top, .bottom], 24)
 
             WingLoadLegendView(
-                isCertifiedWingLoadAvailable: profile.wingLoad.certifiedRange != nil,
-                isRecommendedWingLoadAvailable: profile.wingLoad.recommendedRange != nil,
-                isCertifiedWingLoadVisible: $isCertifiedWingLoadVisible,
-                isRecommendedWingLoadVisible: $isRecommendedWingLoadVisible,
+                isWingLoadAvailable: profile.wingLoadValue != nil,
+                isWeightRangeAvailable: isWeightRangeAvailable,
+                isWeightRangeVisible: $isWeightRangeVisible,
                 isWingClassIndicationVisible: $isWingClassIndicationVisible
             )
             .padding([.leading, .trailing], 6)

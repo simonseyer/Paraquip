@@ -8,6 +8,12 @@
 import SwiftUI
 import CoreData
 
+extension Locale {
+    var weightUnit: UnitMass {
+        measurementSystem == .metric ? .kilograms : .pounds
+    }
+}
+
 struct ProfileWeightView: View {
 
     @ObservedObject var profile: Profile
@@ -111,9 +117,9 @@ struct ProfileWeightView: View {
                         }
                     }
                     Spacer()
-                    if let wingLoad = profile.wingLoad.current {
+                    if let wingLoad = profile.wingLoadValue {
                         WingLoadText(wingLoad: wingLoad,
-                                     desiredWingLoad: profile.desiredWingLoad)
+                                     desiredWingLoad: profile.desiredWingLoadValue)
                     } else {
                         Text("—")
                             .foregroundColor(.secondary)
@@ -121,13 +127,13 @@ struct ProfileWeightView: View {
                 }
                 .fontWeight(.medium)
                 ForEach(equipment) { equipment in
-                    if let weightRange = equipment.weightRangeMeasurement {
+                    if let maxWeight = equipment.maxWeightValue {
                         VStack {
                             Text("\(equipment.brandName) \(equipment.equipmentName)")
                                 .fontWeight(.medium)
-                            WeightRangeView(minWeight: weightRange.lowerBound,
-                                            maxWeight: weightRange.upperBound,
-                                            weight: profile.takeoffWeightMeasurement)
+                            WeightRangeView(minWeight: equipment.minWeightValue ?? 0,
+                                            maxWeight: maxWeight,
+                                            weight: profile.takeoffWeightMeasurement.value)
                         }
                         .alignmentGuide(.listRowSeparatorLeading) {
                             $0[.leading]
@@ -139,7 +145,7 @@ struct ProfileWeightView: View {
         .navigationBarTitle("Weight Check")
         .sheet(item: $editEquipmentOperation) { operation in
             NavigationView {
-                EditEquipmentView(equipment: operation.object, locale: locale)
+                EditEquipmentView(equipment: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }

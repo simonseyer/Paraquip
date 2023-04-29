@@ -41,8 +41,6 @@ extension Profile: Creatable {
         static var `default`: Icon { .mountain }
     }
 
-    private static let defaultWingLoad = 4.35
-
     var equipmentPredicate: NSPredicate {
         .init(format: "%@ IN %K", self, #keyPath(Equipment.profiles))
     }
@@ -125,25 +123,58 @@ extension Profile: Creatable {
     var takeoffWeightMeasurement: Measurement<UnitMass> {
         equipmentWeightMeasurement + pilotWeightMeasurement + additionalWeightMeasurement
     }
-    
-    var wingLoad: WingLoad {
-        WingLoad(takeoffWeight: takeoffWeightMeasurement,
-                 projectedWingArea: paraglider?.projectedAreaMeasurement,
-                 wingWeightRange: paraglider?.weightRangeMeasurement,
-                 wingReconmmendedWeightRange: paraglider?.recommendedWeightRangeMeasurement)
+
+    var wingLoadValue: Double? {
+        guard !takeoffWeightMeasurement.value.isZero else { return nil }
+        return wingLoad(weight: takeoffWeightMeasurement.converted(to: .kilograms).value)
     }
 
-    var desiredWingLoad: Double {
+    var desiredWingLoadValue: Double {
         get {
-            if let desiredWingLoadNumber {
+            if let desiredWingLoad {
                 // Clamp to exentededRange to make sure it does not exceed it when weight range changes
-                return desiredWingLoadNumber.doubleValue.clamped(to: wingLoad.extendedRange)
-            } else if let certifiedWingLoadRange = wingLoad.certifiedRange {
-                return (certifiedWingLoadRange.lowerBound + certifiedWingLoadRange.upperBound) / 2.0
+                return desiredWingLoad.doubleValue.clamped(to: visualizedWingLoadRange)
+            } else if let min = paraglider?.minWeightValue,
+                      let max = paraglider?.maxWeightValue,
+                      let wingLoad = wingLoad(weight: (min + max) / 2.0) {
+                return wingLoad
             } else {
-                return Self.defaultWingLoad
+                return (visualizedWingLoadRange.lowerBound + visualizedWingLoadRange.upperBound) / 2.0
             }
         }
-        set { desiredWingLoadNumber = NSNumber(value: newValue) }
+        set { desiredWingLoad = .init(value: newValue) }
+    }
+
+    var visualizedWingLoadRange: ClosedRange<Double> {
+        let buffer = 0.1
+        let defaultLower = 3.8
+        let defaultUpper = 4.9
+
+        var lower = wingLoad(weight: paraglider?.minWeightValue) ?? defaultLower
+        var upper = wingLoad(weight: paraglider?.maxWeightValue) ?? defaultUpper
+
+        if let wingLoadValue {
+            lower = min(lower, wingLoadValue)
+            upper = max(upper, wingLoadValue)
+        }
+
+        lower = min(defaultLower, lower - buffer).rounded(digits: 1, rule: .down)
+        upper = max(defaultUpper, upper + buffer).rounded(digits: 1, rule: .up)
+
+        return lower...upper
+    }
+
+    var visualizedWeightRange: ClosedRange<Double>? {
+        guard let projectedArea = paraglider?.projectedArea?.doubleValue else {
+            return nil
+        }
+        return (visualizedWingLoadRange.lowerBound * projectedArea)...(visualizedWingLoadRange.upperBound * projectedArea)
+    }
+
+    private func wingLoad(weight: Double?) -> Double? {
+        guard let weight, let projectedArea = paraglider?.projectedArea?.doubleValue else {
+            return nil
+        }
+        return weight / projectedArea
     }
 }
