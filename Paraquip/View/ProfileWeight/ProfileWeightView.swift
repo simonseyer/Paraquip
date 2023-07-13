@@ -144,7 +144,7 @@ struct ProfileWeightView: View {
         }
         .navigationBarTitle("Weight Check")
         .sheet(item: $editEquipmentOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 EditEquipmentView(equipment: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
@@ -181,7 +181,7 @@ struct EquipmentWeightRow: View {
 
 struct ProfileWeightView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             ProfileWeightView(profile: CoreData.fakeProfile)
         }
         .environment(\.locale, .init(identifier: "de"))

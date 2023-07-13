@@ -118,13 +118,13 @@ struct ProfileView: View {
             }
         }
         .sheet(item: $editEquipmentOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 EditEquipmentView(equipment: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }
         .sheet(item: $editProfileOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
@@ -155,7 +155,7 @@ struct ProfileView: View {
             Button("Cancel", role: .cancel) {}
         }
         .sheet(isPresented: $isShowingWeightView) {
-            NavigationView {
+            NavigationStack {
                 if let profile {
                     ProfileWeightView(profile: profile)
                         .toolbar {
@@ -211,16 +211,16 @@ struct ProfileView_Previews: PreviewProvider {
 
     static var previews: some View {
         Group {
-            NavigationView {
+            NavigationStack {
                 ProfileView(profile: CoreData.fakeProfile)
             }
 
-            NavigationView {
+            NavigationStack {
                 ProfileView(profile: Profile.create(context: .preview, name: "Empty"))
             }
             .previewDisplayName("Empty Profile")
             
-            NavigationView {
+            NavigationStack {
                 ProfileView(profile: nil)
             }
             .previewDisplayName("All Equipment")

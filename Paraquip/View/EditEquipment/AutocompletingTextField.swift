@@ -96,7 +96,7 @@ fileprivate struct AutocompletingTextField_PreviewView: View {
     let completions = ["test", "Abc", "123", "aBCdef", "test", "Abc", "123", "aBCdef"]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 AutocompletingTextField("Test", text: $text, completions: completions)
                 TextField("Non-completing", text: $text2)

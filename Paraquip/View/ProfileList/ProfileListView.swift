@@ -78,7 +78,7 @@ struct ProfileListView: View {
         }
         .navigationTitle("All Sets")
         .sheet(item: $editProfileOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
@@ -117,7 +117,7 @@ struct ProfileListView: View {
 struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             ProfileListView()
                 .environment(\.managedObjectContext, .preview)
         }

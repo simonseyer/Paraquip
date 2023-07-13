@@ -74,7 +74,7 @@ struct WingLoadView: View {
             }
         }
         .sheet(item: $editEquipmentOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 EditEquipmentView(equipment: operation.object,
                                   focusedField: profile.paraglider != nil ? .projectedArea : nil)
                 .environment(\.managedObjectContext, operation.childContext)

@@ -18,7 +18,7 @@ struct MainView: View {
     @State private var isShowingSingleEquipmentMigrationInfo = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ProfileListView()
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -42,7 +42,7 @@ struct MainView: View {
             notificationService.resetNavigationState()
         }
         .sheet(isPresented: $showNotificationSettings) {
-            NavigationView {
+            NavigationStack {
                 NotificationSettingsView()
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
@@ -54,7 +54,7 @@ struct MainView: View {
             }
         }
         .sheet(item: $presentedEquipment) { equipment in
-            NavigationView {
+            NavigationStack {
                 EquipmentView(equipment: equipment)
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {

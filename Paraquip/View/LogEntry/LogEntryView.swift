@@ -118,11 +118,11 @@ struct LogEntryView_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             LogEntryView(logEntry: logEntry1)
                 .environment(\.managedObjectContext, .preview)
         }
-        NavigationView {
+        NavigationStack {
             LogEntryView(logEntry: logEntry2)
                 .environment(\.managedObjectContext, .preview)
         }

@@ -111,7 +111,7 @@ struct NotificationSettingsView: View {
 struct NotificationSettingsView_Previews: PreviewProvider {
 
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             NotificationSettingsView()
                 .environmentObject(
                     NotificationService(state: .init(
@@ -124,7 +124,7 @@ struct NotificationSettingsView_Previews: PreviewProvider {
                 )
         }
 
-        NavigationView {
+        NavigationStack {
             NotificationSettingsView()
                 .environmentObject(
                     NotificationService(state: .init(

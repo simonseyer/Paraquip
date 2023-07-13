@@ -374,7 +374,7 @@ struct EditEquipmentView: View {
             }
         }
         .sheet(item: $editLogEntryOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }

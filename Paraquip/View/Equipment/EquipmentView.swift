@@ -119,13 +119,13 @@ struct EquipmentView: View {
             }
         }
         .sheet(item: $editLogEntryOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }
         .sheet(item: $editEquipmentOperation) { operation in
-            NavigationView {
+            NavigationStack {
                 EditEquipmentView(equipment: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
@@ -188,7 +188,7 @@ struct EquipmentView_Previews: PreviewProvider {
 
     static var previews: some View {
         ForEach(CoreData.fakeProfile.allEquipment) { equipment in
-            NavigationView {
+            NavigationStack {
                 EquipmentView(equipment: equipment)
             }
             .previewDisplayName(equipment.equipmentName)
