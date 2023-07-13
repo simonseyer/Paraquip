@@ -24,6 +24,10 @@ struct DesiredWingLoadView: View {
         return paraglider.projectedArea != nil && !paraglider.weightRanges.isEmpty
     }
 
+    private var isRecommendedWeightRangeAvailable: Bool {
+        profile.paraglider?.hasRecommendedWeightRange ?? false
+    }
+
     init(profile: Profile) {
         self.profile = profile
         _equipment = FetchRequest(
@@ -59,6 +63,7 @@ struct DesiredWingLoadView: View {
             WingLoadLegendView(
                 isWingLoadAvailable: profile.wingLoadValue != nil,
                 isWeightRangeAvailable: isWeightRangeAvailable,
+                isRecommendedWeightRangeAvailable: isRecommendedWeightRangeAvailable,
                 isWeightRangeVisible: $isWeightRangeVisible,
                 isWingClassIndicationVisible: $isWingClassIndicationVisible
             )

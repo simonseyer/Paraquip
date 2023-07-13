@@ -90,6 +90,7 @@
 		F4DFE72229D13CAE00394F15 /* WingLoadCalculationGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72129D13CAE00394F15 /* WingLoadCalculationGraphic.swift */; };
 		F4DFE72729D4E92000394F15 /* RoundingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */; };
 		F4DFE72929D4EA4600394F15 /* WingLoadScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */; };
+		F4EFE9B92A606C16002A1A46 /* Stripes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EFE9B82A606C16002A1A46 /* Stripes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +206,7 @@
 		F4DFE72129D13CAE00394F15 /* WingLoadCalculationGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadCalculationGraphic.swift; sourceTree = "<group>"; };
 		F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundingExtensions.swift; sourceTree = "<group>"; };
 		F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadScale.swift; sourceTree = "<group>"; };
+		F4EFE9B82A606C16002A1A46 /* Stripes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stripes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -532,6 +534,7 @@
 				F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */,
 				F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */,
 				F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */,
+				F4EFE9B82A606C16002A1A46 /* Stripes.swift */,
 			);
 			path = DesiredWingLoad;
 			sourceTree = "<group>";
@@ -700,6 +703,7 @@
 				F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */,
 				F4C6A4B229CB9A410017EC0E /* FetchRequestExtensions.swift in Sources */,
 				0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */,
+				F4EFE9B92A606C16002A1A46 /* Stripes.swift in Sources */,
 				0D11FBCB2620BF45009D9349 /* ProfileView.swift in Sources */,
 				0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */,
 				0DD7317C28C11E3F006475FA /* AutocompletingTextField.swift in Sources */,

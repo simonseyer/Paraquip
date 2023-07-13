@@ -103,6 +103,7 @@
 "Current wing load" = "Aktuelle Flächenbelastung";
 "Current wing load %@" = "Aktuelle Flächenbelastung %@";
 "Certified/recommended weight range %@" = "Zertifizierter/Empfohlener Gewichtsbereich %@";
+"Certified weight range %@" = "Zertifizierter Gewichtsbereich %@";
 "Common wing load by EN-class %@" = "Übliche Flächenbelastung per EN-Klasse %@";
 "wing_load_disclaimer" = "Ausschließlich Richtwerte. Quellen: THERMIK 11-12/2020 (Einordnung), DHV Info 220/2019 (Schirm-Klassen)";
 "Guidance" = "Entscheidungshilfe";

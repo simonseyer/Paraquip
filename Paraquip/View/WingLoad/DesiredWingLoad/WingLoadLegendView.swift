@@ -11,6 +11,7 @@ struct WingLoadLegendView: View {
 
     let isWingLoadAvailable: Bool
     let isWeightRangeAvailable: Bool
+    let isRecommendedWeightRangeAvailable: Bool
 
     @Binding var isWeightRangeVisible: Bool
     @Binding var isWingClassIndicationVisible: Bool
@@ -46,14 +47,15 @@ struct WingLoadLegendView: View {
     }
 
     private var weightRangeOpacity: Double {
-        if isWeightRangeAvailable && isWeightRangeVisible { return visibleOpactity
+        if isWeightRangeAvailable && isWeightRangeVisible {
+            return visibleOpactity
         } else {
             return hiddenOpacity
         }
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             Group {
                 HStack {
                     DesiredWingLoadMarker()
@@ -72,8 +74,13 @@ struct WingLoadLegendView: View {
                 .opacity(isWingLoadAvailable ? visibleOpactity : hiddenOpacity)
 
                 HStack {
-                    CertifiedWingLoadMarker(recommended: false)
-                    Text("Certified/recommended weight range \(weightRangeIcon)")
+                    CertifiedWingLoadMarker()
+                    if isRecommendedWeightRangeAvailable {
+                        Text("Certified/recommended weight range \(weightRangeIcon)")
+                    } else {
+                        Text("Certified weight range \(weightRangeIcon)")
+                    }
+
                 }
                 .opacity(weightRangeOpacity)
                 .onTapGesture {
@@ -118,26 +125,12 @@ struct WingLoadLegendView: View {
 
 fileprivate struct CertifiedWingLoadMarker: View {
 
-    let recommended: Bool
-
     var body: some View {
         Rectangle()
-            .overlay(alignment: .trailing) {
-                if !recommended {
-                    VStack {
-                        Spacer()
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(.black)
-                            .font(.system(size: 5, weight: .bold))
-                            .padding(.bottom, 3)
-                            .padding(.trailing, 1)
-                    }
-                }
-            }
-            .foregroundColor(Color(UIColor.systemOrange))
-            .opacity(recommended ? 0.3 : 0.6)
-            .frame(width: 10, height: 20)
-            .padding(5)
+            .stripes()
+            .opacity(0.7)
+            .frame(width: 8, height: 18)
+            .padding(6)
     }
 }
 
@@ -159,35 +152,44 @@ fileprivate struct CurrentWingLoadMarker: View {
     }
 }
 
-struct WingLoadLegendView_Previews: PreviewProvider {
+struct PreviewContainer: View {
 
-    struct PreviewContainer: View {
+    let isWingLoadAvailable: Bool
+    let isWeightRangeAvailable: Bool
+    let isRecommendedWeightRangeAvailable: Bool
 
-        let isWingLoadAvailable: Bool
-        let isWeightRangeAvailable: Bool
+    @State var isWeightRangeVisible: Bool = true
+    @State var isWingClassIndicationVisible: Bool = true
 
-        @State var isWeightRangeVisible: Bool = true
-        @State var isWingClassIndicationVisible: Bool = true
-
-        @ViewBuilder
-        var body: some View {
-            WingLoadLegendView(
-                isWingLoadAvailable: isWingLoadAvailable,
-                isWeightRangeAvailable: isWeightRangeAvailable,
-                isWeightRangeVisible: $isWeightRangeVisible,
-                isWingClassIndicationVisible: $isWingClassIndicationVisible)
-        }
+    @ViewBuilder
+    var body: some View {
+        WingLoadLegendView(
+            isWingLoadAvailable: isWingLoadAvailable,
+            isWeightRangeAvailable: isWeightRangeAvailable,
+            isRecommendedWeightRangeAvailable: isRecommendedWeightRangeAvailable,
+            isWeightRangeVisible: $isWeightRangeVisible,
+            isWingClassIndicationVisible: $isWingClassIndicationVisible)
     }
+}
+
+struct WingLoadLegendView_Previews: PreviewProvider {
 
     static var previews: some View {
         VStack {
             PreviewContainer(
                 isWingLoadAvailable: true,
-                isWeightRangeAvailable: true)
+                isWeightRangeAvailable: true,
+                isRecommendedWeightRangeAvailable: true)
+            .padding()
+            PreviewContainer(
+                isWingLoadAvailable: true,
+                isWeightRangeAvailable: true,
+                isRecommendedWeightRangeAvailable: false)
             .padding()
             PreviewContainer(
                 isWingLoadAvailable: false,
-                isWeightRangeAvailable: false)
+                isWeightRangeAvailable: false,
+                isRecommendedWeightRangeAvailable: false)
             .padding()
         }
         .background(Color(uiColor: .systemGroupedBackground))

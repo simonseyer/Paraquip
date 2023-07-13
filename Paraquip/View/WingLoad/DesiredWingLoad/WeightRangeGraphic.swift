@@ -12,6 +12,9 @@ struct WeightRangeGraphic: View {
     @ObservedObject var equipment: Equipment
     let visibleWeightRange: ClosedRange<Double>
 
+    private let certifiedOpacity = 0.8
+    private let recommendedOpacity = 0.4
+
     var body: some View {
         GeometryReader { geometry in
             let position = { (weight: Double) -> Double in
@@ -26,64 +29,35 @@ struct WeightRangeGraphic: View {
 
             HStack(spacing: 0) {
                 if let min = equipment.minWeightValue {
-                    RangeVisual(config: .certifiedLower)
+                    Rectangle()
+                        .stripes()
+                        .opacity(certifiedOpacity)
                         .frame(width: width(visibleWeightRange.lowerBound, min))
                 }
 
                 if let recommendedMin = equipment.minRecommendedWeightValue {
-                    RangeVisual(config: .recommmended)
+                    Rectangle()
+                        .stripes()
+                        .opacity(recommendedOpacity)
                         .frame(width: width(equipment.minWeightValue ?? visibleWeightRange.lowerBound, recommendedMin))
                 }
 
                 Spacer()
 
                 if let recommendedMax = equipment.maxRecommendedWeightValue {
-                    RangeVisual(config: .recommmended)
+                    Rectangle()
+                        .stripes()
+                        .opacity(recommendedOpacity)
                         .frame(width: width(recommendedMax, equipment.maxWeightValue ?? visibleWeightRange.upperBound))
                 }
 
                 if let max = equipment.maxWeightValue {
-                    RangeVisual(config: .certifiedHigher)
+                    Rectangle()
+                        .stripes()
+                        .opacity(certifiedOpacity)
                         .frame(width: width(max, visibleWeightRange.upperBound))
                 }
             }
-        }
-    }
-}
-
-private struct RangeVisual: View {
-
-    enum Configuration {
-        case certifiedLower, certifiedHigher, recommmended
-    }
-
-    let config: Configuration
-
-    private var isLower: Bool {
-        config == .certifiedLower
-    }
-
-    @ViewBuilder
-    var body: some View {
-        Rectangle()
-            .overlay(alignment: isLower ? .trailing : .leading) {
-                if config != .recommmended {
-                    arrowOverlay
-                }
-            }
-            .foregroundColor(Color(UIColor.systemOrange))
-            .opacity(config == .recommmended ? 0.3 : 0.6)
-    }
-
-    @ViewBuilder
-    private var arrowOverlay: some View {
-        VStack {
-            Spacer()
-            Image(systemName: "arrow.\(isLower ? "right" : "left")")
-                .foregroundColor(.black)
-                .font(.system(size: 8, weight: .bold))
-                .padding(.bottom, 10)
-                .padding(isLower ? .trailing : .leading, 6)
         }
     }
 }

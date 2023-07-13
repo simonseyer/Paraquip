@@ -76,21 +76,21 @@ struct WingLoadGraphic: View {
                         }
                     }
 
-                    if isWeightRangeVisible,
-                       let paraglider = profile.paraglider,
+                    if let paraglider = profile.paraglider,
                        let visibleWeightRange = profile.visualizedWeightRange {
                         WeightRangeGraphic(
                             equipment: paraglider,
-                            visibleWeightRange: visibleWeightRange)
+                            visibleWeightRange: visibleWeightRange
+                        )
+                        .opacity(isWeightRangeVisible ? 1 : 0)
                     }
 
-                    if isWingClassIndicationVisible {
-                        ForEach(wingClassWingLoad, id: \.1) { wingClass in
-                            WingClassPill(text: wingClass.0)
-                                .position(
-                                    x: width * relativePosition(of: wingClass.1),
-                                    y: 13)
-                        }
+                    ForEach(wingClassWingLoad, id: \.1) { wingClass in
+                        WingClassPill(text: wingClass.0)
+                            .position(
+                                x: width * relativePosition(of: wingClass.1),
+                                y: 13)
+                            .opacity(isWingClassIndicationVisible ? 1 : 0)
                     }
 
                     if let wingLoad = profile.wingLoadValue {
