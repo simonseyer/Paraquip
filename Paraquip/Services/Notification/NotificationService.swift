@@ -54,7 +54,7 @@ class NotificationService: ObservableObject {
     private let managedObjectContext: NSManagedObjectContext
     private let logger = Logger(category: "NotificationsStore")
 
-    private var coreDataObserverationTask: Task<(), Never>?
+    private var subscriptions: Set<AnyCancellable> = []
 
     private let notificationHour = 9
 
@@ -63,47 +63,48 @@ class NotificationService: ObservableObject {
             guard state != oldValue else { return }
             persistence.save(notificationState: state.toPersistence())
             Task {
-                await scheduleNotifications(configuration: state.configuration)
+                await scheduleNotifications()
             }
         }
     }
     @Published private(set) var navigationState = NavigationState.none
 
-    init(managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: any NotificationPlugin = AppleNotificationPlugin()) {
+    init(managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: (any NotificationPlugin)? = nil) {
         self.managedObjectContext = managedObjectContext
         self.persistence = persistence
-        self.notifications = notifications
+        self.notifications = notifications ?? AppleNotificationPlugin()
         self.state = persistence.load()?.toModel() ?? .default
 
-        notifications.delegate = self
+        self.notifications.delegate = self
         setupNotificationScheduling()
     }
 
-    init(state: NotificationState, managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: any NotificationPlugin = AppleNotificationPlugin()) {
+    init(state: NotificationState, managedObjectContext: NSManagedObjectContext, persistence: NotificationPersistence = .init(), notifications: (any NotificationPlugin)? = nil) {
         self.managedObjectContext = managedObjectContext
         self.persistence = persistence
-        self.notifications = notifications
+        self.notifications = notifications ?? AppleNotificationPlugin()
         self.state = state
 
-        notifications.delegate = self
+        self.notifications.delegate = self
         setupNotificationScheduling()
     }
 
     private func setupNotificationScheduling() {
-        coreDataObserverationTask = Task {
-            for await _ in NotificationCenter.default.notifications(named: .NSManagedObjectContextDidSave, object: managedObjectContext) {
-                await scheduleNotifications(configuration: state.configuration)
+        NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: managedObjectContext)
+            .map { _ in () }
+            .prepend(())
+            .sink {[weak self] in
+                Task {[weak self] in
+                    await self?.scheduleNotifications()
+                }
             }
-        }
-        Task {
-            await scheduleNotifications(configuration: state.configuration)
-        }
+            .store(in: &subscriptions)
     }
 
-    private func scheduleNotifications(configuration: [NotificationConfig]) async {
+    private func scheduleNotifications() async {
         let fetchRequest = Equipment.fetchRequest()
         let equipment: [Equipment] = (try? managedObjectContext.fetch(fetchRequest)) ?? []
-        await scheduleNotifications(for: equipment, configuration: configuration)
+        await scheduleNotifications(for: equipment, configuration: state.configuration)
     }
 
     func enable() async {
@@ -203,10 +204,6 @@ class NotificationService: ObservableObject {
         await notifications.setBadge(count: badgeCount)
         logger.info("Set badge count: \(badgeCount)")
     }
-
-    deinit {
-        coreDataObserverationTask?.cancel()
-    }
 }
 
 extension NotificationService: NotificationsPluginDelegate {
@@ -225,7 +222,7 @@ extension NotificationService: NotificationsPluginDelegate {
         logger.info("Handling notification for equipment: \(equipment)")
 
         let fetchRequest = Equipment.fetchRequest()
-        fetchRequest.predicate = .init(format: "id == %@", equipment as CVarArg)
+        fetchRequest.predicate = .init(format: "id == %@", equipment as any CVarArg)
         fetchRequest.fetchLimit = 1
         let equipmentModel = try? managedObjectContext.fetch(fetchRequest).first
 

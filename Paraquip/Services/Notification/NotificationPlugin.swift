@@ -16,17 +16,16 @@ enum AuthorizationStatus: String, CustomStringConvertible {
     }
 }
 
-protocol NotificationsPluginDelegate: AnyObject {
+protocol NotificationsPluginDelegate: AnyObject, Sendable {
     func authorizationStatusDidChange(_ authorizationStatus: AuthorizationStatus) async
     func didReceiveNotification(_ notification: NotificationResponse) async
     func didReceiveOpenSettings() async
 }
 
+@MainActor
 protocol NotificationPlugin: AnyObject {
 
-    typealias Delegate = any NotificationsPluginDelegate & Sendable
-
-    var delegate: Delegate? { get set }
+    var delegate: (any NotificationsPluginDelegate)? { get set }
 
     func requestAuthorization() async throws
     func reset() async

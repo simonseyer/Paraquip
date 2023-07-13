@@ -6,41 +6,39 @@
 //
 
 import Foundation
+@preconcurrency
 import UserNotifications
 import UIKit
 import OSLog
 import Combine
 
-class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationCenterDelegate {
+@MainActor
+class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationCenterDelegate  {
 
-    weak var delegate: Delegate? {
-        didSet {
-            observeAuthorizationStatus(for: delegate)
-        }
-    }
+    weak var delegate: (any NotificationsPluginDelegate)?
 
     private let center = UNUserNotificationCenter.current()
     private let badgeIdentifier = "badge"
     private let logger = Logger(category: "NotificationPlugin")
-    private var becomeActiveObserverationTask: Task<(), Never>?
+    private var subscriptions: Set<AnyCancellable> = []
 
     override init() {
         super.init()
         precondition(center.delegate == nil)
         center.delegate = self
+        observeAuthorizationStatus()
     }
 
-    func observeAuthorizationStatus(for delegate: Delegate?) {
-        becomeActiveObserverationTask?.cancel()
-        guard let delegate else { return }
-
-        becomeActiveObserverationTask = Task { [delegate] in
-            for await _ in NotificationCenter.default.notifications(named: await UIApplication.didBecomeActiveNotification) {
-                let settings = await UNUserNotificationCenter.current().notificationSettings()
-                let authorizationStatus = settings.authorizationStatus.toAuthorizationStatus()
-                await delegate.authorizationStatusDidChange(authorizationStatus)
+    private func observeAuthorizationStatus() {
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink {[weak self] _ in
+                Task {[weak self] in
+                    let settings = await UNUserNotificationCenter.current().notificationSettings()
+                    let authorizationStatus = settings.authorizationStatus.toAuthorizationStatus()
+                    await self?.delegate?.authorizationStatusDidChange(authorizationStatus)
+                }
             }
-        }
+            .store(in: &subscriptions)
     }
 
     func requestAuthorization() async throws {
@@ -83,9 +81,9 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
         return try await center.add(request)
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 openSettingsFor notification: UNNotification?) {
-        Task { [delegate] in
+        Task {
             await delegate?.didReceiveOpenSettings()
         }
     }
@@ -108,10 +106,6 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
         Task.detached { [delegate] in
             await delegate?.didReceiveNotification(response)
         }
-    }
-
-    deinit {
-        becomeActiveObserverationTask?.cancel()
     }
 }
 

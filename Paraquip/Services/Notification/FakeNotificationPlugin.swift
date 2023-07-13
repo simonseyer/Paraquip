@@ -8,9 +8,10 @@
 import Foundation
 import Combine
 
+@MainActor
 class FakeNotificationPlugin: NotificationPlugin {
 
-    weak var delegate: (any NotificationsPluginDelegate & Sendable)?
+    weak var delegate: (any NotificationsPluginDelegate)?
 
     func requestAuthorization() async throws {}
 
