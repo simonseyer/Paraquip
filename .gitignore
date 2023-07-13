@@ -122,3 +122,8 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Scraper
+venv
+main_cache.sqlite
+.ipynb_checkpoints
