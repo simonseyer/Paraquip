@@ -1,1 +1,1 @@
-Paraquip hilft dir jetzt, deine perfekte Flächenbelastung zu wählen. Einfach die projizierte Fläche für deinen Gleitschirm eintragen und im Gewichtsrechner auf "Flächenbelastung" tippen.
+Ein kleineres Update mit Dark Mode Support, der Eingabe von empfohlenen Gewichtsbereichen und Fehlerbehebungen.

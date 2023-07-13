@@ -1,1 +1,1 @@
-Paraquip now helps you choose your perfect wing loading. Simply enter the projected area for your paraglider and tap on "Wing load" in the weight check screen.
+A minor update with dark mode support, entering recommended weight ranges, and bug fixes.
