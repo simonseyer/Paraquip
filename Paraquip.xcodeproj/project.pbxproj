@@ -74,6 +74,7 @@
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
+		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
@@ -192,6 +193,7 @@
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
+		F4496D292AA0F98400836BFE /* PreviewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewEntity.swift; sourceTree = "<group>"; };
 		F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationState.swift; sourceTree = "<group>"; };
 		F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGraphic.swift; sourceTree = "<group>"; };
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */,
 				0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */,
 				0DA898A92841FAD100D7568F /* CoreDataOperation.swift */,
+				F4496D292AA0F98400836BFE /* PreviewEntity.swift */,
 			);
 			path = ModelExtensions;
 			sourceTree = "<group>";
@@ -717,6 +720,7 @@
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
+				F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */,
 				F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */,
 				F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */,
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,

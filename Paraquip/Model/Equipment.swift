@@ -65,10 +65,6 @@ extension Equipment: Creatable {
         NSSortDescriptor(key: "brand", ascending: true),
         NSSortDescriptor(key: "name", ascending: true)
     ]
-    
-    static var previewEntity: NSEntityDescription {
-        NSEntityDescription.entity(forEntityName: String(describing: Self.self), in: .preview)!
-    }
 
     var equipmentType: EquipmentType {
         EquipmentType(rawValue: type) ?? .paraglider
