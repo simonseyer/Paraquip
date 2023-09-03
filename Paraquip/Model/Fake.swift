@@ -158,15 +158,3 @@ struct CoreData {
     }
 }
 
-extension NotificationState {
-    static func fake() -> NotificationState {
-        return NotificationState(
-            isEnabled: true,
-            wasRequestRejected: false,
-            configuration: [
-                NotificationConfig(unit: .months, multiplier: 1),
-                NotificationConfig(unit: .days, multiplier: 10)
-            ]
-        )
-    }
-}
