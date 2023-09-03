@@ -16,6 +16,12 @@ struct WingLoadText: View {
         abs(wingLoad - desiredWingLoad)
     }
 
+    private let gradient = Gradient(stops: [
+        .init(color: Color(uiColor: .systemOrange), location: 0.0),
+        .init(color: .accentColor, location: 0.1),
+        .init(color: .accentColor, location: 0.90),
+        .init(color: .orange, location: 1.0)])
+
     private var deviationColor: Color {
         if deviation > 0.2 {
            return Color(UIColor.systemRed)
@@ -25,22 +31,29 @@ struct WingLoadText: View {
     }
 
     var body: some View {
-        HStack(spacing: 4) {
-            Text(wingLoad, format: .number.precision(.fractionLength(2)))
-                .monospacedDigit()
-            Group {
-                if deviation <= 0.1 {
-                    Image(systemName: "equal.circle")
-                } else if wingLoad > desiredWingLoad {
-                    Image(systemName: "arrow.up.circle")
-                        .foregroundColor(deviationColor)
-                } else if wingLoad < desiredWingLoad {
-                    Image(systemName: "arrow.down.circle")
-                        .foregroundColor(deviationColor)
-                }
-            }
-            .fontWeight(.regular)
-        }
+        Gauge(
+            value: wingLoad,
+            in: (desiredWingLoad - 0.2)...(desiredWingLoad + 0.2),
+            label: { Text("") },
+            currentValueLabel: { Text("\(wingLoad, format: .number.precision(.fractionLength(2)))").monospacedDigit() }
+        ).tint(gradient)
+            .gaugeStyle(.accessoryCircular)
+//        HStack(spacing: 4) {
+//            Text(wingLoad, format: .number.precision(.fractionLength(2)))
+//                .monospacedDigit()
+//            Group {
+//                if deviation <= 0.1 {
+//                    Image(systemName: "equal.circle")
+//                } else if wingLoad > desiredWingLoad {
+//                    Image(systemName: "arrow.up.circle")
+//                        .foregroundColor(deviationColor)
+//                } else if wingLoad < desiredWingLoad {
+//                    Image(systemName: "arrow.down.circle")
+//                        .foregroundColor(deviationColor)
+//                }
+//            }
+//            .fontWeight(.regular)
+//        }
     }
 }
 

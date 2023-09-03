@@ -38,7 +38,7 @@ struct ProfileWeightView: View {
 
     @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var showingWingLoad = false
-    
+
     init(profile: Profile) {
         self.profile = profile
         _equipment = FetchRequest(
@@ -127,18 +127,8 @@ struct ProfileWeightView: View {
                 }
                 .fontWeight(.medium)
                 ForEach(equipment) { equipment in
-                    if let maxWeight = equipment.maxWeightValue {
-                        VStack {
-                            Text("\(equipment.brandName) \(equipment.equipmentName)")
-                                .fontWeight(.medium)
-                            WeightRangeView(minWeight: equipment.minWeightValue ?? 0,
-                                            maxWeight: maxWeight,
-                                            weight: profile.takeoffWeightMeasurement.value)
-                        }
-                        .alignmentGuide(.listRowSeparatorLeading) {
-                            $0[.leading]
-                        }
-                    }
+                    WeightRangeCell(equipment: equipment,
+                                    takeoffWeight: profile.takeoffWeightMeasurement.value)
                 }
             }
         }

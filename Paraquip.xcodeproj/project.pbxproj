@@ -57,7 +57,6 @@
 		0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA93A0A26CEE9160063356B /* PillLabel.swift */; };
 		0DC585F0275CE0F7001B346E /* SharpImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585EF275CE0F7001B346E /* SharpImageView.swift */; };
 		0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */; };
-		0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC585F5275D08FA001B346E /* WeightRangeView.swift */; };
 		0DCF78E726CC25C3004B1602 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCF78E626CC25C3004B1602 /* TestUtils.swift */; };
 		0DD7317C28C11E3F006475FA /* AutocompletingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7317B28C11E3F006475FA /* AutocompletingTextField.swift */; };
 		0DD7FC10263DD3060038B25D /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD7FC0F263DD3060038B25D /* Profile.swift */; };
@@ -74,6 +73,7 @@
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
+		F4457B782A641F100068C8E1 /* WeightRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4457B772A641F100068C8E1 /* WeightRangeCell.swift */; };
 		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
@@ -173,7 +173,6 @@
 		0DC585EF275CE0F7001B346E /* SharpImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharpImageView.swift; sourceTree = "<group>"; };
 		0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWeightView.swift; sourceTree = "<group>"; };
 		0DC585F4275CF448001B346E /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
-		0DC585F5275D08FA001B346E /* WeightRangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRangeView.swift; sourceTree = "<group>"; };
 		0DCF78E626CC25C3004B1602 /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		0DD7317B28C11E3F006475FA /* AutocompletingTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompletingTextField.swift; sourceTree = "<group>"; };
 		0DD7FC0F263DD3060038B25D /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -193,6 +192,7 @@
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
+		F4457B772A641F100068C8E1 /* WeightRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRangeCell.swift; sourceTree = "<group>"; };
 		F4496D292AA0F98400836BFE /* PreviewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewEntity.swift; sourceTree = "<group>"; };
 		F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationState.swift; sourceTree = "<group>"; };
 		F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGraphic.swift; sourceTree = "<group>"; };
@@ -497,8 +497,8 @@
 			isa = PBXGroup;
 			children = (
 				0DC585F2275CE8D1001B346E /* ProfileWeightView.swift */,
-				0DC585F5275D08FA001B346E /* WeightRangeView.swift */,
 				F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */,
+				F4457B772A641F100068C8E1 /* WeightRangeCell.swift */,
 			);
 			path = ProfileWeight;
 			sourceTree = "<group>";
@@ -708,6 +708,7 @@
 				0D77A35726D2692E002B24D6 /* FormIcon.swift in Sources */,
 				F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */,
 				F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */,
+				F4457B782A641F100068C8E1 /* WeightRangeCell.swift in Sources */,
 				F4C6A4B229CB9A410017EC0E /* FetchRequestExtensions.swift in Sources */,
 				0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */,
 				F4EFE9B92A606C16002A1A46 /* Stripes.swift in Sources */,
@@ -726,7 +727,6 @@
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
 				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
-				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,
 				0D491CC32829A5EE001BB9EC /* LogEntry.swift in Sources */,
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
