@@ -39,8 +39,8 @@ struct CoreData {
     }
 
     private static func createFakeProfile(context: NSManagedObjectContext) -> Profile {
-        let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")!
-        let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")!
+        let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")
+        let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
@@ -110,12 +110,16 @@ struct CoreData {
             equipment.maxWeightValue = 95
             equipment.minRecommendedWeightValue = 80
             equipment.maxRecommendedWeightValue = 90
-            equipment.manualAttachment = createAttachment(for: dummyPDFURL, context: context)
+            if let dummyPDFURL {
+                equipment.manualAttachment = createAttachment(for: dummyPDFURL, context: context)
+            }
             profile.addToEquipment(equipment)
 
             let logEntry = LogEntry.create(context: context, date: dateFormatter.date(from: "12.08.2021")!)
-            logEntry.addToAttachments(createAttachment(for: dummyPDFURL, context: context))
-            logEntry.addToAttachments(createAttachment(for: dummyImageURL, context: context))
+            if let dummyPDFURL, let dummyImageURL {
+                logEntry.addToAttachments(createAttachment(for: dummyPDFURL, context: context))
+                logEntry.addToAttachments(createAttachment(for: dummyImageURL, context: context))
+            }
             equipment.addToCheckLog(logEntry)
         }
 
