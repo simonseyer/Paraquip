@@ -13,14 +13,9 @@ import OSLog
 class DatabaseMigration: ObservableObject {
     @Published private(set) var hasRemovedDuplicateEquipment = false
 
-    private let context: NSManagedObjectContext
     private let logger = Logger(category: "DatabaseMigration")
 
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
-
-    func run() {
+    func run(context: NSManagedObjectContext) {
         let profilesFetchRequest = Profile.fetchRequest()
         let profiles = (try? context.fetch(profilesFetchRequest)) ?? []
 

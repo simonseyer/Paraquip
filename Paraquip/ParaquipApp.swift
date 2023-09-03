@@ -23,7 +23,7 @@ struct ParaquipApp: App {
         if ProcessInfo.processInfo.environment["isUITest"] == "true" {
             UIView.setAnimationsEnabled(false)
             self.container = CoreData.inMemoryPersistentContainer
-            self.databaseMigration = DatabaseMigration(context: container.viewContext)
+            self.databaseMigration = DatabaseMigration()
             self.notificationService = NotificationService(
                 state: .fake(),
                 managedObjectContext: container.viewContext,
@@ -32,39 +32,13 @@ struct ParaquipApp: App {
             )
         } else if ProcessInfo.processInfo.environment["isNotificationTest"] == "true" {
             self.container = CoreData.inMemoryPersistentContainer
-            self.databaseMigration = DatabaseMigration(context: container.viewContext)
+            self.databaseMigration = DatabaseMigration()
             self.notificationService = NotificationService(managedObjectContext: container.viewContext)
         } else {
-            let container = NSPersistentContainer(name: "Model")
-            container.loadPersistentStores { description, error in
-                if let error {
-                    fatalError("Unable to load persistent stores: \(error)")
-                }
-            }
-
-            self.container = container
-            let migrationContext = container.newBackgroundContext()
-            self.databaseMigration = DatabaseMigration(context: migrationContext)
-            self.notificationService = NotificationService(managedObjectContext: container.viewContext)
-
-            LegacyAppPersistence().migrate(into: migrationContext)
-            databaseMigration.run()
-            initializeDatabase(context: migrationContext)
-        }
-    }
-
-    private func initializeDatabase(context: NSManagedObjectContext) {
-        let profiles = (try? context.count(for: Profile.fetchRequest())) ?? 0
-        guard profiles == 0 else {
-            return
-        }
-
-        _ = Profile.create(context: context, name: LocalizedString("Your Equipment"))
-
-        do {
-            try context.save()
-        } catch {
-            logger.error("Failed to initialise empty database: \(error.description)")
+            let coreDataStack = CoreDataStack()
+            self.container = coreDataStack.container
+            self.databaseMigration = coreDataStack.databaseMigration
+            self.notificationService = NotificationService(managedObjectContext: coreDataStack.viewContext)
         }
     }
 

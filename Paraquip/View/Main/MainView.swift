@@ -84,7 +84,6 @@ struct ContentView_Previews: PreviewProvider {
             .environment(\.managedObjectContext, .preview)
             .environmentObject(NotificationService(managedObjectContext: .preview,
                                                    notifications: FakeNotificationPlugin()))
-            .environmentObject(DatabaseMigration(context: .preview))
+            .environmentObject(DatabaseMigration())
     }
 }
-

@@ -32,13 +32,4 @@ extension Equipment.EquipmentType {
         case .gear: return "Gear"
         }
     }
-
-    var iconImage: Image {
-        switch self {
-        case .paraglider: return Image("paraglider")
-        case .harness: return Image("harness")
-        case .reserve: return Image("reserve")
-        case .gear: return Image("gear")
-        }
-    }
 }
