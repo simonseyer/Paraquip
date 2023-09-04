@@ -74,7 +74,7 @@ class SnapshotUITests: XCTestCase {
 
             app.navigationBars.buttons[localized("Notifications")].tap()
             snapshot("05NotificationsScreen")
-            app.buttons[localized("Close")].tap()
+            app.navigationBars[localized("Notifications")].buttons[localized("Close")].tap()
 
             if app.buttons["ToggleSidebar"].exists {
                 app.buttons["ToggleSidebar"].tap()
