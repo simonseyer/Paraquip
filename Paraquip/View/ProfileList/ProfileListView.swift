@@ -8,16 +8,6 @@
 import SwiftUI
 import CoreData
 
-extension Image {
-    fileprivate func resized() -> some View {
-        self.resizable()
-            .fontWeight(.medium)
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
-            .padding(.trailing, 8)
-    }
-}
-
 enum ProfileSelection: Hashable {
     case allEquipment
     case profile(Profile)
@@ -45,11 +35,10 @@ struct ProfileListView: View {
                     NavigationLink(value: ProfileSelection.profile(profile)) {
                         HStack {
                             Image(systemName: profile.profileIcon.systemName)
-                                .resized()
+                                .font(.title3)
                             Text(profile.profileName)
                         }
                     }
-                    .padding([.top, .bottom], 8)
                     .swipeActions {
                         Button {
                             editProfileOperation = Operation(editing: profile,
@@ -72,11 +61,10 @@ struct ProfileListView: View {
                 NavigationLink(value: ProfileSelection.allEquipment)  {
                     HStack {
                         Image(systemName: "tray.full.fill")
-                            .resized()
+                            .font(.title3)
                         Text("All Equipment")
                     }
                 }
-                .padding([.top, .bottom], 6)
             } footer: {
                 Text("set_footer")
             }
