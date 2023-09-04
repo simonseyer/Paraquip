@@ -13,6 +13,17 @@ enum ProfileSelection: Hashable {
     case profile(Profile)
 }
 
+@MainActor
+extension String {
+    fileprivate var deviceSpecificIcon: String {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return self.replacingOccurrences(of: ".fill", with: "")
+        } else {
+            return self
+        }
+    }
+}
+
 struct ProfileListView: View {
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
@@ -34,7 +45,7 @@ struct ProfileListView: View {
                 ForEach(profiles) { profile in
                     NavigationLink(value: ProfileSelection.profile(profile)) {
                         HStack {
-                            Image(systemName: profile.profileIcon.systemName)
+                            Image(systemName: profile.profileIcon.systemName.deviceSpecificIcon)
                                 .font(.title3)
                             Text(profile.profileName)
                         }
@@ -60,7 +71,7 @@ struct ProfileListView: View {
                 }
                 NavigationLink(value: ProfileSelection.allEquipment)  {
                     HStack {
-                        Image(systemName: "tray.full.fill")
+                        Image(systemName: "tray.full.fill".deviceSpecificIcon)
                             .font(.title3)
                         Text("All Equipment")
                     }
