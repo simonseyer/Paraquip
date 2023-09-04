@@ -150,8 +150,17 @@ struct ProfileWeightView: View {
             }
         }
         .sheet(isPresented: $showingWingLoad) {
-            WingLoadView(profile: profile)
-                .presentationDetents([.medium, .large])
+            NavigationStack {
+                WingLoadView(profile: profile)
+                    .presentationDetents([.medium, .large])
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Close") {
+                                showingWingLoad = false
+                            }
+                        }
+                    }
+            }
         }
     }
 }

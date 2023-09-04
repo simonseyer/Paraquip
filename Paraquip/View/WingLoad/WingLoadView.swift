@@ -28,9 +28,6 @@ struct WingLoadView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Wing load")
-                        .font(.title)
-
                     Text("wing_load_calculation")
 
                     WingLoadCalculationGraphic()
@@ -48,6 +45,7 @@ struct WingLoadView: View {
 
             let _ = equipment // Required to observe equipment for (weight) changes
         }
+        .navigationBarTitle("Wing load")
         .safeAreaInset(edge: .bottom) {
             if profile.wingLoadValue == nil {
                 Group {
