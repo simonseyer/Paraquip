@@ -17,9 +17,15 @@ struct MainView: View {
     @State private var presentedEquipment: Equipment? = nil
     @State private var isShowingSingleEquipmentMigrationInfo = false
 
+    @State private var selectedProfile: ProfileSelection?
+    @State private var selectedEquipment: Equipment?
+
+    @State private var columnVisibility =
+      NavigationSplitViewVisibility.doubleColumn
+
     var body: some View {
-        NavigationStack {
-            ProfileListView()
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            ProfileListView(selectedProfile: $selectedProfile)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
@@ -29,6 +35,30 @@ struct MainView: View {
                         }
                     }
                 }
+        } content: {
+            switch selectedProfile {
+            case .none:
+                ContentUnavailableView(title: "Select an equipment set",
+                                       systemImage: "tray.full.fill")
+            case .allEquipment:
+                ProfileView(profile: nil, selectedEquipment: $selectedEquipment)
+            case .profile(let profile):
+                ProfileView(profile: profile, selectedEquipment: $selectedEquipment)
+            }
+        } detail: {
+            if let selectedEquipment {
+                EquipmentView(equipment: selectedEquipment)
+            } else if let selectedProfile {
+                if case .profile(let profile) = selectedProfile, profile.allEquipment.isEmpty {
+                    ContentUnavailableView(title: "Create an equipment first",
+                                           systemImage: "backpack.fill")
+                } else {
+                    ContentUnavailableView(title: "Select an equipment",
+                                           systemImage: "backpack.fill")
+                }
+            } else {
+                EmptyView()
+            }
         }
         .onChange(of: notificationService.navigationState) { value in
             switch value {
@@ -85,6 +115,7 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(NotificationService(managedObjectContext: .preview,
                                                    notifications: FakeNotificationPlugin()))
             .environmentObject(DatabaseMigration(context: .preview))
+            .environment(\.locale, .init(identifier: "de"))
     }
 }
 

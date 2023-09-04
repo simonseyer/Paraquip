@@ -8,13 +8,19 @@
 import SwiftUI
 import CoreData
 
-extension Image {
-    fileprivate func resized() -> some View {
-        self.resizable()
-            .fontWeight(.medium)
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
-            .padding(.trailing, 8)
+enum ProfileSelection: Hashable {
+    case allEquipment
+    case profile(Profile)
+}
+
+@MainActor
+extension String {
+    fileprivate var deviceSpecificIcon: String {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return self.replacingOccurrences(of: ".fill", with: "")
+        } else {
+            return self
+        }
     }
 }
 
@@ -23,26 +29,27 @@ struct ProfileListView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
 
+    @AppStorage("lastSelectedProfileId") private var lastSelectedProfileId: String?
+
     @State private var editProfileOperation: Operation<Profile>?
     @State private var isDeletingProfile = false
     @State private var deleteProfile: Profile?
 
+    @Binding var selectedProfile: ProfileSelection?
+
     @Environment(\.managedObjectContext) var managedObjectContext
 
     var body: some View {
-        List {
+        List(selection: $selectedProfile) {
             Section {
                 ForEach(profiles) { profile in
-                    NavigationLink {
-                        ProfileView(profile: profile)
-                    } label: {
+                    NavigationLink(value: ProfileSelection.profile(profile)) {
                         HStack {
-                            Image(systemName: profile.profileIcon.systemName)
-                                .resized()
+                            Image(systemName: profile.profileIcon.systemName.deviceSpecificIcon)
+                                .font(.title3)
                             Text(profile.profileName)
                         }
                     }
-                    .padding([.top, .bottom], 8)
                     .swipeActions {
                         Button {
                             editProfileOperation = Operation(editing: profile,
@@ -62,21 +69,37 @@ struct ProfileListView: View {
                     }
                     .labelStyle(.titleOnly)
                 }
-                NavigationLink {
-                    ProfileView(profile: nil)
-                } label: {
+                NavigationLink(value: ProfileSelection.allEquipment)  {
                     HStack {
-                        Image(systemName: "tray.full.fill")
-                            .resized()
+                        Image(systemName: "tray.full.fill".deviceSpecificIcon)
+                            .font(.title3)
                         Text("All Equipment")
                     }
                 }
-                .padding([.top, .bottom], 6)
             } footer: {
                 Text("set_footer")
             }
         }
-        .navigationTitle("All Sets")
+        .navigationTitle("Sets")
+        .onAppear {
+            if selectedProfile == nil {
+                // Prefer the last selected profile
+                if let profile = profiles.first(where: { $0.id?.uuidString == lastSelectedProfileId }) {
+                    selectedProfile = .profile(profile)
+                // If there is none but only one profile, select it
+                } else if profiles.count == 1, let profile = profiles.first {
+                    selectedProfile = .profile(profile)
+                }
+                // Else stay in the profile list
+            }
+        }
+        .onChange(of: selectedProfile) { selection in
+            if case let .profile(profile) = selection {
+                lastSelectedProfileId = profile.id?.uuidString
+            } else {
+                lastSelectedProfileId = nil
+            }
+        }
         .sheet(item: $editProfileOperation) { operation in
             NavigationStack {
                 EditProfileView(profile: operation.object)
@@ -118,7 +141,7 @@ struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationStack {
-            ProfileListView()
+            ProfileListView(selectedProfile: .constant(.none))
                 .environment(\.managedObjectContext, .preview)
         }
     }

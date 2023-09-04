@@ -18,8 +18,13 @@
 "Notifications" = "Benachrichtungen";
 "All Equipment" = "Gesamte Ausrüstung";
 
+// Main View
+"Select an equipment set" = "Wähle ein Set aus";
+"Create an equipment first" = "Lege zuerst eine Ausrüstung an";
+"Select an equipment" = "Wähle eine Ausrüstung aus";
+
 // Profile List View
-"All Sets" = "Alle Sets";
+"Sets" = "Sets";
 "Delete" = "Löschen";
 "Delete set" = "Set löschen";
 "Delete set & equipment" = "Set & Ausrüstung löschen";

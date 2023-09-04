@@ -16,9 +16,7 @@ struct EquipmentRow: View {
     let onDelete: () -> Void
 
     var body: some View {
-        NavigationLink {
-            EquipmentView(equipment: equipment)
-        } label: {
+        NavigationLink(value: equipment) {
             HStack {
                 Group {
                     if let icon = equipment.icon {
