@@ -89,7 +89,8 @@ class SnapshotUITests: XCTestCase {
     func localized(_ key:String) -> String {
         var bundle = Bundle(for: type(of: self))
         if !deviceLanguage.isEmpty {
-            bundle = Bundle(path: bundle.path(forResource: deviceLanguage, ofType: "lproj")!)!
+            let languageIdentifier = String(deviceLanguage.split(separator: "-")[0])
+            bundle = Bundle(path: bundle.path(forResource: languageIdentifier, ofType: "lproj")!)!
         }
         return bundle.localizedString(forKey: key, value: nil, table: nil)
     }
