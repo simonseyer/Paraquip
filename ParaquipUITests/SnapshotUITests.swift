@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import UIKit
 
 class SnapshotUITests: XCTestCase {
 
@@ -23,7 +24,11 @@ class SnapshotUITests: XCTestCase {
     }
 
     func testExample() throws {
-        // UI tests must launch the application that they test.
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let device = XCUIDevice.shared
+            device.orientation = .landscapeRight
+        }
+
         let app = XCUIApplication()
         app.launchEnvironment = [
             "isUITest": "true",
@@ -32,25 +37,53 @@ class SnapshotUITests: XCTestCase {
         setupSnapshot(app)
         app.launch()
 
-        app.navigationBars.buttons[localized("Notifications")].tap()
-        snapshot("05NotificationsScreen")
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            app.navigationBars.buttons[localized("Notifications")].tap()
+            snapshot("05NotificationsScreen")
 
-        app.buttons[localized("Close")].tap()
-        app.buttons[localized("Your Equipment")].tap()
+            app.buttons[localized("Close")].tap()
+            app.buttons[localized("Your Equipment")].tap()
 
-        snapshot("01ProfileScreen")
+            snapshot("01ProfileScreen")
 
-        app.collectionViews.buttons["Explorer 2"].tap()
-        snapshot("02EquipmentScreen")
+            app.collectionViews.buttons["Explorer 2"].tap()
+            snapshot("02EquipmentScreen")
 
-        app.buttons[localized("Your Equipment")].tap()
-        app.navigationBars.buttons[localized("Weight Check")].tap()
-        snapshot("03ProfileWeightScreen")
+            app.buttons[localized("Your Equipment")].tap()
+            app.navigationBars.buttons[localized("Weight Check")].tap()
+            snapshot("03ProfileWeightScreen")
 
-        app.collectionViews.element(boundBy: 0).swipeUp()
-        app.staticTexts[localized("Wing load")].tap()
-        app.scrollViews.element(boundBy: 0).swipeUp()
-        snapshot("04WingLoadScreen")
+            app.collectionViews.element(boundBy: 0).swipeUp()
+            app.staticTexts[localized("Wing load")].tap()
+            snapshot("04WingLoadScreen")
+        } else {
+            app.buttons["ToggleSidebar"].tap()
+            app.buttons[localized("Your Equipment")].tap()
+            app.collectionViews.buttons["Explorer 2"].tap()
+
+            snapshot("01ProfileScreen")
+
+            app.navigationBars.buttons[localized("Weight Check")].tap()
+            snapshot("03ProfileWeightScreen")
+
+            app.staticTexts[localized("Wing load")].tap()
+            snapshot("04WingLoadScreen")
+
+            app.navigationBars[localized("Wing load")].buttons[localized("Close")].tap()
+            app.navigationBars[localized("Weight Check")].buttons[localized("Close")].tap()
+
+            app.navigationBars.buttons[localized("Notifications")].tap()
+            snapshot("05NotificationsScreen")
+            app.buttons[localized("Close")].tap()
+
+            if app.buttons["ToggleSidebar"].exists {
+                app.buttons["ToggleSidebar"].tap()
+            } else {
+                app.swipeLeft()
+            }
+
+            snapshot("02EquipmentScreen")
+        }
     }
     
     func localized(_ key: String) -> String {
