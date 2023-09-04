@@ -1,1 +1,1 @@
-Ein kleineres Update mit Dark Mode Support, der Eingabe von empfohlenen Gewichtsbereichen und Fehlerbehebungen.
+Paraquip ist jetzt auch für iPads optimiert!

@@ -1,1 +1,1 @@
-A minor update with dark mode support, entering recommended weight ranges, and bug fixes.
+Paraquip is now available on iPad!
