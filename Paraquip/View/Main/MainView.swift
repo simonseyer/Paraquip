@@ -20,8 +20,11 @@ struct MainView: View {
     @State private var selectedProfile: ProfileSelection?
     @State private var selectedEquipment: Equipment?
 
+    @State private var columnVisibility =
+      NavigationSplitViewVisibility.doubleColumn
+
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             ProfileListView(selectedProfile: $selectedProfile)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -45,6 +48,14 @@ struct MainView: View {
         } detail: {
             if let selectedEquipment {
                 EquipmentView(equipment: selectedEquipment)
+            } else if let selectedProfile {
+                if case .profile(let profile) = selectedProfile, profile.allEquipment.isEmpty {
+                    ContentUnavailableView(title: "Create an equipment first",
+                                           systemImage: "backpack.fill")
+                } else {
+                    ContentUnavailableView(title: "Select an equipment",
+                                           systemImage: "backpack.fill")
+                }
             } else {
                 EmptyView()
             }
@@ -104,6 +115,7 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(NotificationService(managedObjectContext: .preview,
                                                    notifications: FakeNotificationPlugin()))
             .environmentObject(DatabaseMigration(context: .preview))
+            .environment(\.locale, .init(identifier: "de"))
     }
 }
 

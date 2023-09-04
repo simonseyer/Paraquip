@@ -80,7 +80,7 @@ struct ProfileListView: View {
                 Text("set_footer")
             }
         }
-        .navigationTitle("All Sets")
+        .navigationTitle("Sets")
         .onAppear {
             if selectedProfile == nil {
                 // Prefer the last selected profile
