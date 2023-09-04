@@ -36,6 +36,7 @@
 "Remove from set" = "Aus Set entfernen";
 "Add existing %@" = "%@ zum Set hinzufügen";
 "Create new %@" = "%@ anlegen";
+"Select an equipment set" = "Wähle ein Set aus";
 
 // Equipment View
 "Type" = "Typ";

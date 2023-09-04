@@ -70,6 +70,7 @@
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEBE6C228B55D8900D46470 /* Slugify.swift */; };
+		F40321CE2AA5E5F3009DA63B /* ContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40321CD2AA5E5F3009DA63B /* ContentUnavailableView.swift */; };
 		F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F409B09128CC82EA00BD8E05 /* ListIcon.swift */; };
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
@@ -189,6 +190,7 @@
 		0DEBE6C228B55D8900D46470 /* Slugify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slugify.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
+		F40321CD2AA5E5F3009DA63B /* ContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentUnavailableView.swift; sourceTree = "<group>"; };
 		F409B09128CC82EA00BD8E05 /* ListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIcon.swift; sourceTree = "<group>"; };
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
@@ -489,6 +491,7 @@
 				0DC585EF275CE0F7001B346E /* SharpImageView.swift */,
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
 				F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */,
+				F40321CD2AA5E5F3009DA63B /* ContentUnavailableView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */,
 				0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */,
 				0D80E1D52663F49200305B23 /* ErrorExtensions.swift in Sources */,
+				F40321CE2AA5E5F3009DA63B /* ContentUnavailableView.swift in Sources */,
 				F4C6A4B029CB93670017EC0E /* LocalizationExtensions.swift in Sources */,
 				0D846AED26D41B8900A574BA /* CheckUrgencyViewExtensions.swift in Sources */,
 				0DC585F0275CE0F7001B346E /* SharpImageView.swift in Sources */,

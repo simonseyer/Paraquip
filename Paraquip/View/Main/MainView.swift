@@ -35,7 +35,8 @@ struct MainView: View {
         } content: {
             switch selectedProfile {
             case .none:
-                EmptyView()
+                ContentUnavailableView(title: "Select an equipment set",
+                                       systemImage: "tray.full.fill")
             case .allEquipment:
                 ProfileView(profile: nil, selectedEquipment: $selectedEquipment)
             case .profile(let profile):
