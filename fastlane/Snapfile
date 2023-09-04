@@ -9,8 +9,8 @@ devices([
 ])
 
 languages([
-  "en-US",
-  "de-DE",
+  "en",
+  "de",
 ])
 
 scheme("ParaquipUITests")

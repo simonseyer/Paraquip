@@ -85,9 +85,12 @@ class SnapshotUITests: XCTestCase {
             snapshot("02EquipmentScreen")
         }
     }
-    
-    func localized(_ key: String) -> String {
-        let testBundle = Bundle(for: type(of: self))
-        return testBundle.localizedString(forKey: key, value: nil, table: nil)
+
+    func localized(_ key:String) -> String {
+        var bundle = Bundle(for: type(of: self))
+        if !deviceLanguage.isEmpty {
+            bundle = Bundle(path: bundle.path(forResource: deviceLanguage, ofType: "lproj")!)!
+        }
+        return bundle.localizedString(forKey: key, value: nil, table: nil)
     }
 }
