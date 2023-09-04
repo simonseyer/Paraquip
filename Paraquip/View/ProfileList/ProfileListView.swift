@@ -28,6 +28,8 @@ struct ProfileListView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
 
+    @AppStorage("lastSelectedProfileId") private var lastSelectedProfileId: String?
+
     @State private var editProfileOperation: Operation<Profile>?
     @State private var isDeletingProfile = false
     @State private var deleteProfile: Profile?
@@ -80,6 +82,25 @@ struct ProfileListView: View {
             }
         }
         .navigationTitle("All Sets")
+        .onAppear {
+            if selectedProfile == nil {
+                // Prefer the last selected profile
+                if let profile = profiles.first(where: { $0.id?.uuidString == lastSelectedProfileId }) {
+                    selectedProfile = .profile(profile)
+                // If there is none but only one profile, select it
+                } else if profiles.count == 1, let profile = profiles.first {
+                    selectedProfile = .profile(profile)
+                }
+                // Else stay in the profile list
+            }
+        }
+        .onChange(of: selectedProfile) { selection in
+            if case let .profile(profile) = selection {
+                lastSelectedProfileId = profile.id?.uuidString
+            } else {
+                lastSelectedProfileId = nil
+            }
+        }
         .sheet(item: $editProfileOperation) { operation in
             NavigationStack {
                 EditProfileView(profile: operation.object)
