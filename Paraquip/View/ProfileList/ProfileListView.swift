@@ -41,43 +41,39 @@ struct ProfileListView: View {
 
     var body: some View {
         List(selection: $selectedProfile) {
-            Section {
-                ForEach(profiles) { profile in
-                    NavigationLink(value: ProfileSelection.profile(profile)) {
-                        HStack {
-                            Image(systemName: profile.profileIcon.systemName.deviceSpecificIcon)
-                                .font(.title3)
-                            Text(profile.profileName)
-                        }
-                    }
-                    .swipeActions {
-                        Button {
-                            editProfileOperation = Operation(editing: profile,
-                                                             withParentContext: managedObjectContext)
-                        } label: {
-                            Label("Edit", systemImage: "slider.vertical.3")
-                        }
-                        .tint(.blue)
-
-                        Button {
-                            deleteProfile = profile
-                            isDeletingProfile = true
-                        } label: {
-                            Label("Delete", systemImage: "trash")
-                        }
-                        .tint(.red)
-                    }
-                    .labelStyle(.titleOnly)
-                }
-                NavigationLink(value: ProfileSelection.allEquipment)  {
+            ForEach(profiles) { profile in
+                NavigationLink(value: ProfileSelection.profile(profile)) {
                     HStack {
-                        Image(systemName: "tray.full.fill".deviceSpecificIcon)
+                        Image(systemName: profile.profileIcon.systemName.deviceSpecificIcon)
                             .font(.title3)
-                        Text("All Equipment")
+                        Text(profile.profileName)
                     }
                 }
-            } footer: {
-                Text("set_footer")
+                .swipeActions {
+                    Button {
+                        editProfileOperation = Operation(editing: profile,
+                                                         withParentContext: managedObjectContext)
+                    } label: {
+                        Label("Edit", systemImage: "slider.vertical.3")
+                    }
+                    .tint(.blue)
+
+                    Button {
+                        deleteProfile = profile
+                        isDeletingProfile = true
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    .tint(.red)
+                }
+                .labelStyle(.titleOnly)
+            }
+            NavigationLink(value: ProfileSelection.allEquipment)  {
+                HStack {
+                    Image(systemName: "tray.full.fill".deviceSpecificIcon)
+                        .font(.title3)
+                    Text("All Equipment")
+                }
             }
         }
         .navigationTitle("Sets")
