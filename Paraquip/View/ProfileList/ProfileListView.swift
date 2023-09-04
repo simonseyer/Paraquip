@@ -18,6 +18,11 @@ extension Image {
     }
 }
 
+enum ProfileSelection: Hashable {
+    case allEquipment
+    case profile(Profile)
+}
+
 struct ProfileListView: View {
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
@@ -27,15 +32,15 @@ struct ProfileListView: View {
     @State private var isDeletingProfile = false
     @State private var deleteProfile: Profile?
 
+    @Binding var selectedProfile: ProfileSelection?
+
     @Environment(\.managedObjectContext) var managedObjectContext
 
     var body: some View {
-        List {
+        List(selection: $selectedProfile) {
             Section {
                 ForEach(profiles) { profile in
-                    NavigationLink {
-                        ProfileView(profile: profile)
-                    } label: {
+                    NavigationLink(value: ProfileSelection.profile(profile)) {
                         HStack {
                             Image(systemName: profile.profileIcon.systemName)
                                 .resized()
@@ -62,9 +67,7 @@ struct ProfileListView: View {
                     }
                     .labelStyle(.titleOnly)
                 }
-                NavigationLink {
-                    ProfileView(profile: nil)
-                } label: {
+                NavigationLink(value: ProfileSelection.allEquipment)  {
                     HStack {
                         Image(systemName: "tray.full.fill")
                             .resized()
@@ -118,7 +121,7 @@ struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationStack {
-            ProfileListView()
+            ProfileListView(selectedProfile: .constant(.none))
                 .environment(\.managedObjectContext, .preview)
         }
     }

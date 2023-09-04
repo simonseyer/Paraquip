@@ -17,9 +17,12 @@ struct MainView: View {
     @State private var presentedEquipment: Equipment? = nil
     @State private var isShowingSingleEquipmentMigrationInfo = false
 
+    @State private var selectedProfile: ProfileSelection?
+    @State private var selectedEquipment: Equipment?
+
     var body: some View {
-        NavigationStack {
-            ProfileListView()
+        NavigationSplitView {
+            ProfileListView(selectedProfile: $selectedProfile)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
@@ -29,6 +32,21 @@ struct MainView: View {
                         }
                     }
                 }
+        } content: {
+            switch selectedProfile {
+            case .none:
+                EmptyView()
+            case .allEquipment:
+                ProfileView(profile: nil, selectedEquipment: $selectedEquipment)
+            case .profile(let profile):
+                ProfileView(profile: profile, selectedEquipment: $selectedEquipment)
+            }
+        } detail: {
+            if let selectedEquipment {
+                EquipmentView(equipment: selectedEquipment)
+            } else {
+                EmptyView()
+            }
         }
         .onChange(of: notificationService.navigationState) { value in
             switch value {

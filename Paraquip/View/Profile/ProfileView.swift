@@ -21,6 +21,8 @@ struct ProfileView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
 
+    @Binding var selectedEquipment: Equipment?
+
     @FetchRequest
     private var equipment: FetchedResults<Equipment>
 
@@ -31,8 +33,9 @@ struct ProfileView: View {
         profile?.profileName ?? LocalizedString("All Equipment")
     }
 
-    init(profile: Profile?) {
+    init(profile: Profile?, selectedEquipment: Binding<Equipment?>) {
         self.profile = profile
+        self._selectedEquipment = selectedEquipment
         _equipment = FetchRequest(
             previewEntity: Equipment.previewEntity,
             sortDescriptors: Equipment.defaultSortDescriptors(),
@@ -86,7 +89,7 @@ struct ProfileView: View {
     }
 
     var body: some View {
-        List {
+        List(selection: $selectedEquipment) {
             if profile != nil {
                 singleSection(.paraglider)
                 singleSection(.harness)
@@ -212,16 +215,16 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                ProfileView(profile: CoreData.fakeProfile)
+                ProfileView(profile: CoreData.fakeProfile, selectedEquipment: .constant(nil))
             }
 
             NavigationStack {
-                ProfileView(profile: Profile.create(context: .preview, name: "Empty"))
+                ProfileView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
             }
             .previewDisplayName("Empty Profile")
             
             NavigationStack {
-                ProfileView(profile: nil)
+                ProfileView(profile: nil, selectedEquipment: .constant(nil))
             }
             .previewDisplayName("All Equipment")
         }
