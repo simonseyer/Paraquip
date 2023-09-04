@@ -25,6 +25,8 @@ struct ContentUnavailableView: View {
     }
 }
 
-#Preview {
-    ContentUnavailableView(title: "Test", systemImage: "tray.full.fill")
+struct ContentUnavailableView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentUnavailableView(title: "Test", systemImage: "tray.full.fill")
+    }
 }
