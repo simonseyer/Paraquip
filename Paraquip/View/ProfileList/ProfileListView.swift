@@ -8,6 +8,15 @@
 import SwiftUI
 import CoreData
 
+extension Image {
+    fileprivate func resized() -> some View {
+        self
+            .font(.title3)
+            .frame(width: 23)
+            .padding(.horizontal, 4)
+    }
+}
+
 enum ProfileSelection: Hashable {
     case allEquipment
     case profile(Profile)
@@ -45,7 +54,7 @@ struct ProfileListView: View {
                 NavigationLink(value: ProfileSelection.profile(profile)) {
                     HStack {
                         Image(systemName: profile.profileIcon.systemName.deviceSpecificIcon)
-                            .font(.title3)
+                            .resized()
                         Text(profile.profileName)
                     }
                 }
@@ -71,7 +80,7 @@ struct ProfileListView: View {
             NavigationLink(value: ProfileSelection.allEquipment)  {
                 HStack {
                     Image(systemName: "tray.full.fill".deviceSpecificIcon)
-                        .font(.title3)
+                        .resized()
                     Text("All Equipment")
                 }
             }
