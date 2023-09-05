@@ -81,7 +81,7 @@ struct AutocompletingTextField: View {
         }
         // Fixes cell height animation (makes the cell larger than needed to avoid some strange glitch)
         .animatingCellHeight(isAutocompletionShown ? 88 : 38)
-        .onChange(of: focused) { newValue in
+        .onChange(of: focused) { _, newValue in
             withAnimation {
                 isAutocompletionShown = newValue
             }

@@ -73,15 +73,15 @@ struct NotificationEntryView: View {
             unitPickerVisible = false
             multiplierPickerVisible = false
         }
-        .onChange(of: multiplierIndex) { value in
+        .onChange(of: multiplierIndex) { _, value in
             config.multiplier = value
             updateState()
         }
-        .onChange(of: unitIndex) { value in
+        .onChange(of: unitIndex) { _, value in
             config.unit = .init(rawValue: value)!
             updateState()
         }
-        .onChange(of: config) { value in
+        .onChange(of: config) { _, value in
             onChange(value)
         }
     }

@@ -60,7 +60,7 @@ struct MainView: View {
                 EmptyView()
             }
         }
-        .onChange(of: notificationService.navigationState) { value in
+        .onChange(of: notificationService.navigationState) { _, value in
             switch value {
             case .notificationSettings:
                 showNotificationSettings = true
@@ -101,7 +101,7 @@ struct MainView: View {
         } message: {
             Text("single_equipment_migration_info")
         }
-        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) { newValue in
+        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) { _, newValue in
             isShowingSingleEquipmentMigrationInfo = newValue
         }
     }

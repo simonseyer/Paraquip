@@ -56,10 +56,10 @@ struct FormDatePicker: View {
                 }
             }
         }
-        .onChange(of: selectedDate) { value in
+        .onChange(of: selectedDate) { _, value in
             date = value
         }
-        .onChange(of: date) { value in
+        .onChange(of: date) { _, value in
             if let value {
                 selectedDate = value
             } else {

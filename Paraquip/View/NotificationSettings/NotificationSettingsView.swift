@@ -71,7 +71,7 @@ struct NotificationSettingsView: View {
         .navigationTitle("Notifications")
         .ignoresSafeArea(.keyboard)
         .environment(\.editMode, $editMode)
-        .onChange(of: notificationsOn) { value in
+        .onChange(of: notificationsOn) { _, value in
             if value {
                 Task {
                     await notificationService.enable()
@@ -88,7 +88,7 @@ struct NotificationSettingsView: View {
             notificationsOn = isEnabled
             configurationSectionShown = isEnabled
         }
-        .onChange(of: notificationService.state.isEnabled) { value in
+        .onChange(of: notificationService.state.isEnabled) { _, value in
             withAnimation {
                 notificationsOn = value
                 configurationSectionShown = value

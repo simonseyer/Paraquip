@@ -13,19 +13,20 @@ import OSLog
 import Combine
 
 @MainActor
-class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationCenterDelegate  {
+class AppleNotificationPlugin: NotificationPlugin  {
 
     weak var delegate: (any NotificationsPluginDelegate)?
 
     private let center = UNUserNotificationCenter.current()
+    private let centerDelegate = NotificationCenterDelegate()
     private let badgeIdentifier = "badge"
     private let logger = Logger(category: "NotificationPlugin")
     private var subscriptions: Set<AnyCancellable> = []
 
-    override init() {
-        super.init()
+    init() {
         precondition(center.delegate == nil)
-        center.delegate = self
+        center.delegate = centerDelegate
+        centerDelegate.parent = self
         observeAuthorizationStatus()
     }
 
@@ -51,8 +52,10 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
     }
 
     func setBadge(count: Int) async {
-        await MainActor.run {
-            UIApplication.shared.applicationIconBadgeNumber = count
+        do {
+            try await center.setBadgeCount(count)
+        } catch {
+            logger.error("Failed to set badge count: \(error)")
         }
     }
 
@@ -81,30 +84,39 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
         return try await center.add(request)
     }
 
-    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                openSettingsFor notification: UNNotification?) {
-        Task {
-            await delegate?.didReceiveOpenSettings()
+    class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
+
+        private let logger = Logger(category: "NotificationPluginDelegate")
+        weak var parent: AppleNotificationPlugin?
+
+        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+            guard let parent = parent else { return }
+
+            let userInfo = response.notification.request.content.userInfo
+            guard let equipmentIdString = userInfo["equipment"] as? String,
+                  let notificationConfigIdString = userInfo["notificationConfig"] as? String,
+                  let equipmentId = UUID(uuidString: equipmentIdString),
+                  let notificationConfigId = UUID(uuidString: notificationConfigIdString) else {
+                logger.warning("Unrecognized notification received")
+                return
+            }
+
+            let response = NotificationResponse(
+                equipmentId: equipmentId,
+                notificationConfigId: notificationConfigId)
+
+            // Detached task required to work around crash when opening notification
+            Task.detached { [delegate = await parent.delegate] in
+                await delegate?.didReceiveNotification(response)
+            }
         }
-    }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        let userInfo = response.notification.request.content.userInfo
-        guard let equipmentIdString = userInfo["equipment"] as? String,
-              let notificationConfigIdString = userInfo["notificationConfig"] as? String,
-              let equipmentId = UUID(uuidString: equipmentIdString),
-              let notificationConfigId = UUID(uuidString: notificationConfigIdString) else {
-            logger.warning("Unrecognized notification received")
-            return
-        }
-
-        let response = NotificationResponse(
-            equipmentId: equipmentId,
-            notificationConfigId: notificationConfigId)
-
-        // Detached task required to work around crash when opening notification
-        Task.detached { [delegate] in
-            await delegate?.didReceiveNotification(response)
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    openSettingsFor notification: UNNotification?) {
+            guard let parent = parent else { return }
+            Task {
+                await parent.delegate?.didReceiveOpenSettings()
+            }
         }
     }
 }
