@@ -20,8 +20,13 @@ struct MainView: View {
     @State private var selectedProfile: ProfileSelection?
     @State private var selectedEquipment: Equipment?
 
-    @State private var columnVisibility =
-      NavigationSplitViewVisibility.doubleColumn
+    @State private var columnVisibility: NavigationSplitViewVisibility = {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return .doubleColumn
+        } else {
+            return .all
+        }
+    }()
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
