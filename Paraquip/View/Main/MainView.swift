@@ -38,7 +38,7 @@ struct MainView: View {
         } content: {
             switch selectedProfile {
             case .none:
-                ContentUnavailableView(title: "Select an equipment set",
+                ContentUnavailableView("Select an equipment set",
                                        systemImage: "tray.full.fill")
             case .allEquipment:
                 ProfileView(profile: nil, selectedEquipment: $selectedEquipment)
@@ -50,10 +50,9 @@ struct MainView: View {
                 EquipmentView(equipment: selectedEquipment)
             } else if let selectedProfile {
                 if case .profile(let profile) = selectedProfile, profile.allEquipment.isEmpty {
-                    ContentUnavailableView(title: "Create an equipment first",
-                                           systemImage: "backpack.fill")
+                    ContentUnavailableView("Create an equipment first", systemImage: "backpack.fill")
                 } else {
-                    ContentUnavailableView(title: "Select an equipment",
+                    ContentUnavailableView("Select an equipment",
                                            systemImage: "backpack.fill")
                 }
             } else {
