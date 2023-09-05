@@ -8,38 +8,27 @@
 import SwiftUI
 import CoreData
 
-fileprivate let cellPadding = EdgeInsets(top: 8, leading: 36, bottom: 8, trailing: 0)
+fileprivate let cellPadding = EdgeInsets(top: 8, leading: 40, bottom: 8, trailing: 0)
 
 struct NextCheckCell: View {
 
     let urgency: Equipment.CheckUrgency
     let onTap: () -> Void
 
-    @State private var isHighlighted = false
-
     var body: some View {
         HStack {
             Text(urgency.formattedCheckInterval)
             Spacer()
-            Image(systemName: "square.and.pencil")
-                .font(Font.body.weight(.medium))
-                .foregroundColor(.accentColor)
-                .padding(.trailing, 12)
+            Button(action: onTap) {
+                Image(systemName: "square.and.pencil")
+            }
+            .padding(.horizontal)
         }
         .padding(cellPadding)
-
         .listRowBackground(
             LogEntryCellBackground(color: urgency.color,
                                    position: .start,
-                                   icon: nil as EmptyView?,
-                                   isHighlighted: $isHighlighted)
-        )
-        .contentShape(Rectangle())
-        .onTapGesture(perform: onTap)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0.0)
-                .onChanged { _ in isHighlighted = true }
-                .onEnded { _ in isHighlighted = false }
+                                   icon: nil)
         )
     }
 }
@@ -50,18 +39,8 @@ struct LogEntryCell: View {
 
     @State private var previewedLogAttachment: URL?
 
-    @ViewBuilder
-    private var icon: some View {
-        Group {
-            if logEntry.isPurchase {
-                Image(systemName: "dollarsign.circle")
-                    .resizable()
-            } else {
-                Image(systemName: "checkmark.circle")
-                    .resizable()
-            }
-        }
-        .font(.system(size: 56.0, weight: .light))
+    private var icon: String {
+        logEntry.isPurchase ? "dollarsign" : "checkmark"
     }
 
     var body: some View {
@@ -74,23 +53,21 @@ struct LogEntryCell: View {
                     previewedLogAttachment = logEntry.attachmentURLs.first
                 }) {
                     Image(systemName: "paperclip")
-                        .font(Font.body.weight(.medium))
-                        .foregroundColor(.accentColor)
-                }.buttonStyle(.bordered)
+                }
+                .padding(.horizontal)
             }
         }
         .quickLookPreview($previewedLogAttachment, in: logEntry.attachmentURLs)
         .listRowBackground(
             LogEntryCellBackground(color: Color(UIColor.systemGray3),
                                    position: logEntry.isPurchase ? .end : .middle,
-                                   icon: icon,
-                                   isHighlighted: .constant(false))
+                                   icon: icon)
         )
     }
 }
 
 
-fileprivate struct LogEntryCellBackground<IconView: View>: View {
+fileprivate struct LogEntryCellBackground: View {
 
     enum Position {
         case start, middle, end
@@ -98,53 +75,64 @@ fileprivate struct LogEntryCellBackground<IconView: View>: View {
 
     let color: Color
     let position: Position
-    let icon: IconView?
-    @Binding var isHighlighted: Bool
+    let icon: String?
 
+    private let center = 32.0
+    private let lineWidth = 2.0
+    private var leadingLinePadding: Double {
+        center - lineWidth / 2
+    }
     private var circleDiameter: CGFloat {
-        icon != nil ? 24 : 10
+        icon != nil ? 28 : 12
     }
 
-    private var circleColor: Color {
-        icon != nil ? Color(UIColor.systemGray6) : color
+    @ViewBuilder
+    private func lineView(metrics: GeometryProxy) -> some View {
+        Rectangle()
+            .frame(
+                width: lineWidth,
+                height: (metrics.size.height - circleDiameter) / 2 + 0.5)
+            .foregroundColor(color)
     }
 
     var body: some View {
         GeometryReader { metrics in
             ZStack(alignment: .topLeading) {
-                if isHighlighted {
-                    Color(uiColor: .systemGray5)
-                } else {
-                    Color(uiColor: .secondarySystemGroupedBackground)
+                if [.end, .middle].contains(position) {
+                    lineView(metrics: metrics)
+                        .padding(.leading, leadingLinePadding)
                 }
 
-                Rectangle()
-                    .frame(
-                        width: 2,
-                        height: metrics.size.height * (position == .middle ? 1.0 : 0.5))
-                    .foregroundColor(color)
-                    .opacity(0.4)
-                    .padding(EdgeInsets(top: metrics.size.height * (position == .start ? 0.5 : 0.0),
-                                        leading: 30,
-                                        bottom: 0,
-                                        trailing: 0))
-
-                Group {
+                ZStack {
                     Circle()
                         .frame(width: circleDiameter, height: circleDiameter)
-                        .foregroundColor(circleColor)
+                        .foregroundColor(color)
                     if let icon {
-                        icon
-                            .frame(width: circleDiameter, height: circleDiameter)
-                            .foregroundColor(Color(UIColor.systemGray2))
+                        Image(systemName: icon)
+                            .font(.system(size: 11, weight: .bold))
                     }
                 }
                 .padding(EdgeInsets(top: metrics.size.height / 2 - (circleDiameter / 2),
-                                    leading: 31 - (circleDiameter / 2.0),
+                                    leading: center - (circleDiameter / 2.0),
                                     bottom: 0,
                                     trailing: 0))
+
+                if [.start, .middle].contains(position) {
+                    lineView(metrics: metrics)
+                        .padding(EdgeInsets(top: (metrics.size.height + circleDiameter) / 2,
+                                            leading: leadingLinePadding,
+                                            bottom: 0,
+                                            trailing: 0))
+                }
             }
+
         }
+        .opacity(0.6)
+        #if os(visionOS)
+        .background(.regularMaterial)
+        #else
+        .background(Color(uiColor: .secondarySystemGroupedBackground))
+        #endif
     }
 }
 
@@ -170,6 +158,9 @@ struct TimelineView_Previews: PreviewProvider {
                 LogEntryCell(logEntry: fakeEntry(isPurchase: true))
             }
             .listStyle(.insetGrouped)
+            #if os(visionOS)
+            .glassBackgroundEffect()
+            #endif
         }
 
         Group {

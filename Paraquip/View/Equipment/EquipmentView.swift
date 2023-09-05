@@ -78,19 +78,17 @@ struct EquipmentView: View {
                     }
                 }
                 Section {
-                    HStack {
-                        Text("Manual")
-                        Spacer()
-                        Button(action: {
-                            if let manual = equipment.manualAttachment {
-                                previewedManual = manual.fileURL
-                            } else {
-                                showingManualPicker = true
-                            }
-                        }) {
-                            Image(systemName: equipment.manualAttachment != nil ? "book.fill" : "book")
+                    Button(action: {
+                        if let manual = equipment.manualAttachment {
+                            previewedManual = manual.fileURL
+                        } else {
+                            showingManualPicker = true
                         }
-                        .buttonStyle(.bordered)
+                    }) {
+                        HStack {
+                            Image(systemName: equipment.manualAttachment != nil ? "book.fill" : "book")
+                            Text("Manual")
+                        }
                     }
                     .swipeActions {
                         if equipment.manualAttachment != nil {
