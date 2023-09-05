@@ -25,10 +25,10 @@ enum ProfileSelection: Hashable {
 @MainActor
 extension String {
     fileprivate var deviceSpecificIcon: String {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return self.replacingOccurrences(of: ".fill", with: "")
-        } else {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             return self
+        } else {
+            return self.replacingOccurrences(of: ".fill", with: "")
         }
     }
 }
