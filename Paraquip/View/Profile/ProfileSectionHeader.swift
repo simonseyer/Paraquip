@@ -24,8 +24,7 @@ struct ProfileSectionHeader: View {
             equipmentType.iconImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .foregroundColor(.accentColor)
-                .frame(width: 20, height: 20)
+                .frame(width: 22)
             Text(equipmentType.localizedName)
         }
     }

@@ -32,22 +32,11 @@ extension Equipment.CheckUrgency {
     var color: Color {
         switch self {
         case .now:
-            return Color(UIColor.systemRed)
+            return .red
         case .soon:
-            return Color(UIColor.systemOrange)
+            return .orange
         case .later, .never:
-            return Color(UIColor.systemGreen)
-        }
-    }
-
-    var icon: Image {
-        switch self {
-        case .now:
-            return Image(systemName: "exclamationmark.circle.fill")
-        case .soon:
-            return Image(systemName: "exclamationmark.triangle.fill")
-        case .later, .never:
-            return Image(systemName: "checkmark.circle.fill")
+            return .green
         }
     }
 }

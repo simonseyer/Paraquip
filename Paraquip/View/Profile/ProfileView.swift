@@ -16,7 +16,6 @@ struct ProfileView: View {
     @State private var deleteEquipment: Equipment?
     @State private var isDeletingEquipment = false
     @State private var isShowingWeightView = false
-    @State private var isAddingEquipment = false
     @State private var addEquipmentType: Equipment.EquipmentType?
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.locale) var locale: Locale
@@ -58,7 +57,7 @@ struct ProfileView: View {
                 }
             } else {
                 AddEquipmentButton {
-                    addEquipment(type: type)
+                    createEquipment(type: type)
                 }
             }
         } header: {
@@ -88,6 +87,23 @@ struct ProfileView: View {
         }
     }
 
+    @ViewBuilder
+    func footerSection() -> some View {
+        Section {
+            EmptyView()
+        } footer: {
+            HStack {
+                Spacer()
+                EditProfileMenu(canEditProfile: profile != nil) { type in
+                    createEquipment(type: type)
+                } onEditProfile: {
+                    editProfile()
+                }
+                Spacer()
+            }
+        }
+    }
+
     var body: some View {
         List(selection: $selectedEquipment) {
             if profile != nil {
@@ -99,8 +115,10 @@ struct ProfileView: View {
             }
             listSection(.reserve)
             listSection(.gear)
+            footerSection()
         }
         .listStyle(.insetGrouped)
+        .environment(\.defaultMinListRowHeight, 10)
         .navigationTitle(title)
         .toolbar {
             ToolbarItem(placement: .automatic) {
@@ -108,15 +126,8 @@ struct ProfileView: View {
                     Button {
                         isShowingWeightView = true
                     } label: {
-                        Label("Weight Check", systemImage: "scalemass.fill")
+                        Label("Weight Check", systemImage: "scalemass.fill".deviceSpecificIcon)
                     }
-                }
-            }
-            ToolbarItem(placement: .primaryAction) {
-                AddEquipmentMenu(canEditProfile: profile != nil) { type in
-                    addEquipment(type: type)
-                } onEditProfile: {
-                    editProfile()
                 }
             }
         }
@@ -130,16 +141,6 @@ struct ProfileView: View {
             NavigationStack {
                 EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
-            }
-        }
-        .confirmationDialog("Add equipment", isPresented: $isAddingEquipment, presenting: $addEquipmentType) { equipmentType in
-            let type = equipmentType.wrappedValue!
-            let typeName = LocalizedString(type.localizedNameString)
-            Button("Add existing \(typeName)") {
-                editProfile()
-            }
-            Button("Create new \(typeName)") {
-                createEquipment(type: type)
             }
         }
         .confirmationDialog(Text("Delete equipment"), isPresented: $isDeletingEquipment, presenting: deleteEquipment) { equipment in
@@ -171,16 +172,6 @@ struct ProfileView: View {
                 }
             }
         }
-    }
-
-    func addEquipment(type: Equipment.EquipmentType) {
-        let filteredEquipment = allEquipment.filter { $0.equipmentType == type }
-        guard profile != nil, !filteredEquipment.isEmpty else {
-            createEquipment(type: type)
-            return
-        }
-        addEquipmentType = type
-        isAddingEquipment = true
     }
 
     func createEquipment(type: Equipment.EquipmentType) {
@@ -222,7 +213,7 @@ struct ProfileView_Previews: PreviewProvider {
                 ProfileView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
             }
             .previewDisplayName("Empty Profile")
-            
+
             NavigationStack {
                 ProfileView(profile: nil, selectedEquipment: .constant(nil))
             }

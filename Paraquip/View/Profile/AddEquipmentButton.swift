@@ -16,11 +16,12 @@ struct AddEquipmentButton: View {
             HStack {
                 Spacer()
                 Image(systemName: "plus")
+                    .font(.title)
+                    .fontWeight(.semibold)
                 Spacer()
             }
         }
-        .frame(height: 50)
-        .font(.title)
+        .frame(height: 36)
         .listRowBackground(Color.accentColor.opacity(0.25))
     }
 }

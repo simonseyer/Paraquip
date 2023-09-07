@@ -1,5 +1,5 @@
 //
-//  AddEquipmentMenu.swift
+//  EditProfileMenu.swift
 //  Paraquip
 //
 //  Created by Simon Seyer on 22.03.23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddEquipmentMenu: View {
+struct EditProfileMenu: View {
 
     let canEditProfile: Bool
     let onAddEquipment: (Equipment.EquipmentType) -> Void
@@ -20,7 +20,7 @@ struct AddEquipmentMenu: View {
                     onAddEquipment(type)
                 }) {
                     Label {
-                        Text(type.localizedName)
+                        Text("Create new \(Text(type.localizedName))")
                     } icon: {
                         type.iconImage
                     }
@@ -29,19 +29,21 @@ struct AddEquipmentMenu: View {
             if canEditProfile {
                 Divider()
                 Button(action: onEditProfile) {
-                    Label("Edit", systemImage: "slider.vertical.3")
+                    Label("Edit set", systemImage: "pencil")
                 }
             }
         } label: {
-            Image(systemName: "plus")
+            Text("Edit")
         }
+        .controlSize(.small)
+        .buttonStyle(.bordered)
     }
 }
 
 
 struct AddEquipmentMenu_Previews: PreviewProvider {
     static var previews: some View {
-        AddEquipmentMenu(canEditProfile: true,
+        EditProfileMenu(canEditProfile: true,
                          onAddEquipment:{_ in },
                          onEditProfile: {})
     }

@@ -8,6 +8,19 @@
 import SwiftUI
 import CoreData
 
+extension Equipment.CheckUrgency {
+    fileprivate var icon: some View {
+        switch self {
+        case .now, .soon:
+            return Image(systemName: "exclamationmark")
+                .font(.system(size: 13, weight: .heavy))
+        case .later, .never:
+            return Image(systemName: "checkmark")
+                .font(.system(size: 12, weight: .bold))
+        }
+    }
+}
+
 struct EquipmentRow: View {
 
     @ObservedObject var equipment: Equipment
@@ -30,33 +43,34 @@ struct EquipmentRow: View {
                             .foregroundColor(.accentColor)
                     }
                 }
-                .frame(width: 70, height: 50, alignment: .center)
+                .frame(width: 60, height: 36, alignment: .center)
                 .padding(.trailing, 8)
 
                 HStack {
                     Text(equipment.equipmentName)
                     Spacer()
                     equipment.checkUrgency.icon
-                        .foregroundColor(equipment.checkUrgency.color)
+                        .frame(width: 34, height: 24)
+                        .foregroundStyle(.white)
+                        .background(
+                            Capsule().fill(equipment.checkUrgency.color)
+                        )
                 }
             }
         }
-        .swipeActions {
+        .contextMenu {
             Button {
                 onEdit()
             } label: {
-                Label("Edit", systemImage: "slider.vertical.3")
+                Label("Edit", systemImage: "pencil")
             }
-            .tint(.blue)
 
-            Button {
+            Button(role: .destructive) {
                 onDelete()
             } label: {
                 Label("Delete", systemImage: "trash")
             }
-            .tint(.red)
         }
-        .labelStyle(.titleOnly)
     }
 }
 
@@ -73,6 +87,7 @@ struct EquipmentRow_Previews: PreviewProvider {
                     EquipmentRow(equipment: equipment(for: brand), onEdit: {}, onDelete: {})
                 }
             }
+            .environment(\.defaultMinListRowHeight, 10)
         }
     }
 
@@ -80,6 +95,9 @@ struct EquipmentRow_Previews: PreviewProvider {
         let equipment = Equipment.create(type: type, context: .preview)
         equipment.brandName = brand
         equipment.name = brand
+        if brand.starts(with: "A") {
+            equipment.checkCycle = 1
+        }
         return equipment
     }
 }

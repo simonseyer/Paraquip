@@ -76,6 +76,7 @@
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
 		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
+		F4676C2E2AAA083C00FD3913 /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */; };
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
 		F4AF006F29BD15DC00EFA602 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
@@ -83,8 +84,6 @@
 		F4BD8E8129FD6F3C004CF5A9 /* NSNumberExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BD8E8029FD6F3C004CF5A9 /* NSNumberExtensions.swift */; };
 		F4C6A4B029CB93670017EC0E /* LocalizationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */; };
 		F4C6A4B229CB9A410017EC0E /* FetchRequestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */; };
-		F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */; };
-		F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */; };
 		F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */; };
 		F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */; };
 		F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */; };
@@ -94,6 +93,7 @@
 		F4DFE72929D4EA4600394F15 /* WingLoadScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */; };
 		F4EFE9B92A606C16002A1A46 /* Stripes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EFE9B82A606C16002A1A46 /* Stripes.swift */; };
 		F4F163B42AA7B391004524A0 /* IconExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F163B32AA7B391004524A0 /* IconExtensions.swift */; };
+		F4F163B62AA7BC42004524A0 /* EditProfileMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F163B52AA7BC42004524A0 /* EditProfileMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,14 +196,13 @@
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
 		F4496D292AA0F98400836BFE /* PreviewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewEntity.swift; sourceTree = "<group>"; };
 		F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationState.swift; sourceTree = "<group>"; };
+		F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
 		F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGraphic.swift; sourceTree = "<group>"; };
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
 		F4BD8E7E29FB42B8004CF5A9 /* WeightRangeGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRangeGraphic.swift; sourceTree = "<group>"; };
 		F4BD8E8029FD6F3C004CF5A9 /* NSNumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberExtensions.swift; sourceTree = "<group>"; };
 		F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationExtensions.swift; sourceTree = "<group>"; };
 		F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequestExtensions.swift; sourceTree = "<group>"; };
-		F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
-		F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentMenu.swift; sourceTree = "<group>"; };
 		F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigration.swift; sourceTree = "<group>"; };
 		F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadText.swift; sourceTree = "<group>"; };
 		F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingClassPill.swift; sourceTree = "<group>"; };
@@ -213,6 +212,7 @@
 		F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadScale.swift; sourceTree = "<group>"; };
 		F4EFE9B82A606C16002A1A46 /* Stripes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stripes.swift; sourceTree = "<group>"; };
 		F4F163B32AA7B391004524A0 /* IconExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconExtensions.swift; sourceTree = "<group>"; };
+		F4F163B52AA7BC42004524A0 /* EditProfileMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -342,8 +342,8 @@
 				0D11FBCA2620BF45009D9349 /* ProfileView.swift */,
 				0D2B2D142646A04D009873CE /* EquipmentRow.swift */,
 				0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */,
-				F4C6A4B329CB9DAC0017EC0E /* AddEquipmentButton.swift */,
-				F4C6A4B529CB9ED60017EC0E /* AddEquipmentMenu.swift */,
+				F4F163B52AA7BC42004524A0 /* EditProfileMenu.swift */,
+				F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -701,6 +701,7 @@
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */,
 				F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */,
+				F4676C2E2AAA083C00FD3913 /* AddEquipmentButton.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
@@ -720,12 +721,11 @@
 				0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */,
 				0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */,
 				0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */,
+				F4F163B62AA7BC42004524A0 /* EditProfileMenu.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
 				F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */,
-				F4C6A4B629CB9ED60017EC0E /* AddEquipmentMenu.swift in Sources */,
-				F4C6A4B429CB9DAC0017EC0E /* AddEquipmentButton.swift in Sources */,
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
 				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
