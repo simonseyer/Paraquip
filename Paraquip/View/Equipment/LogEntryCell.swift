@@ -30,14 +30,21 @@ struct NextCheckCell: View {
                                    position: .start,
                                    icon: nil)
         )
+        #if os(visionOS)
+        .foregroundStyle(.primary)
+        #endif
     }
 }
 
 struct LogEntryCell: View {
 
     @ObservedObject var logEntry: LogEntry
+    let onEdit: () -> Void
+    let onDelete: () -> Void
 
     @State private var previewedLogAttachment: URL?
+    @State private var deleteLogEntry: LogEntry?
+    @State private var isDeletingLogEntry = false
 
     private var icon: String {
         logEntry.isPurchase ? "dollarsign" : "checkmark"
@@ -57,12 +64,31 @@ struct LogEntryCell: View {
                 .padding(.horizontal)
             }
         }
+        #if os(visionOS)
+        .foregroundStyle(.primary)
+        #endif
         .quickLookPreview($previewedLogAttachment, in: logEntry.attachmentURLs)
         .listRowBackground(
-            LogEntryCellBackground(color: Color(UIColor.systemGray3),
+            LogEntryCellBackground(color: nil,
                                    position: logEntry.isPurchase ? .end : .middle,
                                    icon: icon)
         )
+        .confirmationDialog(Text("Delete log entry"), isPresented: $isDeletingLogEntry, presenting: deleteLogEntry) { logEntry in
+            Button("Delete", role: .destructive, action: onDelete)
+            Button("Cancel", role: .cancel) {}
+        }
+        .contextMenu {
+            Button(action: onEdit) {
+                Label("Edit", systemImage: "pencil")
+            }
+
+            Button(role: .destructive) {
+                deleteLogEntry = logEntry
+                isDeletingLogEntry = true
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 }
 
@@ -73,12 +99,12 @@ fileprivate struct LogEntryCellBackground: View {
         case start, middle, end
     }
 
-    let color: Color
+    let color: Color?
     let position: Position
     let icon: String?
 
     private let center = 32.0
-    private let lineWidth = 2.0
+    private let lineWidth = 3.0
     private var leadingLinePadding: Double {
         center - lineWidth / 2
     }
@@ -86,13 +112,25 @@ fileprivate struct LogEntryCellBackground: View {
         icon != nil ? 28 : 12
     }
 
+    private var foregroundStyle: some ShapeStyle {
+        if let color {
+            return AnyShapeStyle(color)
+        } else {
+            #if os(visionOS)
+            return AnyShapeStyle(.regularMaterial)
+            #else
+            return AnyShapeStyle(Color(uiColor: .tertiarySystemFill))
+            #endif
+        }
+    }
+
     @ViewBuilder
     private func lineView(metrics: GeometryProxy) -> some View {
         Rectangle()
             .frame(
                 width: lineWidth,
-                height: (metrics.size.height - circleDiameter) / 2 + 0.5)
-            .foregroundColor(color)
+                height: (metrics.size.height - circleDiameter) / 2)
+            .foregroundStyle(foregroundStyle)
     }
 
     var body: some View {
@@ -106,7 +144,7 @@ fileprivate struct LogEntryCellBackground: View {
                 ZStack {
                     Circle()
                         .frame(width: circleDiameter, height: circleDiameter)
-                        .foregroundColor(color)
+                        .foregroundStyle(foregroundStyle)
                     if let icon {
                         Image(systemName: icon)
                             .font(.system(size: 11, weight: .bold))
@@ -127,7 +165,6 @@ fileprivate struct LogEntryCellBackground: View {
             }
 
         }
-        .opacity(0.6)
         #if os(visionOS)
         .background(.regularMaterial)
         #else
@@ -153,9 +190,9 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .now, onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false))
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false, hasAttachment: true))
-                LogEntryCell(logEntry: fakeEntry(isPurchase: true))
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onEdit: {}, onDelete: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false, hasAttachment: true), onEdit: {}, onDelete: {})
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true), onEdit: {}, onDelete: {})
             }
             .listStyle(.insetGrouped)
             #if os(visionOS)
@@ -166,7 +203,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .soon(Date()), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: true, hasAttachment: true))
+                LogEntryCell(logEntry: fakeEntry(isPurchase: true, hasAttachment: true), onEdit: {}, onDelete: {})
             }
             .listStyle(.insetGrouped)
         }
@@ -174,7 +211,7 @@ struct TimelineView_Previews: PreviewProvider {
         Group {
             List {
                 NextCheckCell(urgency: .later(Date()), onTap: {})
-                LogEntryCell(logEntry: fakeEntry(isPurchase: false))
+                LogEntryCell(logEntry: fakeEntry(isPurchase: false), onEdit: {}, onDelete: {})
             }
             .listStyle(.insetGrouped)
         }
