@@ -93,6 +93,7 @@
 		F4DFE72729D4E92000394F15 /* RoundingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */; };
 		F4DFE72929D4EA4600394F15 /* WingLoadScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */; };
 		F4EFE9B92A606C16002A1A46 /* Stripes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EFE9B82A606C16002A1A46 /* Stripes.swift */; };
+		F4F163B42AA7B391004524A0 /* IconExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F163B32AA7B391004524A0 /* IconExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +212,7 @@
 		F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundingExtensions.swift; sourceTree = "<group>"; };
 		F4DFE72829D4EA4600394F15 /* WingLoadScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadScale.swift; sourceTree = "<group>"; };
 		F4EFE9B82A606C16002A1A46 /* Stripes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stripes.swift; sourceTree = "<group>"; };
+		F4F163B32AA7B391004524A0 /* IconExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -489,6 +491,7 @@
 				0DC585EF275CE0F7001B346E /* SharpImageView.swift */,
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
 				F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */,
+				F4F163B32AA7B391004524A0 /* IconExtensions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				0D7F23E0275CC99E005298E2 /* BrandIconView.swift in Sources */,
 				0D07CBFE26B6B6BF00BCC3E6 /* Model.xcdatamodeld in Sources */,
 				0DA898AA2841FAD100D7568F /* CoreDataOperation.swift in Sources */,
+				F4F163B42AA7B391004524A0 /* IconExtensions.swift in Sources */,
 				0D919AE626503E47005AB7A7 /* FormDatePicker.swift in Sources */,
 				0D4071922656CD12001385D7 /* NotificationService.swift in Sources */,
 				F4DFE72229D13CAE00394F15 /* WingLoadCalculationGraphic.swift in Sources */,

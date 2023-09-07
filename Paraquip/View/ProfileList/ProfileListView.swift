@@ -22,17 +22,6 @@ enum ProfileSelection: Hashable {
     case profile(Profile)
 }
 
-@MainActor
-extension String {
-    fileprivate var deviceSpecificIcon: String {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return self
-        } else {
-            return self.replacingOccurrences(of: ".fill", with: "")
-        }
-    }
-}
-
 struct ProfileListView: View {
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
