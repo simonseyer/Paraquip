@@ -164,16 +164,15 @@ struct EditEquipmentView: View {
                         }
                     }.foregroundColor(.primary)
                 }
-                .swipeActions {
+                .contextMenu {
                     if equipment.purchaseLog != nil {
-                        Button {
+                        Button(role: .destructive) {
                             equipment.purchaseLog = nil
                         } label: {
                             Label("Clear", systemImage: "clear")
                         }
                     }
                 }
-                .labelStyle(.titleOnly)
             }
             if equipment is Paraglider || equipment is Reserve {
                 Section {
