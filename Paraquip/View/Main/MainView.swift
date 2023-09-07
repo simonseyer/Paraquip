@@ -30,16 +30,8 @@ struct MainView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            ProfileListView(selectedProfile: $selectedProfile)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            showNotificationSettings = true
-                        } label: {
-                            Label("Notifications", systemImage: "bell.fill")
-                        }
-                    }
-                }
+            ProfileListView(selectedProfile: $selectedProfile,
+                            showNotificationSettings: $showNotificationSettings)
         } content: {
             switch selectedProfile {
             case .none:

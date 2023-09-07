@@ -34,6 +34,7 @@ struct ProfileListView: View {
     @State private var deleteProfile: Profile?
 
     @Binding var selectedProfile: ProfileSelection?
+    @Binding var showNotificationSettings: Bool
 
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -47,24 +48,21 @@ struct ProfileListView: View {
                         Text(profile.profileName)
                     }
                 }
-                .swipeActions {
+                .contextMenu {
                     Button {
                         editProfileOperation = Operation(editing: profile,
                                                          withParentContext: managedObjectContext)
                     } label: {
-                        Label("Edit", systemImage: "slider.vertical.3")
+                        Label("Edit", systemImage: "pencil")
                     }
-                    .tint(.blue)
 
-                    Button {
+                    Button(role: .destructive) {
                         deleteProfile = profile
                         isDeletingProfile = true
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
-                    .tint(.red)
                 }
-                .labelStyle(.titleOnly)
             }
             NavigationLink(value: ProfileSelection.allEquipment)  {
                 HStack {
@@ -121,10 +119,19 @@ struct ProfileListView: View {
         .interactiveDismissDisabled(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button {
-                    editProfileOperation = Operation(withParentContext: managedObjectContext)
+                Menu {
+                    Button {
+                        editProfileOperation = Operation(withParentContext: managedObjectContext)
+                    } label: {
+                        Label("Create new set", systemImage: "plus")
+                    }
+                    Button {
+                        showNotificationSettings = true
+                    } label: {
+                        Label("Set up notifications", systemImage: "bell.fill".deviceSpecificIcon)
+                    }
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: "ellipsis.circle")
                 }
             }
         }
@@ -135,7 +142,8 @@ struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationStack {
-            ProfileListView(selectedProfile: .constant(.none))
+            ProfileListView(selectedProfile: .constant(.none),
+                            showNotificationSettings: .constant(false))
                 .environment(\.managedObjectContext, .preview)
         }
     }

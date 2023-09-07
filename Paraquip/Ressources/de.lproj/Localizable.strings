@@ -25,6 +25,8 @@
 
 // Profile List View
 "Sets" = "Sets";
+"Create new set" = "Neues Set anlegen";
+"Set up notifications" = "Benachrichtigungen konfigurieren";
 "Delete" = "Löschen";
 "Delete set" = "Set löschen";
 "Delete set & equipment" = "Set & Ausrüstung löschen";
