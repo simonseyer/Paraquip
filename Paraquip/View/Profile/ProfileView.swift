@@ -13,8 +13,6 @@ struct ProfileView: View {
     let profile: Profile?
     @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var editProfileOperation: Operation<Profile>?
-    @State private var deleteEquipment: Equipment?
-    @State private var isDeletingEquipment = false
     @State private var isShowingWeightView = false
     @State private var addEquipmentType: Equipment.EquipmentType?
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -54,6 +52,8 @@ struct ProfileView: View {
                     editEquipment(equipment)
                 } onDelete: {
                     deleteEquipment(equipment)
+                } onRemoveFromSet: {
+                    removeEquipmentFromSet(equipment)
                 }
             } else {
                 AddEquipmentButton {
@@ -77,6 +77,8 @@ struct ProfileView: View {
                         editEquipment(equipment)
                     } onDelete: {
                         deleteEquipment(equipment)
+                    } onRemoveFromSet: {
+                        removeEquipmentFromSet(equipment)
                     }
                 }
             } header: {
@@ -143,21 +145,6 @@ struct ProfileView: View {
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }
-        .confirmationDialog(Text("Delete equipment"), isPresented: $isDeletingEquipment, presenting: deleteEquipment) { equipment in
-            Button("Delete", role: .destructive) {
-                withAnimation {
-                    managedObjectContext.delete(equipment)
-                    try! managedObjectContext.save()
-                }
-            }
-            Button("Remove from set") {
-                withAnimation {
-                    profile?.removeFromEquipment(equipment)
-                    try! managedObjectContext.save()
-                }
-            }
-            Button("Cancel", role: .cancel) {}
-        }
         .sheet(isPresented: $isShowingWeightView) {
             NavigationStack {
                 if let profile {
@@ -190,8 +177,17 @@ struct ProfileView: View {
     }
 
     func deleteEquipment(_ equipment: Equipment) {
-        deleteEquipment = equipment
-        isDeletingEquipment = true
+        withAnimation {
+            managedObjectContext.delete(equipment)
+            try! managedObjectContext.save()
+        }
+    }
+
+    func removeEquipmentFromSet(_ equipment: Equipment) {
+        withAnimation {
+            profile?.removeFromEquipment(equipment)
+            try! managedObjectContext.save()
+        }
     }
 
     func editProfile() {

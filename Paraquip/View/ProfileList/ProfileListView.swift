@@ -48,6 +48,24 @@ struct ProfileListView: View {
                         Text(profile.profileName)
                     }
                 }
+                .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
+                    Button("Delete set", role: .destructive) {
+                        withAnimation {
+                            managedObjectContext.delete(profile)
+                            try! managedObjectContext.save()
+                        }
+                    }
+                    Button("Delete set & equipment", role: .destructive) {
+                        withAnimation {
+                            profile.allEquipment.forEach {
+                                managedObjectContext.delete($0)
+                            }
+                            managedObjectContext.delete(profile)
+                            try! managedObjectContext.save()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                }
                 .contextMenu {
                     Button {
                         editProfileOperation = Operation(editing: profile,
@@ -98,25 +116,6 @@ struct ProfileListView: View {
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }
-        .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
-            Button("Delete set", role: .destructive) {
-                withAnimation {
-                    managedObjectContext.delete(profile)
-                    try! managedObjectContext.save()
-                }
-            }
-            Button("Delete set & equipment", role: .destructive) {
-                withAnimation {
-                    profile.allEquipment.forEach {
-                        managedObjectContext.delete($0)
-                    }
-                    managedObjectContext.delete(profile)
-                    try! managedObjectContext.save()
-                }
-            }
-            Button("Cancel", role: .cancel) {}
-        }
-        .interactiveDismissDisabled(true)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {

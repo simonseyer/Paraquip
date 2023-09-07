@@ -25,8 +25,12 @@ struct EquipmentRow: View {
 
     @ObservedObject var equipment: Equipment
 
+    @State private var deleteEquipment: Equipment?
+    @State private var isDeletingEquipment = false
+
     let onEdit: () -> Void
     let onDelete: () -> Void
+    let onRemoveFromSet: () -> Void
 
     var body: some View {
         NavigationLink(value: equipment) {
@@ -58,6 +62,11 @@ struct EquipmentRow: View {
                 }
             }
         }
+        .confirmationDialog(Text("Delete equipment"), isPresented: $isDeletingEquipment, presenting: deleteEquipment) { equipment in
+            Button("Delete", role: .destructive, action: onDelete)
+            Button("Remove from set", action: onRemoveFromSet)
+            Button("Cancel", role: .cancel) {}
+        }
         .contextMenu {
             Button {
                 onEdit()
@@ -66,7 +75,8 @@ struct EquipmentRow: View {
             }
 
             Button(role: .destructive) {
-                onDelete()
+                deleteEquipment = equipment
+                isDeletingEquipment = true
             } label: {
                 Label("Delete", systemImage: "trash")
             }
@@ -79,12 +89,12 @@ struct EquipmentRow_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             List {
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider), onEdit: {}, onDelete: {})
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .harness), onEdit: {}, onDelete: {})
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve), onEdit: {}, onDelete: {})
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .gear), onEdit: {}, onDelete: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider), onEdit: {}, onDelete: {}, onRemoveFromSet: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .harness), onEdit: {}, onDelete: {}, onRemoveFromSet: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve), onEdit: {}, onDelete: {}, onRemoveFromSet: {})
+                EquipmentRow(equipment: equipment(for: "Unknown", type: .gear), onEdit: {}, onDelete: {}, onRemoveFromSet: {})
                 ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
-                    EquipmentRow(equipment: equipment(for: brand), onEdit: {}, onDelete: {})
+                    EquipmentRow(equipment: equipment(for: brand), onEdit: {}, onDelete: {}, onRemoveFromSet: {})
                 }
             }
             .environment(\.defaultMinListRowHeight, 10)
