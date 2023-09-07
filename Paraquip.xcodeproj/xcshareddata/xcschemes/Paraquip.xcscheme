@@ -79,17 +79,22 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "simulated_notification_date"
-            value = "1657634385"
+            key = "simulatedNotificationDate"
+            value = "1632985185"
             isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "isUITest"
+            key = "stateSimulated"
             value = "true"
             isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "isNotificationTest"
+            key = "notificationsSimulated"
+            value = "true"
+            isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "animationsDisabled"
             value = "true"
             isEnabled = "NO">
          </EnvironmentVariable>

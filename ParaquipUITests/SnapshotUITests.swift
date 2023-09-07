@@ -31,8 +31,10 @@ class SnapshotUITests: XCTestCase {
 
         let app = XCUIApplication()
         app.launchEnvironment = [
-            "isUITest": "true",
-            "simulated_notification_date": "1632985185"
+            "stateSimulated": "true",
+            "animationsDisabled": "true",
+            "notificationsSimulated": "true",
+            "simulatedNotificationDate": "1632985185"
         ]
         setupSnapshot(app)
         app.launch()

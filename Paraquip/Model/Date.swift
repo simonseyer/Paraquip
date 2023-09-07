@@ -13,7 +13,7 @@ extension Date {
     }
 
     static let simulatedDate: Date? = {
-        if let notificationDateString = ProcessInfo.processInfo.environment["simulated_notification_date"],
+        if let notificationDateString = ProcessInfo.processInfo.environment["simulatedNotificationDate"],
            let notificationTimeInterval = TimeInterval(notificationDateString) {
             return Date(timeIntervalSince1970: notificationTimeInterval)
         } else {
