@@ -8,11 +8,11 @@
 import Foundation
 import OrderedCollections
 
-struct CheckList {
+struct CheckList: Equatable {
     var sections: [CheckSection]
 }
 
-struct CheckSection: Identifiable {
+struct CheckSection: Identifiable, Equatable {
     let title: String
     let titleIcon: String?
     var entries: [CheckEntry]
@@ -25,7 +25,12 @@ struct CheckSection: Identifiable {
     }
 }
 
-struct CheckEntry: Identifiable {
+struct CheckEntry: Identifiable, Equatable {
+
+    static func == (lhs: CheckEntry, rhs: CheckEntry) -> Bool {
+        lhs.id == rhs.id && lhs.name == rhs.name && lhs.checkUrgency == rhs.checkUrgency
+    }
+    
     let id: UUID
     let name: String
     let checkUrgency: Equipment.CheckUrgency

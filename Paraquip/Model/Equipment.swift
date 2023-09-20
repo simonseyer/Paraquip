@@ -39,7 +39,7 @@ extension Equipment: Creatable {
         }
     }
 
-    enum CheckUrgency {
+    enum CheckUrgency: Equatable {
         case now
         case soon(Date)
         case later(Date)
