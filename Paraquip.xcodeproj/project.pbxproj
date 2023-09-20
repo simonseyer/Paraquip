@@ -76,6 +76,7 @@
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
 		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
+		F45FD4C02ABAE71C0033E17A /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = F45FD4BF2ABAE71C0033E17A /* OrderedCollections */; };
 		F4676C2E2AAA083C00FD3913 /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */; };
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
@@ -220,6 +221,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45FD4C02ABAE71C0033E17A /* OrderedCollections in Frameworks */,
 				0D61B2EB2649A7C200509C30 /* Versionable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -566,6 +568,7 @@
 			name = Paraquip;
 			packageProductDependencies = (
 				0D61B2EA2649A7C200509C30 /* Versionable */,
+				F45FD4BF2ABAE71C0033E17A /* OrderedCollections */,
 			);
 			productName = Paraquip;
 			productReference = 0D11FB8E2620A5CF009D9349 /* Paraquip.app */;
@@ -642,6 +645,7 @@
 			mainGroup = 0D11FB852620A5CE009D9349;
 			packageReferences = (
 				0D61B2E92649A7C200509C30 /* XCRemoteSwiftPackageReference "Versionable" */,
+				F45FD4BE2ABAE71C0033E17A /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 0D11FB8F2620A5CF009D9349 /* Products */;
 			projectDirPath = "";
@@ -1136,6 +1140,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		F45FD4BE2ABAE71C0033E17A /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1143,6 +1155,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0D61B2E92649A7C200509C30 /* XCRemoteSwiftPackageReference "Versionable" */;
 			productName = Versionable;
+		};
+		F45FD4BF2ABAE71C0033E17A /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45FD4BE2ABAE71C0033E17A /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 
