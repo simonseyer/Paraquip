@@ -81,12 +81,12 @@
          <EnvironmentVariable
             key = "simulatedNotificationDate"
             value = "1632985185"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "stateSimulated"
             value = "true"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "notificationsSimulated"
