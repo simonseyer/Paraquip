@@ -70,6 +70,10 @@ extension Equipment: Creatable {
         EquipmentType(rawValue: type) ?? .paraglider
     }
 
+    var equipmentID: UUID {
+        id!
+    }
+
     var equipmentName: String {
         get { name ?? "" }
         set { name = newValue }

@@ -145,6 +145,9 @@ struct CoreData {
             equipment.brand = "Gin"
             equipment.name = "Calypso"
             equipment.equipmentSize = "M"
+            equipment.checkCycle = 12
+            equipment.addToCheckLog(LogEntry.create(context: context,
+                                                    date: dateFormatter.date(from: "10.03.2021")!))
             profile2.addToEquipment(equipment)
         }
 

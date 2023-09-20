@@ -143,6 +143,10 @@
 "before check" = "vor dem Check";
 "Add notification" = "Benachrichtung hinzufügen";
 
+// ChecksView
+"Checks" = "Checks";
+"Filter by a set" = "Nach Set filtern";
+
 // Notifications
 "notification_check_due_title" = "Check fällig";
 "notification_check_due_months_body_zero" = "%@ %@ muss in weniger als einem Monat gecheckt werden";

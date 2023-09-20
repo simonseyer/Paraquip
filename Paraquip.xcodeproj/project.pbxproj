@@ -77,8 +77,11 @@
 		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
 		F45FD4C02ABAE71C0033E17A /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = F45FD4BF2ABAE71C0033E17A /* OrderedCollections */; };
+		F45FD4C22ABAF3BF0033E17A /* CheckList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FD4C12ABAF3BF0033E17A /* CheckList.swift */; };
+		F45FD4C42ABAF4840033E17A /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FD4C32ABAF4840033E17A /* ArrayExtensions.swift */; };
 		F4676C2E2AAA083C00FD3913 /* AddEquipmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */; };
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
+		F47B77F32AB6EF1B0061ADC1 /* ChecksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
 		F4AF006F29BD15DC00EFA602 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
 		F4BD8E7F29FB42B8004CF5A9 /* WeightRangeGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BD8E7E29FB42B8004CF5A9 /* WeightRangeGraphic.swift */; };
@@ -88,6 +91,7 @@
 		F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */; };
 		F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */; };
 		F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */; };
+		F4D0F9512AB8AACB00B346FD /* ChecksGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D0F9502AB8AACB00B346FD /* ChecksGridView.swift */; };
 		F4DFE72029D13BB400394F15 /* WingLoadGuidanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE71F29D13BB400394F15 /* WingLoadGuidanceView.swift */; };
 		F4DFE72229D13CAE00394F15 /* WingLoadCalculationGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72129D13CAE00394F15 /* WingLoadCalculationGraphic.swift */; };
 		F4DFE72729D4E92000394F15 /* RoundingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */; };
@@ -197,8 +201,11 @@
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
 		F4496D292AA0F98400836BFE /* PreviewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewEntity.swift; sourceTree = "<group>"; };
 		F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationState.swift; sourceTree = "<group>"; };
+		F45FD4C12ABAF3BF0033E17A /* CheckList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckList.swift; sourceTree = "<group>"; };
+		F45FD4C32ABAF4840033E17A /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
 		F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGraphic.swift; sourceTree = "<group>"; };
+		F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksView.swift; sourceTree = "<group>"; };
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
 		F4BD8E7E29FB42B8004CF5A9 /* WeightRangeGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRangeGraphic.swift; sourceTree = "<group>"; };
 		F4BD8E8029FD6F3C004CF5A9 /* NSNumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberExtensions.swift; sourceTree = "<group>"; };
@@ -207,6 +214,7 @@
 		F4C6A4B729CBA74E0017EC0E /* DatabaseMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigration.swift; sourceTree = "<group>"; };
 		F4C6A4B929CBE0D60017EC0E /* WingLoadText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadText.swift; sourceTree = "<group>"; };
 		F4C6A4BB29CD5C310017EC0E /* WingClassPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingClassPill.swift; sourceTree = "<group>"; };
+		F4D0F9502AB8AACB00B346FD /* ChecksGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksGridView.swift; sourceTree = "<group>"; };
 		F4DFE71F29D13BB400394F15 /* WingLoadGuidanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGuidanceView.swift; sourceTree = "<group>"; };
 		F4DFE72129D13CAE00394F15 /* WingLoadCalculationGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadCalculationGraphic.swift; sourceTree = "<group>"; };
 		F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundingExtensions.swift; sourceTree = "<group>"; };
@@ -384,6 +392,7 @@
 		0D5E7A52262C430E0002A67B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F47B77F12AB6EF0B0061ADC1 /* Checks */,
 				0DA898B12842631300D7568F /* UIKitWrapper */,
 				0DC585EE275CE0E9001B346E /* Shared */,
 				0D4785A32710B9920055E377 /* Main */,
@@ -410,6 +419,7 @@
 				F4C6A4B129CB9A410017EC0E /* FetchRequestExtensions.swift */,
 				F4DFE72629D4E92000394F15 /* RoundingExtensions.swift */,
 				F4BD8E8029FD6F3C004CF5A9 /* NSNumberExtensions.swift */,
+				F45FD4C32ABAF4840033E17A /* ArrayExtensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -523,6 +533,16 @@
 				0DD7FC26263DE1B60038B25D /* LegacyAppPersistence.swift */,
 			);
 			path = Legacy;
+			sourceTree = "<group>";
+		};
+		F47B77F12AB6EF0B0061ADC1 /* Checks */ = {
+			isa = PBXGroup;
+			children = (
+				F45FD4C12ABAF3BF0033E17A /* CheckList.swift */,
+				F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */,
+				F4D0F9502AB8AACB00B346FD /* ChecksGridView.swift */,
+			);
+			path = Checks;
 			sourceTree = "<group>";
 		};
 		F496828E29C685410061CC7E /* WingLoad */ = {
@@ -708,6 +728,8 @@
 				F4676C2E2AAA083C00FD3913 /* AddEquipmentButton.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */,
+				F45FD4C22ABAF3BF0033E17A /* CheckList.swift in Sources */,
+				F4D0F9512AB8AACB00B346FD /* ChecksGridView.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
 				0D11FB942620A5CF009D9349 /* MainView.swift in Sources */,
@@ -715,12 +737,14 @@
 				0D3B5A09285B452A00C1E37A /* EquipmentSelectionRow.swift in Sources */,
 				0D77A35726D2692E002B24D6 /* FormIcon.swift in Sources */,
 				F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */,
+				F47B77F32AB6EF1B0061ADC1 /* ChecksView.swift in Sources */,
 				F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */,
 				F4C6A4B229CB9A410017EC0E /* FetchRequestExtensions.swift in Sources */,
 				0D80E1CD2662B7ED00305B23 /* LoggerExtensions.swift in Sources */,
 				F4EFE9B92A606C16002A1A46 /* Stripes.swift in Sources */,
 				0D11FBCB2620BF45009D9349 /* ProfileView.swift in Sources */,
 				0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */,
+				F45FD4C42ABAF4840033E17A /* ArrayExtensions.swift in Sources */,
 				0DD7317C28C11E3F006475FA /* AutocompletingTextField.swift in Sources */,
 				0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */,
 				0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */,

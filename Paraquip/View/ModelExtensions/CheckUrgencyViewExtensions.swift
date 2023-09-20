@@ -29,6 +29,17 @@ extension Equipment.CheckUrgency {
         }
     }
 
+    var icon: some View {
+        switch self {
+        case .now, .soon:
+            return Image(systemName: "exclamationmark")
+                .font(.system(size: 13, weight: .heavy))
+        case .later, .never:
+            return Image(systemName: "checkmark")
+                .font(.system(size: 12, weight: .bold))
+        }
+    }
+
     var color: Color {
         switch self {
         case .now:

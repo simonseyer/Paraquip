@@ -8,19 +8,6 @@
 import SwiftUI
 import CoreData
 
-extension Equipment.CheckUrgency {
-    fileprivate var icon: some View {
-        switch self {
-        case .now, .soon:
-            return Image(systemName: "exclamationmark")
-                .font(.system(size: 13, weight: .heavy))
-        case .later, .never:
-            return Image(systemName: "checkmark")
-                .font(.system(size: 12, weight: .bold))
-        }
-    }
-}
-
 struct EquipmentRow: View {
 
     @ObservedObject var equipment: Equipment
