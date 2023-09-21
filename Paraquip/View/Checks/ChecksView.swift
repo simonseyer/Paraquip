@@ -26,9 +26,7 @@ struct ChecksView: View {
                 true
             }
         }
-        return CheckList(equipment: filteredEquipment) { equipment in
-            // TODO: Handle tap
-        }
+        return CheckList(equipment: filteredEquipment)
     }
 
     var body: some View {

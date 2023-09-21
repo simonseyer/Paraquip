@@ -163,5 +163,16 @@ struct CoreData {
 
         return attachment
     }
+
+    static func fakeLogEntry(isPurchase: Bool, hasAttachment: Bool = false) -> LogEntry {
+        let logEntry = LogEntry.create(context: .preview)
+        if isPurchase {
+            CoreData.fakeProfile.allEquipment.first?.purchaseLog = logEntry
+        }
+        if hasAttachment {
+            logEntry.addToAttachments(Attachment(context: .preview))
+        }
+        return logEntry
+    }
 }
 

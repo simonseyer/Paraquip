@@ -15,26 +15,14 @@ struct CheckList: Equatable {
 struct CheckSection: Identifiable, Equatable {
     let title: String
     let titleIcon: String?
-    var entries: [CheckEntry]
+    var equipment: [Equipment]
     var id: String { title }
 
-    init(title: String, titleIcon: String? = nil, entries: [CheckEntry]) {
+    init(title: String, titleIcon: String? = nil, entries: [Equipment]) {
         self.title = title
         self.titleIcon = titleIcon
-        self.entries = entries
+        self.equipment = entries
     }
-}
-
-struct CheckEntry: Identifiable, Equatable {
-
-    static func == (lhs: CheckEntry, rhs: CheckEntry) -> Bool {
-        lhs.id == rhs.id && lhs.name == rhs.name && lhs.checkUrgency == rhs.checkUrgency
-    }
-    
-    let id: UUID
-    let name: String
-    let checkUrgency: Equipment.CheckUrgency
-    let onTap: () -> Void
 }
 
 private extension Calendar {
@@ -47,7 +35,7 @@ extension CheckList {
 
     static let monthCount = 10
 
-    init(equipment: [Equipment], onTap: @escaping (Equipment) -> Void) {
+    init(equipment: [Equipment]) {
         let calendar = Calendar.current
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM"
@@ -72,19 +60,14 @@ extension CheckList {
 
         for equipment in sortedEquipment {
             guard let nextCheck = equipment.nextCheck else { continue }
-            let entry = CheckEntry(id: equipment.equipmentID,
-                                   name: equipment.equipmentName,
-                                   checkUrgency: equipment.checkUrgency,
-                                   onTap: { onTap(equipment) })
-
             if case .now = equipment.checkUrgency {
-                now.entries.append(entry)
+                now.equipment.append(equipment)
             } else {
                 let firstDayOfMonth = calendar.firstDayOfMonth(nextCheck)
                 if months[firstDayOfMonth] != nil {
-                    months[firstDayOfMonth]!.entries.append(entry)
+                    months[firstDayOfMonth]!.equipment.append(equipment)
                 } else {
-                    later.entries.append(entry)
+                    later.equipment.append(equipment)
                 }
             }
         }

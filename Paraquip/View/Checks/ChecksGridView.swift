@@ -31,6 +31,9 @@ private extension CheckSection {
 struct ChecksGridView: View {
     let checks: CheckList
 
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @State private var editLogEntryOperation: Operation<LogEntry>?
+
     var body: some View {
         Grid(horizontalSpacing: 30, verticalSpacing: 10) {
             ForEach(checks.indexedRows, id: \.0) { index, row in
@@ -47,26 +50,18 @@ struct ChecksGridView: View {
                             }
 
                             ScrollView {
-                                ForEach(cell.entries) { entry in
-                                    Button(action: entry.onTap) {
-                                        Label {
-                                            Text(entry.name)
-                                                .lineLimit(1)
-                                            Spacer()
-                                        } icon: {
-                                            entry.checkUrgency.icon
-                                                .frame(width: 25, height: 25)
-                                                .background(
-                                                    Circle()
-                                                        .fill(entry.checkUrgency.color)
-                                                )
-                                                #if os(iOS)
-                                                .foregroundStyle(.white)
-                                                #endif
+                                ForEach(cell.equipment) { equipment in
+                                    ChecksGridButton(equipment: equipment) { logAction in
+                                        switch logAction {
+                                        case .create:
+                                            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                                            operation.object(for: equipment).addToCheckLog(operation.object)
+                                            editLogEntryOperation = operation
+                                        case .edit(let logEntry):
+                                            editLogEntryOperation = Operation(editing: logEntry,
+                                                                              withParentContext: managedObjectContext)
                                         }
                                     }
-                                    .foregroundStyle(.primary)
-                                    .buttonStyle(.bordered)
                                 }
                             }
                             .scrollBounceBehavior(.basedOnSize)
@@ -80,54 +75,17 @@ struct ChecksGridView: View {
             }
         }
         .padding(.horizontal, 30)
+        .sheet(item: $editLogEntryOperation) { operation in
+            NavigationStack {
+                LogEntryView(logEntry: operation.object)
+                    .environment(\.managedObjectContext, operation.childContext)
+            }
+        }
     }
 }
 
-let previewData = CheckList(sections: [
-    CheckSection(title: "Now", titleIcon: "hourglass", entries: [
-        CheckEntry(id: UUID(),
-                   name: "Explorer 2",
-                   checkUrgency: .now,
-                   onTap: {})
-    ]),
-    CheckSection(title: "Feb", entries: [
-        CheckEntry(id: UUID(),
-                   name: "Wani Light 2",
-                   checkUrgency: .soon(.now),
-                   onTap: {})]),
-    CheckSection(title: "Mar", entries: []),
-    CheckSection(title: "Apr", entries: []),
-    CheckSection(title: "May", entries: [
-        CheckEntry(id: UUID(),
-                   name: "Iota 2",
-                   checkUrgency: .later(.now),
-                   onTap: {}),
-        CheckEntry(id: UUID(),
-                   name: "Angel SQ",
-                   checkUrgency: .later(.now),
-                   onTap: {}),
-        CheckEntry(id: UUID(),
-                   name: "Luna 2",
-                   checkUrgency: .later(.now),
-                   onTap: {})
-    ]),
-    CheckSection(title: "Jun", entries: []),
-    CheckSection(title: "Jul", entries: []),
-    CheckSection(title: "Aug", entries: []),
-    CheckSection(title: "Sep", entries: []),
-    CheckSection(title: "Oct", entries: []),
-    CheckSection(title: "Nov", entries: []),
-    CheckSection(title: "Later", titleIcon: "clock", entries: [
-        CheckEntry(id: UUID(),
-                   name: "Rise 4",
-                   checkUrgency: .later(.now),
-                   onTap: {})
-    ]),
-
-])
-
 #Preview {
     NavigationStack {
-        ChecksGridView(checks: previewData)
+        ChecksGridView(checks: CheckList(equipment: CoreData.fakeProfile.allEquipment))
     }
 }

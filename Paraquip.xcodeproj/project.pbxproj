@@ -74,6 +74,10 @@
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
+		F443FA122ABC7B6300B490AB /* LogEntryBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */; };
+		F443FA142ABC7CC000B490AB /* LogEntryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA132ABC7CC000B490AB /* LogEntryButton.swift */; };
+		F443FA162ABC942800B490AB /* LogMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA152ABC942800B490AB /* LogMenu.swift */; };
+		F443FA182ABC9EBC00B490AB /* ChecksGridButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA172ABC9EBC00B490AB /* ChecksGridButton.swift */; };
 		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
 		F45FD4C02ABAE71C0033E17A /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = F45FD4BF2ABAE71C0033E17A /* OrderedCollections */; };
@@ -199,6 +203,10 @@
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
+		F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryBackground.swift; sourceTree = "<group>"; };
+		F443FA132ABC7CC000B490AB /* LogEntryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryButton.swift; sourceTree = "<group>"; };
+		F443FA152ABC942800B490AB /* LogMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMenu.swift; sourceTree = "<group>"; };
+		F443FA172ABC9EBC00B490AB /* ChecksGridButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksGridButton.swift; sourceTree = "<group>"; };
 		F4496D292AA0F98400836BFE /* PreviewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewEntity.swift; sourceTree = "<group>"; };
 		F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationState.swift; sourceTree = "<group>"; };
 		F45FD4C12ABAF3BF0033E17A /* CheckList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckList.swift; sourceTree = "<group>"; };
@@ -535,12 +543,24 @@
 			path = Legacy;
 			sourceTree = "<group>";
 		};
+		F45FD4C52ABB131B0033E17A /* CheckDetail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CheckDetail;
+			sourceTree = "<group>";
+		};
 		F47B77F12AB6EF0B0061ADC1 /* Checks */ = {
 			isa = PBXGroup;
 			children = (
+				F45FD4C52ABB131B0033E17A /* CheckDetail */,
 				F45FD4C12ABAF3BF0033E17A /* CheckList.swift */,
 				F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */,
 				F4D0F9502AB8AACB00B346FD /* ChecksGridView.swift */,
+				F443FA172ABC9EBC00B490AB /* ChecksGridButton.swift */,
+				F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */,
+				F443FA132ABC7CC000B490AB /* LogEntryButton.swift */,
+				F443FA152ABC942800B490AB /* LogMenu.swift */,
 			);
 			path = Checks;
 			sourceTree = "<group>";
@@ -729,6 +749,7 @@
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */,
 				F45FD4C22ABAF3BF0033E17A /* CheckList.swift in Sources */,
+				F443FA182ABC9EBC00B490AB /* ChecksGridButton.swift in Sources */,
 				F4D0F9512AB8AACB00B346FD /* ChecksGridView.swift in Sources */,
 				0D08F16126CD7EE0009CD3C5 /* DocumentPicker.swift in Sources */,
 				0DD7FC13263DD32A0038B25D /* Equipment.swift in Sources */,
@@ -746,14 +767,17 @@
 				0D919AF226514F84005AB7A7 /* NotificationEntryView.swift in Sources */,
 				F45FD4C42ABAF4840033E17A /* ArrayExtensions.swift in Sources */,
 				0DD7317C28C11E3F006475FA /* AutocompletingTextField.swift in Sources */,
+				F443FA142ABC7CC000B490AB /* LogEntryButton.swift in Sources */,
 				0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */,
 				0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */,
 				0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */,
 				F4F163B62AA7BC42004524A0 /* EditProfileMenu.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
+				F443FA122ABC7B6300B490AB /* LogEntryBackground.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
 				F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */,
+				F443FA162ABC942800B490AB /* LogMenu.swift in Sources */,
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
 				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
