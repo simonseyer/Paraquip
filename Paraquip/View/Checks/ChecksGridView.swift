@@ -51,16 +51,8 @@ struct ChecksGridView: View {
 
                             ScrollView {
                                 ForEach(cell.equipment) { equipment in
-                                    ChecksGridButton(equipment: equipment) { logAction in
-                                        switch logAction {
-                                        case .create:
-                                            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
-                                            operation.object(for: equipment).addToCheckLog(operation.object)
-                                            editLogEntryOperation = operation
-                                        case .edit(let logEntry):
-                                            editLogEntryOperation = Operation(editing: logEntry,
-                                                                              withParentContext: managedObjectContext)
-                                        }
+                                    ChecksGridButton(equipment: equipment) { action in
+                                        handleLogAction(action, for: equipment)
                                     }
                                 }
                             }
@@ -80,6 +72,18 @@ struct ChecksGridView: View {
                 LogEntryView(logEntry: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
             }
+        }
+    }
+
+    private func handleLogAction(_ logAction: LogMenu.Action, for equipment: Equipment) {
+        switch logAction {
+        case .create:
+            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+            operation.object(for: equipment).addToCheckLog(operation.object)
+            editLogEntryOperation = operation
+        case .edit(let logEntry):
+            editLogEntryOperation = Operation(editing: logEntry,
+                                              withParentContext: managedObjectContext)
         }
     }
 }
