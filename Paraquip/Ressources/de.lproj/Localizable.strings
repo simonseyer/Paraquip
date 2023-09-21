@@ -9,6 +9,7 @@
 // Generic
 "Edit" = "Bearbeiten";
 "Done" = "Fertig";
+"Close" = "Schließen";
 "Paraglider" = "Gleitschirm";
 "Harness" = "Gurtzeug";
 "Reserve" = "Rettung";
@@ -129,8 +130,11 @@
 
 // Log Entry View
 "Attachments" = "Anhänge";
+"Add attachment" = "Anhang hinzufügen";
 "Attach file" = "Datei anhängen";
 "Attach image" = "Bild anhängen";
+"Date" = "Datum";
+"Delete entry" = "Eintrag löschen";
 
 // Notification View
 "Enable" = "Aktivieren";

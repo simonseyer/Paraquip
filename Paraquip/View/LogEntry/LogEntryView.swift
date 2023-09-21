@@ -8,14 +8,31 @@
 import SwiftUI
 import QuickLook
 
+private extension Attachment {
+    var name: String {
+        fileURL?.lastPathComponent ?? ""
+    }
+
+    var icon: String {
+        if contentType.conforms(to: .image) {
+            return "photo"
+        } else {
+            return "doc"
+        }
+    }
+}
+
 struct LogEntryView: View {
 
     @ObservedObject var logEntry: LogEntry
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.dismiss) private var dismiss
 
+    @State private var showingDatePicker = false
+    @State private var showingAddAttachment = false
     @State private var showingDocumentPicker = false
     @State private var showingImagePicker = false
+    @State private var showingDeleteCheck = false
     @State private var previewURL: URL?
 
     @FetchRequest
@@ -25,61 +42,85 @@ struct LogEntryView: View {
         self.logEntry = logEntry
         _attachments = FetchRequest<Attachment>(sortDescriptors: [SortDescriptor(\.timestamp)],
                                                    predicate: NSPredicate(format: "%K == %@", #keyPath(Attachment.logEntry), logEntry))
+        _showingDatePicker = .init(initialValue: logEntry.isInserted)
     }
 
     var body: some View {
         Form {
-            DatePicker("", selection: $logEntry.logEntryDate, displayedComponents: .date)
-                .datePickerStyle(.graphical)
+            Button {
+                withAnimation {
+                    showingDatePicker.toggle()
+                }
+            } label: {
+                LabeledContent("Date") {
+                    Text(logEntry.logEntryDate, style: .date)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .foregroundStyle(.primary)
 
-            if !attachments.isEmpty {
-                Section("Attachments") {
-                    ForEach(attachments) { attachment in
-                        Button(action: { previewURL = attachment.fileURL }) {
-                            HStack {
-                                Group {
-                                    if attachment.contentType.conforms(to: .pdf) {
-                                        Image(systemName: "doc.fill")
-                                    } else if attachment.contentType.conforms(to: .image) {
-                                        Image(systemName: "photo.fill")
-                                    }
-                                }
-                                .foregroundColor(Color(UIColor.darkGray))
-                                .frame(width: 30)
-                                Text(attachment.fileURL?.lastPathComponent ?? "")
-                            }
-                        }
-                        .foregroundColor(.primary)
+            if showingDatePicker {
+                DatePicker("", selection: $logEntry.logEntryDate, displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+            }
+
+            Section("Attachments") {
+                ForEach(attachments) { attachment in
+                    Button(action: { previewURL = attachment.fileURL }) {
+                        Label(attachment.name,
+                              systemImage: attachment.icon)
                     }
-                    .onDelete { indexSet in
-                        for index in indexSet {
-                            managedObjectContext.delete(attachments[index])
-                        }
+                    .foregroundColor(.primary)
+                }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        managedObjectContext.delete(attachments[index])
+                    }
+                }
+                Button(action: { showingAddAttachment = true }) {
+                    Label("Add attachment",
+                          systemImage: "plus.circle.fill".deviceSpecificIcon)
+                }
+            }
+
+            if !logEntry.isInserted {
+                Section {
+                    Button(role: .destructive) {
+                        showingDeleteCheck = true
+                    } label: {
+                        Text("Delete entry")
                     }
                 }
             }
-            Section {
-                Button(action: { showingDocumentPicker = true }) {
-                    HStack {
-                        Image(systemName: "doc.fill")
-                            .frame(width: 30)
-                        Text("Attach file")
-                    }
-                }
-                Button(action: { showingImagePicker = true }) {
-                    HStack {
-                        Image(systemName: "photo.fill")
-                            .frame(width: 30)
-                        Text("Attach image")
-                    }
-                }
-            }
-            .fontWeight(.medium)
         }
+        #if os(visionOS)
+        .foregroundStyle(.primary)
+        #endif
         .navigationTitle(logEntry.isPurchase ? "Purchase" : "Check")
+        .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
+            Button(action: { showingDocumentPicker = true }) {
+                Label("Attach document",
+                      systemImage: "photo.doc".deviceSpecificIcon)
+            }
+            Button(action: { showingImagePicker = true }) {
+                Label("Attach image",
+                      systemImage: "photo.fill".deviceSpecificIcon)
+            }
+        }
+        .confirmationDialog("Delete entry", isPresented: $showingDeleteCheck) {
+            Button(role: .destructive) {
+                withAnimation {
+                    managedObjectContext.delete(logEntry)
+                    try! managedObjectContext.save()
+                    dismiss()
+                }
+            } label: {
+                Text("Delete entry")
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") { dismiss() }
+                Button("Close") { dismiss() }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
