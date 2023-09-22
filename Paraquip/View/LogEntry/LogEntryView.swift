@@ -84,7 +84,7 @@ struct LogEntryView: View {
                 .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
                     Button(action: { showingDocumentPicker = true }) {
                         Label("Attach document",
-                              systemImage: "photo.doc".deviceSpecificIcon)
+                              systemImage: "doc.fill".deviceSpecificIcon)
                     }
                     Button(action: { showingImagePicker = true }) {
                         Label("Attach image",
