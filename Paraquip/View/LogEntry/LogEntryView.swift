@@ -81,6 +81,16 @@ struct LogEntryView: View {
                     Label("Add attachment",
                           systemImage: "plus.circle.fill".deviceSpecificIcon)
                 }
+                .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
+                    Button(action: { showingDocumentPicker = true }) {
+                        Label("Attach document",
+                              systemImage: "photo.doc".deviceSpecificIcon)
+                    }
+                    Button(action: { showingImagePicker = true }) {
+                        Label("Attach image",
+                              systemImage: "photo.fill".deviceSpecificIcon)
+                    }
+                }
             }
 
             if !logEntry.isInserted {
@@ -90,6 +100,17 @@ struct LogEntryView: View {
                     } label: {
                         Text("Delete entry")
                     }
+                    .confirmationDialog("Delete entry", isPresented: $showingDeleteCheck) {
+                        Button(role: .destructive) {
+                            withAnimation {
+                                managedObjectContext.delete(logEntry)
+                                try! managedObjectContext.save()
+                                dismiss()
+                            }
+                        } label: {
+                            Text("Delete entry")
+                        }
+                    }
                 }
             }
         }
@@ -97,27 +118,6 @@ struct LogEntryView: View {
         .foregroundStyle(.primary)
         #endif
         .navigationTitle(logEntry.isPurchase ? "Purchase" : "Check")
-        .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
-            Button(action: { showingDocumentPicker = true }) {
-                Label("Attach document",
-                      systemImage: "photo.doc".deviceSpecificIcon)
-            }
-            Button(action: { showingImagePicker = true }) {
-                Label("Attach image",
-                      systemImage: "photo.fill".deviceSpecificIcon)
-            }
-        }
-        .confirmationDialog("Delete entry", isPresented: $showingDeleteCheck) {
-            Button(role: .destructive) {
-                withAnimation {
-                    managedObjectContext.delete(logEntry)
-                    try! managedObjectContext.save()
-                    dismiss()
-                }
-            } label: {
-                Text("Delete entry")
-            }
-        }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Close") { dismiss() }
