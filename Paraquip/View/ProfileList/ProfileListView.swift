@@ -8,15 +8,6 @@
 import SwiftUI
 import CoreData
 
-extension Image {
-    fileprivate func resized() -> some View {
-        self
-            .font(.title3)
-            .frame(width: 23)
-            .padding(.horizontal, 4)
-    }
-}
-
 enum ProfileSelection: Hashable {
     case allEquipment
     case profile(Profile)
@@ -42,11 +33,8 @@ struct ProfileListView: View {
         List(selection: $selectedProfile) {
             ForEach(profiles) { profile in
                 NavigationLink(value: ProfileSelection.profile(profile)) {
-                    HStack {
-                        Image(systemName: profile.profileIcon.systemName.deviceSpecificIcon)
-                            .resized()
-                        Text(profile.profileName)
-                    }
+                    Label(profile.profileName,
+                          systemImage: profile.profileIcon.systemName.deviceSpecificIcon)
                 }
                 .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile, presenting: deleteProfile) { profile in
                     Button("Delete set", role: .destructive) {
@@ -83,13 +71,11 @@ struct ProfileListView: View {
                 }
             }
             NavigationLink(value: ProfileSelection.allEquipment)  {
-                HStack {
-                    Image(systemName: "tray.full.fill".deviceSpecificIcon)
-                        .resized()
-                    Text("All Equipment")
-                }
+                Label("All Equipment",
+                      systemImage: "tray.full.fill".deviceSpecificIcon)
             }
         }
+        .foregroundStyle(.primary)
         .navigationTitle("Sets")
         .onAppear {
             if selectedProfile == nil {
