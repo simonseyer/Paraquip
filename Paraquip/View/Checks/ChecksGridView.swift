@@ -35,11 +35,11 @@ struct ChecksGridView: View {
     @State private var editLogEntryOperation: Operation<LogEntry>?
 
     var body: some View {
-        Grid(horizontalSpacing: 30, verticalSpacing: 10) {
+        VStack {
             ForEach(checks.indexedRows, id: \.0) { index, row in
-                GridRow {
+                HStack(spacing: 30) {
                     ForEach(row) { cell in
-                        VStack {
+                        VStack(alignment: .trailing) {
                             HStack {
                                 Spacer()
                                 cell.titleText
