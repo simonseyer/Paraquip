@@ -117,7 +117,7 @@ struct WingLoadLegendView: View {
             Text("wing_load_disclaimer")
         }
         .padding()
-        .background(Color(uiColor:.secondarySystemGroupedBackground))
+        .background(.regularMaterial)
         .cornerRadius(6)
         .font(.caption)
     }

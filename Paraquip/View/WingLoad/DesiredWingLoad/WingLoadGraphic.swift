@@ -71,7 +71,7 @@ struct WingLoadGraphic: View {
                     HStack(alignment: .top, spacing: 0) {
                         ForEach(wingLoadRanges) { range in
                             Rectangle()
-                                .foregroundColor(.accentColor.opacity(range.opacity))
+                                .foregroundStyle(.accent.opacity(range.opacity))
                                 .frame(width: relativeWidth(of: range.range) * width)
                         }
                     }

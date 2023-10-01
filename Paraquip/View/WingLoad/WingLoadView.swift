@@ -41,56 +41,11 @@ struct WingLoadView: View {
 
                 WingLoadGuidanceView()
             }
-            .padding()
+            .padding(.horizontal, 30)
 
             let _ = equipment // Required to observe equipment for (weight) changes
         }
         .navigationBarTitle("Wing load")
-        .safeAreaInset(edge: .bottom) {
-            if profile.wingLoadValue == nil {
-                Group {
-                    if let paraglider = profile.paraglider {
-                        Button {
-                            editEquipment(equipment: paraglider)
-                        } label: {
-                            Text("Enter projected area")
-                                .frame(maxWidth: .infinity)
-                        }
-                    } else {
-                        Button {
-                            createEquipment(type: .paraglider)
-                        } label: {
-                            Text("Add paraglider")
-                                .frame(maxWidth: .infinity)
-                        }
-                    }
-                }
-                .padding()
-                .background(.ultraThinMaterial)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-            }
-        }
-        .sheet(item: $editEquipmentOperation) { operation in
-            NavigationStack {
-                EditEquipmentView(equipment: operation.object,
-                                  focusedField: profile.paraglider != nil ? .projectedArea : nil)
-                .environment(\.managedObjectContext, operation.childContext)
-            }
-        }
-    }
-
-    func editEquipment(equipment: Equipment) {
-        editEquipmentOperation = Operation(editing: equipment,
-                                           withParentContext: managedObjectContext)
-    }
-
-    func createEquipment(type: Equipment.EquipmentType) {
-        let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
-            Equipment.create(type: type, context: context)
-        }
-        operation.object(for: profile).addToEquipment(operation.object)
-        editEquipmentOperation = operation
     }
 }
 
