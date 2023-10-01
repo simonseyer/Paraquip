@@ -14,7 +14,11 @@ extension String {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return self
         } else {
-            return self.replacingOccurrences(of: ".fill", with: "")
+            return self.removingFill
         }
+    }
+
+    var removingFill: String {
+        return self.replacingOccurrences(of: ".fill", with: "")
     }
 }
