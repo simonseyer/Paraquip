@@ -16,7 +16,6 @@ struct AutocompletingTextField: View {
     private let completionSlugs: [String]
 
     @FocusState private var focused: Bool
-    @State private var isAutocompletionShown = false
 
     private var filteredCompletions: [String] {
         if text.isEmpty {
@@ -40,50 +39,39 @@ struct AutocompletingTextField: View {
     }
 
     var body: some View {
-        VStack {
-            HStack {
-                Text(label)
-                Spacer()
-                TextField("", text: $text)
-                    .foregroundColor(matched ? .accentColor : .primary)
-                    .bold(matched)
-                    .multilineTextAlignment(.trailing)
-                    .autocorrectionDisabled()
-                    .focused($focused)
-            }
-            if isAutocompletionShown {
-                Group {
-                    if filteredCompletions.isEmpty {
-                        Text("No completions")
-                            .foregroundColor(.secondary)
-                            .font(.caption)
-                            .italic()
-                    } else {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(filteredCompletions, id: \.hashValue) { completion in
-                                    Button(action:  {
-                                        text = completion
-                                        focused = false
-                                    }) {
-                                        Text(completion)
-                                    }.buttonStyle(.borderedProminent)
+        LabeledContent(label) {
+            TextField("", text: $text)
+                #if os(iOS)
+                .foregroundColor(matched ? .accentColor : .primary)
+                #endif
+                .bold(matched)
+                .multilineTextAlignment(.trailing)
+                .autocorrectionDisabled()
+                .focused($focused)
+        }.toolbar {
+            ToolbarItem(placement: .keyboard) {
+                if focused {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(filteredCompletions, id: \.hashValue) { completion in
+                                Button {
+                                    text = completion
+                                } label: {
+                                    Text(completion)
                                 }
                             }
-                            .padding(8)
                         }
+                        .buttonStyle(.bordered)
+                        #if os(visionOS)
+                        .controlSize(.small)
+                        .padding(6)
+                        #endif
                     }
+                    #if os(visionOS)
+                    .frame(width: 600)
+                    .glassBackgroundEffect()
+                    #endif
                 }
-                .frame(maxWidth: .infinity, minHeight: 51)
-                .background(Color(UIColor.systemGray6))
-                .cornerRadius(6)
-            }
-        }
-        // Fixes cell height animation (makes the cell larger than needed to avoid some strange glitch)
-        .animatingCellHeight(isAutocompletionShown ? 88 : 38)
-        .onChange(of: focused) { _, newValue in
-            withAnimation {
-                isAutocompletionShown = newValue
             }
         }
     }
