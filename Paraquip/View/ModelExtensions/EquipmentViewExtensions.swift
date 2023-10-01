@@ -28,7 +28,7 @@ extension Equipment.EquipmentType {
         switch self {
         case .paraglider: return "Paraglider"
         case .harness: return "Harness"
-        case .reserve: return "Reserve"
+        case .reserve: return "Reserves"
         case .gear: return "Gear"
         }
     }
