@@ -86,7 +86,7 @@ class DatabaseMigration: ObservableObject {
         let equipment = profile.allEquipment.filter { $0.equipmentType == type }
         if equipment.count > 1 {
             for equipment in equipment.dropFirst() {
-                logger.log("Removed equipment '\(equipment.equipmentName)' from profile '\(profile.profileName)' because it had more than one \(type.localizedNameString)")
+                logger.log("Removed equipment '\(equipment.equipmentName)' from profile '\(profile.profileName)' because it had more than one \(type.localizedName)")
                 equipment.removeFromProfiles(profile)
             }
             return true

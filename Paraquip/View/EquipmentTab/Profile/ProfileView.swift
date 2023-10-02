@@ -133,7 +133,7 @@ private struct ProfileContentView: View {
             Button {
                 createEquipment(type: type)
             } label: {
-                Label("Add \(type.localizedNameString)", systemImage: "plus")
+                Label("Add \(type.localizedName)", systemImage: "plus")
             }
             .foregroundStyle(.primary)
         } header: {

@@ -25,7 +25,7 @@ struct ProfileSectionHeader: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 22)
-            Text(equipmentType.localizedNameString)
+            Text(equipmentType.pluralLocalizedName)
         }
     }
 }

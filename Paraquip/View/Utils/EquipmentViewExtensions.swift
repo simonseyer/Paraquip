@@ -10,11 +10,20 @@ import SwiftUI
 
 extension Equipment.EquipmentType {
 
-    var localizedNameString: String {
+    var pluralLocalizedName: String {
         switch self {
         case .paraglider: String(localized: "Paraglider")
         case .harness: String(localized: "Harness")
         case .reserve: String(localized: "Reserves")
+        case .gear: String(localized: "Gear")
+        }
+    }
+
+    var localizedName: String {
+        switch self {
+        case .paraglider: String(localized: "Paraglider")
+        case .harness: String(localized: "Harness")
+        case .reserve: String(localized: "Reserve")
         case .gear: String(localized: "Gear")
         }
     }

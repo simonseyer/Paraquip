@@ -46,6 +46,7 @@
 "Create new %@" = "%@ anlegen";
 "Add %@" = "%@ hinzufügen";
 "Edit set" = "Set bearbeiten";
+"Unknown" = "Unbekannt";
 
 // Equipment View
 "Type" = "Typ";

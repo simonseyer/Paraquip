@@ -12,16 +12,27 @@ struct EquipmentRow: View {
 
     @ObservedObject var equipment: Equipment
 
-    var body: some View {
-        if equipment.brandName.isEmpty && equipment.equipmentName.isEmpty {
-            Text(equipment.equipmentType.localizedNameString)
+    private var equipmentName: String {
+        if equipment.equipmentName.isEmpty {
+            equipment.equipmentType.localizedName
         } else {
-            VStack(alignment: .leading) {
-                Text(equipment.equipmentName)
-                Text(equipment.brandName)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            equipment.equipmentName
+        }
+    }
+    private var brandName: String {
+        if equipment.brandName.isEmpty {
+            String(localized: "Unknown")
+        } else {
+            equipment.brandName
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(equipmentName)
+            Text(brandName)
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 }

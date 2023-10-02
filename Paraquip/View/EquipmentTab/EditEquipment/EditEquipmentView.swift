@@ -329,7 +329,7 @@ struct EditEquipmentView: View {
         .scrollDismissesKeyboard(.interactively)
         #endif
         .foregroundStyle(.primary)
-        .navigationTitle(Text(equipment.equipmentType.localizedNameString))
+        .navigationTitle(Text(equipment.equipmentType.localizedName))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             managedObjectContext.undoManager = undoManager
