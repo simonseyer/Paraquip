@@ -13,14 +13,18 @@ struct CheckList: Equatable {
 }
 
 struct CheckSection: Identifiable, Equatable {
-    let title: String
-    let titleIcon: String?
-    var equipment: [Equipment]
-    var id: String { title }
+    enum Title: Equatable, Hashable {
+        case month(Date)
+        case now
+        case later
+    }
 
-    init(title: String, titleIcon: String? = nil, entries: [Equipment]) {
+    let title: Title
+    var equipment: [Equipment]
+    var id: Title { title }
+
+    init(title: Title, entries: [Equipment]) {
         self.title = title
-        self.titleIcon = titleIcon
         self.equipment = entries
     }
 }
@@ -37,20 +41,16 @@ extension CheckList {
 
     init(equipment: [Equipment]) {
         let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM"
-        dateFormatter.calendar = calendar
-
-        var now = CheckSection(title: "Now", titleIcon: "hourglass", entries: [])
+        var now = CheckSection(title: .now, entries: [])
         var months: OrderedDictionary<Date, CheckSection> = [:]
-        var later = CheckSection(title: "Later", titleIcon: "clock", entries: [])
+        var later = CheckSection(title: .later, entries: [])
 
         /// Initialize months with the next `monthCount` months (indexed by the first day of the month)
         let currentMonth = Date.paraquipNow
         for i in 0..<Self.monthCount {
             let month = calendar.date(byAdding: .month, value: i, to: currentMonth)!
             let firstDay = calendar.firstDayOfMonth(month)
-            months[firstDay] = .init(title: dateFormatter.string(from: month), entries: [])
+            months[firstDay] = .init(title: .month(month), entries: [])
         }
 
         /// Sort equipment by next check date

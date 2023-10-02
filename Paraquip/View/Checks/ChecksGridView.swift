@@ -20,10 +20,13 @@ private extension CheckList {
 private extension CheckSection {
     @ViewBuilder
     var titleText: some View {
-        if let titleIcon {
-            Text("\(Image(systemName: titleIcon)) \(title)")
-        } else {
-            Text(title)
+        switch title {
+        case .month(let date):
+            Text(date, format: .dateTime.month(.abbreviated))
+        case .now:
+            Text("\(Image(systemName: "hourglass")) Now")
+        case .later:
+            Text("\(Image(systemName: "clock")) Later")
         }
     }
 }
