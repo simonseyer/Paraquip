@@ -51,44 +51,31 @@ struct EditEquipmentView: View {
     @ObservedObject var equipment: Equipment
 
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.undoManager) var undoManager
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
+    @State private var previewedManual: URL? = nil
     @State private var isShowingRecommendedWeightRange: Bool
     @State private var isShowingValidationAlert = false
+    @State private var isShowingDeleteEquipment = false
     @State private var validationAlertMessage: LocalizedStringKey?
+    @State private var canUndo = false
+    @State private var canRedo = false
     @FocusState private var focusedField: Field?
 
-    private let initialFocusedField: Field?
+    private let undoObserver = NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup)
 
     private var isMaxWeightValid: Bool {
         equipment.maxWeightValue ?? .greatestFiniteMagnitude >= equipment.minWeightValue ?? 0
     }
 
     private var isRecommendedWeightValid: Bool {
-        guard isMaxWeightValid else { return true }
         let min = equipment.minWeightValue ?? 0
         let max = equipment.maxWeightValue ?? .greatestFiniteMagnitude
         let minRecommended = equipment.minRecommendedWeightValue ?? min
         let maxRecommended = equipment.maxRecommendedWeightValue ?? max
         return minRecommended >= min && maxRecommended >= minRecommended && maxRecommended <= max
-    }
-
-    private var maxWeightValidationColor: UIColor {
-        if [.minimumWeight, .maximumWeight].contains(focusedField) {
-            return .systemGray
-        } else {
-            return .systemRed
-        }
-    }
-
-    private var recommendedWeightValidationColor: UIColor {
-        if [.minimumRecommendedWeight, .maximumRecommendedWeight].contains(focusedField) {
-            return .systemGray
-        } else {
-            return .systemRed
-        }
     }
 
     private var weightRangeFormat: FloatingPointFormatStyle<Double> {
@@ -103,18 +90,8 @@ struct EditEquipmentView: View {
         equipment.maxWeightValue?.formatted(weightRangeFormat) ?? ""
     }
 
-    private var title: Text {
-        let type = LocalizedString(equipment.equipmentType.localizedNameString)
-        if !equipment.brandName.isEmpty {
-            return Text("\(equipment.brandName) \(type)")
-        } else {
-            return Text(type)
-        }
-    }
-
-    init(equipment: Equipment, focusedField: Field? = nil) {
+    init(equipment: Equipment) {
         self.equipment = equipment
-        self.initialFocusedField = focusedField
         _isShowingRecommendedWeightRange = .init(initialValue: equipment.hasRecommendedWeightRange)
     }
 
@@ -164,14 +141,38 @@ struct EditEquipmentView: View {
                         }
                     }.foregroundColor(.primary)
                 }
-                .contextMenu {
-                    if equipment.purchaseLog != nil {
-                        Button(role: .destructive) {
-                            equipment.purchaseLog = nil
-                        } label: {
-                            Label("Clear", systemImage: "clear")
-                        }
+            }
+            Section {
+                if let manual = equipment.manualAttachment {
+                    Button {
+                        previewedManual = manual.fileURL
+                    } label: {
+                        Label("Open manual", systemImage: "book")
                     }
+                } else {
+                    Button(action: {
+                        showingManualPicker = true
+                    }) {
+                        Label("Add manual",
+                              systemImage: "plus.circle")
+                    }
+                }
+            } header: {
+                HStack(spacing: 12) {
+                    Text("Manual")
+                    Button(action: {
+                        withAnimation {
+                            equipment.manualAttachment = nil
+                        }
+                    }) {
+                        #if os(visionOS)
+                        Text("Clear")
+                        #else
+                        Image(systemName: "xmark.circle")
+                        #endif
+                    }
+                    .controlSize(.mini)
+                    .opacity(equipment.manualAttachment == nil ? 0 : 1)
                 }
             }
             if equipment is Paraglider || equipment is Reserve {
@@ -212,16 +213,16 @@ struct EditEquipmentView: View {
                     HStack {
                         Text("Weight range")
                         Spacer()
-                        if !isMaxWeightValid {
-                            Button("\(Image(systemName: "exclamationmark.triangle.fill"))") {
-                                withAnimation {
-                                    validationAlertMessage = "The maximum weight must be larger then the mimimum weight."
-                                    isShowingValidationAlert.toggle()
-                                }
-                            }
-                            .buttonStyle(.plain)
-                            .foregroundColor(Color(maxWeightValidationColor))
+                        Button {
+                            validationAlertMessage = "The maximum weight must be larger then the mimimum weight."
+                            isShowingValidationAlert.toggle()
+                        } label: {
+                            Image(systemName: "exclamationmark.triangle.fill".deviceSpecificIcon)
                         }
+                        .controlSize(.mini)
+                        .foregroundStyle(.red)
+                        .opacity(isMaxWeightValid ? 0 : 1)
+                        .animation(.default, value: isMaxWeightValid)
                     }
                 } footer: {
                     if equipment is Paraglider && !isShowingRecommendedWeightRange {
@@ -230,12 +231,11 @@ struct EditEquipmentView: View {
                                 isShowingRecommendedWeightRange.toggle()
                             }
                         }
-                        .buttonStyle(.plain)
-                        .foregroundColor(.accentColor)
+                        .controlSize(.small)
                     }
                 }
             }
-            if isShowingRecommendedWeightRange {
+            if equipment is Paraglider && isShowingRecommendedWeightRange {
                 Section {
                     HStack {
                         Text("Minimum")
@@ -262,26 +262,29 @@ struct EditEquipmentView: View {
                             .foregroundColor(.secondary)
                     }
                 } header: {
-                    HStack {
+                    HStack(spacing: 12) {
                         Text("Recommended weight range")
-                        Button("\(Image(systemName: "minus.circle.fill"))") {
+                        Button {
                             withAnimation {
-                                // TODO: fix value not cleared when field selected
                                 equipment.clearRecommendedWeightRange()
                                 isShowingRecommendedWeightRange.toggle()
                             }
-                        }.buttonStyle(.plain)
+                        } label: {
+                            #if os(visionOS)
+                            Text("Clear")
+                            #else
+                            Image(systemName: "xmark.circle")
+                            #endif
+                        }.controlSize(.mini)
                         Spacer()
-                        if !isRecommendedWeightValid {
-                            Button("\(Image(systemName: "exclamationmark.triangle.fill"))") {
-                                withAnimation {
-                                    validationAlertMessage = "The recommended weight range must lie within the certified weight range."
-                                    isShowingValidationAlert.toggle()
-                                }
-                            }
-                            .buttonStyle(.plain)
-                            .foregroundColor(Color(recommendedWeightValidationColor))
+                        Button("\(Image(systemName: "exclamationmark.triangle.fill".deviceSpecificIcon))") {
+                            validationAlertMessage = "The recommended weight range must lie within the certified weight range."
+                            isShowingValidationAlert.toggle()
                         }
+                        .controlSize(.mini)
+                        .foregroundStyle(.red)
+                        .opacity(isRecommendedWeightValid ? 0 : 1)
+                        .animation(.default, value: isRecommendedWeightValid)
                     }
                 }
             }
@@ -299,77 +302,65 @@ struct EditEquipmentView: View {
                     }
                 }
             }
-            if equipment.isCheckable {
-                Section(header: Text("Check cycle")) {
-                    CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
-                }
+            Section(header: Text("Check cycle")) {
+                CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
             }
-            if equipment.isInserted {
-                Section(header: Text("Next steps")) {
-                    if equipment.isCheckable {
-                        Button(action: {
-                            if let logEntry = equipment.allChecks.first {
-                                editLogEntryOperation = Operation(editing: logEntry,
-                                                                  withParentContext: managedObjectContext)
-                            } else {
-                                let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
-                                operation.object(for: equipment).addToCheckLog(operation.object)
-                                editLogEntryOperation = operation
-                            }
-                        }) {
-                            HStack {
-                                FormIcon(icon: Image(systemName: "checkmark.circle.fill"))
-                                    .padding(.trailing, 8)
-                                Text("Log last check")
-                                Spacer()
-                                if !equipment.allChecks.isEmpty {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(Color.green)
-                                }
-                            }
-                            .foregroundColor(.primary)
-                        }
+            Button(role: .destructive) {
+                isShowingDeleteEquipment = true
+            } label: {
+                Label("Delete equipment",
+                      systemImage: "trash")
+                #if os(iOS)
+                .foregroundStyle(.red)
+                #endif
+            }
+            .confirmationDialog("Delete equipment", isPresented: $isShowingDeleteEquipment) {
+                Button(role: .destructive) {
+                    withAnimation {
+                        managedObjectContext.delete(equipment)
+                        try! managedObjectContext.save()
                     }
-
-                    Button(action: { showingManualPicker = true }) {
-                        HStack {
-                            FormIcon(icon: Image(systemName: "book.fill"))
-                                .padding(.trailing, 8)
-                            Text("Attach Manual")
-                            Spacer()
-                            if equipment.manualAttachment != nil {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(Color.green)
-                            }
-                        }
-                        .foregroundColor(.primary)
-                    }
+                } label: {
+                    Text("Delete")
                 }
             }
         }
-        .navigationTitle(title)
+        #if os(iOS)
+        .scrollDismissesKeyboard(.interactively)
+        #endif
+        .foregroundStyle(.primary)
+        .navigationTitle(Text(equipment.equipmentType.localizedNameString))
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            managedObjectContext.undoManager = undoManager
+        }
+        .onReceive(undoObserver) { _ in
+            updateUndoState()
+        }
         .toolbar {
-            ToolbarItem(placement: .keyboard) {
-                Button("Done") {
-                    focusedField = nil
+            ToolbarItem {
+                Button {
+                    withAnimation {
+                        undoManager?.undo()
+                        updateUndoState()
+                    }
+                } label: {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
                 }
+                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command])
+                .disabled(!canUndo)
             }
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    dismiss()
+            ToolbarItem {
+                Button {
+                    withAnimation {
+                        undoManager?.redo()
+                        updateUndoState()
+                    }
+                } label: {
+                    Label("Redo", systemImage: "arrow.uturn.forward")
                 }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Save") {
-                    try! managedObjectContext.save()
-                    dismiss()
-                }
-                .disabled(
-                    equipment.brandName.isEmpty ||
-                    equipment.equipmentName.isEmpty ||
-                    !isMaxWeightValid ||
-                    !isRecommendedWeightValid)
+                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command, .shift])
+                .disabled(!canRedo)
             }
         }
         .sheet(item: $editLogEntryOperation) { operation in
@@ -385,6 +376,7 @@ struct EditEquipmentView: View {
                 equipment.manualAttachment = attachment
             }
         }
+        .quickLookPreview($previewedManual)
         .alert("Invalid weight range", isPresented: $isShowingValidationAlert, presenting: $validationAlertMessage) { _ in
             Button("Ok", role: .cancel) { }
         } message: { message in
@@ -392,13 +384,11 @@ struct EditEquipmentView: View {
                 Text(message)
             }
         }
-        .onAppear {
-            if let initialFocusedField {
-                focusedField = initialFocusedField
-            } else if equipment.isInserted {
-                focusedField = .brand
-            }
-        }
+    }
+
+    private func updateUndoState() {
+        canUndo = undoManager?.canUndo ?? false
+        canRedo = undoManager?.canRedo ?? false
     }
 }
 
@@ -407,13 +397,11 @@ struct AddEquipmentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                EditEquipmentView(equipment: Paraglider.create(context: .preview),
-                                  focusedField: .minimumWeight)
+                EditEquipmentView(equipment: Paraglider.create(context: .preview))
             }
             ForEach(CoreData.fakeProfile.allEquipment) { equipment in
                 NavigationStack {
-                    EditEquipmentView(equipment: equipment,
-                                      focusedField: .minimumWeight)
+                    EditEquipmentView(equipment: equipment)
                 }
                 .previewDisplayName(equipment.equipmentName)
             }

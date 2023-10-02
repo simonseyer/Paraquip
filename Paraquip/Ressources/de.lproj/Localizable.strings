@@ -44,6 +44,7 @@
 "Delete equipment" = "Ausrüstung löschen";
 "Remove from set" = "Aus Set entfernen";
 "Create new %@" = "%@ anlegen";
+"Add %@" = "%@ hinzufügen";
 "Edit set" = "Set bearbeiten";
 
 // Equipment View
@@ -85,7 +86,7 @@
 "Minimum" = "Minimum";
 "Maximum" = "Maximum";
 "%@ Recommended weight range" = "%@ Empfohlener Gewichtsbereich";
-"Clear" = "Zurücksetzen";
+"Clear" = "Entfernen";
 "Log" = "Eintragen";
 "Check" = "Check";
 "None" = "Keine";
@@ -95,6 +96,8 @@
 "Invalid weight range" = "Invalider Gewichtsbereich";
 "The maximum weight must be larger then the mimimum weight." = "Das maximale Gewicht muss größer sein als das minimale Gewicht.";
 "The recommended weight range must lie within the certified weight range." = "Der empfohlene Gewichtsbereich muss im zertifizierten Gewichtsbereich liegen.";
+"Add manual" = "Anleitung hinzufügen";
+"Open manual" = "Anleitung öffnen";
 
 // Profile Weight View
 "Takeoff weight" = "Abbfluggewicht";
