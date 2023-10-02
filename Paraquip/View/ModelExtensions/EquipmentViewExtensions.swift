@@ -8,16 +8,6 @@
 import Foundation
 import SwiftUI
 
-extension Equipment {
-
-    var icon: UIImage? {
-        guard Self.brandIdentifier.contains(brandName.slugified()) else {
-            return nil
-        }
-        return UIImage(named: brandName.slugified())
-    }
-}
-
 extension Equipment.EquipmentType {
 
     var localizedNameString: String {

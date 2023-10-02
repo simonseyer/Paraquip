@@ -89,13 +89,6 @@ extension Equipment: Creatable {
         set { checkCycle = Int16(newValue) }
     }
 
-    var isCheckable: Bool {
-        switch equipmentType {
-        case .paraglider, .harness, .reserve: return true
-        case .gear: return false
-        }
-    }
-
     var brandName: String {
         get { brand ?? "" }
         set { brand = newValue }
