@@ -22,7 +22,7 @@ struct WeightRangeView: View {
     let weight: Double
 
     private let bufferRatio = 0.3
-    private let circleSize: CGFloat = 8
+    private let circleSize: CGFloat = 10
 
     private var bufferCount: Double {
         minWeight == 0 ? 1 : 2
@@ -53,21 +53,21 @@ struct WeightRangeView: View {
                         if bufferCount > 1 {
                             Rectangle()
                                 .frame(width: bufferRatio * geometry.size.width)
-                                .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
+                                .foregroundStyle(.thickMaterial)
                                 .cornerRadius(circleSize, corners: [.topLeft, .bottomLeft])
                         }
                         Rectangle()
                             .frame(width: (1.0 - bufferCount * bufferRatio) * geometry.size.width)
-                            .foregroundColor(.accentColor)
+                            .foregroundStyle(.accent)
                             .cornerRadius(bufferCount > 1 ? 0 : circleSize, corners: [.topLeft, .bottomLeft])
                         Rectangle()
                             .frame(width: bufferRatio * geometry.size.width)
                             .cornerRadius(circleSize, corners: [.topRight, .bottomRight])
-                            .foregroundColor(Color(uiColor: .tertiarySystemGroupedBackground))
+                            .foregroundStyle(.thickMaterial)
 
                     }
                     Circle()
-                        .foregroundColor(dotColor)
+                        .foregroundStyle(dotColor)
                         .frame(width: circleSize)
                         .padding(.leading, relativeValue * (geometry.size.width - 4 - circleSize) + 2)
                 }
@@ -83,10 +83,10 @@ struct WeightRangeView: View {
                 .font(.footnote)
                 .monospacedDigit()
                 .padding([.leading, .trailing], bufferRatio * geometry.size.width)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             }
         }
-        .frame(height: 32)
+        .frame(height: 34)
     }
 }
 
@@ -109,5 +109,8 @@ struct WeightRangeView_Previews: PreviewProvider {
             }
         }
         .padding()
+        #if os(visionOS)
+        .glassBackgroundEffect()
+        #endif
     }
 }

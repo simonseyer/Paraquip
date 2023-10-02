@@ -33,10 +33,10 @@ struct WingLoadText: View {
                     Image(systemName: "equal.circle")
                 } else if wingLoad > desiredWingLoad {
                     Image(systemName: "arrow.up.circle")
-                        .foregroundColor(deviationColor)
+                        .foregroundStyle(deviationColor)
                 } else if wingLoad < desiredWingLoad {
                     Image(systemName: "arrow.down.circle")
-                        .foregroundColor(deviationColor)
+                        .foregroundStyle(deviationColor)
                 }
             }
             .fontWeight(.regular)

@@ -36,7 +36,6 @@ struct ProfileWeightView: View {
         return formatter
     }
 
-    @State private var editEquipmentOperation: Operation<Equipment>?
     @State private var showingWingLoad = false
     
     init(profile: Profile) {
@@ -56,76 +55,66 @@ struct ProfileWeightView: View {
         List {
             Section(header: Text("Equipment")) {
                 ForEach(equipment) { equipment in
-                    Button {
-                        editEquipmentOperation = Operation(editing: equipment,
-                                                           withParentContext: managedObjectContext)
-                    } label: {
-                        EquipmentWeightRow(equipment: equipment, formatter: formatter)
-                            .foregroundColor(.primary)
-                    }
+                    EquipmentWeightRow(equipment: equipment, formatter: formatter)
+                        .foregroundStyle(.primary)
                 }
                 HStack {
-                    ListIcon(image: Image(systemName: "sum"))
-                        .padding(.trailing, 8)
-                    Text("Sum")
+                    Label("Sum", systemImage: "sum")
+                        .foregroundStyle(.primary)
                     Spacer()
                     Text(formatted(value: profile.equipmentWeightMeasurement))
                         .monospacedDigit()
+                        .fontWeight(.medium)
                 }
-                .fontWeight(.medium)
             }
             Section(header: Text("Pilot")) {
-                HStack {
-                    ListIcon(image: Image(systemName: "person.fill"))
-                        .padding(.trailing, 8)
+                HStack(spacing: 0) {
+                    Label("", systemImage: "person")
+                        .foregroundStyle(.primary)
                     Slider(value: $profile.pilotWeight, in: 50...150, step: 1)
-                        .alignmentGuide(.listRowSeparatorLeading) {
-                            $0[.leading]
-                        }
                     Text(formatted(value: profile.pilotWeightMeasurement))
                         .monospacedDigit()
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(minWidth: 80, alignment: .trailing)
                 }
-                HStack {
-                    ListIcon(image: Image(systemName: "takeoutbag.and.cup.and.straw.fill"))
-                        .padding(.trailing, 8)
+                HStack(spacing: 0) {
+                    Label("", systemImage: "takeoutbag.and.cup.and.straw")
+                        .foregroundStyle(.primary)
                     Slider(value: $profile.additionalWeight, in: 0...20)
                     Text(formatted(value: profile.additionalWeightMeasurement))
                         .monospacedDigit()
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(minWidth: 80, alignment: .trailing)
                 }
             }
             Section {
                 HStack {
-                    ListIcon(image: Image(systemName: "sum"))
-                        .padding(.trailing, 8)
-                    Text("Takeoff weight")
+                    Label("Takeoff weight", systemImage: "sum")
+                        .foregroundStyle(.primary)
                     Spacer()
                     Text(formatted(value: profile.takeoffWeightMeasurement))
                         .monospacedDigit()
+                        .fontWeight(.medium)
                 }
-                .fontWeight(.medium)
                 HStack {
-                    ListIcon(image: Image(systemName: "scalemass.fill"))
-                        .padding(.trailing, 8)
-                    HStack(spacing: 4) {
-                        Text("Wing load")
-                        Button("\(Image(systemName: "info.circle"))") {
-                            showingWingLoad.toggle()
+                    Label("Wing load \(Image(systemName: "info.circle"))",
+                          systemImage: "scalemass")
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    Button {
+                        showingWingLoad.toggle()
+                    } label: {
+                        if let wingLoad = profile.wingLoadValue {
+                            WingLoadText(wingLoad: wingLoad,
+                                         desiredWingLoad: profile.desiredWingLoadValue)
+                            .fontWeight(.medium)
+                        } else {
+                            Text("—")
+                                .foregroundStyle(.secondary)
                         }
                     }
-                    Spacer()
-                    if let wingLoad = profile.wingLoadValue {
-                        WingLoadText(wingLoad: wingLoad,
-                                     desiredWingLoad: profile.desiredWingLoadValue)
-                    } else {
-                        Text("—")
-                            .foregroundColor(.secondary)
-                    }
+                    .foregroundStyle(.primary)
                 }
-                .fontWeight(.medium)
                 ForEach(equipment) { equipment in
                     if let maxWeight = equipment.maxWeightValue {
                         VStack {
@@ -142,13 +131,7 @@ struct ProfileWeightView: View {
                 }
             }
         }
-        .navigationBarTitle("Weight Check")
-        .sheet(item: $editEquipmentOperation) { operation in
-            NavigationStack {
-                EditEquipmentView(equipment: operation.object)
-                    .environment(\.managedObjectContext, operation.childContext)
-            }
-        }
+        .navigationBarTitle(profile.profileName)
         .sheet(isPresented: $showingWingLoad) {
             NavigationStack {
                 WingLoadView(profile: profile)
@@ -173,16 +156,22 @@ struct EquipmentWeightRow: View {
 
     var body: some View {
         HStack {
-            ListIcon(image: equipment.equipmentType.iconImage)
-                .padding(.trailing, 8)
-            Text(equipment.equipmentName)
-            Text(equipment.equipmentSize)
-                .foregroundStyle(.secondary)
+            Label {
+                let name = Text(equipment.equipmentName)
+                let size = Text(equipment.equipmentSize)
+                    .fontWeight(.light)
+                Text("\(name) \(size)")
+            } icon: {
+                equipment.equipmentType.iconImage
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(3)
+            }
             Spacer()
             if let weight = equipment.weightMeasurement {
                 Text(formatter.string(from: weight.converted(to: locale.weightUnit)))
                     .monospacedDigit()
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
     }

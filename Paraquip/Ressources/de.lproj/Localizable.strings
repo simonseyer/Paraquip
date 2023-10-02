@@ -96,11 +96,11 @@
 "The recommended weight range must lie within the certified weight range." = "Der empfohlene Gewichtsbereich muss im zertifizierten Gewichtsbereich liegen.";
 
 // Profile Weight View
-"Weight Check" = "Gewichtsrechner";
 "Takeoff weight" = "Abbfluggewicht";
 "Pilot" = "Pilot";
 "Sum" = "Summe";
 "Wing load" = "Flächenbelastung";
+"Wing load %@" = "Flächenbelastung %@";
 
 // Wing Load View
 "wing_load_calculation" = "Die Flächenbelastung wird berechnet durch:";
