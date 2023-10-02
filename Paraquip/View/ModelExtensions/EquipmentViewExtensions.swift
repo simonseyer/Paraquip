@@ -19,17 +19,13 @@ extension Equipment {
 }
 
 extension Equipment.EquipmentType {
-    
-    var localizedName: LocalizedStringKey {
-        LocalizedStringKey(localizedNameString)
-    }
 
     var localizedNameString: String {
         switch self {
-        case .paraglider: return "Paraglider"
-        case .harness: return "Harness"
-        case .reserve: return "Reserves"
-        case .gear: return "Gear"
+        case .paraglider: String(localized: "Paraglider")
+        case .harness: String(localized: "Harness")
+        case .reserve: String(localized: "Reserves")
+        case .gear: String(localized: "Gear")
         }
     }
 
