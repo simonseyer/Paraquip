@@ -62,9 +62,9 @@ struct NotificationSettingsView: View {
                 } header: {
                     HStack {
                         Text("Check Reminder")
-                        Button(editMode == .inactive ? "Edit" : "Done") {
+                        Button(editMode.title) {
                             withAnimation {
-                                editMode = editMode == .active ? .inactive : .active
+                                editMode.toggle()
                             }
                         }
                         .controlSize(.mini)

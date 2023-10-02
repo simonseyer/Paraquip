@@ -74,6 +74,7 @@
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
+		F41C00C32ACAC8D800B13A56 /* EditModeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */; };
 		F443FA122ABC7B6300B490AB /* LogEntryBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */; };
 		F443FA142ABC7CC000B490AB /* LogEntryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA132ABC7CC000B490AB /* LogEntryButton.swift */; };
 		F443FA162ABC942800B490AB /* LogMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA152ABC942800B490AB /* LogMenu.swift */; };
@@ -204,6 +205,7 @@
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
+		F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditModeExtensions.swift; sourceTree = "<group>"; };
 		F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryBackground.swift; sourceTree = "<group>"; };
 		F443FA132ABC7CC000B490AB /* LogEntryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryButton.swift; sourceTree = "<group>"; };
 		F443FA152ABC942800B490AB /* LogMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMenu.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
 				F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */,
 				F4F163B32AA7B391004524A0 /* IconExtensions.swift */,
+				F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -799,6 +802,7 @@
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
 				F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */,
 				F4DFE72929D4EA4600394F15 /* WingLoadScale.swift in Sources */,
+				F41C00C32ACAC8D800B13A56 /* EditModeExtensions.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
 				0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */,
 				0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */,
