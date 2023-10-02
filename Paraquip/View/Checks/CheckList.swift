@@ -10,6 +10,14 @@ import OrderedCollections
 
 struct CheckList: Equatable {
     var sections: [CheckSection]
+    var isEmpty: Bool {
+        for section in sections {
+            if !section.equipment.isEmpty {
+                return false
+            }
+        }
+        return true
+    }
 }
 
 struct CheckSection: Identifiable, Equatable {

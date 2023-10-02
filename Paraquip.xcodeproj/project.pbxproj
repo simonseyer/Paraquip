@@ -27,6 +27,7 @@
 		0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A06285B450F00C1E37A /* IconSelectionView.swift */; };
 		0D3B5A09285B452A00C1E37A /* EquipmentSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */; };
 		0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* EquipmentView.swift */; };
+		0D3EE1B6262C58A700DA347B /* LogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* LogSheet.swift */; };
 		0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1BA262C5BD800DA347B /* Fake.swift */; };
 		0D4071922656CD12001385D7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4071912656CD12001385D7 /* NotificationService.swift */; };
 		0D491CC32829A5EE001BB9EC /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D491CC22829A5EE001BB9EC /* LogEntry.swift */; };
@@ -71,6 +72,7 @@
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEBE6C228B55D8900D46470 /* Slugify.swift */; };
 		F409B09228CC82EA00BD8E05 /* ListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F409B09128CC82EA00BD8E05 /* ListIcon.swift */; };
+		F418F5572AC978C000239BA5 /* ChecksListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F418F5562AC978C000239BA5 /* ChecksListView.swift */; };
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
@@ -153,6 +155,7 @@
 		0D3B5A06285B450F00C1E37A /* IconSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionView.swift; sourceTree = "<group>"; };
 		0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentSelectionRow.swift; sourceTree = "<group>"; };
 		0D3EE1B5262C58A700DA347B /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
+		0D3EE1B5262C58A700DA347B /* LogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSheet.swift; sourceTree = "<group>"; };
 		0D3EE1BA262C5BD800DA347B /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fake.swift; sourceTree = "<group>"; };
 		0D4071912656CD12001385D7 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		0D491CC22829A5EE001BB9EC /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
@@ -202,6 +205,7 @@
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
 		F409B09128CC82EA00BD8E05 /* ListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListIcon.swift; sourceTree = "<group>"; };
+		F418F5562AC978C000239BA5 /* ChecksListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksListView.swift; sourceTree = "<group>"; };
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
@@ -575,6 +579,9 @@
 				F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */,
 				F443FA132ABC7CC000B490AB /* LogEntryButton.swift */,
 				F443FA152ABC942800B490AB /* LogMenu.swift */,
+				F418F5562AC978C000239BA5 /* ChecksListView.swift */,
+				0D3EE1B5262C58A700DA347B /* LogSheet.swift */,
+				0D0DFF9E26887C4900AEB2AD /* LogEntryCell.swift */,
 			);
 			path = Checks;
 			sourceTree = "<group>";
@@ -789,6 +796,7 @@
 				F4F163B62AA7BC42004524A0 /* EditProfileMenu.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
+				F418F5572AC978C000239BA5 /* ChecksListView.swift in Sources */,
 				F443FA122ABC7B6300B490AB /* LogEntryBackground.swift in Sources */,
 				0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */,
 				F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */,
@@ -800,6 +808,7 @@
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,
 				0D491CC32829A5EE001BB9EC /* LogEntry.swift in Sources */,
 				0D3EE1B6262C58A700DA347B /* EquipmentView.swift in Sources */,
+				0D3EE1B6262C58A700DA347B /* LogSheet.swift in Sources */,
 				F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */,
 				F4DFE72929D4EA4600394F15 /* WingLoadScale.swift in Sources */,
 				F41C00C32ACAC8D800B13A56 /* EditModeExtensions.swift in Sources */,
