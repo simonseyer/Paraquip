@@ -31,12 +31,13 @@
 "Set up notifications" = "Benachrichtigungen konfigurieren";
 "Delete" = "Löschen";
 "Delete set" = "Set löschen";
-"Delete set & equipment" = "Set & Ausrüstung löschen";
+"Delete with equipment" = "Mit Ausrüstung löschen";
 "set_footer" = "Organsiere deine Ausrüstung in Sets, z.B. zum Strecken- oder Dünen-Fliegen.";
 
 // Edit Profile View
 "icon_attribution" = "Icons von Font Awesome (ohne Modifikation) — siehe [Lizenz](https://fontawesome.com/license)";
 "New Set" = "Neues Set";
+"Icon" = "Icon";
 
 // Profile View
 "Check now" = "Jetzt checken";

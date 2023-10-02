@@ -18,6 +18,8 @@ struct EditProfileView: View {
     @SectionedFetchRequest
     private var allEquipment: SectionedFetchResults<Int16, Equipment>
     
+    @State private var isDeletingProfile = false
+
     init(profile: Profile) {
         self.profile = profile
         _allEquipment = SectionedFetchRequest(
@@ -30,17 +32,16 @@ struct EditProfileView: View {
     var body: some View {
         Form {
             Section {
-                TextField("Name", text: $profile.profileName)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(Profile.Icon.allCases) { icon in
-                            IconSelectionView(
-                                icon: icon,
-                                isSelected: icon == profile.profileIcon)
-                                .onTapGesture {
-                                    profile.profileIcon = icon
-                                }
-                        }
+                HStack {
+                    Text("Name")
+                    Spacer()
+                    TextField("", text: $profile.profileName)
+                        .multilineTextAlignment(.trailing)
+                }
+                Picker("Icon", selection: $profile.profileIcon) {
+                    ForEach(Profile.Icon.allCases) { icon in
+                        Image(systemName: icon.systemName)
+                            .tag(icon)
                     }
                 }
             }
@@ -57,8 +58,42 @@ struct EditProfileView: View {
                     ProfileSectionHeader(equipmentType: section.id)
                 }
             }
+
+            if !profile.isInserted {
+                Section("Set") {
+                    Button(role: .destructive) {
+                        isDeletingProfile = true
+                    } label: {
+                        Label("Delete set",
+                              systemImage: "trash")
+                        #if os(iOS)
+                        .foregroundStyle(.red)
+                        #endif
+                    }
+                    .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile) {
+                        Button("Delete", role: .destructive) {
+                            withAnimation {
+                                managedObjectContext.delete(profile)
+                                try! managedObjectContext.save()
+                            }
+                        }
+                        Button("Delete with equipment", role: .destructive) {
+                            withAnimation {
+                                profile.allEquipment.forEach {
+                                    managedObjectContext.delete($0)
+                                }
+                                managedObjectContext.delete(profile)
+                                try! managedObjectContext.save()
+                            }
+                        }
+                    }
+                }
+            }
         }
-        .navigationTitle(profile.profileName.isEmpty ? LocalizedString("New Set") : profile.profileName)
+        #if os(visionOS)
+        .foregroundStyle(.primary)
+        #endif
+        .navigationTitle("Set")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
