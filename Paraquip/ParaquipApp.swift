@@ -80,7 +80,7 @@ struct ParaquipApp: App {
                 .environmentObject(databaseMigration)
                 .environment(\.managedObjectContext, container.viewContext)
         }
-        .onChange(of: scenePhase) { _, _ in
+        .onChange(of: scenePhase) {
             if container.viewContext.hasChanges {
                 try? container.viewContext.save()
             }

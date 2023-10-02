@@ -63,8 +63,8 @@ struct ProfileListView: View {
                 // Else stay in the profile list
             }
         }
-        .onChange(of: selectedProfile) { _, selection in
-            if case let .profile(profile) = selection {
+        .onChange(of: selectedProfile) {
+            if case let .profile(profile) = selectedProfile {
                 lastSelectedProfileId = profile.id?.uuidString
             } else {
                 lastSelectedProfileId = nil

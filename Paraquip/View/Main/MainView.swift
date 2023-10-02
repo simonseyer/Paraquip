@@ -83,13 +83,13 @@ struct MainView: View {
                 self.selectedEquipment = nil
                 return
             }
-            
+
             if case .profile(let profile) = selectedProfile, let selectedEquipment, !(profile.equipment?.contains(selectedEquipment) ?? false) {
                 self.selectedEquipment = nil
             }
         }
-        .onChange(of: notificationService.navigationState) { _, value in
-            switch value {
+        .onChange(of: notificationService.navigationState) {
+            switch notificationService.navigationState {
             case .notificationSettings:
                 showNotificationSettings = true
             case .equipment:
@@ -105,8 +105,8 @@ struct MainView: View {
         } message: {
             Text("single_equipment_migration_info")
         }
-        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) { _, newValue in
-            isShowingSingleEquipmentMigrationInfo = newValue
+        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) {
+            isShowingSingleEquipmentMigrationInfo = databaseMigration.hasRemovedDuplicateEquipment
         }
     }
 }

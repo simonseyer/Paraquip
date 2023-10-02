@@ -51,8 +51,8 @@ struct NotificationEntryView: View {
                 Text("before")
             }
         }
-        .onChange(of: config) { _, value in
-            onChange(value)
+        .onChange(of: config) {
+            onChange(config)
             updateState()
         }
     }
