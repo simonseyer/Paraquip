@@ -80,6 +80,7 @@
 		F443FA182ABC9EBC00B490AB /* ChecksGridButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA172ABC9EBC00B490AB /* ChecksGridButton.swift */; };
 		F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D292AA0F98400836BFE /* PreviewEntity.swift */; };
 		F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */; };
+		F45148442ABDF6DF00488CD8 /* PerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45148432ABDF6DF00488CD8 /* PerformanceView.swift */; };
 		F45FD4C02ABAE71C0033E17A /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = F45FD4BF2ABAE71C0033E17A /* OrderedCollections */; };
 		F45FD4C22ABAF3BF0033E17A /* CheckList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FD4C12ABAF3BF0033E17A /* CheckList.swift */; };
 		F45FD4C42ABAF4840033E17A /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FD4C32ABAF4840033E17A /* ArrayExtensions.swift */; };
@@ -209,6 +210,7 @@
 		F443FA172ABC9EBC00B490AB /* ChecksGridButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksGridButton.swift; sourceTree = "<group>"; };
 		F4496D292AA0F98400836BFE /* PreviewEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewEntity.swift; sourceTree = "<group>"; };
 		F4496D2F2AA0FBBF00836BFE /* FakeNotificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNotificationState.swift; sourceTree = "<group>"; };
+		F45148432ABDF6DF00488CD8 /* PerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceView.swift; sourceTree = "<group>"; };
 		F45FD4C12ABAF3BF0033E17A /* CheckList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckList.swift; sourceTree = "<group>"; };
 		F45FD4C32ABAF4840033E17A /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEquipmentButton.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 		0D5E7A52262C430E0002A67B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F45148422ABDF6BC00488CD8 /* Performance */,
 				F47B77F12AB6EF0B0061ADC1 /* Checks */,
 				0DA898B12842631300D7568F /* UIKitWrapper */,
 				0DC585EE275CE0E9001B346E /* Shared */,
@@ -548,6 +551,14 @@
 			children = (
 			);
 			path = CheckDetail;
+			sourceTree = "<group>";
+		};
+		F45148422ABDF6BC00488CD8 /* Performance */ = {
+			isa = PBXGroup;
+			children = (
+				F45148432ABDF6DF00488CD8 /* PerformanceView.swift */,
+			);
+			path = Performance;
 			sourceTree = "<group>";
 		};
 		F47B77F12AB6EF0B0061ADC1 /* Checks */ = {
@@ -742,6 +753,7 @@
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
 				F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
+				F45148442ABDF6DF00488CD8 /* PerformanceView.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				0DA93A0B26CEE9160063356B /* PillLabel.swift in Sources */,
 				F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */,

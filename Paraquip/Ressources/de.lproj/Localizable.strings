@@ -151,6 +151,8 @@
 // ChecksView
 "Checks" = "Checks";
 "Filter by a set" = "Nach Set filtern";
+// Performance
+"Performance" = "Leistung";
 
 // Notifications
 "notification_check_due_title" = "Check fällig";
