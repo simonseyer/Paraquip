@@ -380,20 +380,12 @@
 		0D5E7A52262C430E0002A67B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F45148422ABDF6BC00488CD8 /* Performance */,
-				F47B77F12AB6EF0B0061ADC1 /* Checks */,
-				0DA898B12842631300D7568F /* UIKitWrapper */,
-				0DC585EE275CE0E9001B346E /* Shared */,
 				0D4785A32710B9920055E377 /* Main */,
-				0DC0904A26D818B700AB3BCF /* ProfileList */,
-				0D09984926D81BEA00E297F9 /* EditProfile */,
-				0D2B2D132646A03F009873CE /* Profile */,
-				0DC585F1275CE8BD001B346E /* ProfileWeight */,
-				F496828E29C685410061CC7E /* WingLoad */,
-				0DA93A0726CEE7A90063356B /* LogEntry */,
-				0DA93A0426CEE7220063356B /* EditEquipment */,
-				0DA93A0626CEE7690063356B /* NotificationSettings */,
-				0D846AEB26D41B7A00A574BA /* ModelExtensions */,
+				F41C00C42ACADC6B00B13A56 /* EquipmentTab */,
+				F47B77F12AB6EF0B0061ADC1 /* ChecksTab */,
+				F45148422ABDF6BC00488CD8 /* PerformanceTab */,
+				F41C00C52ACADCE400B13A56 /* Utils */,
+				0DC585EE275CE0E9001B346E /* SharedViews */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -410,26 +402,6 @@
 				F45FD4C32ABAF4840033E17A /* ArrayExtensions.swift */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		0D846AEB26D41B7A00A574BA /* ModelExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */,
-				0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */,
-				0DA898A92841FAD100D7568F /* CoreDataOperation.swift */,
-				F4496D292AA0F98400836BFE /* PreviewEntity.swift */,
-			);
-			path = ModelExtensions;
-			sourceTree = "<group>";
-		};
-		0DA898B12842631300D7568F /* UIKitWrapper */ = {
-			isa = PBXGroup;
-			children = (
-				0D08F16026CD7EE0009CD3C5 /* DocumentPicker.swift */,
-				0D22A9A828415D9400AB4E23 /* ImagePicker.swift */,
-			);
-			path = UIKitWrapper;
 			sourceTree = "<group>";
 		};
 		0DA93A0426CEE7220063356B /* EditEquipment */ = {
@@ -467,15 +439,14 @@
 			path = ProfileList;
 			sourceTree = "<group>";
 		};
-		0DC585EE275CE0E9001B346E /* Shared */ = {
+		0DC585EE275CE0E9001B346E /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
-				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
-				F4F163B32AA7B391004524A0 /* IconExtensions.swift */,
+				0D22A9A828415D9400AB4E23 /* ImagePicker.swift */,
+				0D08F16026CD7EE0009CD3C5 /* DocumentPicker.swift */,
 				F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */,
-				F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */,
 			);
-			path = Shared;
+			path = SharedViews;
 			sourceTree = "<group>";
 		};
 		0DC585F1275CE8BD001B346E /* ProfileWeight */ = {
@@ -505,29 +476,90 @@
 			path = Legacy;
 			sourceTree = "<group>";
 		};
-		F45148422ABDF6BC00488CD8 /* Performance */ = {
+		F41C00C42ACADC6B00B13A56 /* EquipmentTab */ = {
 			isa = PBXGroup;
 			children = (
-				F45148432ABDF6DF00488CD8 /* PerformanceView.swift */,
+				0DC0904A26D818B700AB3BCF /* ProfileList */,
+				0D09984926D81BEA00E297F9 /* EditProfile */,
+				0D2B2D132646A03F009873CE /* Profile */,
+				0DA93A0426CEE7220063356B /* EditEquipment */,
 			);
-			path = Performance;
+			path = EquipmentTab;
 			sourceTree = "<group>";
 		};
-		F47B77F12AB6EF0B0061ADC1 /* Checks */ = {
+		F41C00C52ACADCE400B13A56 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				F45FD4C12ABAF3BF0033E17A /* CheckList.swift */,
-				F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */,
+				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
+				F4F163B32AA7B391004524A0 /* IconExtensions.swift */,
+				F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */,
+				0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */,
+				0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */,
+				0DA898A92841FAD100D7568F /* CoreDataOperation.swift */,
+				F4496D292AA0F98400836BFE /* PreviewEntity.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F41C00C62ACADD1700B13A56 /* ChecksGrid */ = {
+			isa = PBXGroup;
+			children = (
 				F4D0F9502AB8AACB00B346FD /* ChecksGridView.swift */,
 				F443FA172ABC9EBC00B490AB /* ChecksGridButton.swift */,
-				F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */,
 				F443FA132ABC7CC000B490AB /* LogEntryButton.swift */,
 				F443FA152ABC942800B490AB /* LogMenu.swift */,
+			);
+			path = ChecksGrid;
+			sourceTree = "<group>";
+		};
+		F41C00C72ACADD2F00B13A56 /* ChecksList */ = {
+			isa = PBXGroup;
+			children = (
 				F418F5562AC978C000239BA5 /* ChecksListView.swift */,
 				0D3EE1B5262C58A700DA347B /* LogSheet.swift */,
 				0D0DFF9E26887C4900AEB2AD /* LogEntryCell.swift */,
 			);
+			path = ChecksList;
+			sourceTree = "<group>";
+		};
+		F41C00C82ACADD5500B13A56 /* Checks */ = {
+			isa = PBXGroup;
+			children = (
+				F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */,
+			);
 			path = Checks;
+			sourceTree = "<group>";
+		};
+		F41C00C92ACADD7A00B13A56 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				F45FD4C12ABAF3BF0033E17A /* CheckList.swift */,
+				F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		F45148422ABDF6BC00488CD8 /* PerformanceTab */ = {
+			isa = PBXGroup;
+			children = (
+				F45148432ABDF6DF00488CD8 /* PerformanceView.swift */,
+				0DC585F1275CE8BD001B346E /* ProfileWeight */,
+				F496828E29C685410061CC7E /* WingLoad */,
+			);
+			path = PerformanceTab;
+			sourceTree = "<group>";
+		};
+		F47B77F12AB6EF0B0061ADC1 /* ChecksTab */ = {
+			isa = PBXGroup;
+			children = (
+				F41C00C92ACADD7A00B13A56 /* Shared */,
+				F41C00C82ACADD5500B13A56 /* Checks */,
+				F41C00C72ACADD2F00B13A56 /* ChecksList */,
+				F41C00C62ACADD1700B13A56 /* ChecksGrid */,
+				0DA93A0726CEE7A90063356B /* LogEntry */,
+				0DA93A0626CEE7690063356B /* NotificationSettings */,
+			);
+			path = ChecksTab;
 			sourceTree = "<group>";
 		};
 		F496828E29C685410061CC7E /* WingLoad */ = {
