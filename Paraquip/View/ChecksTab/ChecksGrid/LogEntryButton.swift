@@ -20,7 +20,11 @@ private struct BaseLogEntryButton<Content: View, Background: View>: View {
             .frame(height: 70)
             .padding(.trailing, 34)
         }
+        #if os(visionOS)
         .buttonStyle(.plain)
+        #else
+        .foregroundStyle(.primary)
+        #endif
         .buttonBorderShape(.roundedRectangle(radius: 0))
         .clipShape(Rectangle())
         .background(alignment: .leading) {

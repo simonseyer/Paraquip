@@ -32,13 +32,20 @@ struct LogMenu: View {
             NextCheckButton(urgency: equipment.checkUrgency) {
                 action(.create)
             }
+
             ForEach(checkLog) { logEntry in
+                #if os(iOS)
+                Divider()
+                #endif
                 LogEntryButton(logEntry: logEntry) {
                     action(.edit(logEntry))
                 }
             }
 
             if let logEntry = equipment.purchaseLog {
+                #if os(iOS)
+                Divider()
+                #endif
                 LogEntryButton(logEntry: logEntry) {
                     action(.edit(logEntry))
                 }
