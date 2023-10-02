@@ -44,6 +44,10 @@ struct ProfileListView: View {
             } label: {
                 Label("Create new set", systemImage: "plus.circle")
             }
+            if case .profile(let profile) = selectedProfile {
+                DeletionObserverView(object: profile) {
+                    self.selectedProfile = nil
+                }
             }
         }
         .foregroundStyle(.primary)

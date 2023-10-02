@@ -76,6 +76,7 @@
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F4383A1B29C7F3D90066C916 /* AnimatingCellHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */; };
+		F41C00C02AC9B45B00B13A56 /* DeletionObserverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */; };
 		F41C00C32ACAC8D800B13A56 /* EditModeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */; };
 		F443FA122ABC7B6300B490AB /* LogEntryBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */; };
 		F443FA142ABC7CC000B490AB /* LogEntryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA132ABC7CC000B490AB /* LogEntryButton.swift */; };
@@ -209,6 +210,7 @@
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatingCellHeight.swift; sourceTree = "<group>"; };
+		F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionObserverView.swift; sourceTree = "<group>"; };
 		F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditModeExtensions.swift; sourceTree = "<group>"; };
 		F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryBackground.swift; sourceTree = "<group>"; };
 		F443FA132ABC7CC000B490AB /* LogEntryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryButton.swift; sourceTree = "<group>"; };
@@ -521,6 +523,7 @@
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
 				F4383A1A29C7F3D90066C916 /* AnimatingCellHeight.swift */,
 				F4F163B32AA7B391004524A0 /* IconExtensions.swift */,
+				F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */,
 				F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */,
 			);
 			path = Shared;
@@ -802,6 +805,7 @@
 				F4496D2A2AA0F98400836BFE /* PreviewEntity.swift in Sources */,
 				F443FA162ABC942800B490AB /* LogMenu.swift in Sources */,
 				0D3B5A07285B450F00C1E37A /* IconSelectionView.swift in Sources */,
+				F41C00C02AC9B45B00B13A56 /* DeletionObserverView.swift in Sources */,
 				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
 				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
