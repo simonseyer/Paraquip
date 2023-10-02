@@ -34,6 +34,7 @@ struct LogEntryView: View {
     @State private var showingImagePicker = false
     @State private var showingDeleteCheck = false
     @State private var previewURL: URL?
+    @State private var editMode: EditMode = .inactive
 
     @FetchRequest
     private var attachments: FetchedResults<Attachment>
@@ -64,7 +65,7 @@ struct LogEntryView: View {
                     .datePickerStyle(.graphical)
             }
 
-            Section("Attachments") {
+            Section {
                 ForEach(attachments) { attachment in
                     Button(action: { previewURL = attachment.fileURL }) {
                         Label(attachment.name,
@@ -77,19 +78,34 @@ struct LogEntryView: View {
                         managedObjectContext.delete(attachments[index])
                     }
                 }
-                Button(action: { showingAddAttachment = true }) {
+                Button {
+                    withAnimation {
+                        showingAddAttachment = true
+                        editMode = .inactive
+                    }
+                } label: {
                     Label("Add attachment",
-                          systemImage: "plus.circle.fill".deviceSpecificIcon)
+                          systemImage: "plus.circle")
                 }
+                .foregroundStyle(.primary)
                 .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
                     Button(action: { showingDocumentPicker = true }) {
-                        Label("Attach document",
-                              systemImage: "doc.fill".deviceSpecificIcon)
+                        Label("Document", systemImage: "doc")
                     }
                     Button(action: { showingImagePicker = true }) {
-                        Label("Attach image",
-                              systemImage: "photo.fill".deviceSpecificIcon)
+                        Label("Image", systemImage: "photo")
                     }
+                }
+            } header: {
+                HStack {
+                    Text("Attachments")
+                    Button(editMode.title) {
+                        withAnimation {
+                            editMode.toggle()
+                        }
+                    }
+                    .controlSize(.mini)
+                    .disabled(attachments.isEmpty)
                 }
             }
 
@@ -98,7 +114,11 @@ struct LogEntryView: View {
                     Button(role: .destructive) {
                         showingDeleteCheck = true
                     } label: {
-                        Text("Delete entry")
+                        Label("Delete entry",
+                              systemImage: "trash")
+                        #if os(iOS)
+                        .foregroundStyle(.red)
+                        #endif
                     }
                     .confirmationDialog("Delete entry", isPresented: $showingDeleteCheck) {
                         Button(role: .destructive) {
@@ -108,7 +128,7 @@ struct LogEntryView: View {
                                 dismiss()
                             }
                         } label: {
-                            Text("Delete entry")
+                            Text("Delete")
                         }
                     }
                 }
@@ -129,6 +149,7 @@ struct LogEntryView: View {
                 }
             }
         }
+        .environment(\.editMode, $editMode)
         .quickLookPreview($previewURL)
         .sheet(isPresented: $showingDocumentPicker) {
             DocumentPicker(contentTypes: [.pdf, .image], selectFile: addAttachment)
@@ -140,7 +161,9 @@ struct LogEntryView: View {
 
     private func addAttachment(url: URL) {
         if let attachment = Attachment.create(fileURL: url, context: managedObjectContext) {
-            logEntry.addToAttachments(attachment)
+            withAnimation {
+                logEntry.addToAttachments(attachment)
+            }
         }
     }
 }
