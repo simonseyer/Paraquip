@@ -30,7 +30,13 @@ struct ChecksView: View {
     }
 
     var body: some View {
-        ChecksGridView(checks: checks)
+            Group {
+                if UIDevice.current.userInterfaceIdiom == .phone || horizontalSizeClass == .compact {
+                    ChecksListView(checks: checks)
+                } else {
+                    ChecksGridView(checks: checks)
+                }
+            }
             .navigationTitle("Checks")
             .toolbar {
                 Picker("Filter by a set", selection: $profileFilter) {
