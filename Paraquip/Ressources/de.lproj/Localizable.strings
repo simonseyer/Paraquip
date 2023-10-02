@@ -132,8 +132,8 @@
 // Log Entry View
 "Attachments" = "Anhänge";
 "Add attachment" = "Anhang hinzufügen";
-"Attach file" = "Datei anhängen";
-"Attach image" = "Bild anhängen";
+"Document" = "Datei";
+"Image" = "Bild";
 "Date" = "Datum";
 "Delete entry" = "Eintrag löschen";
 
