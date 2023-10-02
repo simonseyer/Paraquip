@@ -37,7 +37,13 @@ struct ProfileListView: View {
             }
             NavigationLink(value: ProfileSelection.allEquipment)  {
                 Label("All Equipment",
-                      systemImage: "tray.full.fill".deviceSpecificIcon)
+                      systemImage: "tray.full")
+            }
+            Button {
+                editProfileOperation = Operation(withParentContext: managedObjectContext)
+            } label: {
+                Label("Create new set", systemImage: "plus.circle")
+            }
             }
         }
         .foregroundStyle(.primary)
