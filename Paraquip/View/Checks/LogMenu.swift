@@ -29,10 +29,8 @@ struct LogMenu: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if equipment.isCheckable {
-                NextCheckButton(urgency: equipment.checkUrgency) {
-                    action(.create)
-                }
+            NextCheckButton(urgency: equipment.checkUrgency) {
+                action(.create)
             }
             ForEach(checkLog) { logEntry in
                 LogEntryButton(logEntry: logEntry) {
