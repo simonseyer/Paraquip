@@ -139,13 +139,11 @@
 
 // Notification View
 "Enable" = "Aktivieren";
-"notification_info" = "Aktiviere Benachrichtigungen, um nie wieder einen Check zu verpassen.";
 "notification_denied_info" = "Gehe in die Einstellungen App und aktiviere Benachrichtigungen für Paraquip.";
-"day" = "Tag";
-"month" = "Monat";
-"days" = "Tage";
-"months" = "Monate";
-"before check" = "vor dem Check";
+"Check Reminder" = "Check-Erinnerungen";
+"day(s)" = "Tag(e)";
+"month(s)" = "Monat(e)";
+"before" = "davor";
 "Add notification" = "Benachrichtung hinzufügen";
 
 // ChecksView

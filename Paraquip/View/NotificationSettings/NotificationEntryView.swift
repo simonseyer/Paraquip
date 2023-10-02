@@ -10,112 +10,84 @@ import SwiftUI
 struct NotificationEntryView: View {
 
     @State private var config: NotificationConfig
+    @State private var multiplierOptions: [Int] = []
     private let onChange: (NotificationConfig) -> Void
-
-    @State private var unitOptions: [String] = []
-    @State private var multiplierOptions: [String] = []
-
-    @State private var unitPickerVisible = false
-    @State private var multiplierPickerVisible = false
-
-    @State private var unitIndex: Int = 0
-    @State private var multiplierIndex: Int = 0
 
     init(config: NotificationConfig, onChange: @escaping ( NotificationConfig) -> Void) {
         _config = State(initialValue: config)
         self.onChange = onChange
 
-        let unitOptions = Self.unitOptions(for: config.multiplier)
         let multiplierOptions = Self.multiplierOptions(for: config.unit)
-
-        let unitIndex = config.unit.rawValue
-        let multiplierIndex = min(max(config.multiplier, 0), multiplierOptions.count - 1)
-
-        _unitOptions = State(initialValue: unitOptions)
         _multiplierOptions = State(initialValue: multiplierOptions)
-
-        _unitIndex = State(initialValue: unitIndex)
-        _multiplierIndex = State(initialValue: multiplierIndex)
     }
 
     var body: some View {
-        HStack {
-            ListIcon(image: Image(systemName: "bell.fill"))
-                .padding(.trailing, 8)
-            ZStack {
-                PickerOverlay(
-                    options: $multiplierOptions,
-                    selectionIndex: $multiplierIndex,
-                    isVisible: $multiplierPickerVisible
-                )
-                .frame(width: 0)
-                SelectableText(
-                    text: multiplierOptions[multiplierIndex],
-                    isSelected: $multiplierPickerVisible
-                )
+        HStack(spacing: 0) {
+            Label("", systemImage: "bell")
+                .foregroundStyle(.primary)
+            HStack(spacing: 14) {
+                Group {
+                    Picker("", selection: $config.multiplier) {
+                        ForEach(multiplierOptions, id: \.self) { multiplier in
+                            Text("\(multiplier)")
+                                .tag(multiplier)
+                        }
+                    }
+
+                    Picker("", selection: $config.unit) {
+                        Text("day(s)")
+                            .tag(NotificationConfig.Unit.days)
+                        Text("month(s)")
+                            .tag(NotificationConfig.Unit.months)
+                    }
+                }
+                .labelsHidden()
+                #if os(iOS)
+                .padding(.horizontal, 6)
+                .background(.thinMaterial)
+                .cornerRadius(6)
+                #endif
+                
+                Text("before")
             }
-            ZStack {
-                PickerOverlay(
-                    options: $unitOptions,
-                    selectionIndex: $unitIndex,
-                    isVisible: $unitPickerVisible
-                )
-                .frame(width: 0)
-                SelectableText(
-                    text: unitOptions[unitIndex],
-                    isSelected: $unitPickerVisible
-                )
-            }
-            Text("before check")
-                .lineLimit(1)
-        }
-        .onTapGesture {
-            unitPickerVisible = false
-            multiplierPickerVisible = false
-        }
-        .onChange(of: multiplierIndex) { _, value in
-            config.multiplier = value
-            updateState()
-        }
-        .onChange(of: unitIndex) { _, value in
-            config.unit = .init(rawValue: value)!
-            updateState()
         }
         .onChange(of: config) { _, value in
             onChange(value)
+            updateState()
         }
     }
 
     private func updateState() {
-        unitOptions = Self.unitOptions(for: config.multiplier)
-        multiplierOptions = Self.multiplierOptions(for: config.unit)
-        unitIndex = config.unit.rawValue
-        multiplierIndex = min(max(multiplierIndex, 0), multiplierOptions.count - 1)
+        withAnimation {
+            multiplierOptions = Self.multiplierOptions(for: config.unit)
+        }
     }
 
-    private static func unitOptions(for multiplier: Int) -> [String] {
-        let plural = multiplier != 1
-        let units = plural ? ["days", "months"] : ["day", "month"]
-        return units.map { LocalizedString($0) }
-    }
-
-    private static func multiplierOptions(for unit: NotificationConfig.Unit) -> [String] {
+    private static func multiplierOptions(for unit: NotificationConfig.Unit) -> [Int] {
         switch unit {
         case .days:
-            return (0...31).map { "\($0)" }
+            return Array(0...31)
         case .months:
-            return (0...6).map { "\($0)" }
+            return Array(0...6)
         }
     }
 }
 
 struct NotificationEntryView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationEntryView(
-            config: .init(unit: .days, multiplier: 1),
-            onChange: { _ in }
-        )
-        .previewLayout(.fixed(width: 350, height: 60))
+        Form {
+            NotificationEntryView(
+                config: .init(unit: .days, multiplier: 1),
+                onChange: { _ in }
+            )
+            NotificationEntryView(
+                config: .init(unit: .days, multiplier: 1),
+                onChange: { _ in }
+            )
+        }
         .environment(\.locale, .init(identifier: "de"))
+        #if os(visionOS)
+        .glassBackgroundEffect()
+        #endif
     }
 }

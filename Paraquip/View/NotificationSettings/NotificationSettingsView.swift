@@ -27,9 +27,8 @@ struct NotificationSettingsView: View {
             } footer: {
                 HStack {
                     if notificationService.state.wasRequestRejected {
-                        Label("notification_denied_info", systemImage: "exclamationmark.triangle.fill")
-                    } else {
-                        Text("notification_info")
+                        Label("notification_denied_info", 
+                              systemImage: "exclamationmark.triangle")
                     }
                 }
             }
@@ -51,25 +50,30 @@ struct NotificationSettingsView: View {
                             }
                         }
                     }
-                    Button(action: {
+                    Button {
                         withAnimation {
                             notificationService.addNotificationConfig()
                         }
-                    }) {
-                        HStack {
-                            ListIcon(image: Image(systemName: "plus"))
-                                .padding(.trailing, 8)
-
-                            Text("Add notification")
-                                .disabled(editMode == .active)
-                                .fontWeight(.medium)
+                    } label: {
+                        Label("Add notification",
+                              systemImage: "plus.circle")
+                    }
+                    .foregroundStyle(.primary)
+                } header: {
+                    HStack {
+                        Text("Check Reminder")
+                        Button(editMode == .inactive ? "Edit" : "Done") {
+                            withAnimation {
+                                editMode = editMode == .active ? .inactive : .active
+                            }
                         }
+                        .controlSize(.mini)
+                        .disabled(notificationService.state.configuration.isEmpty)
                     }
                 }
             }
         }
         .navigationTitle("Notifications")
-        .ignoresSafeArea(.keyboard)
         .environment(\.editMode, $editMode)
         .onChange(of: notificationsOn) { _, value in
             if value {
@@ -92,17 +96,6 @@ struct NotificationSettingsView: View {
             withAnimation {
                 notificationsOn = value
                 configurationSectionShown = value
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                if notificationService.state.isEnabled && !notificationService.state.configuration.isEmpty {
-                    Button(editMode == .inactive ? "Edit" : "Done") {
-                        withAnimation {
-                            editMode = editMode == .active ? .inactive : .active
-                        }
-                    }
-                }
             }
         }
     }
