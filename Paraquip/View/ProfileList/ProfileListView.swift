@@ -23,7 +23,6 @@ struct ProfileListView: View {
     @State private var editProfileOperation: Operation<Profile>?
 
     @Binding var selectedProfile: ProfileSelection?
-    @Binding var showNotificationSettings: Bool
 
     @Environment(\.managedObjectContext) var managedObjectContext
 
@@ -77,24 +76,6 @@ struct ProfileListView: View {
                     .environment(\.managedObjectContext, operation.childContext)
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button {
-                        editProfileOperation = Operation(withParentContext: managedObjectContext)
-                    } label: {
-                        Label("Create new set", systemImage: "plus")
-                    }
-                    Button {
-                        showNotificationSettings = true
-                    } label: {
-                        Label("Set up notifications", systemImage: "bell.fill".deviceSpecificIcon)
-                    }
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
-            }
-        }
     }
 }
 
@@ -102,8 +83,7 @@ struct MainView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationStack {
-            ProfileListView(selectedProfile: .constant(.none),
-                            showNotificationSettings: .constant(false))
+            ProfileListView(selectedProfile: .constant(.none))
                 .environment(\.managedObjectContext, .preview)
         }
     }

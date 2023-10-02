@@ -10,13 +10,19 @@ import CoreData
 
 struct MainView: View {
 
+    enum Tab {
+        case equipment
+        case checks
+        case performance
+    }
+
     @EnvironmentObject var notificationService: NotificationService
     @EnvironmentObject var databaseMigration: DatabaseMigration
 
     @State private var showNotificationSettings = false
-    @State private var presentedEquipment: Equipment? = nil
     @State private var isShowingSingleEquipmentMigrationInfo = false
 
+    @State private var selectedTab: Tab = .equipment
     @State private var selectedProfile: ProfileSelection?
     @State private var selectedEquipment: Equipment?
 
@@ -29,67 +35,69 @@ struct MainView: View {
     }()
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $columnVisibility) {
-            ProfileListView(selectedProfile: $selectedProfile,
-                            showNotificationSettings: $showNotificationSettings)
-        } content: {
-            switch selectedProfile {
-            case .none:
-                ContentUnavailableView("Select an equipment set",
-                                       systemImage: "tray.full.fill")
-            case .allEquipment:
-                ProfileView(profile: nil, selectedEquipment: $selectedEquipment)
-            case .profile(let profile):
-                ProfileView(profile: profile, selectedEquipment: $selectedEquipment)
-            }
-        } detail: {
-            if let selectedEquipment {
-                EquipmentView(equipment: selectedEquipment)
-            } else if let selectedProfile {
-                if case .profile(let profile) = selectedProfile, profile.allEquipment.isEmpty {
-                    ContentUnavailableView("Create an equipment first", systemImage: "backpack.fill")
-                } else {
-                    ContentUnavailableView("Select an equipment",
-                                           systemImage: "backpack.fill")
+        TabView(selection: $selectedTab.animation()) {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                ProfileListView(selectedProfile: $selectedProfile.animation())
+            } content: {
+                switch selectedProfile {
+                case .none:
+                    ContentUnavailableView("Select an equipment set",
+                                           systemImage: "tray.full.fill")
+                case .allEquipment:
+                    AllEquipmentProfileView(selectedEquipment: $selectedEquipment.animation())
+                case .profile(let profile):
+                    ProfileView(profile: profile,
+                                selectedEquipment: $selectedEquipment.animation())
                 }
-            } else {
-                EmptyView()
+            } detail: {
+                if let selectedEquipment {
+                    EditEquipmentView(equipment: selectedEquipment)
+                } else if let selectedProfile {
+                    if case .profile(let profile) = selectedProfile, profile.allEquipment.isEmpty {
+                        ContentUnavailableView("Create an equipment first", systemImage: "backpack.fill")
+                    } else {
+                        ContentUnavailableView("Select an equipment",
+                                               systemImage: "backpack.fill")
+                    }
+                } else {
+                    EmptyView()
+                }
+            }
+            .tag(Tab.equipment)
+            .tabItem {
+                Label("Equipment", systemImage: "backpack")
+            }
+            ChecksView(showNotificationSettings: $showNotificationSettings)
+            .tag(Tab.checks)
+            .tabItem {
+                Label("Checks", systemImage: "checkmark")
+            }
+            PerformanceView()
+            .tag(Tab.performance)
+            .tabItem {
+                Label("Performance", systemImage: "gauge.open.with.lines.needle.33percent")
+            }
+        }
+        .onChange(of: selectedProfile) {
+            guard let selectedProfile else {
+                self.selectedEquipment = nil
+                return
+            }
+            
+            if case .profile(let profile) = selectedProfile, let selectedEquipment, !(profile.equipment?.contains(selectedEquipment) ?? false) {
+                self.selectedEquipment = nil
             }
         }
         .onChange(of: notificationService.navigationState) { _, value in
             switch value {
             case .notificationSettings:
                 showNotificationSettings = true
-            case .equipment(let equipmentId):
-                presentedEquipment = equipmentId
+            case .equipment:
+                selectedTab = .checks
             case .none:
                 break
             }
             notificationService.resetNavigationState()
-        }
-        .sheet(isPresented: $showNotificationSettings) {
-            NavigationStack {
-                NotificationSettingsView()
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Close") {
-                                showNotificationSettings = false
-                            }
-                        }
-                    }
-            }
-        }
-        .sheet(item: $presentedEquipment) { equipment in
-            NavigationStack {
-                EquipmentView(equipment: equipment)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Close") {
-                                presentedEquipment = nil
-                            }
-                        }
-                    }
-            }
         }
         .alert("Sets updated",
                isPresented: $isShowingSingleEquipmentMigrationInfo) {
