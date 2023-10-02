@@ -21,7 +21,6 @@ struct AddEquipmentButton: View {
                 Spacer()
             }
         }
-        .frame(height: 36)
         .listRowBackground(Color.accentColor.opacity(0.25))
     }
 }
