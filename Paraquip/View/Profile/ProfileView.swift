@@ -10,55 +10,109 @@ import CoreData
 
 struct ProfileView: View {
 
-    let profile: Profile?
-    @State private var editEquipmentOperation: Operation<Equipment>?
-    @State private var editProfileOperation: Operation<Profile>?
-    @State private var isShowingWeightView = false
-    @State private var addEquipmentType: Equipment.EquipmentType?
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.locale) var locale: Locale
-
+    @ObservedObject var profile: Profile
     @Binding var selectedEquipment: Equipment?
+
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @State private var editProfileOperation: Operation<Profile>?
+
+    var body: some View {
+        ProfileContentView(predicate: profile.equipmentPredicate,
+                           selectedEquipment: $selectedEquipment,
+                           didCreateEquipment: { equipment in
+            profile.addToEquipment(equipment)
+        })
+        .navigationTitle(profile.profileName)
+        .onChange(of: profile) {
+            if let selectedEquipment, !(profile.contains(selectedEquipment)) {
+                self.selectedEquipment = nil
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    editProfile()
+                } label: {
+                    Label("Edit", systemImage: "pencil")
+                }
+                #if os(iOS)
+                .labelStyle(.titleOnly)
+                #endif
+            }
+        }
+        .sheet(item: $editProfileOperation) { operation in
+            NavigationStack {
+                EditProfileView(profile: operation.object)
+                    .environment(\.managedObjectContext, operation.childContext)
+            }
+        }
+    }
+
+    func editProfile() {
+        editProfileOperation = Operation(editing: profile,
+                                         withParentContext: managedObjectContext)
+    }
+
+}
+
+struct AllEquipmentProfileView: View {
+    @Binding var selectedEquipment: Equipment?
+
+    var body: some View {
+        ProfileContentView(predicate: nil,
+                           selectedEquipment: $selectedEquipment)
+        .navigationTitle("All Equipment")
+    }
+}
+
+private struct ProfileContentView: View {
+    @Binding var selectedEquipment: Equipment?
+    let didCreateEquipment: (Equipment) -> Void
+
+    @Environment(\.managedObjectContext) var managedObjectContext
 
     @FetchRequest
     private var equipment: FetchedResults<Equipment>
 
-    @FetchRequest
-    private var allEquipment: FetchedResults<Equipment>
-
-    private var title: String {
-        profile?.profileName ?? LocalizedString("All Equipment")
+    private var isSpecificProfile: Bool {
+        equipment.nsPredicate != nil
     }
 
-    init(profile: Profile?, selectedEquipment: Binding<Equipment?>) {
-        self.profile = profile
+    init(predicate: NSPredicate?,
+         selectedEquipment: Binding<Equipment?>,
+         didCreateEquipment: @escaping (Equipment) -> Void = { _ in }) {
         self._selectedEquipment = selectedEquipment
+        self.didCreateEquipment = didCreateEquipment
         _equipment = FetchRequest(
             previewEntity: Equipment.previewEntity,
             sortDescriptors: Equipment.defaultSortDescriptors(),
-            predicate: profile?.equipmentPredicate
-        )
-        _allEquipment = FetchRequest(
-            previewEntity: Equipment.previewEntity,
-            sortDescriptors: Equipment.defaultSortDescriptors()
+            predicate: predicate
         )
     }
 
     @ViewBuilder
     func singleSection(_ type: Equipment.EquipmentType) -> some View {
+        let filteredEquipment = equipment.first {
+            $0.equipmentType == type
+        }
         Section {
-            if let equipment = profile?.singleEquipment(of: type) {
-                EquipmentRow(equipment: equipment) {
-                    editEquipment(equipment)
-                } onDelete: {
-                    deleteEquipment(equipment)
-                } onRemoveFromSet: {
-                    removeEquipmentFromSet(equipment)
+            if let equipment = filteredEquipment {
+                NavigationLink(value: equipment) {
+                    EquipmentRow(equipment: equipment)
                 }
             } else {
-                AddEquipmentButton {
+                Button {
                     createEquipment(type: type)
+                } label: {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                        Spacer()
+                    }
                 }
+                .listRowBackground(Color.accentColor.opacity(0.25))
             }
         } header: {
             ProfileSectionHeader(equipmentType: type)
@@ -70,45 +124,26 @@ struct ProfileView: View {
         let filteredEquipment = equipment.filter {
             $0.equipmentType == type
         }
-        if !filteredEquipment.isEmpty {
-            Section {
-                ForEach(filteredEquipment) { equipment in
-                    EquipmentRow(equipment: equipment) {
-                        editEquipment(equipment)
-                    } onDelete: {
-                        deleteEquipment(equipment)
-                    } onRemoveFromSet: {
-                        removeEquipmentFromSet(equipment)
-                    }
-                }
-            } header: {
-                ProfileSectionHeader(equipmentType: type)
-            }
-        } else {
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder
-    func footerSection() -> some View {
         Section {
-            EmptyView()
-        } footer: {
-            HStack {
-                Spacer()
-                EditProfileMenu(canEditProfile: profile != nil) { type in
-                    createEquipment(type: type)
-                } onEditProfile: {
-                    editProfile()
+            ForEach(filteredEquipment) { equipment in
+                NavigationLink(value: equipment) {
+                    EquipmentRow(equipment: equipment)
                 }
-                Spacer()
             }
+            Button {
+                createEquipment(type: type)
+            } label: {
+                Label("Add \(type.localizedNameString)", systemImage: "plus")
+            }
+            .foregroundStyle(.primary)
+        } header: {
+            ProfileSectionHeader(equipmentType: type)
         }
     }
 
     var body: some View {
         List(selection: $selectedEquipment) {
-            if profile != nil {
+            if isSpecificProfile {
                 singleSection(.paraglider)
                 singleSection(.harness)
             } else {
@@ -117,83 +152,21 @@ struct ProfileView: View {
             }
             listSection(.reserve)
             listSection(.gear)
-            footerSection()
+            if let selectedEquipment {
+                DeletionObserverView(object: selectedEquipment) {
+                    self.selectedEquipment = nil
+                }
+            }
         }
         .listStyle(.insetGrouped)
-        .environment(\.defaultMinListRowHeight, 10)
-        .navigationTitle(title)
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                if profile != nil {
-                    Button {
-                        isShowingWeightView = true
-                    } label: {
-                        Label("Weight Check", systemImage: "scalemass.fill".deviceSpecificIcon)
-                    }
-                }
-            }
-        }
-        .sheet(item: $editEquipmentOperation) { operation in
-            NavigationStack {
-                EditEquipmentView(equipment: operation.object)
-                    .environment(\.managedObjectContext, operation.childContext)
-            }
-        }
-        .sheet(item: $editProfileOperation) { operation in
-            NavigationStack {
-                EditProfileView(profile: operation.object)
-                    .environment(\.managedObjectContext, operation.childContext)
-            }
-        }
-        .sheet(isPresented: $isShowingWeightView) {
-            NavigationStack {
-                if let profile {
-                    ProfileWeightView(profile: profile)
-                        .toolbar {
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Close") {
-                                    isShowingWeightView = false
-                                }
-                            }
-                        }
-                }
-            }
-        }
     }
 
     func createEquipment(type: Equipment.EquipmentType) {
-        let operation: Operation<Equipment> = Operation(withParentContext: managedObjectContext) { context in
-            Equipment.create(type: type, context: context)
-        }
-        if let profile {
-            operation.object(for: profile).addToEquipment(operation.object)
-        }
-        editEquipmentOperation = operation
-    }
-
-    func editEquipment(_ equipment: Equipment) {
-        editEquipmentOperation = .init(editing: equipment,
-                                       withParentContext: managedObjectContext)
-    }
-
-    func deleteEquipment(_ equipment: Equipment) {
         withAnimation {
-            managedObjectContext.delete(equipment)
-            try! managedObjectContext.save()
+            let equipment = Equipment.create(type: type, context: managedObjectContext)
+            didCreateEquipment(equipment)
+            selectedEquipment = equipment
         }
-    }
-
-    func removeEquipmentFromSet(_ equipment: Equipment) {
-        withAnimation {
-            profile?.removeFromEquipment(equipment)
-            try! managedObjectContext.save()
-        }
-    }
-
-    func editProfile() {
-        guard let profile else { return }
-        editProfileOperation = Operation(editing: profile,
-                                         withParentContext: managedObjectContext)
     }
 }
 
@@ -211,7 +184,7 @@ struct ProfileView_Previews: PreviewProvider {
             .previewDisplayName("Empty Profile")
 
             NavigationStack {
-                ProfileView(profile: nil, selectedEquipment: .constant(nil))
+                AllEquipmentProfileView(selectedEquipment: .constant(nil))
             }
             .previewDisplayName("All Equipment")
         }
