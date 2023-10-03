@@ -31,6 +31,14 @@ struct AutocompletingTextField: View {
         completionSlugs.contains(text.slugified())
     }
 
+    private var toolbarPlacement: ToolbarItemPlacement {
+        #if os(visionOS)
+        return .bottomOrnament
+        #else
+        return .keyboard
+        #endif
+    }
+
     init(_ label: LocalizedStringKey, text: Binding<String>, completions: [String]) {
         self.label = label
         self._text = text
@@ -49,7 +57,7 @@ struct AutocompletingTextField: View {
                 .autocorrectionDisabled()
                 .focused($focused)
         }.toolbar {
-            ToolbarItem(placement: .keyboard) {
+            ToolbarItem(placement: toolbarPlacement) {
                 if focused {
                     ScrollView(.horizontal) {
                         HStack {
@@ -62,14 +70,10 @@ struct AutocompletingTextField: View {
                             }
                         }
                         .buttonStyle(.bordered)
-                        #if os(visionOS)
-                        .controlSize(.small)
-                        .padding(6)
-                        #endif
                     }
                     #if os(visionOS)
-                    .frame(width: 600)
-                    .glassBackgroundEffect()
+                    .animation(.default, value: focused)
+                    .frame(maxWidth: 1000)
                     #endif
                 }
             }
