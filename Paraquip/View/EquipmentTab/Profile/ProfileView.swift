@@ -10,66 +10,42 @@ import CoreData
 
 struct ProfileView: View {
 
-    @ObservedObject var profile: Profile
+    let selectedProfile: ProfileSelection?
     @Binding var selectedEquipment: Equipment?
 
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @State private var editProfileOperation: Operation<Profile>?
+    @Environment(\.undoManager) private var undoManager
+    @State private var undoHandler: UndoHandler<Equipment?>?
 
     var body: some View {
-        ProfileContentView(predicate: profile.equipmentPredicate,
-                           selectedEquipment: $selectedEquipment,
-                           didCreateEquipment: { equipment in
-            profile.addToEquipment(equipment)
-        })
-        .navigationTitle(profile.profileName)
-        .onChange(of: profile) {
-            if let selectedEquipment, !(profile.contains(selectedEquipment)) {
-                self.selectedEquipment = nil
+        Group {
+            if let selectedProfile {
+                ProfileContentView(profile: selectedProfile.profile,
+                                   selectedEquipment: $selectedEquipment.animation())
+            } else {
+                ContentUnavailableView("Select an equipment set",
+                                       systemImage: "tray.full.fill")
             }
         }
-        .toolbar {
-            ToolbarItem {
-                Button {
-                    editProfile()
-                } label: {
-                    Label("Edit", systemImage: "pencil")
-                }
-                #if os(iOS)
-                .labelStyle(.titleOnly)
-                #endif
-            }
+        .onChange(of: undoManager, initial: true) {
+            undoHandler = UndoHandler(binding: $selectedEquipment,
+                                      undoManger: undoManager)
         }
-        .sheet(item: $editProfileOperation) { operation in
-            NavigationStack {
-                EditProfileView(profile: operation.object)
-                    .environment(\.managedObjectContext, operation.childContext)
+        .onChange(of: selectedEquipment) { oldValue, newValue in
+            if let oldValue, oldValue.isDeleted || oldValue.isFault {
+                return
             }
+            undoHandler?.registerUndo(from: oldValue, to: newValue)
         }
-    }
-
-    func editProfile() {
-        editProfileOperation = Operation(editing: profile,
-                                         withParentContext: managedObjectContext)
-    }
-
-}
-
-struct AllEquipmentProfileView: View {
-    @Binding var selectedEquipment: Equipment?
-
-    var body: some View {
-        ProfileContentView(predicate: nil,
-                           selectedEquipment: $selectedEquipment)
-        .navigationTitle("All Equipment")
     }
 }
 
 private struct ProfileContentView: View {
+    let profile: Profile?
     @Binding var selectedEquipment: Equipment?
-    let didCreateEquipment: (Equipment) -> Void
 
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @State private var editProfileOperation: Operation<Profile>?
+    @State private var navigationTitle: String = "fu"
 
     @FetchRequest
     private var equipment: FetchedResults<Equipment>
@@ -78,15 +54,13 @@ private struct ProfileContentView: View {
         equipment.nsPredicate != nil
     }
 
-    init(predicate: NSPredicate?,
-         selectedEquipment: Binding<Equipment?>,
-         didCreateEquipment: @escaping (Equipment) -> Void = { _ in }) {
+    init(profile: Profile?, selectedEquipment: Binding<Equipment?>) {
+        self.profile = profile
         self._selectedEquipment = selectedEquipment
-        self.didCreateEquipment = didCreateEquipment
         _equipment = FetchRequest(
             previewEntity: Equipment.previewEntity,
             sortDescriptors: Equipment.defaultSortDescriptors(),
-            predicate: predicate
+            predicate: profile?.equipmentPredicate
         )
     }
 
@@ -157,16 +131,68 @@ private struct ProfileContentView: View {
                     self.selectedEquipment = nil
                 }
             }
+            if let profile {
+                ProfileTitleView(profile: profile,
+                                 navigationTitle: $navigationTitle)
+            }
         }
+        .navigationTitle(navigationTitle)
         .listStyle(.insetGrouped)
+        .onChange(of: profile, initial: true) {
+            navigationTitle = profile?.profileName ?? String(localized: "All Equipment")
+            if let profile, let selectedEquipment, !profile.contains(selectedEquipment) {
+                self.selectedEquipment = nil
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                if isSpecificProfile {
+                    Button {
+                        editProfile()
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    #if os(iOS)
+                    .labelStyle(.titleOnly)
+                    #endif
+                }
+            }
+        }
+        .sheet(item: $editProfileOperation) { operation in
+            NavigationStack {
+                EditProfileView(profile: operation.object)
+                    .environment(\.managedObjectContext, operation.childContext)
+            }
+        }
     }
 
-    func createEquipment(type: Equipment.EquipmentType) {
+    private func createEquipment(type: Equipment.EquipmentType) {
         withAnimation {
             let equipment = Equipment.create(type: type, context: managedObjectContext)
-            didCreateEquipment(equipment)
+            if let profile {
+                profile.addToEquipment(equipment)
+            }
             selectedEquipment = equipment
         }
+    }
+
+    private func editProfile() {
+        guard let profile else { return }
+        editProfileOperation = Operation(editing: profile,
+                                         withParentContext: managedObjectContext)
+    }
+}
+
+/// Observes the Profile to update the navigationTitle when the name changes
+private struct ProfileTitleView: View {
+    @ObservedObject var profile: Profile
+    @Binding var navigationTitle: String
+
+    var body: some View {
+        EmptyView()
+            .onChange(of: profile.profileName, initial: true) {
+                navigationTitle = profile.profileName
+            }
     }
 }
 
@@ -175,16 +201,16 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             NavigationStack {
-                ProfileView(profile: CoreData.fakeProfile, selectedEquipment: .constant(nil))
+                ProfileContentView(profile: CoreData.fakeProfile, selectedEquipment: .constant(nil))
             }
 
             NavigationStack {
-                ProfileView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
+                ProfileContentView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
             }
             .previewDisplayName("Empty Profile")
 
             NavigationStack {
-                AllEquipmentProfileView(selectedEquipment: .constant(nil))
+                ProfileContentView(profile: nil, selectedEquipment: .constant(nil))
             }
             .previewDisplayName("All Equipment")
         }

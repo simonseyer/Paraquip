@@ -29,7 +29,7 @@
 		0D4071922656CD12001385D7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4071912656CD12001385D7 /* NotificationService.swift */; };
 		0D491CC32829A5EE001BB9EC /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D491CC22829A5EE001BB9EC /* LogEntry.swift */; };
 		0D59D1D9268A37FD00E6334F /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D59D1D8268A37FD00E6334F /* SnapshotHelper.swift */; };
-		0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E7A53262C43270002A67B /* EditEquipmentView.swift */; };
+		0D5E7A54262C43270002A67B /* EditEquipmentContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5E7A53262C43270002A67B /* EditEquipmentContentView.swift */; };
 		0D61B2EB2649A7C200509C30 /* Versionable in Frameworks */ = {isa = PBXBuildFile; productRef = 0D61B2EA2649A7C200509C30 /* Versionable */; };
 		0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6D4D0726629D89003EAC35 /* NotificationPlugin.swift */; };
 		0D6E9C6F281D9C6A00EC585C /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */; };
@@ -60,7 +60,9 @@
 		0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE34C5D265C07F800EF080F /* NotificationPersistence.swift */; };
 		0DEA2ABC26D2C54500627E34 /* CheckCycleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */; };
 		0DEBE6C328B55D8900D46470 /* Slugify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEBE6C228B55D8900D46470 /* Slugify.swift */; };
+		F40F31DC2ACB464600855BC3 /* EditEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40F31DB2ACB464600855BC3 /* EditEquipmentView.swift */; };
 		F40F31DE2ACC0A3900855BC3 /* UndoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40F31DD2ACC0A3900855BC3 /* UndoHandler.swift */; };
+		F40F31E02ACC16B500855BC3 /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40F31DF2ACC16B500855BC3 /* EquipmentView.swift */; };
 		F418F5572AC978C000239BA5 /* ChecksListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F418F5562AC978C000239BA5 /* ChecksListView.swift */; };
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
@@ -146,7 +148,7 @@
 		0D491CC22829A5EE001BB9EC /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
 		0D491CC42829BC9C001BB9EC /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		0D59D1D8268A37FD00E6334F /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
-		0D5E7A53262C43270002A67B /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
+		0D5E7A53262C43270002A67B /* EditEquipmentContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentContentView.swift; sourceTree = "<group>"; };
 		0D6CBD4B264C9313003655C6 /* Paraquip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Paraquip.entitlements; sourceTree = "<group>"; };
 		0D6D4D0726629D89003EAC35 /* NotificationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPlugin.swift; sourceTree = "<group>"; };
 		0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
@@ -181,7 +183,9 @@
 		0DEBE6C228B55D8900D46470 /* Slugify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slugify.swift; sourceTree = "<group>"; };
 		0DF06CDA270B6EE000E72863 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		0DF128B8284BF57200FCF933 /* Model 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 6.xcdatamodel"; sourceTree = "<group>"; };
+		F40F31DB2ACB464600855BC3 /* EditEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEquipmentView.swift; sourceTree = "<group>"; };
 		F40F31DD2ACC0A3900855BC3 /* UndoHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoHandler.swift; sourceTree = "<group>"; };
+		F40F31DF2ACC16B500855BC3 /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
 		F418F5562AC978C000239BA5 /* ChecksListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksListView.swift; sourceTree = "<group>"; };
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
@@ -409,7 +413,8 @@
 		0DA93A0426CEE7220063356B /* EditEquipment */ = {
 			isa = PBXGroup;
 			children = (
-				0D5E7A53262C43270002A67B /* EditEquipmentView.swift */,
+				F40F31DB2ACB464600855BC3 /* EditEquipmentView.swift */,
+				0D5E7A53262C43270002A67B /* EditEquipmentContentView.swift */,
 				0DD7317B28C11E3F006475FA /* AutocompletingTextField.swift */,
 				0DEA2ABB26D2C54500627E34 /* CheckCycleRow.swift */,
 			);
@@ -481,6 +486,7 @@
 		F41C00C42ACADC6B00B13A56 /* EquipmentTab */ = {
 			isa = PBXGroup;
 			children = (
+				F40F31DF2ACC16B500855BC3 /* EquipmentView.swift */,
 				0DC0904A26D818B700AB3BCF /* ProfileList */,
 				0D09984926D81BEA00E297F9 /* EditProfile */,
 				0D2B2D132646A03F009873CE /* Profile */,
@@ -743,6 +749,7 @@
 				F45148442ABDF6DF00488CD8 /* PerformanceView.swift in Sources */,
 				0DD7FC10263DD3060038B25D /* Profile.swift in Sources */,
 				F4496D302AA0FBBF00836BFE /* FakeNotificationState.swift in Sources */,
+				F40F31DC2ACB464600855BC3 /* EditEquipmentView.swift in Sources */,
 				F4676C2E2AAA083C00FD3913 /* AddEquipmentButton.swift in Sources */,
 				0DD7FC1A263DD7540038B25D /* LegacyPersistedProfile.swift in Sources */,
 				F4C6A4BC29CD5C310017EC0E /* WingClassPill.swift in Sources */,
@@ -766,7 +773,7 @@
 				F443FA142ABC7CC000B490AB /* LogEntryButton.swift in Sources */,
 				0D80E1C82662B7A000305B23 /* FakeNotificationPlugin.swift in Sources */,
 				0D6D4D0826629D89003EAC35 /* NotificationPlugin.swift in Sources */,
-				0D5E7A54262C43270002A67B /* EditEquipmentView.swift in Sources */,
+				0D5E7A54262C43270002A67B /* EditEquipmentContentView.swift in Sources */,
 				0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */,
 				0DDA569926ADA45B004A46F8 /* Date.swift in Sources */,
 				F40F31DE2ACC0A3900855BC3 /* UndoHandler.swift in Sources */,
@@ -777,6 +784,7 @@
 				F443FA162ABC942800B490AB /* LogMenu.swift in Sources */,
 				F41C00C02AC9B45B00B13A56 /* DeletionObserverView.swift in Sources */,
 				F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */,
+				F40F31E02ACC16B500855BC3 /* EquipmentView.swift in Sources */,
 				0DC585F3275CE8D1001B346E /* ProfileWeightView.swift in Sources */,
 				0DC585F6275D08FA001B346E /* WeightRangeView.swift in Sources */,
 				0D11FB922620A5CF009D9349 /* ParaquipApp.swift in Sources */,

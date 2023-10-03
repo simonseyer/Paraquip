@@ -11,6 +11,13 @@ import CoreData
 enum ProfileSelection: Hashable {
     case allEquipment
     case profile(Profile)
+
+    var profile: Profile? {
+        if case .profile(let profile) = self {
+            return profile
+        }
+        return nil
+    }
 }
 
 struct ProfileListView: View {
