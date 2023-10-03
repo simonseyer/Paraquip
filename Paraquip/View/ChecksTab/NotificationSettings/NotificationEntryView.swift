@@ -10,15 +10,11 @@ import SwiftUI
 struct NotificationEntryView: View {
 
     @State private var config: NotificationConfig
-    @State private var multiplierOptions: [Int] = []
     private let onChange: (NotificationConfig) -> Void
 
     init(config: NotificationConfig, onChange: @escaping ( NotificationConfig) -> Void) {
         _config = State(initialValue: config)
         self.onChange = onChange
-
-        let multiplierOptions = Self.multiplierOptions(for: config.unit)
-        _multiplierOptions = State(initialValue: multiplierOptions)
     }
 
     var body: some View {
@@ -28,7 +24,7 @@ struct NotificationEntryView: View {
             HStack(spacing: 14) {
                 Group {
                     Picker("", selection: $config.multiplier) {
-                        ForEach(multiplierOptions, id: \.self) { multiplier in
+                        ForEach(0...31, id: \.self) { multiplier in
                             Text("\(multiplier)")
                                 .tag(multiplier)
                         }
@@ -53,22 +49,6 @@ struct NotificationEntryView: View {
         }
         .onChange(of: config) {
             onChange(config)
-            updateState()
-        }
-    }
-
-    private func updateState() {
-        withAnimation {
-            multiplierOptions = Self.multiplierOptions(for: config.unit)
-        }
-    }
-
-    private static func multiplierOptions(for unit: NotificationConfig.Unit) -> [Int] {
-        switch unit {
-        case .days:
-            return Array(0...31)
-        case .months:
-            return Array(0...6)
         }
     }
 }
