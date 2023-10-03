@@ -151,6 +151,8 @@ struct CoreData {
             profile2.addToEquipment(equipment)
         }
 
+        try! context.save()
+
         return profile
     }
 
