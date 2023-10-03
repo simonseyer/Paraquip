@@ -19,10 +19,9 @@ struct DeletionObserverView: View {
                     onDelete()
                 }
             }
-            .onChange(of: object.isInserted) {
+            .onChange(of: object.isFault) {
                 // Handle case when new object get's deleted again
-                // (i.e. "uninserted")
-                if !object.isInserted {
+                if object.isFault {
                     onDelete()
                 }
             }
