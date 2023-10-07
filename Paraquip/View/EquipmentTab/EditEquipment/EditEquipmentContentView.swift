@@ -134,7 +134,8 @@ struct EditEquipmentContentView: View {
                         if let purchaseLog = equipment.purchaseLog {
                             LogDateCell(logEntry: purchaseLog)
                         }
-                    }.foregroundColor(.primary)
+                    }
+                    .foregroundColor(.primary)
                 }
             }
             Section {
@@ -143,6 +144,7 @@ struct EditEquipmentContentView: View {
                         previewedManual = manual.fileURL
                     } label: {
                         Label("Open manual", systemImage: "book")
+                            .foregroundStyle(.accent)
                     }
                 } else {
                     Button(action: {
@@ -150,6 +152,7 @@ struct EditEquipmentContentView: View {
                     }) {
                         Label("Add manual",
                               systemImage: "plus.circle")
+                        .foregroundStyle(.accent)
                     }
                 }
             } header: {
@@ -311,9 +314,7 @@ struct EditEquipmentContentView: View {
             } label: {
                 Label("Delete equipment",
                       systemImage: "trash")
-                #if os(iOS)
                 .foregroundStyle(.red)
-                #endif
             }
             .confirmationDialog("Delete equipment", isPresented: $isShowingDeleteEquipment) {
                 Button(role: .destructive) {
@@ -328,7 +329,6 @@ struct EditEquipmentContentView: View {
         #if os(iOS)
         .scrollDismissesKeyboard(.interactively)
         #endif
-        .foregroundStyle(.primary)
         .navigationTitle(Text(equipment.equipmentType.localizedName))
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $editLogEntryOperation) { operation in

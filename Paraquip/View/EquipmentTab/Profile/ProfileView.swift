@@ -107,9 +107,9 @@ private struct ProfileContentView: View {
             Button {
                 createEquipment(type: type)
             } label: {
-                Label("Add \(type.localizedName)", systemImage: "plus")
+                Label("Add \(type.localizedName)", systemImage: "plus.circle")
             }
-            .foregroundStyle(.primary)
+            .foregroundStyle(.accent)
         } header: {
             ProfileSectionHeader(equipmentType: type)
         }

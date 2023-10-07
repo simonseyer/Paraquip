@@ -20,7 +20,6 @@ struct NotificationEntryView: View {
     var body: some View {
         HStack(spacing: 0) {
             Label("", systemImage: "bell")
-                .foregroundStyle(.primary)
             HStack(spacing: 14) {
                 Group {
                     Picker("", selection: $config.multiplier) {

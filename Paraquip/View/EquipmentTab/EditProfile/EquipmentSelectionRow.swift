@@ -16,7 +16,6 @@ struct EquipmentSelectionRow: View {
         Button(action: { profile.toggle(equipment) }) {
             HStack {
                 EquipmentRow(equipment: equipment)
-                    .foregroundStyle(.primary)
                 Spacer()
                 if profile.contains(equipment) {
                     Image(systemName: "checkmark")

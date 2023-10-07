@@ -49,9 +49,7 @@ struct AutocompletingTextField: View {
     var body: some View {
         LabeledContent(label) {
             TextField("", text: $text)
-                #if os(iOS)
                 .foregroundColor(matched ? .accentColor : .primary)
-                #endif
                 .bold(matched)
                 .multilineTextAlignment(.trailing)
                 .autocorrectionDisabled()

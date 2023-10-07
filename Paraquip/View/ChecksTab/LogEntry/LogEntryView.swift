@@ -71,7 +71,6 @@ struct LogEntryView: View {
                         Label(attachment.name,
                               systemImage: attachment.icon)
                     }
-                    .foregroundColor(.primary)
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
@@ -87,7 +86,7 @@ struct LogEntryView: View {
                     Label("Add attachment",
                           systemImage: "plus.circle")
                 }
-                .foregroundStyle(.primary)
+                .foregroundStyle(.accent)
                 .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
                     Button(action: { showingDocumentPicker = true }) {
                         Label("Document", systemImage: "doc")
@@ -116,9 +115,7 @@ struct LogEntryView: View {
                     } label: {
                         Label("Delete entry",
                               systemImage: "trash")
-                        #if os(iOS)
                         .foregroundStyle(.red)
-                        #endif
                     }
                     .confirmationDialog("Delete entry", isPresented: $showingDeleteCheck) {
                         Button(role: .destructive) {
@@ -134,9 +131,6 @@ struct LogEntryView: View {
                 }
             }
         }
-        #if os(visionOS)
-        .foregroundStyle(.primary)
-        #endif
         .navigationTitle(logEntry.isPurchase ? "Purchase" : "Check")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {

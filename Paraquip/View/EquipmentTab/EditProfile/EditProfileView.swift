@@ -66,9 +66,7 @@ struct EditProfileView: View {
                     } label: {
                         Label("Delete set",
                               systemImage: "trash")
-                        #if os(iOS)
                         .foregroundStyle(.red)
-                        #endif
                     }
                     .confirmationDialog(Text("Delete set"), isPresented: $isDeletingProfile) {
                         Button("Delete", role: .destructive) {
@@ -90,9 +88,6 @@ struct EditProfileView: View {
                 }
             }
         }
-        #if os(visionOS)
-        .foregroundStyle(.primary)
-        #endif
         .navigationTitle("Set")
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {

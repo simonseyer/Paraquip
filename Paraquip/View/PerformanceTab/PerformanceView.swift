@@ -21,7 +21,6 @@ struct PerformanceView: View {
                     NavigationLink(value: profile) {
                         Label(profile.profileName,
                               systemImage: profile.profileIcon.systemName.removingFill)
-                        .foregroundStyle(.primary)
                     }
                 }
             }

@@ -56,11 +56,9 @@ struct ProfileWeightView: View {
             Section(header: Text("Equipment")) {
                 ForEach(equipment) { equipment in
                     EquipmentWeightRow(equipment: equipment, formatter: formatter)
-                        .foregroundStyle(.primary)
                 }
                 HStack {
                     Label("Sum", systemImage: "sum")
-                        .foregroundStyle(.primary)
                     Spacer()
                     Text(formatted(value: profile.equipmentWeightMeasurement))
                         .monospacedDigit()
@@ -70,7 +68,6 @@ struct ProfileWeightView: View {
             Section(header: Text("Pilot")) {
                 HStack(spacing: 0) {
                     Label("", systemImage: "person")
-                        .foregroundStyle(.primary)
                     Slider(value: $profile.pilotWeight, in: 50...150, step: 1)
                     Text(formatted(value: profile.pilotWeightMeasurement))
                         .monospacedDigit()
@@ -79,7 +76,6 @@ struct ProfileWeightView: View {
                 }
                 HStack(spacing: 0) {
                     Label("", systemImage: "takeoutbag.and.cup.and.straw")
-                        .foregroundStyle(.primary)
                     Slider(value: $profile.additionalWeight, in: 0...20)
                     Text(formatted(value: profile.additionalWeightMeasurement))
                         .monospacedDigit()
@@ -90,7 +86,6 @@ struct ProfileWeightView: View {
             Section {
                 HStack {
                     Label("Takeoff weight", systemImage: "sum")
-                        .foregroundStyle(.primary)
                     Spacer()
                     Text(formatted(value: profile.takeoffWeightMeasurement))
                         .monospacedDigit()
@@ -99,7 +94,6 @@ struct ProfileWeightView: View {
                 HStack {
                     Label("Wing load \(Image(systemName: "info.circle"))",
                           systemImage: "scalemass")
-                        .foregroundStyle(.primary)
                     Spacer()
                     Button {
                         showingWingLoad.toggle()

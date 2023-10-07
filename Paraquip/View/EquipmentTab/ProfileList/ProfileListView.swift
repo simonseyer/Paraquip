@@ -41,19 +41,17 @@ struct ProfileListView: View {
                 NavigationLink(value: ProfileSelection.profile(profile)) {
                     Label(profile.profileName,
                           systemImage: profile.profileIcon.systemName.removingFill)
-                    .foregroundStyle(.primary)
                 }
             }
             NavigationLink(value: ProfileSelection.allEquipment)  {
                 Label("All Equipment",
                       systemImage: "tray.full")
-                .foregroundStyle(.primary)
             }
             Button {
                 editProfileOperation = Operation(withParentContext: managedObjectContext)
             } label: {
                 Label("Create new set", systemImage: "plus.circle")
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.accent)
             }
             if case .profile(let profile) = selectedProfile {
                 DeletionObserverView(object: profile) {

@@ -20,7 +20,7 @@ struct CheckCycleRow: View {
                 Spacer()
                 Text(checkCycle > 0 ? "\(Int(checkCycle)) months" : "Off")
                     .font(.body.monospacedDigit())
-                    .foregroundColor(checkCycle > 0 ? .primary : Color(UIColor.systemGray))
+                    .foregroundStyle(.secondary)
             }
             .frame(width: 100)
         }
