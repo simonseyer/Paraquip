@@ -58,7 +58,4 @@ struct LogMenu: View {
     LogMenu(equipment: CoreData.fakeProfile.paraglider!) { _ in }
         .environment(\.locale, .init(identifier: "de"))
         .environment(\.managedObjectContext, .preview)
-        #if os(visionOS)
-        .glassBackgroundEffect()
-        #endif
 }

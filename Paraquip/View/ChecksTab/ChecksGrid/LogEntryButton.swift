@@ -90,7 +90,4 @@ struct LogEntryButton: View {
         LogEntryButton(logEntry: CoreData.fakeLogEntry(isPurchase: false, hasAttachment: true), action: {})
         LogEntryButton(logEntry: CoreData.fakeLogEntry(isPurchase: true), action: {})
     }
-    #if os(visionOS)
-    .glassBackgroundEffect()
-    #endif
 }

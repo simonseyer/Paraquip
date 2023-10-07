@@ -47,7 +47,4 @@ struct ChecksGridButton: View {
 
 #Preview {
     ChecksGridButton(equipment: CoreData.fakeProfile.paraglider!) {_ in }
-        #if os(visionOS)
-        .glassBackgroundEffect()
-        #endif
 }

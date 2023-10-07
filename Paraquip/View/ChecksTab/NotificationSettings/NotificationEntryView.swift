@@ -66,8 +66,5 @@ struct NotificationEntryView_Previews: PreviewProvider {
             )
         }
         .environment(\.locale, .init(identifier: "de"))
-        #if os(visionOS)
-        .glassBackgroundEffect()
-        #endif
     }
 }

@@ -37,8 +37,5 @@ struct EquipmentSelectionRow_Previews: PreviewProvider {
                 equipment: CoreData.fakeProfile.allEquipment.first!
             )
         }
-        #if os(visionOS)
-        .glassBackgroundEffect()
-        #endif
     }
 }

@@ -90,7 +90,4 @@ struct LogEntryBackground: View {
         LogEntryBackground(color: nil, position: .end, icon: "dollarsign")
     }
     .frame(width: 76, height: 300)
-    #if os(visionOS)
-    .glassBackgroundEffect()
-    #endif
 }

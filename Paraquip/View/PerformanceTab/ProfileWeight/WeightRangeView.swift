@@ -109,8 +109,5 @@ struct WeightRangeView_Previews: PreviewProvider {
             }
         }
         .padding()
-        #if os(visionOS)
-        .glassBackgroundEffect()
-        #endif
     }
 }
