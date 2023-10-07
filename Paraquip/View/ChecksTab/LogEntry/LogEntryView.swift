@@ -67,7 +67,9 @@ struct LogEntryView: View {
 
             Section {
                 ForEach(attachments) { attachment in
-                    Button(action: { previewURL = attachment.fileURL }) {
+                    Button {
+                        previewURL = attachment.fileURL
+                    } label: {
                         Label(attachment.name,
                               systemImage: attachment.icon)
                     }
