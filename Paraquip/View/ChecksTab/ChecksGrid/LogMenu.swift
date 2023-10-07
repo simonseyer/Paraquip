@@ -27,6 +27,14 @@ struct LogMenu: View {
                                            predicate: NSPredicate(format: "%K == %@", #keyPath(LogEntry.equipment), equipment))
     }
 
+    private var divider: some View {
+        #if os(iOS)
+        Divider()
+        #else
+        EmptyView()
+        #endif
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             NextCheckButton(urgency: equipment.checkUrgency) {
@@ -34,18 +42,14 @@ struct LogMenu: View {
             }
 
             ForEach(checkLog) { logEntry in
-                #if os(iOS)
-                Divider()
-                #endif
+                divider
                 LogEntryButton(logEntry: logEntry) {
                     action(.edit(logEntry))
                 }
             }
 
             if let logEntry = equipment.purchaseLog {
-                #if os(iOS)
-                Divider()
-                #endif
+                divider
                 LogEntryButton(logEntry: logEntry) {
                     action(.edit(logEntry))
                 }

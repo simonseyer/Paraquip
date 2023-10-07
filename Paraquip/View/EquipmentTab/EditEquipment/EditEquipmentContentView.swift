@@ -90,6 +90,15 @@ struct EditEquipmentContentView: View {
         _isShowingRecommendedWeightRange = .init(initialValue: equipment.hasRecommendedWeightRange)
     }
 
+    private var clearLabel: some View {
+        Label("Clear", systemImage: "xmark.circle")
+            #if os(visionOS)
+            .labelStyle(.titleOnly)
+            #else
+            .labelStyle(.iconOnly)
+            #endif
+    }
+
     var body: some View {
         Form {
             Section(header: Text("")) {
@@ -163,11 +172,7 @@ struct EditEquipmentContentView: View {
                             equipment.manualAttachment = nil
                         }
                     }) {
-                        #if os(visionOS)
-                        Text("Clear")
-                        #else
-                        Image(systemName: "xmark.circle")
-                        #endif
+                        clearLabel
                     }
                     .controlSize(.mini)
                     .opacity(equipment.manualAttachment == nil ? 0 : 1)
@@ -268,11 +273,7 @@ struct EditEquipmentContentView: View {
                                 isShowingRecommendedWeightRange.toggle()
                             }
                         } label: {
-                            #if os(visionOS)
-                            Text("Clear")
-                            #else
-                            Image(systemName: "xmark.circle")
-                            #endif
+                            clearLabel
                         }.controlSize(.mini)
                         Spacer()
                         Button("\(Image(systemName: "exclamationmark.triangle.fill".deviceSpecificIcon))") {
