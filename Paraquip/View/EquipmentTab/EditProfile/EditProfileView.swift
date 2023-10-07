@@ -106,12 +106,9 @@ struct EditProfileView: View {
     }
 }
 
-struct EditProfileView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        NavigationStack {
-            EditProfileView(profile: CoreData.fakeProfile)
-                .environment(\.managedObjectContext, .preview)
-        }
+#Preview {
+    NavigationStack {
+        EditProfileView(profile: CoreData.fakeProfile)
+            .environment(\.managedObjectContext, .preview)
     }
 }

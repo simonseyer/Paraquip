@@ -36,4 +36,5 @@ struct EquipmentView: View {
 
 #Preview {
     EquipmentView()
+        .environment(\.managedObjectContext, .preview)
 }

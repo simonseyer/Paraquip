@@ -27,11 +27,9 @@ struct WingClassPill: View {
     }
 }
 
-struct WingClassPill_Previews: PreviewProvider {
-    static var previews: some View {
-        HStack {
-            WingClassPill(text: Text("A"))
-                .padding()
-        }.background(Color.accentColor)
-    }
+#Preview {
+    HStack {
+        WingClassPill(text: Text("A"))
+            .padding()
+    }.background(Color.accentColor)
 }

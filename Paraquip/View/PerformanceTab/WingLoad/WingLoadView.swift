@@ -49,32 +49,34 @@ struct WingLoadView: View {
     }
 }
 
-struct WingLoadView_Previews: PreviewProvider {
-    
-    static var noWingLoadProfile: Profile {
-        let profile = Profile.create(context: .preview, name: "")
-        let paraglider = Paraglider.create(context: .preview)
-        paraglider.brandName = "Gin"
-        paraglider.name = "Explorer 2"
-        profile.addToEquipment(paraglider)
-        return profile
+// MARK: Preview
+
+private var noWingLoadProfile: Profile {
+    let profile = Profile.create(context: .preview, name: "")
+    let paraglider = Paraglider.create(context: .preview)
+    paraglider.brandName = "Gin"
+    paraglider.name = "Explorer 2"
+    profile.addToEquipment(paraglider)
+    return profile
+}
+
+#Preview {
+    NavigationStack {
+        WingLoadView(profile: CoreData.fakeProfile)
     }
-    
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                WingLoadView(profile: CoreData.fakeProfile)
-            }
-            NavigationStack {
-                WingLoadView(profile: Profile.create(context: .preview, name: "Empty"))
-            }
-            .previewDisplayName("No Paraglider")
-            NavigationStack {
-                WingLoadView(profile: noWingLoadProfile)
-            }
-            .previewDisplayName("No Wing Load")
-        }
-        .environment(\.managedObjectContext, .preview)
-        .environment(\.locale, .init(identifier: "de"))
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("No Paraglider") {
+    NavigationStack {
+        WingLoadView(profile: Profile.create(context: .preview, name: "Empty"))
     }
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("No Wing Load") {
+    NavigationStack {
+        WingLoadView(profile: noWingLoadProfile)
+    }
+    .environment(\.managedObjectContext, .preview)
 }

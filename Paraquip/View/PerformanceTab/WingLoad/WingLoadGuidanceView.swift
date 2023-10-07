@@ -34,8 +34,6 @@ struct WingLoadGuidanceView: View {
     }
 }
 
-struct WingLoadGuidanceView_Previews: PreviewProvider {
-    static var previews: some View {
-        WingLoadGuidanceView()
-    }
+#Preview {
+    WingLoadGuidanceView()
 }

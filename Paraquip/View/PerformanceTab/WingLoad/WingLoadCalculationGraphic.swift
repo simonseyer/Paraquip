@@ -24,8 +24,6 @@ struct WingLoadCalculationGraphic: View {
     }
 }
 
-struct WingLoadCalculationGraphic_Previews: PreviewProvider {
-    static var previews: some View {
-        WingLoadCalculationGraphic()
-    }
+#Preview {
+    WingLoadCalculationGraphic()
 }

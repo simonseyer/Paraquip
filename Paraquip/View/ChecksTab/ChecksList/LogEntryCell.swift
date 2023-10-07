@@ -98,40 +98,35 @@ struct LogEntryCell: View {
     }
 }
 
-struct TimelineView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        Group {
-            List {
-                NextCheckCell(urgency: .now, onTap: {})
-                LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: false), onTap: {})
-                LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: false, hasAttachment: true), onTap: {})
-                LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: true), onTap: {})
-            }
-            .listStyle(.insetGrouped)
-        }
-
-        Group {
-            List {
-                NextCheckCell(urgency: .soon(Date()), onTap: {})
-                LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: true, hasAttachment: true), onTap: {})
-            }
-            .listStyle(.insetGrouped)
-        }
-
-        Group {
-            List {
-                NextCheckCell(urgency: .later(Date()), onTap: {})
-                LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: false), onTap: {})
-            }
-            .listStyle(.insetGrouped)
-        }
-
-        Group {
-            List {
-                NextCheckCell(urgency: .never, onTap: {})
-            }
-            .listStyle(.insetGrouped)
-        }
+#Preview {
+    List {
+        NextCheckCell(urgency: .now, onTap: {})
+        LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: false), onTap: {})
+        LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: false, hasAttachment: true), onTap: {})
+        LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: true), onTap: {})
     }
+    .listStyle(.insetGrouped)
+}
+
+#Preview {
+    List {
+        NextCheckCell(urgency: .soon(Date()), onTap: {})
+        LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: true, hasAttachment: true), onTap: {})
+    }
+    .listStyle(.insetGrouped)
+}
+
+#Preview {
+    List {
+        NextCheckCell(urgency: .later(Date()), onTap: {})
+        LogEntryCell(logEntry: CoreData.fakeLogEntry(isPurchase: false), onTap: {})
+    }
+    .listStyle(.insetGrouped)
+}
+
+#Preview {
+    List {
+        NextCheckCell(urgency: .never, onTap: {})
+    }
+    .listStyle(.insetGrouped)
 }

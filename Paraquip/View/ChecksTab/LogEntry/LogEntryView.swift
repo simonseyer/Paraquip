@@ -164,27 +164,30 @@ struct LogEntryView: View {
     }
 }
 
-struct LogEntryView_Previews: PreviewProvider {
+// MARK: Preview
 
-    private static var logEntry1: LogEntry {
-        CoreData.fakeProfile.allEquipment.first { equipment in
-            equipment.name == "Explorer 2"
-        }!.allChecks.first!
-    }
-    private static var logEntry2: LogEntry {
-        CoreData.fakeProfile.allEquipment.first { equipment in
-            equipment.name == "Angel SQ"
-        }!.allChecks.first!
-    }
+private var logEntry1: LogEntry {
+    CoreData.fakeProfile.allEquipment.first { equipment in
+        equipment.name == "Explorer 2"
+    }!.allChecks.first!
+}
+private var logEntry2: LogEntry {
+    CoreData.fakeProfile.allEquipment.first { equipment in
+        equipment.name == "Angel SQ"
+    }!.allChecks.first!
+}
 
-    static var previews: some View {
-        NavigationStack {
-            LogEntryView(logEntry: logEntry1)
-                .environment(\.managedObjectContext, .preview)
-        }
-        NavigationStack {
-            LogEntryView(logEntry: logEntry2)
-                .environment(\.managedObjectContext, .preview)
-        }
+#Preview {
+    NavigationStack {
+        LogEntryView(logEntry: logEntry1)
+            .environment(\.managedObjectContext, .preview)
     }
 }
+
+#Preview {
+    NavigationStack {
+        LogEntryView(logEntry: logEntry2)
+            .environment(\.managedObjectContext, .preview)
+    }
+}
+

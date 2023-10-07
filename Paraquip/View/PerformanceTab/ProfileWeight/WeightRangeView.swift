@@ -90,24 +90,23 @@ struct WeightRangeView: View {
     }
 }
 
-struct WeightRangeView_Previews: PreviewProvider {
+// MARK: Preview
 
-    static let minWeight = 90.0
-    static let minWeightI = 0.0
-    static let maxWeight = 120.0
-    static let values: [Double] = [50, 90, 100, 110, 120, 130, 160]
+private let minWeight = 90.0
+private let minWeightI = 0.0
+private let maxWeight = 120.0
+private let values: [Double] = [50, 90, 100, 110, 120, 130, 160]
 
-    static var previews: some View {
-        VStack(spacing: 20) {
-            ForEach(values, id: \.hashValue) { value in
-                WeightRangeView(minWeight: minWeight, maxWeight: maxWeight, weight: value)
-                    .previewLayout(.sizeThatFits)
-            }
-            ForEach(values, id: \.hashValue) { value in
-                WeightRangeView(minWeight: minWeightI, maxWeight: maxWeight, weight: value)
-                    .previewLayout(.sizeThatFits)
-            }
+#Preview {
+    VStack(spacing: 20) {
+        ForEach(values, id: \.hashValue) { value in
+            WeightRangeView(minWeight: minWeight, maxWeight: maxWeight, weight: value)
+                .previewLayout(.sizeThatFits)
         }
-        .padding()
+        ForEach(values, id: \.hashValue) { value in
+            WeightRangeView(minWeight: minWeightI, maxWeight: maxWeight, weight: value)
+                .previewLayout(.sizeThatFits)
+        }
     }
+    .padding()
 }

@@ -27,13 +27,11 @@ struct CheckCycleRow: View {
     }
 }
 
-struct CheckCycleRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Form {
-            CheckCycleRow(checkCycle: .constant(0))
-            CheckCycleRow(checkCycle: .constant(3))
-            CheckCycleRow(checkCycle: .constant(50))
-        }
-        .environment(\.locale, .init(identifier: "de"))
+#Preview {
+    Form {
+        CheckCycleRow(checkCycle: .constant(0))
+        CheckCycleRow(checkCycle: .constant(3))
+        CheckCycleRow(checkCycle: .constant(50))
     }
+    .environment(\.locale, .init(identifier: "de"))
 }

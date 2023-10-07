@@ -171,12 +171,10 @@ struct EquipmentWeightRow: View {
     }
 }
 
-struct ProfileWeightView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ProfileWeightView(profile: CoreData.fakeProfile)
-        }
-        .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, .preview)
+#Preview {
+    NavigationStack {
+        ProfileWeightView(profile: CoreData.fakeProfile)
     }
+    .environment(\.locale, .init(identifier: "de"))
+    .environment(\.managedObjectContext, .preview)
 }

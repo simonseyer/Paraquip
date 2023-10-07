@@ -62,16 +62,9 @@ struct WeightRangeGraphic: View {
     }
 }
 
-struct WeightRangeGraphic_Previews: PreviewProvider {
-
-    static var paraglider: Paraglider {
-        CoreData.fakeProfile.paraglider!
-    }
-
-    static var previews: some View {
-        WeightRangeGraphic(
-            equipment: paraglider,
-            visibleWeightRange: 65...100)
-        .frame(height: 40)
-    }
+#Preview {
+    WeightRangeGraphic(
+        equipment: CoreData.fakeProfile.paraglider!,
+        visibleWeightRange: 65...100)
+    .frame(height: 40)
 }

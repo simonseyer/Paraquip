@@ -56,16 +56,10 @@ struct LogSheet: View {
     }
 }
 
-struct EquipmentView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        ForEach(CoreData.fakeProfile.allEquipment) { equipment in
-            NavigationStack {
-                LogSheet(equipment: equipment)
-            }
-            .previewDisplayName(equipment.equipmentName)
-        }
-        .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, .preview)
+#Preview {
+    NavigationStack {
+        LogSheet(equipment: CoreData.fakeProfile.paraglider!)
     }
+    .environment(\.locale, .init(identifier: "de"))
+    .environment(\.managedObjectContext, .preview)
 }

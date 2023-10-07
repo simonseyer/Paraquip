@@ -101,33 +101,32 @@ struct NotificationSettingsView: View {
     }
 }
 
-struct NotificationSettingsView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        NavigationStack {
-            NotificationSettingsView()
-                .environmentObject(
-                    NotificationService(state: .init(
-                                        isEnabled: true,
-                                        wasRequestRejected: false,
-                                        configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
-                                       managedObjectContext: .preview,
-                                       notifications: FakeNotificationPlugin()
-                    )
+#Preview {
+    NavigationStack {
+        NotificationSettingsView()
+            .environmentObject(
+                NotificationService(state: .init(
+                                    isEnabled: true,
+                                    wasRequestRejected: false,
+                                    configuration: [NotificationConfig(unit: .months, multiplier: 1)]),
+                                   managedObjectContext: .preview,
+                                   notifications: FakeNotificationPlugin()
                 )
-        }
+            )
+    }
+}
 
-        NavigationStack {
-            NotificationSettingsView()
-                .environmentObject(
-                    NotificationService(state: .init(
-                                        isEnabled: false,
-                                        wasRequestRejected: true,
-                                        configuration: []),
-                                       managedObjectContext: .preview,
-                                       notifications: FakeNotificationPlugin()
-                    )
+#Preview {
+    NavigationStack {
+        NotificationSettingsView()
+            .environmentObject(
+                NotificationService(state: .init(
+                                    isEnabled: false,
+                                    wasRequestRejected: true,
+                                    configuration: []),
+                                   managedObjectContext: .preview,
+                                   notifications: FakeNotificationPlugin()
                 )
-        }
+            )
     }
 }

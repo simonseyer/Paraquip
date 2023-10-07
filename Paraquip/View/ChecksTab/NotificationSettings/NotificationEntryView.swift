@@ -52,18 +52,16 @@ struct NotificationEntryView: View {
     }
 }
 
-struct NotificationEntryView_Previews: PreviewProvider {
-    static var previews: some View {
-        Form {
-            NotificationEntryView(
-                config: .init(unit: .days, multiplier: 1),
-                onChange: { _ in }
-            )
-            NotificationEntryView(
-                config: .init(unit: .days, multiplier: 1),
-                onChange: { _ in }
-            )
-        }
-        .environment(\.locale, .init(identifier: "de"))
+#Preview {
+    Form {
+        NotificationEntryView(
+            config: .init(unit: .days, multiplier: 1),
+            onChange: { _ in }
+        )
+        NotificationEntryView(
+            config: .init(unit: .days, multiplier: 1),
+            onChange: { _ in }
+        )
     }
+    .environment(\.locale, .init(identifier: "de"))
 }

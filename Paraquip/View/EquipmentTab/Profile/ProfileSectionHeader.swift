@@ -30,12 +30,10 @@ struct ProfileSectionHeader: View {
     }
 }
 
-struct ProfileSectionHeader_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            ProfileSectionHeader(equipmentType: .paraglider)
-            ProfileSectionHeader(equipmentType: .harness)
-            ProfileSectionHeader(equipmentType: .reserve)
-        }.previewLayout(.sizeThatFits)
+#Preview {
+    VStack {
+        ProfileSectionHeader(equipmentType: .paraglider)
+        ProfileSectionHeader(equipmentType: .harness)
+        ProfileSectionHeader(equipmentType: .reserve)
     }
 }

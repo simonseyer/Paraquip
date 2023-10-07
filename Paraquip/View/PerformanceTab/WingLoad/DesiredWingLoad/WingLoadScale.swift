@@ -48,8 +48,6 @@ struct WingLoadScale: View {
     }
 }
 
-struct WingLoadScale_Previews: PreviewProvider {
-    static var previews: some View {
-        WingLoadScale(range: 3.8...4.6)
-    }
+#Preview {
+    WingLoadScale(range: 3.8...4.6)
 }

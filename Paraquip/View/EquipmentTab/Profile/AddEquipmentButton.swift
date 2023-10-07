@@ -25,10 +25,8 @@ struct AddEquipmentButton: View {
     }
 }
 
-struct AddEquipmentButton_Previews: PreviewProvider {
-    static var previews: some View {
-        List {
-            AddEquipmentButton {}
-        }
+#Preview {
+    List {
+        AddEquipmentButton {}
     }
 }

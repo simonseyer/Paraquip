@@ -196,25 +196,23 @@ private struct ProfileTitleView: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                ProfileContentView(profile: CoreData.fakeProfile, selectedEquipment: .constant(nil))
-            }
-
-            NavigationStack {
-                ProfileContentView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
-            }
-            .previewDisplayName("Empty Profile")
-
-            NavigationStack {
-                ProfileContentView(profile: nil, selectedEquipment: .constant(nil))
-            }
-            .previewDisplayName("All Equipment")
-        }
-        .environment(\.locale, .init(identifier: "de"))
-        .environment(\.managedObjectContext, .preview)
+#Preview {
+    NavigationStack {
+        ProfileContentView(profile: CoreData.fakeProfile, selectedEquipment: .constant(nil))
     }
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("Empty Profile") {
+    NavigationStack {
+        ProfileContentView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
+    }
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("All Equipment") {
+    NavigationStack {
+        ProfileContentView(profile: nil, selectedEquipment: .constant(nil))
+    }
+    .environment(\.managedObjectContext, .preview)
 }

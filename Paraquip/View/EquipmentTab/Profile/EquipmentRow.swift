@@ -37,29 +37,26 @@ struct EquipmentRow: View {
     }
 }
 
-struct EquipmentRow_Previews: PreviewProvider {
+private func equipment(for brand: String, type: Equipment.EquipmentType = .reserve) -> Equipment {
+    let equipment = Equipment.create(type: type, context: .preview)
+    equipment.brandName = brand
+    equipment.name = brand
+    if brand.starts(with: "A") {
+        equipment.checkCycle = 1
+    }
+    return equipment
+}
 
-    static var previews: some View {
-        NavigationStack {
-            List {
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider))
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .harness))
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve))
-                EquipmentRow(equipment: equipment(for: "Unknown", type: .gear))
-                ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
-                    EquipmentRow(equipment: equipment(for: brand))
-                }
+#Preview {
+    NavigationStack {
+        List {
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .paraglider))
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .harness))
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .reserve))
+            EquipmentRow(equipment: equipment(for: "Unknown", type: .gear))
+            ForEach(Equipment.brandSuggestions, id: \.hashValue) { brand in
+                EquipmentRow(equipment: equipment(for: brand))
             }
         }
-    }
-
-    private static func equipment(for brand: String, type: Equipment.EquipmentType = .reserve) -> Equipment {
-        let equipment = Equipment.create(type: type, context: .preview)
-        equipment.brandName = brand
-        equipment.name = brand
-        if brand.starts(with: "A") {
-            equipment.checkCycle = 1
-        }
-        return equipment
     }
 }

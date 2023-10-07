@@ -79,10 +79,8 @@ struct DesiredWingLoadView: View {
     }
 }
 
-struct DesiredWingLoadView_Previews: PreviewProvider {
-    static var previews: some View {
-        DesiredWingLoadView(profile: CoreData.fakeProfile)
+#Preview {
+    DesiredWingLoadView(profile: CoreData.fakeProfile)
         .padding()
         .environment(\.managedObjectContext, .preview)
-    }
 }

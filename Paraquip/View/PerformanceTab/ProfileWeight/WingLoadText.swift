@@ -44,14 +44,12 @@ struct WingLoadText: View {
     }
 }
 
-struct WingLoadText_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack(spacing: 12) {
-            WingLoadText(wingLoad: 4.5, desiredWingLoad: 4.3)
-            WingLoadText(wingLoad: 4.47, desiredWingLoad: 4.3)
-            WingLoadText(wingLoad: 4.33, desiredWingLoad: 4.3)
-            WingLoadText(wingLoad: 4.18, desiredWingLoad: 4.3)
-            WingLoadText(wingLoad: 4.0, desiredWingLoad: 4.3)
-        }
+#Preview {
+    VStack(spacing: 12) {
+        WingLoadText(wingLoad: 4.5, desiredWingLoad: 4.3)
+        WingLoadText(wingLoad: 4.47, desiredWingLoad: 4.3)
+        WingLoadText(wingLoad: 4.33, desiredWingLoad: 4.3)
+        WingLoadText(wingLoad: 4.18, desiredWingLoad: 4.3)
+        WingLoadText(wingLoad: 4.0, desiredWingLoad: 4.3)
     }
 }

@@ -356,20 +356,29 @@ struct EditEquipmentContentView: View {
     }
 }
 
-struct AddEquipmentView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                EditEquipmentContentView(equipment: Paraglider.create(context: .preview))
-            }
-            ForEach(CoreData.fakeProfile.allEquipment) { equipment in
-                NavigationStack {
-                    EditEquipmentContentView(equipment: equipment)
-                }
-                .previewDisplayName(equipment.equipmentName)
-            }
-        }
-        .environment(\.managedObjectContext, .preview)
+#Preview("New Paraglider") {
+    NavigationStack {
+        EditEquipmentContentView(equipment: Paraglider.create(context: .preview))
     }
+}
+
+#Preview("Paraglider") {
+    NavigationStack {
+        EditEquipmentContentView(equipment: CoreData.fakeProfile.paraglider!)
+    }
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("Harness") {
+    NavigationStack {
+        EditEquipmentContentView(equipment: CoreData.fakeProfile.singleEquipment(of: .harness)!)
+    }
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("Reserve") {
+    NavigationStack {
+        EditEquipmentContentView(equipment: CoreData.fakeProfile.singleEquipment(of: .reserve)!)
+    }
+    .environment(\.managedObjectContext, .preview)
 }

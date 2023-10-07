@@ -172,29 +172,24 @@ struct PreviewContainer: View {
     }
 }
 
-struct WingLoadLegendView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        VStack {
-            PreviewContainer(
-                isWingLoadAvailable: true,
-                isWeightRangeAvailable: true,
-                isRecommendedWeightRangeAvailable: true)
-            .padding()
-            PreviewContainer(
-                isWingLoadAvailable: true,
-                isWeightRangeAvailable: true,
-                isRecommendedWeightRangeAvailable: false)
-            .padding()
-            PreviewContainer(
-                isWingLoadAvailable: false,
-                isWeightRangeAvailable: false,
-                isRecommendedWeightRangeAvailable: false)
-            .padding()
-        }
-        .background(Color(uiColor: .systemGroupedBackground))
-        .tint(Color(uiColor: .systemYellow))
-        .environment(\.locale, .init(identifier: "de"))
+#Preview {
+    VStack {
+        PreviewContainer(
+            isWingLoadAvailable: true,
+            isWeightRangeAvailable: true,
+            isRecommendedWeightRangeAvailable: true)
+        .padding()
+        PreviewContainer(
+            isWingLoadAvailable: true,
+            isWeightRangeAvailable: true,
+            isRecommendedWeightRangeAvailable: false)
+        .padding()
+        PreviewContainer(
+            isWingLoadAvailable: false,
+            isWeightRangeAvailable: false,
+            isRecommendedWeightRangeAvailable: false)
+        .padding()
     }
+    .tint(Color(uiColor: .systemYellow))
+    .environment(\.locale, .init(identifier: "de"))
 }
-

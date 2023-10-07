@@ -98,12 +98,9 @@ struct ProfileListView: View {
     }
 }
 
-struct MainView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        NavigationStack {
-            ProfileListView(selectedProfile: .constant(.none))
-                .environment(\.managedObjectContext, .preview)
-        }
+#Preview {
+    NavigationStack {
+        ProfileListView(selectedProfile: .constant(.none))
+            .environment(\.managedObjectContext, .preview)
     }
 }

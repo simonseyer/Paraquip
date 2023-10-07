@@ -28,13 +28,11 @@ struct EquipmentSelectionRow: View {
     }
 }
 
-struct EquipmentSelectionRow_Previews: PreviewProvider {
-    static var previews: some View {
-        List {
-            EquipmentSelectionRow(
-                profile: CoreData.fakeProfile,
-                equipment: CoreData.fakeProfile.allEquipment.first!
-            )
-        }
+#Preview {
+    List {
+        EquipmentSelectionRow(
+            profile: CoreData.fakeProfile,
+            equipment: CoreData.fakeProfile.allEquipment.first!
+        )
     }
 }

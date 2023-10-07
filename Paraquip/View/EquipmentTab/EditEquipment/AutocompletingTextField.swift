@@ -95,9 +95,6 @@ fileprivate struct AutocompletingTextField_PreviewView: View {
     }
 }
 
-struct AutocompletingTextField_Previews: PreviewProvider {
-
-    static var previews: some View {
-        AutocompletingTextField_PreviewView()
-    }
+#Preview {
+    AutocompletingTextField_PreviewView()
 }

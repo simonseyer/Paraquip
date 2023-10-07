@@ -66,15 +66,11 @@ struct MainView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        MainView()
-            .environment(\.managedObjectContext, .preview)
-            .environmentObject(NotificationService(managedObjectContext: .preview,
-                                                   notifications: FakeNotificationPlugin()))
-            .environmentObject(DatabaseMigration(context: .preview))
-            .environment(\.locale, .init(identifier: "de"))
-    }
+#Preview {
+    MainView()
+        .environment(\.managedObjectContext, .preview)
+        .environmentObject(NotificationService(managedObjectContext: .preview,
+                                               notifications: FakeNotificationPlugin()))
+        .environmentObject(DatabaseMigration(context: .preview))
+        .environment(\.locale, .init(identifier: "de"))
 }
-
