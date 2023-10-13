@@ -51,7 +51,6 @@ struct ProfileListView: View {
                 editProfileOperation = Operation(withParentContext: managedObjectContext)
             } label: {
                 Label("Create new set", systemImage: "plus.circle")
-                    .foregroundStyle(.accent)
             }
             if case .profile(let profile) = selectedProfile {
                 DeletionObserverView(object: profile) {

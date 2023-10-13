@@ -89,7 +89,6 @@ struct LogEntryView: View {
                     Label("Add attachment",
                           systemImage: "plus.circle")
                 }
-                .foregroundStyle(.accent)
                 .confirmationDialog("Add attachment", isPresented: $showingAddAttachment) {
                     Button(action: { showingDocumentPicker = true }) {
                         Label("Document", systemImage: "doc")

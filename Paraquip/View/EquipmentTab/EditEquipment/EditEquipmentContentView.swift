@@ -153,7 +153,6 @@ struct EditEquipmentContentView: View {
                         previewedManual = manual.fileURL
                     } label: {
                         Label("Open manual", systemImage: "book")
-                            .foregroundStyle(.accent)
                     }
                 } else {
                     Button(action: {
@@ -161,7 +160,6 @@ struct EditEquipmentContentView: View {
                     }) {
                         Label("Add manual",
                               systemImage: "plus.circle")
-                        .foregroundStyle(.accent)
                     }
                 }
             } header: {

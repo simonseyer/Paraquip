@@ -58,7 +58,6 @@ struct NotificationSettingsView: View {
                         Label("Add notification",
                               systemImage: "plus.circle")
                     }
-                    .foregroundStyle(.accent)
                 } header: {
                     HStack {
                         Text("Check Reminder")
