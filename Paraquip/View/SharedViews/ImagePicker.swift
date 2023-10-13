@@ -52,8 +52,16 @@ struct ImagePicker: UIViewControllerRepresentable {
                     // TODO: error handling
                     print("Can't load image \(error.localizedDescription)")
                 } else if let url {
-                    Task { @MainActor in
-                        parent.selectFile(url)
+                    do {
+                        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
+                        try FileManager.default.moveItem(at: url, to: tempURL)
+                        Task { @MainActor in
+                            parent.selectFile(tempURL)
+                            try? FileManager.default.removeItem(at: tempURL)
+                        }
+                    } catch {
+                        // TODO: error handling
+                        print("Can't copy image to temporary location \(error.localizedDescription)")
                     }
                 }
             }
