@@ -65,36 +65,7 @@ private struct ProfileContentView: View {
     }
 
     @ViewBuilder
-    func singleSection(_ type: Equipment.EquipmentType) -> some View {
-        let filteredEquipment = equipment.first {
-            $0.equipmentType == type
-        }
-        Section {
-            if let equipment = filteredEquipment {
-                NavigationLink(value: equipment) {
-                    EquipmentRow(equipment: equipment)
-                }
-            } else {
-                Button {
-                    createEquipment(type: type)
-                } label: {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "plus")
-                            .font(.title)
-                            .fontWeight(.semibold)
-                        Spacer()
-                    }
-                }
-                .listRowBackground(Color.accentColor.opacity(0.25))
-            }
-        } header: {
-            ProfileSectionHeader(equipmentType: type)
-        }
-    }
-
-    @ViewBuilder
-    func listSection(_ type: Equipment.EquipmentType) -> some View {
+    func section(_ type: Equipment.EquipmentType, single: Bool) -> some View {
         let filteredEquipment = equipment.filter {
             $0.equipmentType == type
         }
@@ -104,28 +75,23 @@ private struct ProfileContentView: View {
                     EquipmentRow(equipment: equipment)
                 }
             }
-            Button {
-                createEquipment(type: type)
-            } label: {
-                Label("Add \(type.localizedName)", systemImage: "plus.circle")
+            if !single || filteredEquipment.isEmpty {
+                Button {
+                    createEquipment(type: type)
+                } label: {
+                    Label(type.localizedName, 
+                          systemImage: "plus.circle")
+                }
             }
-            .foregroundStyle(.accent)
-        } header: {
-            ProfileSectionHeader(equipmentType: type)
         }
     }
 
     var body: some View {
         List(selection: $selectedEquipment) {
-            if isSpecificProfile {
-                singleSection(.paraglider)
-                singleSection(.harness)
-            } else {
-                listSection(.paraglider)
-                listSection(.harness)
-            }
-            listSection(.reserve)
-            listSection(.gear)
+            section(.paraglider, single: isSpecificProfile)
+            section(.harness, single: isSpecificProfile)
+            section(.reserve, single: false)
+            section(.gear, single: false)
             if let selectedEquipment {
                 DeletionObserverView(object: selectedEquipment) {
                     self.selectedEquipment = nil
