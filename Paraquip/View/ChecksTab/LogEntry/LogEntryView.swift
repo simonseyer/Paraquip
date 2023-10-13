@@ -73,6 +73,7 @@ struct LogEntryView: View {
                         Label(attachment.name,
                               systemImage: attachment.icon)
                     }
+                    .foregroundStyle(.primary)
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
