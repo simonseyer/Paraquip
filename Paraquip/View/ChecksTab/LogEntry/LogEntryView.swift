@@ -146,7 +146,8 @@ struct LogEntryView: View {
             }
         }
         .environment(\.editMode, $editMode)
-        .quickLookPreview($previewURL)
+        .quickLookPreview($previewURL, 
+                          in: attachments.compactMap { $0.fileURL })
         .sheet(isPresented: $showingDocumentPicker) {
             DocumentPicker(contentTypes: [.pdf, .image], selectFile: addAttachment)
         }
