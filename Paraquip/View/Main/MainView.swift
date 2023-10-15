@@ -18,10 +18,12 @@ struct MainView: View {
 
     @EnvironmentObject var notificationService: NotificationService
     @EnvironmentObject var databaseMigration: DatabaseMigration
+    @Environment(\.managedObjectContext) private var managedObjectContext
 
     @State private var showNotificationSettings = false
     @State private var isShowingSingleEquipmentMigrationInfo = false
     @State private var selectedTab: Tab = .equipment
+    @State private var isFirstAppearance = true
 
     var body: some View {
         TabView(selection: $selectedTab.animation()) {
@@ -62,6 +64,15 @@ struct MainView: View {
         }
         .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) {
             isShowingSingleEquipmentMigrationInfo = databaseMigration.hasRemovedDuplicateEquipment
+        }
+        .onAppear {
+            if isFirstAppearance {
+                let equipmentCount = try? managedObjectContext.count(for: Equipment.fetchRequest())
+                if equipmentCount ?? 0 > 0 {
+                    selectedTab = .checks
+                }
+                isFirstAppearance = false
+            }
         }
     }
 }
