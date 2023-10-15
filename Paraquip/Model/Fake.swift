@@ -42,10 +42,8 @@ struct CoreData {
         let dummyPDFURL = Bundle.main.url(forResource: "Dummy", withExtension: "pdf")
         let dummyImageURL = Bundle.main.url(forResource: "Dummy", withExtension: "jpg")
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        dateFormatter.locale = Locale(identifier: "de")
+        let calender = Calendar.current
+        let oneYearAgo = calender.date(byAdding: .year, value: -1, to: .paraquipNow)!
 
         let profile = Profile.create(context: context)
         profile.name = LocalizedString("Your Equipment")
@@ -59,8 +57,7 @@ struct CoreData {
             equipment.brand = "Nova"
             equipment.name = "Beamer 3 light"
             equipment.checkCycle = 3
-            equipment.purchaseLog = LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: oneYearAgo)
             equipment.weight = 1.37
             equipment.maxWeight = 130
             profile.addToEquipment(equipment)
@@ -71,14 +68,14 @@ struct CoreData {
             equipment.brand = "Ozone"
             equipment.name = "Angel SQ"
             equipment.checkCycle = 3
-            equipment.purchaseLog = LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: oneYearAgo)
             equipment.weight = 1.54
             equipment.maxWeight = 120
             profile.addToEquipment(equipment)
 
+            let threeMonthsAgo = calender.date(byAdding: .month, value: -3, to: .paraquipNow)!
             equipment.addToCheckLog(LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "10.07.2021")!))
+                                                    date: calender.date(byAdding: .day, value: 8, to: threeMonthsAgo)!))
         }
 
         do {
@@ -86,14 +83,13 @@ struct CoreData {
             equipment.brand = "Woody Valley"
             equipment.name = "Wani Light 2"
             equipment.checkCycle = 12
-            equipment.purchaseLog = LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: oneYearAgo)
             equipment.equipmentSize = "M"
             equipment.weight = 2.75
             profile.addToEquipment(equipment)
 
             equipment.addToCheckLog(LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "14.04.2021")!))
+                                                    date: calender.date(byAdding: .month, value: -5, to: .paraquipNow)!))
         }
 
         do {
@@ -103,8 +99,7 @@ struct CoreData {
             equipment.equipmentSize = "S"
             equipment.checkCycle = 12
             equipment.projectedAreaValue = 20.43
-            equipment.purchaseLog = LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: oneYearAgo)
             equipment.weight = 3.7
             equipment.minWeightValue = 75
             equipment.maxWeightValue = 95
@@ -115,7 +110,7 @@ struct CoreData {
             }
             profile.addToEquipment(equipment)
 
-            let logEntry = LogEntry.create(context: context, date: dateFormatter.date(from: "12.08.2021")!)
+            let logEntry = LogEntry.create(context: context, date: calender.date(byAdding: .day, value: -40, to: .paraquipNow)!)
             if let dummyPDFURL, let dummyImageURL {
                 logEntry.addToAttachments(createAttachment(for: dummyPDFURL, context: context))
                 logEntry.addToAttachments(createAttachment(for: dummyImageURL, context: context))
@@ -127,8 +122,7 @@ struct CoreData {
             let equipment = Gear.create(context: context)
             equipment.brand = "Woody Valley"
             equipment.name = "Rucksack Light"
-            equipment.purchaseLog = LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "30.09.2020")!)
+            equipment.purchaseLog = LogEntry.create(context: context, date: oneYearAgo)
             equipment.equipmentSize = "M"
             equipment.weight = 1.05
             profile.addToEquipment(equipment)
@@ -147,7 +141,7 @@ struct CoreData {
             equipment.equipmentSize = "M"
             equipment.checkCycle = 12
             equipment.addToCheckLog(LogEntry.create(context: context,
-                                                    date: dateFormatter.date(from: "10.03.2021")!))
+                                                    date: calender.date(byAdding: .month, value: -6, to: .paraquipNow)!))
             profile2.addToEquipment(equipment)
         }
 
