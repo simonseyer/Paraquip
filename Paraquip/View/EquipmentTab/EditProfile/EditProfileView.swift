@@ -42,6 +42,9 @@ struct EditProfileView: View {
                     ForEach(Profile.Icon.allCases) { icon in
                         Image(systemName: icon.systemName)
                             .tag(icon)
+                            #if os(iOS)
+                            .symbolVariant(.fill)
+                            #endif
                     }
                 }
             }

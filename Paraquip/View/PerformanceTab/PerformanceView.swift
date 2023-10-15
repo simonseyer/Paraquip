@@ -20,7 +20,8 @@ struct PerformanceView: View {
                 ForEach(profiles) { profile in
                     NavigationLink(value: profile) {
                         Label(profile.profileName,
-                              systemImage: profile.profileIcon.systemName.removingFill)
+                              systemImage: profile.profileIcon.systemName)
+
                     }
                 }
             }

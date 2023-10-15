@@ -38,7 +38,7 @@ struct ProfileListView: View {
             ForEach(profiles) { profile in
                 NavigationLink(value: ProfileSelection.profile(profile)) {
                     Label(profile.profileName,
-                          systemImage: profile.profileIcon.systemName.removingFill)
+                          systemImage: profile.profileIcon.systemName)
                 }
             }
             NavigationLink(value: ProfileSelection.allEquipment)  {

@@ -224,7 +224,7 @@ struct EditEquipmentContentView: View {
                             validationAlertMessage = "The maximum weight must be larger then the mimimum weight."
                             isShowingValidationAlert.toggle()
                         } label: {
-                            Image(systemName: "exclamationmark.triangle.fill".deviceSpecificIcon)
+                            Image(systemName: "exclamationmark.triangle")
                         }
                         .controlSize(.mini)
                         .foregroundStyle(.red)
@@ -280,7 +280,7 @@ struct EditEquipmentContentView: View {
                             clearLabel
                         }.controlSize(.mini)
                         Spacer()
-                        Button("\(Image(systemName: "exclamationmark.triangle.fill".deviceSpecificIcon))") {
+                        Button("\(Image(systemName: "exclamationmark.triangle"))") {
                             validationAlertMessage = "The recommended weight range must lie within the certified weight range."
                             isShowingValidationAlert.toggle()
                         }
@@ -327,6 +327,7 @@ struct EditEquipmentContentView: View {
         }
         #if os(iOS)
         .scrollDismissesKeyboard(.interactively)
+        .symbolVariant(.fill)
         #endif
         .navigationTitle(Text(equipment.equipmentType.localizedName))
         .navigationBarTitleDisplayMode(.inline)

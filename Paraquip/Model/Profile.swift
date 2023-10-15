@@ -27,13 +27,13 @@ extension Profile: Creatable {
         var id: String { rawValue }
         var systemName: String {
             switch self {
-            case .campground: return "tent.fill"
-            case .feather: return "backpack.fill"
-            case .mountain: return "photo.fill"
-            case .beach: return "beach.umbrella.fill"
-            case .cloud: return "cloud.fill"
+            case .campground: return "tent"
+            case .feather: return "backpack"
+            case .mountain: return "photo"
+            case .beach: return "beach.umbrella"
+            case .cloud: return "cloud"
             case .hiking: return "figure.hiking"
-            case .trophy: return "trophy.fill"
+            case .trophy: return "trophy"
             case .wind: return "wind"
             }
         }

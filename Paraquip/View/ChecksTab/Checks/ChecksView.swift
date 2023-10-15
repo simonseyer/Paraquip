@@ -47,7 +47,7 @@ struct ChecksView: View {
                 ToolbarItem(placement: .primaryAction) {
                     Picker("Filter by a set", selection: $profileFilter.animation()) {
                         Label("All Equipment",
-                              systemImage: "line.3.horizontal.decrease.circle.fill".deviceSpecificIcon)
+                              systemImage: "line.3.horizontal.decrease.circle")
                         .tag(Optional<Profile>.none)
                         ForEach(profiles) { profile in
                             Label(profile.profileName,
@@ -60,10 +60,13 @@ struct ChecksView: View {
                     Button {
                         showNotificationSettings = true
                     } label: {
-                        Label("Set up notifications", systemImage: "bell.fill".deviceSpecificIcon)
+                        Label("Set up notifications", systemImage: "bell")
                     }
                 }
             }
+            #if os(iOS)
+            .symbolVariant(.fill)
+            #endif
             .sheet(isPresented: $showNotificationSettings) {
                 NavigationStack {
                     NotificationSettingsView()
