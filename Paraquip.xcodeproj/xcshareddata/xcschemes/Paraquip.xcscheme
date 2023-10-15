@@ -79,11 +79,6 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "simulatedNotificationDate"
-            value = "1632985185"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
             key = "stateSimulated"
             value = "true"
             isEnabled = "YES">
@@ -97,6 +92,11 @@
             key = "animationsDisabled"
             value = "true"
             isEnabled = "NO">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "simulatedDate"
+            value = "2021-09-30T06:59:55+00:00"
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
