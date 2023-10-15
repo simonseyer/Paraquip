@@ -51,6 +51,7 @@ struct EditEquipmentContentView: View {
     @ObservedObject var equipment: Equipment
 
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.undoManager) private var undoManager
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
@@ -59,6 +60,7 @@ struct EditEquipmentContentView: View {
     @State private var isShowingValidationAlert = false
     @State private var isShowingDeleteEquipment = false
     @State private var validationAlertMessage: LocalizedStringKey?
+    @State private var undoHandler: UndoHandler<Bool>?
     @FocusState private var focusedField: Field?
 
     private var isMaxWeightValid: Bool {
@@ -350,6 +352,13 @@ struct EditEquipmentContentView: View {
             if let message = message.wrappedValue {
                 Text(message)
             }
+        }
+        .onChange(of: isShowingRecommendedWeightRange) {  oldValue, newValue in
+            undoHandler?.registerUndo(from: oldValue, to: newValue)
+        }
+        .onChange(of: undoManager, initial: true) {
+            undoHandler = UndoHandler(binding: $isShowingRecommendedWeightRange,
+                                      undoManger: undoManager)
         }
     }
 }
