@@ -6,40 +6,47 @@
 //
 
 import Foundation
-@preconcurrency
 import UserNotifications
 import UIKit
 import OSLog
 import Combine
 
-@MainActor
-class AppleNotificationPlugin: NotificationPlugin  {
+class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationCenterDelegate  {
 
-    weak var delegate: (any NotificationsPluginDelegate)?
-
-    private let center = UNUserNotificationCenter.current()
-    private let centerDelegate = NotificationCenterDelegate()
-    private let badgeIdentifier = "badge"
-    private let logger = Logger(category: "NotificationPlugin")
-    private var subscriptions: Set<AnyCancellable> = []
-
-    init() {
-        precondition(center.delegate == nil)
-        center.delegate = centerDelegate
-        centerDelegate.parent = self
-        observeAuthorizationStatus()
+    weak var delegate: (any NotificationsPluginDelegate)? {
+        didSet {
+            observeAuthorizationStatus(delegate: delegate)
+        }
     }
 
-    private func observeAuthorizationStatus() {
-        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
-            .sink {[weak self] _ in
-                Task {[weak self] in
-                    let settings = await UNUserNotificationCenter.current().notificationSettings()
-                    let authorizationStatus = settings.authorizationStatus.toAuthorizationStatus()
-                    await self?.delegate?.authorizationStatusDidChange(authorizationStatus)
-                }
+    private let center = UNUserNotificationCenter.current()
+    private let badgeIdentifier = "badge"
+    private let logger = Logger(category: "NotificationPlugin")
+    private var notificationTask: Task<Void, Never>?
+
+    override init() {
+        super.init()
+        precondition(center.delegate == nil)
+        center.delegate = self
+    }
+
+    deinit {
+        notificationTask?.cancel()
+    }
+
+    private func observeAuthorizationStatus(delegate: (any NotificationsPluginDelegate)?) {
+        notificationTask?.cancel()
+        guard let delegate else { return }
+
+        notificationTask = Task {
+            let didBecomeActive = NotificationCenter.default
+                .notifications(named: await UIApplication.didBecomeActiveNotification)
+            for await _ in didBecomeActive {
+                let settings = await UNUserNotificationCenter.current().notificationSettings()
+                let authorizationStatus = settings.authorizationStatus.toAuthorizationStatus()
+                await delegate.authorizationStatusDidChange(authorizationStatus)
             }
-            .store(in: &subscriptions)
+        }
     }
 
     func requestAuthorization() async throws {
@@ -81,42 +88,33 @@ class AppleNotificationPlugin: NotificationPlugin  {
         let request = UNNotificationRequest(identifier: notification.id,
                                             content: content,
                                             trigger: trigger)
-        return try await center.add(request)
+        try await center.add(request)
     }
 
-    class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate {
-
-        private let logger = Logger(category: "NotificationPluginDelegate")
-        weak var parent: AppleNotificationPlugin?
-
-        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-            guard let parent = parent else { return }
-
-            let userInfo = response.notification.request.content.userInfo
-            guard let equipmentIdString = userInfo["equipment"] as? String,
-                  let notificationConfigIdString = userInfo["notificationConfig"] as? String,
-                  let equipmentId = UUID(uuidString: equipmentIdString),
-                  let notificationConfigId = UUID(uuidString: notificationConfigIdString) else {
-                logger.warning("Unrecognized notification received")
-                return
-            }
-
-            let response = NotificationResponse(
-                equipmentId: equipmentId,
-                notificationConfigId: notificationConfigId)
-
-            // Detached task required to work around crash when opening notification
-            Task.detached { [delegate = await parent.delegate] in
-                await delegate?.didReceiveNotification(response)
-            }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let userInfo = response.notification.request.content.userInfo
+        guard let equipmentIdString = userInfo["equipment"] as? String,
+              let notificationConfigIdString = userInfo["notificationConfig"] as? String,
+              let equipmentId = UUID(uuidString: equipmentIdString),
+              let notificationConfigId = UUID(uuidString: notificationConfigIdString) else {
+            logger.warning("Unrecognized notification received")
+            return
         }
 
-        func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                    openSettingsFor notification: UNNotification?) {
-            guard let parent = parent else { return }
-            Task {
-                await parent.delegate?.didReceiveOpenSettings()
-            }
+        let response = NotificationResponse(
+            equipmentId: equipmentId,
+            notificationConfigId: notificationConfigId)
+
+        // Detached task required to work around crash when opening notification
+        Task.detached { [delegate] in
+            await delegate?.didReceiveNotification(response)
+        }
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                openSettingsFor notification: UNNotification?) {
+        Task { [delegate] in
+            await delegate?.didReceiveOpenSettings()
         }
     }
 }
