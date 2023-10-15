@@ -31,9 +31,7 @@ struct ProfileListView: View {
 
     @Binding var selectedProfile: ProfileSelection?
 
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.undoManager) var undoManager
-    @State private var undoHandler: UndoHandler<ProfileSelection?>?
+    @Environment(\.managedObjectContext) private var managedObjectContext
 
     var body: some View {
         List(selection: $selectedProfile) {
@@ -77,16 +75,6 @@ struct ProfileListView: View {
             } else {
                 lastSelectedProfileId = nil
             }
-
-            if case .profile(let profile) = oldValue,
-                profile.isDeleted || profile.isFault {
-                return
-            }
-            undoHandler?.registerUndo(from: oldValue, to: newValue)
-        }
-        .onChange(of: undoManager, initial: true) {
-            undoHandler = UndoHandler(binding: $selectedProfile,
-                                      undoManger: undoManager)
         }
         .sheet(item: $editProfileOperation) { operation in
             NavigationStack {

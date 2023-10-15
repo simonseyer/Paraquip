@@ -13,28 +13,13 @@ struct ProfileView: View {
     let selectedProfile: ProfileSelection?
     @Binding var selectedEquipment: Equipment?
 
-    @Environment(\.undoManager) private var undoManager
-    @State private var undoHandler: UndoHandler<Equipment?>?
-
     var body: some View {
-        Group {
-            if let selectedProfile {
-                ProfileContentView(profile: selectedProfile.profile,
-                                   selectedEquipment: $selectedEquipment.animation())
-            } else {
-                ContentUnavailableView("Select an equipment set",
-                                       systemImage: "tray.full.fill")
-            }
-        }
-        .onChange(of: undoManager, initial: true) {
-            undoHandler = UndoHandler(binding: $selectedEquipment,
-                                      undoManger: undoManager)
-        }
-        .onChange(of: selectedEquipment) { oldValue, newValue in
-            if let oldValue, oldValue.isDeleted || oldValue.isFault {
-                return
-            }
-            undoHandler?.registerUndo(from: oldValue, to: newValue)
+        if let selectedProfile {
+            ProfileContentView(profile: selectedProfile.profile,
+                               selectedEquipment: $selectedEquipment.animation())
+        } else {
+            ContentUnavailableView("Select an equipment set",
+                                   systemImage: "tray.full.fill")
         }
     }
 }

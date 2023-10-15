@@ -51,7 +51,6 @@ struct EditEquipmentContentView: View {
     @ObservedObject var equipment: Equipment
 
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.undoManager) private var undoManager
 
     @State private var editLogEntryOperation: Operation<LogEntry>?
     @State private var showingManualPicker = false
@@ -61,7 +60,12 @@ struct EditEquipmentContentView: View {
     @State private var isShowingDeleteEquipment = false
     @State private var validationAlertMessage: LocalizedStringKey?
     @State private var undoHandler: UndoHandler<Bool>?
+    @State private var canUndo = false
+    @State private var canRedo = false
     @FocusState private var focusedField: Field?
+
+    private let undoManager = UndoManager()
+    private let undoObserver = NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup)
 
     private var isMaxWeightValid: Bool {
         equipment.maxWeightValue ?? .greatestFiniteMagnitude >= equipment.minWeightValue ?? 0
@@ -305,13 +309,7 @@ struct EditEquipmentContentView: View {
                 CheckCycleRow(checkCycle: $equipment.floatingCheckCycle)
             }
             Button(role: .destructive) {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    isShowingDeleteEquipment = true
-                } else {
-                    withAnimation {
-                        managedObjectContext.delete(equipment)
-                    }
-                }
+                isShowingDeleteEquipment = true
             } label: {
                 Label("Delete equipment",
                       systemImage: "trash")
@@ -359,7 +357,43 @@ struct EditEquipmentContentView: View {
         .onChange(of: undoManager, initial: true) {
             undoHandler = UndoHandler(binding: $isShowingRecommendedWeightRange,
                                       undoManger: undoManager)
+            managedObjectContext.undoManager = undoManager
+            updateUndoState()
         }
+        .onReceive(undoObserver) { _ in
+            updateUndoState()
+        }
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    withAnimation {
+                        undoManager.undo()
+                        updateUndoState()
+                    }
+                } label: {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
+                }
+                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command])
+                .disabled(!canUndo)
+            }
+            ToolbarItem {
+                Button {
+                    withAnimation {
+                        undoManager.redo()
+                        updateUndoState()
+                    }
+                } label: {
+                    Label("Redo", systemImage: "arrow.uturn.forward")
+                }
+                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command, .shift])
+                .disabled(!canRedo)
+            }
+        }
+    }
+
+    private func updateUndoState() {
+        canUndo = undoManager.canUndo
+        canRedo = undoManager.canRedo
     }
 }
 
