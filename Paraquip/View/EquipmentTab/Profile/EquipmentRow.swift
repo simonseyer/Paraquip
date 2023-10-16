@@ -28,19 +28,21 @@ struct EquipmentRow: View {
     }
 
     var body: some View {
-        HStack(spacing: 18) {
-            equipment.equipmentType.iconImage
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 22)
-                .foregroundStyle(.accent)
-                .padding(.horizontal, 3)
+        Label {
             VStack(alignment: .leading) {
                 Text(equipmentName)
                 Text(brandName)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
+        } icon: {
+            equipment.equipmentType.iconImage
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.horizontal, 2)
+                // Fix icon alignment
+                .padding(.bottom, -20)
+
         }
     }
 }
