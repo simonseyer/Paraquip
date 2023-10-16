@@ -24,6 +24,7 @@ struct MainView: View {
     @State private var isShowingSingleEquipmentMigrationInfo = false
     @State private var selectedTab: Tab = .equipment
     @State private var isFirstAppearance = true
+    @State private var checksProfileFilter: Profile? = nil
 
     var body: some View {
         TabView(selection: $selectedTab.animation()) {
@@ -33,7 +34,8 @@ struct MainView: View {
                 Label("Equipment", systemImage: "backpack")
             }
 
-            ChecksView(showNotificationSettings: $showNotificationSettings)
+            ChecksView(showNotificationSettings: $showNotificationSettings,
+                       profileFilter: $checksProfileFilter)
             .tag(Tab.checks)
             .tabItem {
                 Label("Checks", systemImage: "checkmark")
@@ -51,6 +53,7 @@ struct MainView: View {
                 showNotificationSettings = true
             case .equipment:
                 selectedTab = .checks
+                checksProfileFilter = nil
             case .none:
                 break
             }

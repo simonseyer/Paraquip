@@ -11,14 +11,13 @@ import CoreData
 struct ChecksView: View {
 
     @Binding var showNotificationSettings: Bool
+    @Binding var profileFilter: Profile?
 
     @FetchRequest(sortDescriptors: [])
     private var equipment: FetchedResults<Equipment>
 
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)])
     private var profiles: FetchedResults<Profile>
-
-    @State private var profileFilter: Profile? = nil
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
@@ -84,6 +83,7 @@ struct ChecksView: View {
 }
 
 #Preview {
-    ChecksView(showNotificationSettings: .constant(false))
+    ChecksView(showNotificationSettings: .constant(false), 
+               profileFilter: .constant(nil))
     .environment(\.managedObjectContext, .preview)
 }
