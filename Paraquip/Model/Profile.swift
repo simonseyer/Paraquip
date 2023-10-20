@@ -29,7 +29,7 @@ extension Profile: Creatable {
             switch self {
             case .campground: return "tent"
             case .feather: return "backpack"
-            case .mountain: return "photo"
+            case .mountain: return "mountain.2"
             case .beach: return "beach.umbrella"
             case .cloud: return "cloud"
             case .hiking: return "figure.hiking"
