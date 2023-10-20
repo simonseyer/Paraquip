@@ -36,7 +36,8 @@ struct ChecksView: View {
         NavigationStack {
             Group {
                 if UIDevice.current.userInterfaceIdiom == .phone || horizontalSizeClass == .compact {
-                    ChecksListView(checks: checks)
+                    ChecksListView(checks: checks,
+                                   profile: profileFilter)
                 } else {
                     ChecksGridView(checks: checks)
                 }

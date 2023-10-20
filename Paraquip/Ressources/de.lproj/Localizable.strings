@@ -154,6 +154,7 @@
 "Checks" = "Checks";
 "Filter by a set" = "Nach Set filtern";
 "No checks available" = "Keine Checks verfügbar";
+"No checks in %@ %@" = "Keine Checks in %@ %@";
 "%@ Now" = "%@ Jetzt";
 "%@ Later" = "%@ Später";
 

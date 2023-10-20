@@ -24,13 +24,24 @@ private extension CheckSection {
 struct ChecksListView: View {
 
     let checks: CheckList
+    let profile: Profile?
 
     @State private var showInspector: Bool = false
     @State private var selectedEquipment: Equipment? = nil
 
+    private var noChecksText: LocalizedStringKey {
+        if let profile {
+            let icon = Image(systemName: profile.profileIcon.systemName)
+            return "No checks in \(icon) \(profile.profileName)"
+        } else {
+            return "No checks available"
+        }
+    }
+
     var body: some View {
         if checks.isEmpty {
-            ContentUnavailableView("No checks available", systemImage: "checkmark.circle.fill")
+            ContentUnavailableView(noChecksText,
+                                   systemImage: "checkmark.circle.fill")
         } else {
             List {
                 ForEach(checks.sections) { section in
@@ -97,5 +108,6 @@ private struct CheckButtonLabel: View {
 }
 
 #Preview {
-    ChecksListView(checks: CheckList(equipment: CoreData.fakeProfile.allEquipment))
+    ChecksListView(checks: CheckList(equipment: CoreData.fakeProfile.allEquipment),
+                   profile: CoreData.fakeProfile)
 }
