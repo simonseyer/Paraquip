@@ -26,9 +26,6 @@ struct ChecksListView: View {
     let checks: CheckList
     let profile: Profile?
 
-    @State private var showInspector: Bool = false
-    @State private var selectedEquipment: Equipment? = nil
-
     private var noChecksText: LocalizedStringKey {
         if let profile {
             let icon = Image(systemName: profile.profileIcon.systemName)
@@ -48,15 +45,9 @@ struct ChecksListView: View {
                     if !section.equipment.isEmpty {
                         Section {
                             ForEach(section.equipment) { equipment in
-                                Button {
-                                    withAnimation {
-                                        selectedEquipment = equipment
-                                        showInspector = true
-                                    }
-                                } label: {
+                                NavigationLink(value: equipment) {
                                     CheckButtonLabel(equipment: equipment)
                                 }
-                                .listRowBackground(selectedEquipment == equipment ? Color(uiColor: .systemFill) : nil)
                                 .foregroundStyle(.primary)
                             }
                         } header: {
@@ -65,19 +56,8 @@ struct ChecksListView: View {
                     }
                 }
             }
-            #if os(iOS)
-            .inspector(isPresented: $showInspector) {
-                if let selectedEquipment {
-                    LogSheet(equipment: selectedEquipment)
-                }
-            }
-            #endif
-            .onChange(of: showInspector) {
-                if !showInspector {
-                    withAnimation {
-                        selectedEquipment = nil
-                    }
-                }
+            .navigationDestination(for: Equipment.self) { equipment in
+                LogSheet(equipment: equipment)
             }
         }
     }
@@ -108,6 +88,8 @@ private struct CheckButtonLabel: View {
 }
 
 #Preview {
-    ChecksListView(checks: CheckList(equipment: CoreData.fakeProfile.allEquipment),
-                   profile: CoreData.fakeProfile)
+    NavigationStack {
+        ChecksListView(checks: CheckList(equipment: CoreData.fakeProfile.allEquipment),
+                       profile: CoreData.fakeProfile)
+    }
 }

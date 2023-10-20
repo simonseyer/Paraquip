@@ -42,6 +42,7 @@ struct LogSheet: View {
                 }
             }
         }
+        .navigationTitle("\(equipment.brandName) \(equipment.equipmentName)")
         .sheet(item: $editLogEntryOperation) { operation in
             NavigationStack {
                 LogEntryView(logEntry: operation.object)
