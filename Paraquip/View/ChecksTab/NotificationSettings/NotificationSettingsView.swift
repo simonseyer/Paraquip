@@ -12,7 +12,8 @@ struct NotificationSettingsView: View {
     
     @State private var notificationsOn = false
     @State private var configurationSectionShown = false
-    @State private var editMode: EditMode = .inactive
+    
+    @Environment(\.editMode) private var editMode
 
     @EnvironmentObject var notificationService: NotificationService
 
@@ -34,7 +35,7 @@ struct NotificationSettingsView: View {
             }
             
             if configurationSectionShown {
-                Section {
+                Section("Check Reminder") {
                     ForEach(notificationService.state.configuration) { config in
                         NotificationEntryView(
                             config: config
@@ -46,7 +47,7 @@ struct NotificationSettingsView: View {
                         notificationService.removeNotificationConfigs(atOffsets: indexSet)
                         if notificationService.state.configuration.isEmpty {
                             withAnimation {
-                                editMode = .inactive
+                                editMode?.wrappedValue = .inactive
                             }
                         }
                     }
@@ -58,22 +59,10 @@ struct NotificationSettingsView: View {
                         Label("Add notification",
                               systemImage: "plus.circle")
                     }
-                } header: {
-                    HStack {
-                        Text("Check Reminder")
-                        Button(editMode.title) {
-                            withAnimation {
-                                editMode.toggle()
-                            }
-                        }
-                        .controlSize(.mini)
-                        .disabled(notificationService.state.configuration.isEmpty)
-                    }
                 }
             }
         }
         .navigationTitle("Notifications")
-        .environment(\.editMode, $editMode)
         .onChange(of: notificationsOn) {
             if notificationsOn {
                 Task {
@@ -95,6 +84,12 @@ struct NotificationSettingsView: View {
             withAnimation {
                 notificationsOn = notificationService.state.isEnabled
                 configurationSectionShown = notificationService.state.isEnabled
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                EditButton()
+                    .disabled(notificationService.state.configuration.isEmpty)
             }
         }
     }

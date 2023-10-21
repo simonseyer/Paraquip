@@ -67,7 +67,6 @@
 		F4190FE629D135FC00ECE5D4 /* WingLoadLegendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */; };
 		F4190FE829D139A800ECE5D4 /* DesiredWingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */; };
 		F41C00C02AC9B45B00B13A56 /* DeletionObserverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */; };
-		F41C00C32ACAC8D800B13A56 /* EditModeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */; };
 		F443FA122ABC7B6300B490AB /* LogEntryBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */; };
 		F443FA142ABC7CC000B490AB /* LogEntryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA132ABC7CC000B490AB /* LogEntryButton.swift */; };
 		F443FA162ABC942800B490AB /* LogMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443FA152ABC942800B490AB /* LogMenu.swift */; };
@@ -189,7 +188,6 @@
 		F4190FE529D135FC00ECE5D4 /* WingLoadLegendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadLegendView.swift; sourceTree = "<group>"; };
 		F4190FE729D139A800ECE5D4 /* DesiredWingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesiredWingLoadView.swift; sourceTree = "<group>"; };
 		F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletionObserverView.swift; sourceTree = "<group>"; };
-		F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditModeExtensions.swift; sourceTree = "<group>"; };
 		F443FA112ABC7B6300B490AB /* LogEntryBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryBackground.swift; sourceTree = "<group>"; };
 		F443FA132ABC7CC000B490AB /* LogEntryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntryButton.swift; sourceTree = "<group>"; };
 		F443FA152ABC942800B490AB /* LogMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMenu.swift; sourceTree = "<group>"; };
@@ -497,7 +495,6 @@
 			isa = PBXGroup;
 			children = (
 				0D6E9C6E281D9C6A00EC585C /* RoundedCorner.swift */,
-				F41C00C22ACAC8D800B13A56 /* EditModeExtensions.swift */,
 				0D846AEC26D41B8900A574BA /* CheckUrgencyViewExtensions.swift */,
 				0D846AEE26D41C1500A574BA /* EquipmentViewExtensions.swift */,
 				0DA898A92841FAD100D7568F /* CoreDataOperation.swift */,
@@ -789,7 +786,6 @@
 				0D3EE1B6262C58A700DA347B /* LogSheet.swift in Sources */,
 				F4C6A4BA29CBE0D60017EC0E /* WingLoadText.swift in Sources */,
 				F4DFE72929D4EA4600394F15 /* WingLoadScale.swift in Sources */,
-				F41C00C32ACAC8D800B13A56 /* EditModeExtensions.swift in Sources */,
 				0DE34C5E265C07F800EF080F /* NotificationPersistence.swift in Sources */,
 				0D846AEF26D41C1500A574BA /* EquipmentViewExtensions.swift in Sources */,
 				0D80E1CA2662B7C300305B23 /* AppleNotificationPlugin.swift in Sources */,

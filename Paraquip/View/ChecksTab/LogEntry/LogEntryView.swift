@@ -27,6 +27,7 @@ struct LogEntryView: View {
     @ObservedObject var logEntry: LogEntry
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.editMode) private var editMode
 
     @State private var showingDatePicker = false
     @State private var showingAddAttachment = false
@@ -34,7 +35,6 @@ struct LogEntryView: View {
     @State private var showingImagePicker = false
     @State private var showingDeleteCheck = false
     @State private var previewURL: URL?
-    @State private var editMode: EditMode = .inactive
 
     @FetchRequest
     private var attachments: FetchedResults<Attachment>
@@ -65,7 +65,7 @@ struct LogEntryView: View {
                     .datePickerStyle(.graphical)
             }
 
-            Section {
+            Section("Attachments") {
                 ForEach(attachments) { attachment in
                     Button {
                         previewURL = attachment.fileURL
@@ -83,7 +83,7 @@ struct LogEntryView: View {
                 Button {
                     withAnimation {
                         showingAddAttachment = true
-                        editMode = .inactive
+                        editMode?.wrappedValue = .inactive
                     }
                 } label: {
                     Label("Add attachment",
@@ -96,17 +96,6 @@ struct LogEntryView: View {
                     Button(action: { showingImagePicker = true }) {
                         Label("Image", systemImage: "photo")
                     }
-                }
-            } header: {
-                HStack {
-                    Text("Attachments")
-                    Button(editMode.title) {
-                        withAnimation {
-                            editMode.toggle()
-                        }
-                    }
-                    .controlSize(.mini)
-                    .disabled(attachments.isEmpty)
                 }
             }
 
@@ -138,6 +127,10 @@ struct LogEntryView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Close") { dismiss() }
             }
+            ToolbarItem {
+                EditButton()
+                    .disabled(attachments.isEmpty)
+            }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     try! managedObjectContext.save()
@@ -145,7 +138,6 @@ struct LogEntryView: View {
                 }
             }
         }
-        .environment(\.editMode, $editMode)
         .quickLookPreview($previewURL, 
                           in: attachments.compactMap { $0.fileURL })
         .sheet(isPresented: $showingDocumentPicker) {
