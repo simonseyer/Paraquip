@@ -37,7 +37,7 @@ private struct LogEntryCellButton<Content: View, Background: View>: View {
             content()
         }
         .padding(EdgeInsets(top: 10, leading: 56,
-                            bottom: 10, trailing: 0))
+                            bottom: 8, trailing: 0))
         .foregroundStyle(.primary)
         .listRowBackground(background().background(backgroundColor))
         .contentShape(Rectangle())

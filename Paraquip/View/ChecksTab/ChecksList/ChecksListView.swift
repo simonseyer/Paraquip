@@ -81,7 +81,7 @@ private struct CheckButtonLabel: View {
                 let brandText = Text(equipment.brandName).fontWeight(.light)
                 Text("\(brandText) \(Text(equipment.equipmentName))")
                 Text(equipment.checkUrgency.formattedCheckInterval)
-                    .font(.caption)
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
         }
