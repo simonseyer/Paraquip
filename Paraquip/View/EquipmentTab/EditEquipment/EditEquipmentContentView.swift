@@ -332,7 +332,6 @@ struct EditEquipmentContentView: View {
         }
         #if os(iOS)
         .scrollDismissesKeyboard(.interactively)
-        .symbolVariant(.fill)
         #endif
         .navigationTitle(Text(equipment.equipmentType.localizedName))
         .navigationBarTitleDisplayMode(.inline)

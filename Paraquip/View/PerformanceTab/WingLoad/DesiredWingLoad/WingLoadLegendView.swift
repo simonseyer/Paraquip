@@ -24,9 +24,9 @@ struct WingLoadLegendView: View {
         ("++", "Very high")
     ]
 
-    private let unavailableIcon = Image(systemName: "x.circle.fill")
-    private let visibleIcon = Image(systemName: "eye.fill")
-    private let hiddenIcon = Image(systemName: "eye.slash.fill")
+    private let unavailableIcon = Image(systemName: "x.circle")
+    private let visibleIcon = Image(systemName: "eye")
+    private let hiddenIcon = Image(systemName: "eye.slash")
     private let visibleOpactity = 1.0
     private let hiddenOpacity = 0.3
 
