@@ -59,6 +59,7 @@ struct ChecksListView: View {
             .navigationDestination(for: Equipment.self) { equipment in
                 LogSheet(equipment: equipment)
             }
+            .environment(\.defaultMinListRowHeight, 0)
         }
     }
 }
