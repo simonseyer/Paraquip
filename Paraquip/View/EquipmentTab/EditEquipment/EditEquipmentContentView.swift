@@ -7,6 +7,8 @@
 
 import SwiftUI
 import CoreData
+import OSLog
+import Combine
 
 extension NumberFormatter {
     func string(from doubleValue: Double) -> String? {
@@ -59,6 +61,9 @@ struct EditEquipmentContentView: View {
     @State private var isShowingValidationAlert = false
     @State private var isShowingDeleteEquipment = false
     @State private var validationAlertMessage: LocalizedStringKey?
+    @State private var editingSubscription: AnyCancellable?
+    @State private var isEditingInProgress = false
+    @State private var endEditingTask: Task<Void, any Error>?
     @State private var undoHandler: UndoHandler<Bool>?
     @State private var canUndo = false
     @State private var canRedo = false
@@ -66,6 +71,8 @@ struct EditEquipmentContentView: View {
 
     private let undoManager = UndoManager()
     private let undoObserver = NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup)
+
+    private static let logger = Logger(category: "EditEquipmentContentView")
 
     private var isMaxWeightValid: Bool {
         equipment.maxWeightValue ?? .greatestFiniteMagnitude >= equipment.minWeightValue ?? 0
@@ -361,6 +368,20 @@ struct EditEquipmentContentView: View {
             managedObjectContext.undoManager = undoManager
             updateUndoState()
         }
+        .onChange(of: equipment, initial: true) {
+            // Manually observe object to capture all changes
+            editingSubscription = equipment.objectWillChange.sink {
+                beginEditing()
+                endEditingTask?.cancel()
+                endEditingTask = Task {
+                    try await Task.sleep(for: .milliseconds(500))
+                    endEditing()
+                }
+            }
+        }
+        .onDisappear {
+            endEditing()
+        }
         .onReceive(undoObserver) { _ in
             updateUndoState()
         }
@@ -368,6 +389,7 @@ struct EditEquipmentContentView: View {
             ToolbarItem {
                 Button {
                     withAnimation {
+                        endEditing()
                         undoManager.undo()
                         updateUndoState()
                     }
@@ -390,6 +412,22 @@ struct EditEquipmentContentView: View {
                 .disabled(!canRedo)
             }
         }
+    }
+
+    private func beginEditing() {
+        guard !undoManager.isUndoing && !isEditingInProgress else {
+            return
+        }
+        Self.logger.log("Begin undo grouping")
+        undoManager.beginUndoGrouping()
+        isEditingInProgress = true
+    }
+
+    private func endEditing() {
+        guard isEditingInProgress else { return }
+        Self.logger.log("End undo grouping")
+        undoManager.endUndoGrouping()
+        isEditingInProgress = false
     }
 
     private func updateUndoState() {
