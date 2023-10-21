@@ -64,13 +64,11 @@ struct EditEquipmentContentView: View {
     @State private var editingSubscription: AnyCancellable?
     @State private var isEditingInProgress = false
     @State private var endEditingTask: Task<Void, any Error>?
-    @State private var undoHandler: UndoHandler<Bool>?
+    @State private var undoManager = UndoManager()
+    @State private var recommendedWeightRangeUndoHandler = UndoHandler<Bool>()
     @State private var canUndo = false
     @State private var canRedo = false
     @FocusState private var focusedField: Field?
-
-    private let undoManager = UndoManager()
-    private let undoObserver = NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup)
 
     private static let logger = Logger(category: "EditEquipmentContentView")
 
@@ -360,19 +358,23 @@ struct EditEquipmentContentView: View {
             }
         }
         .onChange(of: isShowingRecommendedWeightRange) {  oldValue, newValue in
-            undoHandler?.registerUndo(from: oldValue, to: newValue)
+            recommendedWeightRangeUndoHandler.registerUndo(from: oldValue, to: newValue)
         }
         .onChange(of: undoManager, initial: true) {
-            undoHandler = UndoHandler(binding: $isShowingRecommendedWeightRange,
-                                      undoManger: undoManager)
+            recommendedWeightRangeUndoHandler.undoManger = undoManager
+            recommendedWeightRangeUndoHandler.binding = $isShowingRecommendedWeightRange
             managedObjectContext.undoManager = undoManager
             updateUndoState()
         }
         .onChange(of: equipment, initial: true) {
-            // Manually observe object to capture all changes
+            // Reset undo manager when selected equipment changes
+            endEditing()
+            undoManager.removeAllActions()
+            updateUndoState()
+
+            // Manually observe equipment to capture all changes
             editingSubscription = equipment.objectWillChange.sink {
                 beginEditing()
-                endEditingTask?.cancel()
                 endEditingTask = Task {
                     try await Task.sleep(for: .milliseconds(500))
                     endEditing()
@@ -381,9 +383,6 @@ struct EditEquipmentContentView: View {
         }
         .onDisappear {
             endEditing()
-        }
-        .onReceive(undoObserver) { _ in
-            updateUndoState()
         }
         .toolbar {
             ToolbarItem {
@@ -415,19 +414,24 @@ struct EditEquipmentContentView: View {
     }
 
     private func beginEditing() {
-        guard !undoManager.isUndoing && !isEditingInProgress else {
+        guard !undoManager.isUndoing &&
+                !undoManager.isRedoing &&
+                !isEditingInProgress else {
             return
         }
-        Self.logger.log("Begin undo grouping")
+        Self.logger.debug("Begin undo grouping")
         undoManager.beginUndoGrouping()
         isEditingInProgress = true
+        updateUndoState()
     }
 
     private func endEditing() {
+        endEditingTask?.cancel()
         guard isEditingInProgress else { return }
-        Self.logger.log("End undo grouping")
+        Self.logger.debug("End undo grouping")
         undoManager.endUndoGrouping()
         isEditingInProgress = false
+        updateUndoState()
     }
 
     private func updateUndoState() {
