@@ -44,7 +44,7 @@ struct ChecksView: View {
             }
             .navigationTitle("Checks")
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem {
                     Picker("Filter by a set", selection: $profileFilter.animation()) {
                         Label("All Equipment",
                               systemImage: "line.3.horizontal.decrease.circle")
