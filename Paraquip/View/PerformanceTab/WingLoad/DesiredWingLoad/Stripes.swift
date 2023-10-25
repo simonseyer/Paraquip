@@ -33,9 +33,18 @@ extension Shape {
     func stripes(color: UIColor = .black, angle: Double = 45) -> some View {
         let stripePattern = CGImage.generateStripePattern(colors: (.clear, color))
         return Rectangle()
-            .fill(ImagePaint(image: Image(decorative: stripePattern, scale: 3.0)))
-            .scaleEffect(3)
-            .rotationEffect(.degrees(angle))
+            .fill(.clear)
+            .background(
+                Rectangle()
+                    .padding(100)
+                    .background(
+                        Rectangle()
+                            .fill(ImagePaint(image: Image(decorative: stripePattern, scale: 3.0)))
+                            .rotationEffect(.degrees(angle))
+                            .scaleEffect(3)
+                    )
+
+            )
             .clipShape(self)
     }
 }
