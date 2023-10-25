@@ -30,7 +30,6 @@
 // Profile List View
 "Sets" = "Sets";
 "Create new set" = "Neues Set anlegen";
-"Set up notifications" = "Benachrichtigungen konfigurieren";
 "Delete" = "Löschen";
 "Delete set" = "Set löschen";
 "Delete with equipment" = "Mit Ausrüstung löschen";
@@ -154,7 +153,7 @@
 
 // ChecksView
 "Checks" = "Checks";
-"Filter by a set" = "Nach Set filtern";
+"Filter" = "Filtern";
 "No checks available" = "Keine Checks verfügbar";
 "No checks in %@ %@" = "Keine Checks in %@ %@";
 "%@ Now" = "%@ Jetzt";

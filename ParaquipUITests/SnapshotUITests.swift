@@ -40,51 +40,69 @@ class SnapshotUITests: XCTestCase {
         app.launch()
 
         if UIDevice.current.userInterfaceIdiom == .phone {
+            // Checks tab
+            app.buttons[localized("Checks")].tap()
+            snapshot("01Checks")
+
             app.navigationBars.buttons[localized("Notifications")].tap()
-            snapshot("05NotificationsScreen")
+            snapshot("07Notifications")
 
             app.buttons[localized("Close")].tap()
+            app.collectionViews.buttons.element(matching: .init(format: "label CONTAINS %@", "Angel SQ")).tap()
+            snapshot("02CheckLog")
+
+            // Equipment tab
+            app.buttons[localized("Equipment")].tap()
             app.buttons[localized("Your Equipment")].tap()
+            snapshot("05Profile")
 
-            snapshot("01ProfileScreen")
+            app.collectionViews.buttons.element(matching: .init(format: "label CONTAINS %@", "Explorer 2")).tap()
+            snapshot("06Equipment")
 
-            app.collectionViews.buttons["Explorer 2"].tap()
-            snapshot("02EquipmentScreen")
-
+            // Performance tab
+            app.buttons[localized("Performance")].tap()
             app.buttons[localized("Your Equipment")].tap()
-            app.navigationBars.buttons[localized("Weight Check")].tap()
-            snapshot("03ProfileWeightScreen")
+            snapshot("03Performance")
 
             app.collectionViews.element(boundBy: 0).swipeUp()
-            app.staticTexts[localized("Wing load")].tap()
-            snapshot("04WingLoadScreen")
+            app.staticTexts.element(matching: .init(format: "label CONTAINS %@", localized("Wing load"))).tap()
+            snapshot("04WingLoad")
+            app.buttons[localized("Close")].tap()
         } else {
-            app.buttons["ToggleSidebar"].tap()
-            app.buttons[localized("Your Equipment")].tap()
-            app.collectionViews.buttons["Explorer 2"].tap()
+            // Checks tab
+            app.buttons[localized("Checks")].tap()
 
-            snapshot("01ProfileScreen")
-
-            app.navigationBars.buttons[localized("Weight Check")].tap()
-            snapshot("03ProfileWeightScreen")
-
-            app.staticTexts[localized("Wing load")].tap()
-            snapshot("04WingLoadScreen")
-
-            app.navigationBars[localized("Wing load")].buttons[localized("Close")].tap()
-            app.navigationBars[localized("Weight Check")].buttons[localized("Close")].tap()
+            app.buttons.element(matching: .init(format: "label CONTAINS %@", "Angel SQ")).tap()
+            snapshot("01Checks")
+            app.swipeDown(velocity: .fast) // Close popover
 
             app.navigationBars.buttons[localized("Notifications")].tap()
-            snapshot("05NotificationsScreen")
-            app.navigationBars[localized("Notifications")].buttons[localized("Close")].tap()
+            snapshot("07Notifications")
+            app.buttons[localized("Close")].tap()
+
+            // Equipment tab
+            app.buttons[localized("Equipment")].tap()
+            app.buttons["ToggleSidebar"].tap()
+            app.buttons[localized("Your Equipment")].tap()
+            app.collectionViews.buttons.element(matching: .init(format: "label CONTAINS %@", "Explorer 2")).tap()
+            snapshot("05Profile")
 
             if app.buttons["ToggleSidebar"].exists {
                 app.buttons["ToggleSidebar"].tap()
             } else {
                 app.swipeLeft()
             }
+            snapshot("06Equipment")
 
-            snapshot("02EquipmentScreen")
+            // Performance tab
+            app.buttons[localized("Performance")].tap()
+            app.buttons[localized("Your Equipment")].tap()
+            snapshot("03Performance")
+
+            app.collectionViews.element(boundBy: 0).swipeUp()
+            app.staticTexts.element(matching: .init(format: "label CONTAINS %@", localized("Wing load"))).tap()
+            snapshot("04WingLoad")
+            app.buttons[localized("Close")].tap()
         }
     }
 

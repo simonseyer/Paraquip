@@ -45,7 +45,7 @@ struct ChecksView: View {
             .navigationTitle("Checks")
             .toolbar {
                 ToolbarItem {
-                    Picker("Filter by a set", selection: $profileFilter.animation()) {
+                    Picker("Filter", selection: $profileFilter.animation()) {
                         Label("All Equipment",
                               systemImage: "line.3.horizontal.decrease.circle")
                         .tag(Optional<Profile>.none)
@@ -60,7 +60,7 @@ struct ChecksView: View {
                     Button {
                         showNotificationSettings = true
                     } label: {
-                        Label("Set up notifications", systemImage: "bell")
+                        Label("Notifications", systemImage: "bell")
                     }
                 }
             }
