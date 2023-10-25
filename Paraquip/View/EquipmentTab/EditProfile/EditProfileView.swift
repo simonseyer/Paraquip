@@ -50,6 +50,7 @@ struct EditProfileView: View {
             }
 
             ForEach(allEquipment) { section in
+                let equipmentType = Equipment.EquipmentType(rawValue: section.id)!
                 Section {
                     ForEach(section) { equipment in
                         EquipmentSelectionRow(
@@ -58,7 +59,7 @@ struct EditProfileView: View {
                         )
                     }
                 } header: {
-                    ProfileSectionHeader(equipmentType: section.id)
+                    Text(equipmentType.pluralLocalizedName)
                 }
             }
 

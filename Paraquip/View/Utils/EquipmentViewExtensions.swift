@@ -12,8 +12,8 @@ extension Equipment.EquipmentType {
 
     var pluralLocalizedName: String {
         switch self {
-        case .paraglider: String(localized: "Paraglider")
-        case .harness: String(localized: "Harness")
+        case .paraglider: String(localized: "Paragliders")
+        case .harness: String(localized: "Harnesses")
         case .reserve: String(localized: "Reserves")
         case .gear: String(localized: "Gear")
         }

@@ -22,7 +22,6 @@
 		0D22A9A928415D9400AB4E23 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D22A9A828415D9400AB4E23 /* ImagePicker.swift */; };
 		0D2B2D152646A04D009873CE /* EquipmentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2B2D142646A04D009873CE /* EquipmentRow.swift */; };
 		0D2B2D2226484B52009873CE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
-		0D3B5A05285B3FAA00C1E37A /* ProfileSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */; };
 		0D3B5A09285B452A00C1E37A /* EquipmentSelectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */; };
 		0D3EE1B6262C58A700DA347B /* LogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1B5262C58A700DA347B /* LogSheet.swift */; };
 		0D3EE1BB262C5BD800DA347B /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3EE1BA262C5BD800DA347B /* Fake.swift */; };
@@ -138,7 +137,6 @@
 		0D2B2D142646A04D009873CE /* EquipmentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentRow.swift; sourceTree = "<group>"; };
 		0D2B2D2326484B52009873CE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0D2B2D2526484B56009873CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSectionHeader.swift; sourceTree = "<group>"; };
 		0D3B5A08285B452A00C1E37A /* EquipmentSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentSelectionRow.swift; sourceTree = "<group>"; };
 		0D3EE1B5262C58A700DA347B /* LogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSheet.swift; sourceTree = "<group>"; };
 		0D3EE1BA262C5BD800DA347B /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fake.swift; sourceTree = "<group>"; };
@@ -342,7 +340,6 @@
 			children = (
 				0D11FBCA2620BF45009D9349 /* ProfileView.swift */,
 				0D2B2D142646A04D009873CE /* EquipmentRow.swift */,
-				0D3B5A04285B3FAA00C1E37A /* ProfileSectionHeader.swift */,
 				F4676C2D2AAA083C00FD3913 /* AddEquipmentButton.swift */,
 			);
 			path = Profile;
@@ -806,7 +803,6 @@
 				0DE34C5C265C067500EF080F /* NotificationPersistanceMapping.swift in Sources */,
 				F4BD8E7F29FB42B8004CF5A9 /* WeightRangeGraphic.swift in Sources */,
 				0D0DFF9F26887C4900AEB2AD /* LogEntryCell.swift in Sources */,
-				0D3B5A05285B3FAA00C1E37A /* ProfileSectionHeader.swift in Sources */,
 				0DD7FC27263DE1B60038B25D /* LegacyAppPersistence.swift in Sources */,
 				0D09984B26D81BFE00E297F9 /* EditProfileView.swift in Sources */,
 			);
