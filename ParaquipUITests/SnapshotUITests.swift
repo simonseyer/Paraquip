@@ -87,13 +87,6 @@ class SnapshotUITests: XCTestCase {
             app.collectionViews.buttons.element(matching: .init(format: "label CONTAINS %@", "Explorer 2")).tap()
             snapshot("05Profile")
 
-            if app.buttons["ToggleSidebar"].exists {
-                app.buttons["ToggleSidebar"].tap()
-            } else {
-                app.swipeLeft()
-            }
-            snapshot("06Equipment")
-
             // Performance tab
             app.buttons[localized("Performance")].tap()
             app.buttons[localized("Your Equipment")].tap()
