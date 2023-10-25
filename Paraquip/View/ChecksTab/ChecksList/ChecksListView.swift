@@ -26,6 +26,8 @@ struct ChecksListView: View {
     let checks: CheckList
     let profile: Profile?
 
+    @State private var selectedEquipment: Equipment?
+
     private var noChecksText: LocalizedStringKey {
         if let profile {
             let icon = Image(systemName: profile.profileIcon.systemName)
@@ -40,7 +42,7 @@ struct ChecksListView: View {
             ContentUnavailableView(noChecksText,
                                    systemImage: "checkmark.circle.fill")
         } else {
-            List {
+            List(selection: $selectedEquipment) {
                 ForEach(checks.sections) { section in
                     if !section.equipment.isEmpty {
                         Section {
@@ -55,8 +57,13 @@ struct ChecksListView: View {
                         }
                     }
                 }
+                if let selectedEquipment {
+                    DeletionObserverView(object: selectedEquipment) {
+                        self.selectedEquipment = nil
+                    }
+                }
             }
-            .navigationDestination(for: Equipment.self) { equipment in
+            .navigationDestination(item: $selectedEquipment) { equipment in
                 LogSheet(equipment: equipment)
             }
             .environment(\.defaultMinListRowHeight, 0)
