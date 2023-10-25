@@ -67,6 +67,13 @@ struct ChecksView: View {
             #if os(iOS)
             .symbolVariant(.fill)
             #endif
+            .onReceive(profiles.publisher) { _ in
+                if let profileFilter = profileFilter {
+                    if !profiles.contains(profileFilter) {
+                        self.profileFilter = nil
+                    }
+                }
+            }
             .sheet(isPresented: $showNotificationSettings) {
                 NavigationStack {
                     NotificationSettingsView()
