@@ -77,6 +77,7 @@ struct EditProfileView: View {
                             withAnimation {
                                 managedObjectContext.delete(profile)
                                 try! managedObjectContext.save()
+                                dismiss()
                             }
                         }
                         Button("Delete with equipment", role: .destructive) {
@@ -86,6 +87,7 @@ struct EditProfileView: View {
                                 }
                                 managedObjectContext.delete(profile)
                                 try! managedObjectContext.save()
+                                dismiss()
                             }
                         }
                     }
