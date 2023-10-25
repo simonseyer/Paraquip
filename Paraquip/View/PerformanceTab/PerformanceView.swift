@@ -24,6 +24,11 @@ struct PerformanceView: View {
 
                     }
                 }
+                if let selectedProfile {
+                    DeletionObserverView(object: selectedProfile) {
+                        self.selectedProfile = nil
+                    }
+                }
             }
             .navigationTitle("Performance")
         } detail: {
