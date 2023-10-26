@@ -16,7 +16,7 @@ struct EquipmentView: View {
             ProfileListView(selectedProfile: $selectedProfile.animation())
         } content: {
             ProfileView(selectedProfile: selectedProfile,
-                        selectedEquipment: $selectedEquipment)
+                        selectedEquipment: $selectedEquipment.animation())
         } detail: {
             EditEquipmentView(profile: selectedProfile?.profile,
                               equipment: selectedEquipment)

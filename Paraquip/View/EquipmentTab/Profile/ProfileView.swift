@@ -8,44 +8,46 @@
 import SwiftUI
 import CoreData
 
-struct ProfileView: View {
-
-    let selectedProfile: ProfileSelection?
-    @Binding var selectedEquipment: Equipment?
-
-    var body: some View {
-        if let selectedProfile {
-            ProfileContentView(profile: selectedProfile.profile,
-                               selectedEquipment: $selectedEquipment.animation())
-        } else {
-            ContentUnavailableView("Select an equipment set",
-                                   systemImage: "tray.full.fill")
+extension Optional<ProfileSelection> {
+    var equipmentPredicate: NSPredicate {
+        switch self {
+        case .none:
+            NSPredicate(value: false)
+        case .profile(let profile):
+            profile.equipmentPredicate
+        case .allEquipment:
+            NSPredicate(value: true)
         }
     }
 }
 
-private struct ProfileContentView: View {
-    let profile: Profile?
+struct ProfileView: View {
+    let selectedProfile: ProfileSelection?
     @Binding var selectedEquipment: Equipment?
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @State private var editProfileOperation: Operation<Profile>?
-    @State private var navigationTitle: String = "fu"
+    // Double empty space important to avoid glitchy animation
+    @State private var navigationTitle: String = " "
 
     @FetchRequest
     private var equipment: FetchedResults<Equipment>
 
-    private var isSpecificProfile: Bool {
-        equipment.nsPredicate != nil
+    private var profile: Profile? {
+        selectedProfile?.profile
     }
 
-    init(profile: Profile?, selectedEquipment: Binding<Equipment?>) {
-        self.profile = profile
+    private var isSpecificProfile: Bool {
+        if case .profile(_) = selectedProfile { true } else { false }
+    }
+
+    init(selectedProfile: ProfileSelection?, selectedEquipment: Binding<Equipment?>) {
+        self.selectedProfile = selectedProfile
         self._selectedEquipment = selectedEquipment
         _equipment = FetchRequest(
             previewEntity: Equipment.previewEntity,
             sortDescriptors: Equipment.defaultSortDescriptors(),
-            predicate: profile?.equipmentPredicate
+            predicate: selectedProfile.equipmentPredicate
         )
     }
 
@@ -73,46 +75,65 @@ private struct ProfileContentView: View {
 
     var body: some View {
         List(selection: $selectedEquipment) {
-            section(.paraglider, single: isSpecificProfile)
-            section(.harness, single: isSpecificProfile)
-            section(.reserve, single: false)
-            section(.gear, single: false)
-            if let selectedEquipment {
-                DeletionObserverView(object: selectedEquipment) {
-                    self.selectedEquipment = nil
+            if selectedProfile != nil {
+                section(.paraglider, single: isSpecificProfile)
+                section(.harness, single: isSpecificProfile)
+                section(.reserve, single: false)
+                section(.gear, single: false)
+                if let selectedEquipment {
+                    DeletionObserverView(object: selectedEquipment) {
+                        self.selectedEquipment = nil
+                    }
                 }
-            }
-            if let profile {
-                ProfileTitleView(profile: profile,
-                                 navigationTitle: $navigationTitle)
+                if let profile {
+                    ProfileTitleView(profile: profile,
+                                     navigationTitle: $navigationTitle)
+                }
             }
         }
         .navigationTitle(navigationTitle)
         .listStyle(.insetGrouped)
-        .onChange(of: profile, initial: true) {
-            navigationTitle = profile?.profileName ?? String(localized: "All Equipment")
+        .onChange(of: selectedProfile, initial: true) {
+            if selectedProfile == nil {
+                // Double empty space important to avoid glitchy animation
+                navigationTitle = " "
+            } else {
+                navigationTitle = profile?.profileName ?? String(localized: "All Equipment")
+            }
             if let profile, let selectedEquipment, !profile.contains(selectedEquipment) {
                 self.selectedEquipment = nil
             }
         }
         .toolbar {
             ToolbarItem {
+                #if os(iOS)
+                Button("Edit") {
+                    editProfile()
+                }
+                // Hiding instead of removing button to avoid glitchy animation on iOS
+                .opacity(isSpecificProfile ? 1 : 0)
+                .animation(.none, value: isSpecificProfile)
+                #else
                 if isSpecificProfile {
                     Button {
                         editProfile()
                     } label: {
                         Label("Edit", systemImage: "pencil")
                     }
-                    #if os(iOS)
-                    .labelStyle(.titleOnly)
-                    #endif
                 }
+                #endif
             }
         }
         .sheet(item: $editProfileOperation) { operation in
             NavigationStack {
                 EditProfileView(profile: operation.object)
                     .environment(\.managedObjectContext, operation.childContext)
+            }
+        }
+        .overlay {
+            if selectedProfile == nil {
+                ContentUnavailableView("Select an equipment set",
+                                       systemImage: "tray.full.fill")
             }
         }
     }
@@ -149,21 +170,32 @@ private struct ProfileTitleView: View {
 
 #Preview {
     NavigationStack {
-        ProfileContentView(profile: CoreData.fakeProfile, selectedEquipment: .constant(nil))
+        ProfileView(selectedProfile: .profile(CoreData.fakeProfile), 
+                    selectedEquipment: .constant(nil))
     }
     .environment(\.managedObjectContext, .preview)
 }
 
 #Preview("Empty Profile") {
     NavigationStack {
-        ProfileContentView(profile: Profile.create(context: .preview, name: "Empty"), selectedEquipment: .constant(nil))
+        ProfileView(selectedProfile: .profile(.create(context: .preview, name: "Empty")), 
+                    selectedEquipment: .constant(nil))
     }
     .environment(\.managedObjectContext, .preview)
 }
 
 #Preview("All Equipment") {
     NavigationStack {
-        ProfileContentView(profile: nil, selectedEquipment: .constant(nil))
+        ProfileView(selectedProfile: .allEquipment, 
+                    selectedEquipment: .constant(nil))
+    }
+    .environment(\.managedObjectContext, .preview)
+}
+
+#Preview("No selection") {
+    NavigationStack {
+        ProfileView(selectedProfile: nil,
+                    selectedEquipment: .constant(nil))
     }
     .environment(\.managedObjectContext, .preview)
 }
