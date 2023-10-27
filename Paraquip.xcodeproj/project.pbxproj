@@ -80,6 +80,7 @@
 		F474F5F329D12E5A007D519A /* WingLoadGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */; };
 		F47B77F32AB6EF1B0061ADC1 /* ChecksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */; };
 		F496829029C6854D0061CC7E /* WingLoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F496828F29C6854D0061CC7E /* WingLoadView.swift */; };
+		F4A8A5E32AEBB71C00CF3236 /* ToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A8A5E22AEBB71C00CF3236 /* ToolbarButton.swift */; };
 		F4AF006F29BD15DC00EFA602 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D2B2D2426484B52009873CE /* Localizable.strings */; };
 		F4BD8E7F29FB42B8004CF5A9 /* WeightRangeGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BD8E7E29FB42B8004CF5A9 /* WeightRangeGraphic.swift */; };
 		F4BD8E8129FD6F3C004CF5A9 /* NSNumberExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BD8E8029FD6F3C004CF5A9 /* NSNumberExtensions.swift */; };
@@ -199,6 +200,7 @@
 		F474F5F229D12E5A007D519A /* WingLoadGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadGraphic.swift; sourceTree = "<group>"; };
 		F47B77F22AB6EF1B0061ADC1 /* ChecksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecksView.swift; sourceTree = "<group>"; };
 		F496828F29C6854D0061CC7E /* WingLoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WingLoadView.swift; sourceTree = "<group>"; };
+		F4A8A5E22AEBB71C00CF3236 /* ToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButton.swift; sourceTree = "<group>"; };
 		F4BD8E7E29FB42B8004CF5A9 /* WeightRangeGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRangeGraphic.swift; sourceTree = "<group>"; };
 		F4BD8E8029FD6F3C004CF5A9 /* NSNumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNumberExtensions.swift; sourceTree = "<group>"; };
 		F4C6A4AF29CB93670017EC0E /* LocalizationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationExtensions.swift; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 				0D22A9A828415D9400AB4E23 /* ImagePicker.swift */,
 				0D08F16026CD7EE0009CD3C5 /* DocumentPicker.swift */,
 				F41C00BF2AC9B45B00B13A56 /* DeletionObserverView.swift */,
+				F4A8A5E22AEBB71C00CF3236 /* ToolbarButton.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				0D6E9C6F281D9C6A00EC585C /* RoundedCorner.swift in Sources */,
 				F4BD8E8129FD6F3C004CF5A9 /* NSNumberExtensions.swift in Sources */,
 				0D919AEA2651156B005AB7A7 /* NotificationSettingsView.swift in Sources */,
+				F4A8A5E32AEBB71C00CF3236 /* ToolbarButton.swift in Sources */,
 				F4C6A4B829CBA74E0017EC0E /* DatabaseMigration.swift in Sources */,
 				0DE34C5A265C060700EF080F /* PersistedNotificationConfig.swift in Sources */,
 				F45148442ABDF6DF00488CD8 /* PerformanceView.swift in Sources */,

@@ -106,22 +106,13 @@ struct ProfileView: View {
         }
         .toolbar {
             ToolbarItem {
-                #if os(iOS)
-                Button("Edit") {
+                ToolbarButton(isHidden: !isSpecificProfile) {
                     editProfile()
+                } simpleLabel: {
+                    Text("Edit")
+                } complexLabel: {
+                    Label("Edit", systemImage: "pencil")
                 }
-                // Hiding instead of removing button to avoid glitchy animation on iOS
-                .opacity(isSpecificProfile ? 1 : 0)
-                .animation(.none, value: isSpecificProfile)
-                #else
-                if isSpecificProfile {
-                    Button {
-                        editProfile()
-                    } label: {
-                        Label("Edit", systemImage: "pencil")
-                    }
-                }
-                #endif
             }
         }
         .sheet(item: $editProfileOperation) { operation in
