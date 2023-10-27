@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoreData
-import OSLog
 import Combine
 
 extension NumberFormatter {
@@ -51,6 +50,7 @@ struct EditEquipmentContentView: View {
     }
 
     @ObservedObject var equipment: Equipment
+    let undoManager: BatchedUndoManager
 
     @Environment(\.managedObjectContext) private var managedObjectContext
 
@@ -62,15 +62,8 @@ struct EditEquipmentContentView: View {
     @State private var isShowingDeleteEquipment = false
     @State private var validationAlertMessage: LocalizedStringKey?
     @State private var editingSubscription: AnyCancellable?
-    @State private var isEditingInProgress = false
-    @State private var endEditingTask: Task<Void, any Error>?
-    @State private var undoManager = UndoManager()
     @State private var recommendedWeightRangeUndoHandler = UndoHandler<Bool>()
-    @State private var canUndo = false
-    @State private var canRedo = false
     @FocusState private var focusedField: Field?
-
-    private static let logger = Logger(category: "EditEquipmentContentView")
 
     private var isMaxWeightValid: Bool {
         equipment.maxWeightValue ?? .greatestFiniteMagnitude >= equipment.minWeightValue ?? 0
@@ -96,8 +89,9 @@ struct EditEquipmentContentView: View {
         equipment.maxWeightValue?.formatted(weightRangeFormat) ?? ""
     }
 
-    init(equipment: Equipment) {
+    init(equipment: Equipment, undoManager: BatchedUndoManager) {
         self.equipment = equipment
+        self.undoManager = undoManager
         _isShowingRecommendedWeightRange = .init(initialValue: equipment.hasRecommendedWeightRange)
     }
 
@@ -359,109 +353,53 @@ struct EditEquipmentContentView: View {
         .onChange(of: isShowingRecommendedWeightRange) {  oldValue, newValue in
             recommendedWeightRangeUndoHandler.registerUndo(from: oldValue, to: newValue)
         }
-        .onChange(of: undoManager, initial: true) {
-            recommendedWeightRangeUndoHandler.undoManger = undoManager
-            recommendedWeightRangeUndoHandler.binding = $isShowingRecommendedWeightRange
-            managedObjectContext.undoManager = undoManager
-            updateUndoState()
-        }
         .onChange(of: equipment, initial: true) {
-            // Reset undo manager when selected equipment changes
-            endEditing()
-            undoManager.removeAllActions()
-            updateUndoState()
+            undoManager.reset()
 
             // Manually observe equipment to capture all changes
             editingSubscription = equipment.objectWillChange.sink {
-                beginEditing()
-                endEditingTask = Task {
-                    try await Task.sleep(for: .milliseconds(500))
-                    endEditing()
-                }
+                undoManager.beginEditing()
             }
+        }
+        .onAppear {
+            recommendedWeightRangeUndoHandler.undoManger = undoManager.undoManager
+            recommendedWeightRangeUndoHandler.binding = $isShowingRecommendedWeightRange
+            managedObjectContext.undoManager = undoManager.undoManager
         }
         .onDisappear {
-            endEditing()
-        }
-        .toolbar {
-            ToolbarItem {
-                Button {
-                    withAnimation {
-                        endEditing()
-                        undoManager.undo()
-                        updateUndoState()
-                    }
-                } label: {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                }
-                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command])
-                .disabled(!canUndo)
-            }
-            ToolbarItem {
-                Button {
-                    withAnimation {
-                        undoManager.redo()
-                        updateUndoState()
-                    }
-                } label: {
-                    Label("Redo", systemImage: "arrow.uturn.forward")
-                }
-                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command, .shift])
-                .disabled(!canRedo)
-            }
+            undoManager.reset()
         }
     }
 
-    private func beginEditing() {
-        guard !undoManager.isUndoing &&
-                !undoManager.isRedoing &&
-                !isEditingInProgress else {
-            return
-        }
-        Self.logger.debug("Begin undo grouping")
-        undoManager.beginUndoGrouping()
-        isEditingInProgress = true
-        updateUndoState()
-    }
-
-    private func endEditing() {
-        endEditingTask?.cancel()
-        guard isEditingInProgress else { return }
-        Self.logger.debug("End undo grouping")
-        undoManager.endUndoGrouping()
-        isEditingInProgress = false
-        updateUndoState()
-    }
-
-    private func updateUndoState() {
-        canUndo = undoManager.canUndo
-        canRedo = undoManager.canRedo
-    }
 }
 
 #Preview("New Paraglider") {
     NavigationStack {
-        EditEquipmentContentView(equipment: Paraglider.create(context: .preview))
+        EditEquipmentContentView(equipment: Paraglider.create(context: .preview),
+                                 undoManager: .init())
     }
 }
 
 #Preview("Paraglider") {
     NavigationStack {
-        EditEquipmentContentView(equipment: CoreData.fakeProfile.paraglider!)
+        EditEquipmentContentView(equipment: CoreData.fakeProfile.paraglider!,
+                                 undoManager: .init())
     }
     .environment(\.managedObjectContext, .preview)
 }
 
 #Preview("Harness") {
     NavigationStack {
-        EditEquipmentContentView(equipment: CoreData.fakeProfile.singleEquipment(of: .harness)!)
+        EditEquipmentContentView(equipment: CoreData.fakeProfile.singleEquipment(of: .harness)!,
+                                 undoManager: .init())
     }
     .environment(\.managedObjectContext, .preview)
 }
 
 #Preview("Reserve") {
     NavigationStack {
-        EditEquipmentContentView(equipment: CoreData.fakeProfile.singleEquipment(of: .reserve)!)
+        EditEquipmentContentView(equipment: CoreData.fakeProfile.singleEquipment(of: .reserve)!,
+                                 undoManager: .init())
     }
     .environment(\.managedObjectContext, .preview)
 }

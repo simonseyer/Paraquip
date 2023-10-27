@@ -14,15 +14,52 @@ struct EditEquipmentView: View {
 
     @Environment(\.managedObjectContext) private var managedObjectContext
 
+    @State private var undoManager = BatchedUndoManager()
+
     var body: some View {
-        if let equipment {
-            EditEquipmentContentView(equipment: equipment)
-        } else {
-            if profile?.allEquipment.isEmpty ?? false {
-                ContentUnavailableView("Create an equipment first", systemImage: "backpack.fill")
+        HStack {
+            if let equipment {
+                EditEquipmentContentView(equipment: equipment,
+                                         undoManager: undoManager)
             } else {
-                ContentUnavailableView("Select an equipment",
-                                       systemImage: "backpack.fill")
+                if profile?.allEquipment.isEmpty ?? false {
+                    ContentUnavailableView("Create an equipment first", systemImage: "backpack.fill")
+                } else {
+                    ContentUnavailableView("Select an equipment",
+                                           systemImage: "backpack.fill")
+                }
+            }
+        }
+        // Important to avoid layout glitches when opening edit view
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem {
+                ToolbarButton(isHidden: equipment == nil) {
+                    withAnimation {
+                        undoManager.undo()
+                    }
+                } simpleLabel: {
+                    Image(systemName: "arrow.uturn.backward")
+                        .accessibilityLabel("Undo")
+                } complexLabel: {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
+                }
+                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command])
+                .disabled(!undoManager.canUndo)
+            }
+            ToolbarItem {
+                ToolbarButton(isHidden: equipment == nil) {
+                    withAnimation {
+                        undoManager.redo()
+                    }
+                } simpleLabel: {
+                    Image(systemName: "arrow.uturn.forward")
+                        .accessibilityLabel("Redo")
+                } complexLabel: {
+                    Label("Redo", systemImage: "arrow.uturn.forward")
+                }
+                .keyboardShortcut(KeyEquivalent("z"), modifiers: [.command, .shift])
+                .disabled(!undoManager.canRedo)
             }
         }
     }
