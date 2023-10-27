@@ -57,9 +57,12 @@ struct ChecksView: View {
                     }
                 }
                 ToolbarItem {
-                    Button {
+                    ToolbarButton {
                         showNotificationSettings = true
-                    } label: {
+                    } simpleLabel: {
+                        Image(systemName: "bell")
+                            .accessibilityLabel("Notifications")
+                    } complexLabel: {
                         Label("Notifications", systemImage: "bell")
                     }
                 }
