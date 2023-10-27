@@ -13,6 +13,8 @@ struct PerformanceView: View {
     private var profiles: FetchedResults<Profile>
 
     @State private var selectedProfile: Profile?
+    // Double empty space important to avoid glitchy animation
+    @State private var navigationTitle: String = " "
 
     var body: some View {
         NavigationSplitView {
@@ -32,12 +34,18 @@ struct PerformanceView: View {
             }
             .navigationTitle("Performance")
         } detail: {
-            if let selectedProfile {
-                ProfileWeightView(profile: selectedProfile)
-            } else {
-                ContentUnavailableView("Select an equipment set",
-                                       systemImage: "tray.full.fill")
+            HStack {
+                if let selectedProfile {
+                    ProfileWeightView(profile: selectedProfile)
+                } else {
+                    ContentUnavailableView("Select an equipment set",
+                                           systemImage: "tray.full.fill")
+                }
             }
+            .navigationTitle(navigationTitle)
+        }
+        .onChange(of: selectedProfile, initial: true) {
+            navigationTitle = selectedProfile?.profileName ?? " "
         }
     }
 }

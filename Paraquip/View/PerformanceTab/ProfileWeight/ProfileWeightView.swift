@@ -125,7 +125,6 @@ struct ProfileWeightView: View {
                 }
             }
         }
-        .navigationBarTitle(profile.profileName)
         .sheet(isPresented: $showingWingLoad) {
             NavigationStack {
                 WingLoadView(profile: profile)
