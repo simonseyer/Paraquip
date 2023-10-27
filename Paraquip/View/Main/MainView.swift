@@ -10,90 +10,54 @@ import CoreData
 
 struct MainView: View {
 
+    enum Tab {
+        case equipment
+        case checks
+        case performance
+    }
+
     @EnvironmentObject var notificationService: NotificationService
     @EnvironmentObject var databaseMigration: DatabaseMigration
+    @Environment(\.managedObjectContext) private var managedObjectContext
 
     @State private var showNotificationSettings = false
-    @State private var presentedEquipment: Equipment? = nil
     @State private var isShowingSingleEquipmentMigrationInfo = false
-
-    @State private var selectedProfile: ProfileSelection?
-    @State private var selectedEquipment: Equipment?
-
-    @State private var columnVisibility =
-      NavigationSplitViewVisibility.doubleColumn
+    @State private var selectedTab: Tab = .equipment
+    @State private var isFirstAppearance = true
+    @State private var checksProfileFilter: Profile? = nil
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $columnVisibility) {
-            ProfileListView(selectedProfile: $selectedProfile)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            showNotificationSettings = true
-                        } label: {
-                            Label("Notifications", systemImage: "bell.fill")
-                        }
-                    }
-                }
-        } content: {
-            switch selectedProfile {
-            case .none:
-                ContentUnavailableView(title: "Select an equipment set",
-                                       systemImage: "tray.full.fill")
-            case .allEquipment:
-                ProfileView(profile: nil, selectedEquipment: $selectedEquipment)
-            case .profile(let profile):
-                ProfileView(profile: profile, selectedEquipment: $selectedEquipment)
+        TabView(selection: $selectedTab.animation()) {
+            EquipmentView()
+            .tag(Tab.equipment)
+            .tabItem {
+                Label("Equipment", systemImage: "backpack")
             }
-        } detail: {
-            if let selectedEquipment {
-                EquipmentView(equipment: selectedEquipment)
-            } else if let selectedProfile {
-                if case .profile(let profile) = selectedProfile, profile.allEquipment.isEmpty {
-                    ContentUnavailableView(title: "Create an equipment first",
-                                           systemImage: "backpack.fill")
-                } else {
-                    ContentUnavailableView(title: "Select an equipment",
-                                           systemImage: "backpack.fill")
-                }
-            } else {
-                EmptyView()
+
+            ChecksView(showNotificationSettings: $showNotificationSettings,
+                       profileFilter: $checksProfileFilter)
+            .tag(Tab.checks)
+            .tabItem {
+                Label("Checks", systemImage: "checkmark")
+            }
+
+            PerformanceView()
+            .tag(Tab.performance)
+            .tabItem {
+                Label("Performance", systemImage: "gauge.open.with.lines.needle.33percent")
             }
         }
-        .onChange(of: notificationService.navigationState) { value in
-            switch value {
+        .onChange(of: notificationService.navigationState) {
+            switch notificationService.navigationState {
             case .notificationSettings:
                 showNotificationSettings = true
-            case .equipment(let equipmentId):
-                presentedEquipment = equipmentId
+            case .equipment:
+                selectedTab = .checks
+                checksProfileFilter = nil
             case .none:
                 break
             }
             notificationService.resetNavigationState()
-        }
-        .sheet(isPresented: $showNotificationSettings) {
-            NavigationStack {
-                NotificationSettingsView()
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Close") {
-                                showNotificationSettings = false
-                            }
-                        }
-                    }
-            }
-        }
-        .sheet(item: $presentedEquipment) { equipment in
-            NavigationStack {
-                EquipmentView(equipment: equipment)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("Close") {
-                                presentedEquipment = nil
-                            }
-                        }
-                    }
-            }
         }
         .alert("Sets updated",
                isPresented: $isShowingSingleEquipmentMigrationInfo) {
@@ -101,21 +65,26 @@ struct MainView: View {
         } message: {
             Text("single_equipment_migration_info")
         }
-        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) { newValue in
-            isShowingSingleEquipmentMigrationInfo = newValue
+        .onChange(of: databaseMigration.hasRemovedDuplicateEquipment) {
+            isShowingSingleEquipmentMigrationInfo = databaseMigration.hasRemovedDuplicateEquipment
+        }
+        .onAppear {
+            if isFirstAppearance {
+                let equipmentCount = try? managedObjectContext.count(for: Equipment.fetchRequest())
+                if equipmentCount ?? 0 > 0 {
+                    selectedTab = .checks
+                }
+                isFirstAppearance = false
+            }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        MainView()
-            .environment(\.managedObjectContext, .preview)
-            .environmentObject(NotificationService(managedObjectContext: .preview,
-                                                   notifications: FakeNotificationPlugin()))
-            .environmentObject(DatabaseMigration(context: .preview))
-            .environment(\.locale, .init(identifier: "de"))
-    }
+#Preview {
+    MainView()
+        .environment(\.managedObjectContext, .preview)
+        .environmentObject(NotificationService(managedObjectContext: .preview,
+                                               notifications: FakeNotificationPlugin()))
+        .environmentObject(DatabaseMigration(context: .preview))
+        .environment(\.locale, .init(identifier: "de"))
 }
-

@@ -13,9 +13,10 @@ extension Date {
     }
 
     static let simulatedDate: Date? = {
-        if let notificationDateString = ProcessInfo.processInfo.environment["simulated_notification_date"],
-           let notificationTimeInterval = TimeInterval(notificationDateString) {
-            return Date(timeIntervalSince1970: notificationTimeInterval)
+        if let simulatedDateString = ProcessInfo.processInfo.environment["simulatedDate"] {
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.formatOptions = [.withInternetDateTime]
+            return dateFormatter.date(from: simulatedDateString)!
         } else {
             return nil
         }

@@ -14,6 +14,9 @@ platform :ios do
     )
 
     submit_release = prompt(text: "Submit release?", boolean: true)
+    if not submit_release
+      test_flight = prompt(text: "Just TestFlight?", boolean: true)
+    end
 
     if submit_release and not prompt(text: "Release notes up to date?", boolean: true)
       UI.user_error! "Update your release notes first :)"
@@ -29,20 +32,28 @@ platform :ios do
 
     build_app(scheme: "Paraquip", xcargs: "-allowProvisioningUpdates")
 
-    capture_screenshots()
+    if not test_flight
+      capture_screenshots()
+    end
 
     commit_version_bump(message: "Version #{version} (#{build_number})")
     add_git_tag(tag: "#{version}-#{build_number}", sign: true)
 
-    upload_to_app_store(
-      overwrite_screenshots: true,
-      copyright: "#{Time.now.year} Simon Seyer",
-      precheck_include_in_app_purchases: false,
-      submit_for_review: submit_release,
-      automatic_release: submit_release,
-      submission_information: {
-        add_id_info_uses_idfa: false
-      }
-    )
+    if test_flight
+      upload_to_testflight(
+        skip_submission: true
+      )
+    else
+      upload_to_app_store(
+        overwrite_screenshots: true,
+        copyright: "#{Time.now.year} Simon Seyer",
+        precheck_include_in_app_purchases: false,
+        submit_for_review: submit_release,
+        automatic_release: submit_release,
+        submission_information: {
+          add_id_info_uses_idfa: false
+        }
+      )
+    end
   end
 end

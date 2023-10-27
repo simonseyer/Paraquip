@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 
-@MainActor
 class FakeNotificationPlugin: NotificationPlugin {
 
     weak var delegate: (any NotificationsPluginDelegate)?

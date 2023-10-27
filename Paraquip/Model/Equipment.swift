@@ -39,7 +39,7 @@ extension Equipment: Creatable {
         }
     }
 
-    enum CheckUrgency {
+    enum CheckUrgency: Equatable {
         case now
         case soon(Date)
         case later(Date)
@@ -70,6 +70,10 @@ extension Equipment: Creatable {
         EquipmentType(rawValue: type) ?? .paraglider
     }
 
+    var equipmentID: UUID {
+        id!
+    }
+
     var equipmentName: String {
         get { name ?? "" }
         set { name = newValue }
@@ -83,13 +87,6 @@ extension Equipment: Creatable {
     var floatingCheckCycle: Double {
         get { Double(checkCycle) }
         set { checkCycle = Int16(newValue) }
-    }
-
-    var isCheckable: Bool {
-        switch equipmentType {
-        case .paraglider, .harness, .reserve: return true
-        case .gear: return false
-        }
     }
 
     var brandName: String {

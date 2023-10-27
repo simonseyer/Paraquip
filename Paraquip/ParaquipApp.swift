@@ -20,20 +20,12 @@ struct ParaquipApp: App {
     @Environment(\.scenePhase) var scenePhase
 
     init() {
-        if ProcessInfo.processInfo.environment["isUITest"] == "true" {
+        if ProcessInfo.processInfo.environment["animationsDisabled"] == "true" {
             UIView.setAnimationsEnabled(false)
+        }
+
+        if ProcessInfo.processInfo.environment["stateSimulated"] == "true" {
             self.container = CoreData.inMemoryPersistentContainer
-            self.databaseMigration = DatabaseMigration(context: container.viewContext)
-            self.notificationService = NotificationService(
-                state: .fake(),
-                managedObjectContext: container.viewContext,
-                persistence: NotificationPersistence(),
-                notifications: FakeNotificationPlugin()
-            )
-        } else if ProcessInfo.processInfo.environment["isNotificationTest"] == "true" {
-            self.container = CoreData.inMemoryPersistentContainer
-            self.databaseMigration = DatabaseMigration(context: container.viewContext)
-            self.notificationService = NotificationService(managedObjectContext: container.viewContext)
         } else {
             let container = NSPersistentContainer(name: "Model")
             container.loadPersistentStores { description, error in
@@ -43,10 +35,23 @@ struct ParaquipApp: App {
             }
 
             self.container = container
-            let migrationContext = container.newBackgroundContext()
-            self.databaseMigration = DatabaseMigration(context: migrationContext)
-            self.notificationService = NotificationService(managedObjectContext: container.viewContext)
+        }
 
+        if ProcessInfo.processInfo.environment["notificationsSimulated"] == "true" {
+            self.notificationService = NotificationService(
+                state: .fake(),
+                managedObjectContext: container.viewContext,
+                persistence: NotificationPersistence(),
+                notifications: FakeNotificationPlugin()
+            )
+        } else {
+            self.notificationService = NotificationService(managedObjectContext: container.viewContext)
+        }
+
+        let migrationContext = container.newBackgroundContext()
+        self.databaseMigration = DatabaseMigration(context: migrationContext)
+
+        if ProcessInfo.processInfo.environment["stateSimulated"] != "true" {
             LegacyAppPersistence().migrate(into: migrationContext)
             databaseMigration.run()
             initializeDatabase(context: migrationContext)
@@ -75,7 +80,7 @@ struct ParaquipApp: App {
                 .environmentObject(databaseMigration)
                 .environment(\.managedObjectContext, container.viewContext)
         }
-        .onChange(of: scenePhase) { _ in
+        .onChange(of: scenePhase) {
             if container.viewContext.hasChanges {
                 try? container.viewContext.save()
             }

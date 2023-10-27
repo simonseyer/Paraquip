@@ -80,7 +80,7 @@ extension Attachment {
         let attachment = Self(context: context)
         attachment.filePath = filePath
         attachment.isTemporary = true
-        attachment.timestamp = Date.paraquipNow
+        attachment.timestamp = Date.now
         return attachment
     }
 

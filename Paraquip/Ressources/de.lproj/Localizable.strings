@@ -9,9 +9,13 @@
 // Generic
 "Edit" = "Bearbeiten";
 "Done" = "Fertig";
+"Close" = "Schließen";
 "Paraglider" = "Gleitschirm";
+"Paragliders" = "Gleitschirme";
 "Harness" = "Gurtzeug";
+"Harnesses" = "Gurtzeuge";
 "Reserve" = "Rettung";
+"Reserves" = "Rettungen";
 "Gear" = "Zubehör";
 "Equipment" = "Ausrüstung";
 "Your Equipment" = "Deine Ausrüstung";
@@ -25,22 +29,24 @@
 
 // Profile List View
 "Sets" = "Sets";
+"Create new set" = "Neues Set anlegen";
 "Delete" = "Löschen";
 "Delete set" = "Set löschen";
-"Delete set & equipment" = "Set & Ausrüstung löschen";
+"Delete with equipment" = "Mit Ausrüstung löschen";
 "set_footer" = "Organsiere deine Ausrüstung in Sets, z.B. zum Strecken- oder Dünen-Fliegen.";
 
 // Edit Profile View
 "icon_attribution" = "Icons von Font Awesome (ohne Modifikation) — siehe [Lizenz](https://fontawesome.com/license)";
 "New Set" = "Neues Set";
+"Icon" = "Icon";
 
 // Profile View
 "Check now" = "Jetzt checken";
-"Add equipment" = "Ausrüstung hinzufügen";
 "Delete equipment" = "Ausrüstung löschen";
 "Remove from set" = "Aus Set entfernen";
-"Add existing %@" = "%@ zum Set hinzufügen";
 "Create new %@" = "%@ anlegen";
+"Edit set" = "Set bearbeiten";
+"Unknown" = "Unbekannt";
 
 // Equipment View
 "Type" = "Typ";
@@ -81,7 +87,7 @@
 "Minimum" = "Minimum";
 "Maximum" = "Maximum";
 "%@ Recommended weight range" = "%@ Empfohlener Gewichtsbereich";
-"Clear" = "Zurücksetzen";
+"Clear" = "Entfernen";
 "Log" = "Eintragen";
 "Check" = "Check";
 "None" = "Keine";
@@ -91,13 +97,15 @@
 "Invalid weight range" = "Invalider Gewichtsbereich";
 "The maximum weight must be larger then the mimimum weight." = "Das maximale Gewicht muss größer sein als das minimale Gewicht.";
 "The recommended weight range must lie within the certified weight range." = "Der empfohlene Gewichtsbereich muss im zertifizierten Gewichtsbereich liegen.";
+"Add manual" = "Anleitung hinzufügen";
+"Open manual" = "Anleitung öffnen";
 
 // Profile Weight View
-"Weight Check" = "Gewichtsrechner";
 "Takeoff weight" = "Abbfluggewicht";
 "Pilot" = "Pilot";
 "Sum" = "Summe";
 "Wing load" = "Flächenbelastung";
+"Wing load %@" = "Flächenbelastung %@";
 
 // Wing Load View
 "wing_load_calculation" = "Die Flächenbelastung wird berechnet durch:";
@@ -128,19 +136,31 @@
 
 // Log Entry View
 "Attachments" = "Anhänge";
-"Attach file" = "Datei anhängen";
-"Attach image" = "Bild anhängen";
+"Add attachment" = "Anhang hinzufügen";
+"Document" = "Datei";
+"Image" = "Bild";
+"Date" = "Datum";
+"Delete entry" = "Eintrag löschen";
 
 // Notification View
 "Enable" = "Aktivieren";
-"notification_info" = "Aktiviere Benachrichtigungen, um nie wieder einen Check zu verpassen.";
 "notification_denied_info" = "Gehe in die Einstellungen App und aktiviere Benachrichtigungen für Paraquip.";
-"day" = "Tag";
-"month" = "Monat";
-"days" = "Tage";
-"months" = "Monate";
-"before check" = "vor dem Check";
+"Check Reminder" = "Check-Erinnerungen";
+"day(s)" = "Tag(e)";
+"month(s)" = "Monat(e)";
+"before" = "davor";
 "Add notification" = "Benachrichtung hinzufügen";
+
+// ChecksView
+"Checks" = "Checks";
+"Filter" = "Filtern";
+"No checks available" = "Keine Checks verfügbar";
+"No checks in %@ %@" = "Keine Checks in %@ %@";
+"%@ Now" = "%@ Jetzt";
+"%@ Later" = "%@ Später";
+
+// Performance
+"Performance" = "Leistung";
 
 // Notifications
 "notification_check_due_title" = "Check fällig";
