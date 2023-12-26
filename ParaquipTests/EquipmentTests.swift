@@ -15,7 +15,7 @@ class EquipmentTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        persistentContainer = NSPersistentContainer.fake(name: "Model")
+        persistentContainer = CoreData.inMemoryPersistentContainer
     }
 
     private func equipment(checkCycle: Int = 1, checkLog: [Date] = [], purchaseDate: Date? = nil) -> Equipment {
