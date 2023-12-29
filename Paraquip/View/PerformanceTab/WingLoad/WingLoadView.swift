@@ -41,7 +41,7 @@ struct WingLoadView: View {
 
                 WingLoadGuidanceView()
             }
-            .padding(.horizontal, 30)
+            .padding([.horizontal, .bottom], 30)
 
             let _ = equipment // Required to observe equipment for (weight) changes
         }

@@ -27,7 +27,6 @@ struct WingLoadGuidanceView: View {
                 .font(.title2)
                 .padding([.bottom, .top], 4)
             Text("further_reading_text")
-
         }
         .font(.body.leading(.loose))
         .textSelection(.enabled)
