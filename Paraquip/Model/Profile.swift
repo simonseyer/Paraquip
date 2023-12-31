@@ -20,7 +20,7 @@ extension Comparable {
     }
 }
 
-extension Profile: Creatable {
+extension Profile {
     enum Icon: String, CaseIterable, Identifiable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
 
@@ -78,10 +78,8 @@ extension Profile: Creatable {
         return Array<Equipment>(set).sorted { $0.equipmentName > $1.equipmentName }
     }
     
-    var paraglider: Paraglider? {
-        equipment?.first(where: { element in
-            element is Paraglider
-        }) as? Paraglider
+    var paraglider: Equipment? {
+        allEquipment.first { $0.equipmentType == .paraglider }
     }
 
     func singleEquipment(of type: Equipment.EquipmentType) -> Equipment? {

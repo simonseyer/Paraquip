@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-extension Equipment: Creatable {
+extension Equipment {
     enum ValidationError: Error {
         case invalidWeightRanges
     }
@@ -21,21 +21,6 @@ extension Equipment: Creatable {
 
         var id: Int16 {
             rawValue
-        }
-
-        static func type(for equipment: Equipment) -> Self {
-            switch equipment {
-            case is Paraglider:
-                return .paraglider
-            case is Harness:
-                return .harness
-            case is Reserve:
-                return .reserve
-            case is Gear:
-                return .gear
-            default:
-                fatalError("Unknown equipment type: \(Swift.type(of: equipment))")
-            }
         }
     }
 
@@ -189,24 +174,25 @@ extension Equipment: Creatable {
             return .later(nextCheck)
         }
     }
-
-    static func create(context: NSManagedObjectContext) -> Self {
-        let equipment = Self(context: context)
-        equipment.id = UUID()
-        equipment.type = EquipmentType.type(for: equipment).rawValue
-        return equipment
+    
+    static func paraglider(context: NSManagedObjectContext) -> Equipment {
+        return .create(.paraglider, context: context)
+    }
+    
+    static func harness(context: NSManagedObjectContext) -> Equipment {
+        return .create(.harness, context: context)
+    }
+    
+    static func reserve(context: NSManagedObjectContext) -> Equipment {
+        return .create(.reserve, context: context)
+    }
+    
+    static func gear(context: NSManagedObjectContext) -> Equipment {
+        return .create(.gear, context: context)
     }
 
-    static func create(type: EquipmentType, context: NSManagedObjectContext) -> Equipment {
-        let classType: Equipment.Type = {
-            switch type {
-            case .paraglider: return Paraglider.self
-            case .harness: return Harness.self
-            case .reserve: return Reserve.self
-            case .gear: return Gear.self
-            }
-        }()
-        let equipment = classType.init(context: context)
+    static func create(_ type: EquipmentType, context: NSManagedObjectContext) -> Equipment {
+        let equipment = Equipment.init(context: context)
         equipment.id = UUID()
         equipment.type = type.rawValue
         return equipment

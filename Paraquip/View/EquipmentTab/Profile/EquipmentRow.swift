@@ -48,7 +48,7 @@ struct EquipmentRow: View {
 }
 
 private func equipment(for brand: String, type: Equipment.EquipmentType = .reserve) -> Equipment {
-    let equipment = Equipment.create(type: type, context: .preview)
+    let equipment = Equipment.create(type, context: .preview)
     equipment.brandName = brand
     equipment.name = brand
     if brand.starts(with: "A") {

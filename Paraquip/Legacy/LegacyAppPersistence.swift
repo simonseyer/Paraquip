@@ -37,7 +37,7 @@ class LegacyAppPersistence {
         profileModel.profileIcon = .default
 
         for paraglider in profile.paraglider {
-            let paragliderModel = Paraglider.create(context: managedObjectContext)
+            let paragliderModel = Equipment.paraglider(context: managedObjectContext)
             paragliderModel.name = paraglider.name
             paragliderModel.brand = paraglider.brand
             paragliderModel.brandId = paraglider.brandId
@@ -53,7 +53,7 @@ class LegacyAppPersistence {
         }
 
         for harness in profile.harnesses {
-            let harnessModel = Harness.create(context: managedObjectContext)
+            let harnessModel = Equipment.harness(context: managedObjectContext)
             harnessModel.name = harness.name
             harnessModel.brand = harness.brand
             harnessModel.brandId = harness.brandId
@@ -68,7 +68,7 @@ class LegacyAppPersistence {
         }
 
         for reserve in profile.reserves {
-            let reserveModel = Reserve.create(context: managedObjectContext)
+            let reserveModel = Equipment.reserve(context: managedObjectContext)
             reserveModel.name = reserve.name
             reserveModel.brand = reserve.brand
             reserveModel.brandId = reserve.brandId

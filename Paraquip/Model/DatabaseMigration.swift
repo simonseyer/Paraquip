@@ -29,7 +29,19 @@ class DatabaseMigration: ObservableObject {
 
         for equipment in equipment {
             if equipment.type == 0 {
-                equipment.type = Equipment.EquipmentType.type(for: equipment).rawValue
+                let equipmentType: Equipment.EquipmentType = switch equipment {
+                case is Paraglider:
+                        .paraglider
+                case is Harness:
+                        .harness
+                case is Reserve:
+                        .reserve
+                case is Gear:
+                        .gear
+                default:
+                    fatalError("Unknown equipment type: \(Swift.type(of: equipment))")
+                }
+                equipment.type = equipmentType.rawValue
             }
 
             if let purchaseDate = equipment.purchaseDate, equipment.purchaseLog == nil {

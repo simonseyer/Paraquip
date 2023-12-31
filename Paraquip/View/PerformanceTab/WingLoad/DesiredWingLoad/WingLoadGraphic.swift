@@ -166,7 +166,7 @@ private func profile(tw: Double? = nil, pwa: Double? = nil, wr: ClosedRange<Doub
     let profile = Profile.create(context: .preview)
     profile.pilotWeight = tw ?? 0
     profile.additionalWeight = 0
-    let paraglider = Paraglider.create(context: .preview)
+    let paraglider = Equipment.paraglider(context: .preview)
 
     if let pwa {
         paraglider.projectedAreaValue = pwa

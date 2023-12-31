@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import UniformTypeIdentifiers
 
-extension LogEntry: Creatable {
+extension LogEntry {
     var logEntryDate: Date {
         get { date ?? Date.paraquipNow }
         set { date = newValue }

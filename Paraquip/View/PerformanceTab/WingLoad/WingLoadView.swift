@@ -53,7 +53,7 @@ struct WingLoadView: View {
 
 private var noWingLoadProfile: Profile {
     let profile = Profile.create(context: .preview, name: "")
-    let paraglider = Paraglider.create(context: .preview)
+    let paraglider = Equipment.paraglider(context: .preview)
     paraglider.brandName = "Gin"
     paraglider.name = "Explorer 2"
     profile.addToEquipment(paraglider)

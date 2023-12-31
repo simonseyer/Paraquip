@@ -19,7 +19,7 @@ class EquipmentTests: XCTestCase {
     }
 
     private func equipment(checkCycle: Int = 1, checkLog: [Date] = [], purchaseDate: Date? = nil) -> Equipment {
-        let equipment = Reserve(context: persistentContainer.viewContext)
+        let equipment = Equipment.reserve(context: persistentContainer.viewContext)
         equipment.checkCycle = Int16(checkCycle)
 
         if let purchaseDate {

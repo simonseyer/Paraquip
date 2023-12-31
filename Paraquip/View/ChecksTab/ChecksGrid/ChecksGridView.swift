@@ -81,7 +81,9 @@ struct ChecksGridView: View {
     private func handleLogAction(_ logAction: LogMenu.Action, for equipment: Equipment) {
         switch logAction {
         case .create:
-            let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+            let operation = Operation(withParentContext: managedObjectContext) {
+                LogEntry.create(context: $0)
+            }
             operation.object(for: equipment).addToCheckLog(operation.object)
             editLogEntryOperation = operation
         case .edit(let logEntry):

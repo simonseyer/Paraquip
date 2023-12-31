@@ -27,7 +27,9 @@ struct LogSheet: View {
     var body: some View {
         List {
             NextCheckCell(urgency: equipment.checkUrgency) {
-                let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                let operation = Operation(withParentContext: managedObjectContext) {
+                    LogEntry.create(context: $0)
+                }
                 operation.object(for: equipment).addToCheckLog(operation.object)
                 editLogEntryOperation = operation
             }

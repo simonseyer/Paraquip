@@ -53,7 +53,7 @@ struct CoreData {
         profile.profileIcon = .default
 
         do {
-            let equipment = Reserve.create(context: context)
+            let equipment = Equipment.reserve(context: context)
             equipment.brand = "Nova"
             equipment.name = "Beamer 3 light"
             equipment.checkCycle = 3
@@ -64,7 +64,7 @@ struct CoreData {
         }
 
         do {
-            let equipment = Reserve.create(context: context)
+            let equipment = Equipment.reserve(context: context)
             equipment.brand = "Ozone"
             equipment.name = "Angel SQ"
             equipment.checkCycle = 3
@@ -79,7 +79,7 @@ struct CoreData {
         }
 
         do {
-            let equipment = Harness.create(context: context)
+            let equipment = Equipment.harness(context: context)
             equipment.brand = "Woody Valley"
             equipment.name = "Wani Light 2"
             equipment.checkCycle = 12
@@ -93,7 +93,7 @@ struct CoreData {
         }
 
         do {
-            let equipment = Paraglider.create(context: context)
+            let equipment = Equipment.paraglider(context: context)
             equipment.brand = "Gin"
             equipment.name = "Explorer 2"
             equipment.equipmentSize = "S"
@@ -119,7 +119,7 @@ struct CoreData {
         }
 
         do {
-            let equipment = Gear.create(context: context)
+            let equipment = Equipment.gear(context: context)
             equipment.brand = "Woody Valley"
             equipment.name = "Rucksack Light"
             equipment.purchaseLog = LogEntry.create(context: context, date: oneYearAgo)
@@ -135,7 +135,7 @@ struct CoreData {
         profile2.profileIcon = .beach
 
         do {
-            let equipment = Paraglider.create(context: context)
+            let equipment = Equipment.paraglider(context: context)
             equipment.brand = "Gin"
             equipment.name = "Calypso"
             equipment.equipmentSize = "M"

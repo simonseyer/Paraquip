@@ -131,7 +131,7 @@ struct ProfileView: View {
 
     private func createEquipment(type: Equipment.EquipmentType) {
         withAnimation {
-            let equipment = Equipment.create(type: type, context: managedObjectContext)
+            let equipment = Equipment.create(type, context: managedObjectContext)
             if let profile {
                 profile.addToEquipment(equipment)
             }

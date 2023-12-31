@@ -139,7 +139,9 @@ struct EditEquipmentContentView: View {
                         editLogEntryOperation = Operation(editing: logEntry,
                                                           withParentContext: managedObjectContext)
                     } else {
-                        let operation = Operation<LogEntry>(withParentContext: managedObjectContext)
+                        let operation = Operation(withParentContext: managedObjectContext) {
+                            LogEntry.create(context: $0)
+                        }
                         operation.object(for: equipment).purchaseLog = operation.object
                         editLogEntryOperation = operation
                     }
@@ -181,9 +183,9 @@ struct EditEquipmentContentView: View {
                     .opacity(equipment.manualAttachment == nil ? 0 : 1)
                 }
             }
-            if equipment is Paraglider || equipment is Reserve {
+            if [.paraglider, .reserve].contains(equipment.equipmentType) {
                 Section {
-                    if equipment is Paraglider {
+                    if equipment.equipmentType == .paraglider {
                         HStack {
                             Text("Minimum")
                             Spacer()
@@ -231,7 +233,7 @@ struct EditEquipmentContentView: View {
                         .animation(.default, value: isMaxWeightValid)
                     }
                 } footer: {
-                    if equipment is Paraglider && !isShowingRecommendedWeightRange {
+                    if equipment.equipmentType == .paraglider && !isShowingRecommendedWeightRange {
                         Button("\(Image(systemName: "plus")) Recommended weight range") {
                             withAnimation {
                                 isShowingRecommendedWeightRange.toggle()
@@ -241,7 +243,7 @@ struct EditEquipmentContentView: View {
                     }
                 }
             }
-            if equipment is Paraglider && isShowingRecommendedWeightRange {
+            if equipment.equipmentType == .paraglider && isShowingRecommendedWeightRange {
                 Section {
                     HStack {
                         Text("Minimum")
@@ -290,7 +292,7 @@ struct EditEquipmentContentView: View {
                     }
                 }
             }
-            if equipment is Paraglider {
+            if equipment.equipmentType == .paraglider {
                 Section(header: Text("Specifications")) {
                     HStack {
                         Text("Projected area")
@@ -375,7 +377,7 @@ struct EditEquipmentContentView: View {
 
 #Preview("New Paraglider") {
     NavigationStack {
-        EditEquipmentContentView(equipment: Paraglider.create(context: .preview),
+        EditEquipmentContentView(equipment: Equipment.paraglider(context: .preview),
                                  undoManager: .init())
     }
 }

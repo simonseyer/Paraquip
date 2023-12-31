@@ -46,7 +46,9 @@ struct ProfileListView: View {
                       systemImage: "tray.full")
             }
             Button {
-                editProfileOperation = Operation(withParentContext: managedObjectContext)
+                editProfileOperation = Operation(withParentContext: managedObjectContext) {
+                    Profile.create(context: $0)
+                }
             } label: {
                 Label("Create new set", systemImage: "plus.circle")
             }
