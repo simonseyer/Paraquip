@@ -13,8 +13,6 @@ struct PerformanceView: View {
     private var profiles: FetchedResults<Profile>
 
     @State private var selectedProfile: Profile?
-    // Double empty space important to avoid glitchy animation
-    @State private var navigationTitle: String = " "
 
     var body: some View {
         NavigationSplitView {
@@ -42,10 +40,6 @@ struct PerformanceView: View {
                                            systemImage: "tray.full.fill")
                 }
             }
-            .navigationTitle(navigationTitle)
-        }
-        .onChange(of: selectedProfile, initial: true) {
-            navigationTitle = selectedProfile?.profileName ?? " "
         }
     }
 }
