@@ -82,6 +82,7 @@ struct WingLoadLegendView: View {
                     }
 
                 }
+                .contentShape(Rectangle())
                 .opacity(weightRangeOpacity)
                 .onTapGesture {
                     withAnimation {
@@ -93,6 +94,7 @@ struct WingLoadLegendView: View {
                     WingClassPill(text: Text("A"))
                     Text("Common wing load by EN-class \(wingClassIndicationIcon)")
                 }
+                .contentShape(Rectangle())
                 .opacity(isWingClassIndicationVisible ? visibleOpactity : hiddenOpacity)
                 .onTapGesture {
                     withAnimation {
