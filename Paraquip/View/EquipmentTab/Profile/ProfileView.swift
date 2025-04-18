@@ -80,11 +80,6 @@ struct ProfileView: View {
                 section(.harness, single: isSpecificProfile)
                 section(.reserve, single: false)
                 section(.gear, single: false)
-                if let selectedEquipment {
-                    DeletionObserverView(object: selectedEquipment) {
-                        self.selectedEquipment = nil
-                    }
-                }
                 if let profile {
                     ProfileTitleView(profile: profile,
                                      navigationTitle: $navigationTitle)
@@ -102,6 +97,12 @@ struct ProfileView: View {
             }
             if let profile, let selectedEquipment, !profile.contains(selectedEquipment) {
                 self.selectedEquipment = nil
+        }
+        .onReceive(equipment.publisher) { _ in
+            if let selected = selectedEquipment {
+                if !(selected.isInserted || equipment.contains(selected)) {
+                    selectedEquipment = nil
+                }
             }
         }
         .toolbar {

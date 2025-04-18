@@ -24,13 +24,13 @@ struct PerformanceView: View {
 
                     }
                 }
-                if let selectedProfile {
-                    DeletionObserverView(object: selectedProfile) {
-                        self.selectedProfile = nil
-                    }
-                }
             }
             .navigationTitle("Performance")
+            .onReceive(profiles.publisher) { _ in
+                if let selected = selectedProfile, !profiles.contains(selected) {
+                    selectedProfile = nil
+                }
+            }
         } detail: {
             HStack {
                 if let selectedProfile {

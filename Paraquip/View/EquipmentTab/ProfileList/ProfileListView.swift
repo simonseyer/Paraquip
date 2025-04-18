@@ -12,11 +12,13 @@ enum ProfileSelection: Hashable {
     case allEquipment
     case profile(Profile)
 
-    var profile: Profile? {
-        if case .profile(let profile) = self {
-            return profile
+    var profile: Profile {
+        return switch self {
+        case .allEquipment:
+            AllEquipmentProfile.shared
+        case .profile(let profile):
+            profile
         }
-        return nil
     }
 }
 
@@ -52,9 +54,11 @@ struct ProfileListView: View {
             } label: {
                 Label("Create new set", systemImage: "plus.circle")
             }
-            if case .profile(let profile) = selectedProfile {
-                DeletionObserverView(object: profile) {
-                    self.selectedProfile = nil
+        }
+        .onReceive(profiles.publisher) { _ in
+            if let selected = selectedProfile?.profile {
+                if !selected.isAllEquipment && !profiles.contains(selected) {
+                    selectedProfile = nil
                 }
             }
         }

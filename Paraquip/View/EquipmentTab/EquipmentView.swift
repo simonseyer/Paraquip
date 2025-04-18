@@ -26,13 +26,9 @@ struct EquipmentView: View {
             }
         }
         .onChange(of: selectedProfile) {
-            guard let selectedProfile else {
-                self.selectedEquipment = nil
-                return
-            }
-
-            if case .profile(let profile) = selectedProfile, let selectedEquipment, !(profile.equipment?.contains(selectedEquipment) ?? false) {
-                self.selectedEquipment = nil
+            // On deletion
+            if selectedProfile == nil {
+                selectedEquipment = nil
             }
         }
     }

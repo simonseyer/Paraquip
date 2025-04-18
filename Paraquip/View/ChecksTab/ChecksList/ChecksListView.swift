@@ -57,11 +57,6 @@ struct ChecksListView: View {
                         }
                     }
                 }
-                if let selectedEquipment {
-                    DeletionObserverView(object: selectedEquipment) {
-                        self.selectedEquipment = nil
-                    }
-                }
             }
             .navigationDestination(item: $selectedEquipment) { equipment in
                 LogSheet(equipment: equipment)
