@@ -33,7 +33,7 @@ struct EquipmentRow: View {
                 Text(equipmentName)
                 Text(brandName)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         } icon: {
             equipment.equipmentType.iconImage

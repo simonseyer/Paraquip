@@ -16,7 +16,7 @@ struct WingClassPill: View {
             .padding([.leading, .trailing], 6)
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .foregroundColor(Color(UIColor.secondarySystemBackground))
+                    .foregroundStyle(Color(UIColor.secondarySystemBackground))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 10)

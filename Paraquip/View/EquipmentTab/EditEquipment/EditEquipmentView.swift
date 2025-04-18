@@ -30,7 +30,7 @@ fileprivate struct LogDateCell: View {
             }
             Text(logEntry.logEntryDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
         }
-        .foregroundColor(.secondary)
+        .foregroundStyle(.secondary)
     }
 }
 
@@ -126,7 +126,7 @@ struct EditEquipmentView: View {
                         .keyboardType(.decimalPad)
                         .focused($focusedField, equals: .weight)
                     Text("kg")
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
                 Button(action: {
                     if let logEntry = equipment.purchaseLog {
@@ -145,7 +145,7 @@ struct EditEquipmentView: View {
                             LogDateCell(logEntry: purchaseLog)
                         }
                     }
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 }
             }
             Section {
@@ -190,7 +190,7 @@ struct EditEquipmentView: View {
                                 .submitLabel(.next)
                                 .onSubmit { focusedField = .maximumWeight }
                             Text("kg")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                     HStack {
@@ -209,7 +209,7 @@ struct EditEquipmentView: View {
                                 }
                             }
                         Text("kg")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 } header: {
                     HStack {
@@ -249,7 +249,7 @@ struct EditEquipmentView: View {
                             .submitLabel(.next)
                             .onSubmit { focusedField = .maximumRecommendedWeight }
                         Text("kg")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     HStack {
                         Text("Maximum")
@@ -261,7 +261,7 @@ struct EditEquipmentView: View {
                             .submitLabel(.next)
                             .onSubmit { focusedField = .projectedArea }
                         Text("kg")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 } header: {
                     HStack(spacing: 12) {
@@ -296,7 +296,7 @@ struct EditEquipmentView: View {
                             .keyboardType(.decimalPad)
                             .focused($focusedField, equals: .projectedArea)
                         Text("m²")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
