@@ -5,16 +5,16 @@
 //  Created by Simon Seyer on 15.05.21.
 //
 
-import XCTest
+import Testing
 @testable import Paraquip
 import CoreData
 
-class EquipmentTests: XCTestCase {
+@MainActor
+struct EquipmentTests {
 
-    var persistentContainer: NSPersistentContainer!
+    var persistentContainer: NSPersistentContainer
 
-    override func setUp() {
-        super.setUp()
+    init() {
         persistentContainer = CoreData.inMemoryPersistentContainer
     }
 
@@ -37,21 +37,21 @@ class EquipmentTests: XCTestCase {
         let equipment = equipment(checkLog: [Date.offsetBy(days: -40)])
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
+        #expect(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithMultipleChecks() {
         let equipment = equipment(checkLog: [Date.offsetBy(days: -40), Date.offsetBy(days: 1)])
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 1))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
+        #expect(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithPurchaseDate() {
         let equipment = equipment(purchaseDate: Date.offsetBy(days: 0))
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: 0))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
+        #expect(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithPurchaseDateAndCheck() {
@@ -59,11 +59,11 @@ class EquipmentTests: XCTestCase {
                                   purchaseDate: Date.offsetBy(days: -60))
 
         let nextCheck = Calendar.current.date(byAdding: .month, value: 1, to: Date.offsetBy(days: -40))!
-        XCTAssert(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
+        #expect(Calendar.current.isDate(equipment.nextCheck!, inSameDayAs: nextCheck))
     }
 
     func testNextCheckWithCheckOff() {
         let equipment = equipment(checkCycle: 0)
-        XCTAssertEqual(equipment.nextCheck, nil)
+        #expect(equipment.nextCheck == nil)
     }
 }
