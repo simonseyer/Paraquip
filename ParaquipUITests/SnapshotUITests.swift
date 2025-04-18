@@ -8,6 +8,7 @@
 import XCTest
 import UIKit
 
+@MainActor
 class SnapshotUITests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -101,8 +102,8 @@ class SnapshotUITests: XCTestCase {
 
     func localized(_ key:String) -> String {
         var bundle = Bundle(for: type(of: self))
-        if !deviceLanguage.isEmpty {
-            let languageIdentifier = String(deviceLanguage.split(separator: "-")[0])
+        if !Snapshot.deviceLanguage.isEmpty {
+            let languageIdentifier = String(Snapshot.deviceLanguage.split(separator: "-")[0])
             bundle = Bundle(path: bundle.path(forResource: languageIdentifier, ofType: "lproj")!)!
         }
         return bundle.localizedString(forKey: key, value: nil, table: nil)
