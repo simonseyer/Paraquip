@@ -40,9 +40,6 @@ struct EquipmentRow: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding(.horizontal, 2)
-                // Fix icon alignment
-                .padding(.bottom, -20)
-
         }
     }
 }
