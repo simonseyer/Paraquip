@@ -18,8 +18,12 @@ struct EquipmentView: View {
             ProfileView(selectedProfile: selectedProfile,
                         selectedEquipment: $selectedEquipment.animation())
         } detail: {
-            EditEquipmentView(profile: selectedProfile?.profile,
-                              equipment: selectedEquipment)
+            if let selectedEquipment {
+                EditEquipmentView(equipment: selectedEquipment)
+            } else {
+                ContentUnavailableView("Select an equipment",
+                                       systemImage: "backpack.fill")
+            }
         }
         .onChange(of: selectedProfile) {
             guard let selectedProfile else {
