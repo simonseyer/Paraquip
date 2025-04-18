@@ -15,8 +15,13 @@ struct EquipmentView: View {
         NavigationSplitView {
             ProfileListView(selectedProfile: $selectedProfile.animation())
         } content: {
-            ProfileView(selectedProfile: selectedProfile,
-                        selectedEquipment: $selectedEquipment.animation())
+            if let selectedProfile {
+                ProfileView(profile: selectedProfile.profile,
+                            selectedEquipment: $selectedEquipment.animation())
+            } else {
+                ContentUnavailableView("Select an equipment set",
+                                       systemImage: "tray.full.fill")
+            }
         } detail: {
             if let selectedEquipment {
                 EditEquipmentView(equipment: selectedEquipment)

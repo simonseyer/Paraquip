@@ -20,6 +20,15 @@ extension Comparable {
     }
 }
 
+class AllEquipmentProfile: Profile {
+    override var name: String? {
+        get { String(localized: "All Equipment") }
+        set {}
+    }
+
+    static var shared: AllEquipmentProfile { .init() }
+}
+
 extension Profile {
     enum Icon: String, CaseIterable, Identifiable {
         case campground, feather, mountain, beach, cloud, hiking, trophy, wind
@@ -41,8 +50,16 @@ extension Profile {
         static var `default`: Icon { .mountain }
     }
 
+    var isAllEquipment: Bool {
+        self is AllEquipmentProfile
+    }
+
     var equipmentPredicate: NSPredicate {
-        .init(format: "%@ IN %K", self, #keyPath(Equipment.profiles))
+        if (isAllEquipment) {
+            NSPredicate(value: true)
+        } else {
+            NSPredicate(format: "%@ IN %K", self, #keyPath(Equipment.profiles))
+        }
     }
 
     var profileName: String {
