@@ -127,3 +127,6 @@ Temporary Items
 venv
 main_cache.sqlite
 .ipynb_checkpoints
+
+# Firebase
+GoogleService-Info.plist

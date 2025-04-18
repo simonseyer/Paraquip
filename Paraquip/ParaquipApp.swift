@@ -18,6 +18,7 @@ struct ParaquipApp: App {
     private let logger = Logger(category: "ParaquipApp")
     
     @Environment(\.scenePhase) var scenePhase
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     init() {
         if ProcessInfo.processInfo.environment["animationsDisabled"] == "true" {
