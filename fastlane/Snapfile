@@ -1,10 +1,6 @@
 devices([
     "iPhone 16 Plus",
-    "iPhone 16",
-    "iPhone 16e",
-    "iPad Pro 13-inch (M4)",
-    "iPad Pro 11-inch (M4)",
-    "iPad mini (A17 Pro)"
+    "iPad Air 13-inch (M3)",
 ])
 
 languages([
