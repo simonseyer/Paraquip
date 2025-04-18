@@ -159,12 +159,12 @@ struct LogEntryView: View {
 
 // MARK: Preview
 
-private var logEntry1: LogEntry {
+@MainActor private var logEntry1: LogEntry {
     CoreData.fakeProfile.allEquipment.first { equipment in
         equipment.name == "Explorer 2"
     }!.allChecks.first!
 }
-private var logEntry2: LogEntry {
+@MainActor private var logEntry2: LogEntry {
     CoreData.fakeProfile.allEquipment.first { equipment in
         equipment.name == "Angel SQ"
     }!.allChecks.first!

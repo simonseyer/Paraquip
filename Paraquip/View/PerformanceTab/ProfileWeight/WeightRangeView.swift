@@ -101,11 +101,9 @@ private let values: [Double] = [50, 90, 100, 110, 120, 130, 160]
     VStack(spacing: 20) {
         ForEach(values, id: \.hashValue) { value in
             WeightRangeView(minWeight: minWeight, maxWeight: maxWeight, weight: value)
-                .previewLayout(.sizeThatFits)
         }
         ForEach(values, id: \.hashValue) { value in
             WeightRangeView(minWeight: minWeightI, maxWeight: maxWeight, weight: value)
-                .previewLayout(.sizeThatFits)
         }
     }
     .padding()

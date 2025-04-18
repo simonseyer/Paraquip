@@ -47,6 +47,7 @@ struct EquipmentRow: View {
     }
 }
 
+@MainActor 
 private func equipment(for brand: String, type: Equipment.EquipmentType = .reserve) -> Equipment {
     let equipment = Equipment.create(type, context: .preview)
     equipment.brandName = brand

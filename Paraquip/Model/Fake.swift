@@ -8,18 +8,20 @@
 import Foundation
 import CoreData
 
+@MainActor
 extension NSManagedObjectContext {
     static var preview: NSManagedObjectContext {
-        CoreData.previewContext
+        CoreData.previewManagedObjectContext
     }
 }
 
+@MainActor
 struct CoreData {
     
     private static let fake: (NSPersistentContainer, Profile) = createFakePersistentContainer()
 
     static var inMemoryPersistentContainer: NSPersistentContainer { fake.0 }
-    static var previewContext: NSManagedObjectContext { inMemoryPersistentContainer.viewContext }
+    static var previewManagedObjectContext: NSManagedObjectContext { inMemoryPersistentContainer.viewContext }
     static var fakeProfile: Profile { fake.1 }
 
     private static func createFakePersistentContainer() -> (NSPersistentContainer, Profile) {

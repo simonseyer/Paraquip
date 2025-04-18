@@ -22,6 +22,7 @@ protocol NotificationsPluginDelegate: AnyObject, Sendable {
     func didReceiveOpenSettings() async
 }
 
+@MainActor
 protocol NotificationPlugin: AnyObject {
 
     var delegate: (any NotificationsPluginDelegate)? { get set }

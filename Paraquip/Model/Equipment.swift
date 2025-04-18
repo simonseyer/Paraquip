@@ -45,7 +45,7 @@ extension Equipment {
         ]
     }
     
-    static let defaultNSSortDescriptors = [
+    @MainActor static let defaultNSSortDescriptors = [
         NSSortDescriptor(key: "type", ascending: true),
         NSSortDescriptor(key: "brand", ascending: true),
         NSSortDescriptor(key: "name", ascending: true)

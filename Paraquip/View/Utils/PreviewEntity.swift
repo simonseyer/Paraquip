@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 
+@MainActor
 extension Equipment {
     static var previewEntity: NSEntityDescription {
         NSEntityDescription.entity(forEntityName: String(describing: Self.self), in: .preview)!

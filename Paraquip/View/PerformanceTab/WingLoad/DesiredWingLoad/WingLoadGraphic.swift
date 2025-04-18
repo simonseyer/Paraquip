@@ -133,10 +133,10 @@ struct WingLoadGraphic: View {
 
 // MARK: Preview
 
-private let explorer2S = profile(tw: 85, pwa: 20.43, wr: 75...95, dwl: 4.16)
-private let explorer2S2 = profile(tw: 85, pwa: 20.43, wr: 75...95, dwl: 4.14)
+@MainActor private let explorer2S = profile(tw: 85, pwa: 20.43, wr: 75...95, dwl: 4.16)
+@MainActor private let explorer2S2 = profile(tw: 85, pwa: 20.43, wr: 75...95, dwl: 4.14)
 
-private let previewData: [(String, Profile)] = [
+@MainActor private let previewData: [(String, Profile)] = [
     ("Gin Bolero 7 XXS", profile(pwa: 18.83, wr: 55...80)),
     ("Gin Bolero 7 L", profile(pwa: 26.95, wr: 100...130)),
     ("Gin Explorer 2 S", explorer2S),
@@ -145,7 +145,7 @@ private let previewData: [(String, Profile)] = [
     ("Gin Explorer 2 Overweight", profile(tw: 145, pwa: 20.43, wr: 75...95)),
 ]
 
-private let novaPreviewData: [(String, Profile)] = [
+@MainActor private let novaPreviewData: [(String, Profile)] = [
     ("Nova Prion 5 XXS", profile(pwa: 18.50, wr: 55...75)),
     ("Nova Prion 5 XS", profile(pwa: 20.9, wr: 65...85)),
     ("Nova Prion 5 S", profile(pwa: 23, wr: 75...100)),
@@ -162,6 +162,7 @@ private let novaPreviewData: [(String, Profile)] = [
     ("Nova Bion 2 L", profile(pwa: 35, wr: 120...225)),
 ]
 
+@MainActor
 private func profile(tw: Double? = nil, pwa: Double? = nil, wr: ClosedRange<Double>? =  nil, rwr: ClosedRange<Double>? = nil, dwl: Double? = nil) -> Profile {
     let profile = Profile.create(context: .preview)
     profile.pilotWeight = tw ?? 0

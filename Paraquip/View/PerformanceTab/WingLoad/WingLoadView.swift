@@ -51,6 +51,7 @@ struct WingLoadView: View {
 
 // MARK: Preview
 
+@MainActor
 private var noWingLoadProfile: Profile {
     let profile = Profile.create(context: .preview, name: "")
     let paraglider = Equipment.paraglider(context: .preview)

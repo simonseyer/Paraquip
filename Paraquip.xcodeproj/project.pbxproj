@@ -661,7 +661,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					0D11FB8D2620A5CE009D9349 = {
 						CreatedOnToolsVersion = 12.4;
@@ -1005,7 +1005,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
+				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks -enable-upcoming-feature InferSendableFromCaptures";
 				PRODUCT_BUNDLE_IDENTIFIER = de.simonseyer.Paraquip.development;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -1036,7 +1036,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks";
+				OTHER_SWIFT_FLAGS = "-enable-upcoming-feature BareSlashRegexLiterals -enable-upcoming-feature ConciseMagicFile -enable-upcoming-feature ExistentialAny -enable-upcoming-feature ImplicitOpenExistentials -enable-upcoming-feature StrictConcurrency -warn-concurrency -enable-actor-data-race-checks -enable-upcoming-feature InferSendableFromCaptures";
 				PRODUCT_BUNDLE_IDENTIFIER = de.simonseyer.Paraquip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = xros;
@@ -1053,7 +1053,6 @@
 		0D11FBB72620A5D0009D9349 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J5G99NT894;
@@ -1075,7 +1074,6 @@
 		0D11FBB82620A5D0009D9349 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J5G99NT894;
@@ -1097,7 +1095,6 @@
 		0D11FBBA2620A5D0009D9349 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J5G99NT894;
 				INFOPLIST_FILE = ParaquipUITests/Info.plist;
@@ -1118,7 +1115,6 @@
 		0D11FBBB2620A5D0009D9349 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J5G99NT894;
 				INFOPLIST_FILE = ParaquipUITests/Info.plist;

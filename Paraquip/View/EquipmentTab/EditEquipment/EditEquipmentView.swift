@@ -68,5 +68,5 @@ struct EditEquipmentView: View {
 #Preview {
     EditEquipmentView(profile: CoreData.fakeProfile,
                       equipment: CoreData.fakeProfile.paraglider)
-        .environment(\.managedObjectContext, CoreData.previewContext)
+        .environment(\.managedObjectContext, CoreData.previewManagedObjectContext)
 }

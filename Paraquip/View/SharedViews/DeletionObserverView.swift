@@ -30,7 +30,7 @@ struct DeletionObserverView: View {
 
 
 #Preview {
-    DeletionObserverView(object: Equipment.paraglider(context: CoreData.previewContext)) {
+    DeletionObserverView(object: Equipment.paraglider(context: CoreData.previewManagedObjectContext)) {
         print("Deleted")
     }
 }

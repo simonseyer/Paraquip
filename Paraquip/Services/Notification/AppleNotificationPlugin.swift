@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UserNotifications
+@preconcurrency import UserNotifications
 import UIKit
 import OSLog
 import Combine
@@ -40,7 +40,8 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
 
         notificationTask = Task {
             let didBecomeActive = NotificationCenter.default
-                .notifications(named: await UIApplication.didBecomeActiveNotification)
+                .notifications(named: UIApplication.didBecomeActiveNotification)
+                .map { _ in () }
             for await _ in didBecomeActive {
                 let settings = await UNUserNotificationCenter.current().notificationSettings()
                 let authorizationStatus = settings.authorizationStatus.toAuthorizationStatus()
@@ -91,7 +92,7 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
         try await center.add(request)
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let userInfo = response.notification.request.content.userInfo
         guard let equipmentIdString = userInfo["equipment"] as? String,
               let notificationConfigIdString = userInfo["notificationConfig"] as? String,
@@ -106,15 +107,15 @@ class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationC
             notificationConfigId: notificationConfigId)
 
         // Detached task required to work around crash when opening notification
-        Task.detached { [delegate] in
-            await delegate?.didReceiveNotification(response)
+        Task.detached {[weak self] in
+            await self?.delegate?.didReceiveNotification(response)
         }
     }
 
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                openSettingsFor notification: UNNotification?) {
-        Task { [delegate] in
-            await delegate?.didReceiveOpenSettings()
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                            openSettingsFor notification: UNNotification?) {
+        Task {[weak self] in
+            await self?.delegate?.didReceiveOpenSettings()
         }
     }
 }

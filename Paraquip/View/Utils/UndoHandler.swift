@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class UndoHandler<Value: Equatable> {
+class UndoHandler<Value: Equatable & Sendable> {
     var binding: Binding<Value>?
     weak var undoManger: UndoManager?
     private var lastUndo: Value?
