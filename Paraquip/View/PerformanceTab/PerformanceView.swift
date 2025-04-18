@@ -32,13 +32,11 @@ struct PerformanceView: View {
                 }
             }
         } detail: {
-            HStack {
-                if let selectedProfile {
-                    ProfileWeightView(profile: selectedProfile)
-                } else {
-                    ContentUnavailableView("Select an equipment set",
-                                           systemImage: "tray.full.fill")
-                }
+            if let selectedProfile {
+                ProfileWeightView(profile: selectedProfile)
+            } else {
+                ContentUnavailableView("Select an equipment set",
+                                       systemImage: "tray.full.fill")
             }
         }
     }
