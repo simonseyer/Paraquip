@@ -1,4 +1,9 @@
 source "https://rubygems.org"
 
 gem "fastlane"
-gem "abbrev" # for fastlane
+
+# for fastlane
+gem "abbrev"
+gem "logger"
+gem "mutex_m"
+gem "csv"
