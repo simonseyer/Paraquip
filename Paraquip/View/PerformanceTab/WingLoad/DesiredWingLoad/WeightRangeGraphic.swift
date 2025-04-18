@@ -13,7 +13,7 @@ struct WeightRangeGraphic: View {
     let visibleWeightRange: ClosedRange<Double>
 
     private let certifiedOpacity = 0.8
-    private let recommendedOpacity = 0.4
+    private let recommendedOpacity = 0.3
 
     var body: some View {
         GeometryReader { geometry in
