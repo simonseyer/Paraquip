@@ -1,1 +1,1 @@
-Fixed a few small bugs and glitches
+Fixed a few more small bugs. Thanks to Michael!
