@@ -22,6 +22,8 @@ platform :ios do
       UI.user_error! "Update your release notes first :)"
     end
 
+    update_screenshots = prompt(text: "Update screenshots?", boolean: true)
+
     version = increment_version_number(bump_type: "minor")
     user_version = prompt(text: "Version ('y' for default: #{version}):")
     if not user_version == 'y'
@@ -32,7 +34,7 @@ platform :ios do
 
     build_app(scheme: "Paraquip", xcargs: "-allowProvisioningUpdates")
 
-    if not test_flight
+    if update_screenshots and not test_flight
       capture_screenshots()
     end
 
@@ -45,7 +47,7 @@ platform :ios do
       )
     else
       upload_to_app_store(
-        overwrite_screenshots: true,
+        overwrite_screenshots: update_screenshots,
         copyright: "#{Time.now.year} Simon Seyer",
         precheck_include_in_app_purchases: false,
         submit_for_review: submit_release,
