@@ -121,7 +121,7 @@ struct EditEquipmentView: View {
                 HStack {
                     Text("Weight")
                     Spacer()
-                    TextField("", value: $equipment.weightValue, format: .number.precision(.fractionLength(1...2)))
+                    TextField("", value: $equipment.weightValue, format: .number.precision(.fractionLength(0...3)))
                         .multilineTextAlignment(.trailing)
                         .keyboardType(.decimalPad)
                         .focused($focusedField, equals: .weight)
@@ -291,7 +291,7 @@ struct EditEquipmentView: View {
                     HStack {
                         Text("Projected area")
                         Spacer()
-                        TextField("", value: $equipment.projectedAreaValue, format: .number.precision(.fractionLength(0)))
+                        TextField("", value: $equipment.projectedAreaValue, format: .number.precision(.fractionLength(0...3)))
                             .multilineTextAlignment(.trailing)
                             .keyboardType(.decimalPad)
                             .focused($focusedField, equals: .projectedArea)
