@@ -29,6 +29,7 @@ struct ProfileListView: View {
 
     @AppStorage("lastSelectedProfileId") private var lastSelectedProfileId: String?
 
+    @State private var hasAppeared = false
     @State private var editProfileOperation: Operation<Profile>?
 
     @Binding var selectedProfile: ProfileSelection?
@@ -64,16 +65,19 @@ struct ProfileListView: View {
         }
         .navigationTitle("Sets")
         .onAppear {
-            if selectedProfile == nil {
-                // Prefer the last selected profile
-                if let profile = profiles.first(where: { $0.id?.uuidString == lastSelectedProfileId }) {
-                    selectedProfile = .profile(profile)
-                // If there is none but only one profile, select it
-                } else if profiles.count == 1, let profile = profiles.first {
-                    selectedProfile = .profile(profile)
+            if !hasAppeared {
+                withAnimation(nil) {
+                    // Prefer the last selected profile
+                    if let profile = profiles.first(where: { $0.id?.uuidString == lastSelectedProfileId }) {
+                        selectedProfile = .profile(profile)
+                        // If there is none but only one profile, select it
+                    } else if profiles.count == 1, let profile = profiles.first {
+                        selectedProfile = .profile(profile)
+                    }
+                    // Else stay in the profile list
                 }
-                // Else stay in the profile list
             }
+            hasAppeared = true
         }
         .onChange(of: selectedProfile) {  oldValue, newValue in
             if case let .profile(profile) = selectedProfile {
