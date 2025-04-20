@@ -33,7 +33,50 @@ extension Equipment {
 
     static let sizeSuggestions = ["XXS", "XS", "S", "SM", "M", "L", "XL", "XXL"] + (20...30).map { "\($0)" }
 
-    static let brandSuggestions = ["Advance", "Air G", "Aeros", "Air Cross", "Airdesign", "Axis", "Basisrausch", "BGD", "Charly", "Dudek", "Fly Products", "Gin", "Icaro", "Independence", "ITT", "ITV", "Mac Para", "Neo", "Nervures", "Nirvana", "Niviuk", "Nova", "NZ Aerosports", "Olympus", "Ozone", "Phi", "Pro design", "Sky Country", "Sky Paragliders", "Skyline", "Skywalk", "SOL Paragliders", "Squirrel", "Supair", "Swing", "Trekking Parapentes", "Triple Seven Gliders", "U-Turn", "Up", "Windtech", "Woody Valley"]
+    static let brandSuggestions = [
+        "Advance",
+        "Air G",
+        "Aeros",
+        "Air Cross",
+        "Airdesign",
+        "Axis",
+        "Basisrausch",
+        "BGD",
+        "Charly",
+        "Dudek",
+        "Fly Products",
+        "Gin",
+        "High Adventure",
+        "Icaro",
+        "Independence",
+        "ITT",
+        "ITV",
+        "Mac Para",
+        "Neo",
+        "Nervures",
+        "Nirvana",
+        "Niviuk",
+        "Nova",
+        "NZ Aerosports",
+        "Olympus",
+        "Ozone",
+        "Phi",
+        "Pro design",
+        "Sky Country",
+        "Sky Paragliders",
+        "Skyline",
+        "Skywalk",
+        "SOL Paragliders",
+        "Squirrel",
+        "Supair",
+        "Swing",
+        "Trekking Parapentes",
+        "Triple Seven Gliders",
+        "U-Turn",
+        "Up",
+        "Windtech",
+        "Woody Valley"
+    ]
 
     static let brandIdentifier = brandSuggestions.map { $0.slugified() }
 
