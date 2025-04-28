@@ -381,7 +381,11 @@ struct EditEquipmentView: View {
         }
         .onChange(of: equipment, initial: true) {
             isShowingRecommendedWeightRange = equipment.hasRecommendedWeightRange
-            undoManager.reset()
+
+            // Dispatch async to ensure intial values are set
+            DispatchQueue.main.async {
+                undoManager.reset()
+            }
 
             changeSubscription?.cancel()
             changeSubscription = equipment.objectWillChange.sink {[undoManager] in
