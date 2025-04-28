@@ -49,7 +49,7 @@ class BatchedUndoManager: @unchecked Sendable {
         }
     }
 
-    func endEditing() {
+    private func endEditing() {
         endEditingTask?.cancel()
         guard isEditingInProgress else {
             return

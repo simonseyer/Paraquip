@@ -393,7 +393,7 @@ struct EditEquipmentView: View {
             }
         }
         .onAppear {
-            recommendedWeightRangeUndoHandler.undoManger = undoManager.undoManager
+            recommendedWeightRangeUndoHandler.undoManger = undoManager
             recommendedWeightRangeUndoHandler.binding = $isShowingRecommendedWeightRange
             managedObjectContext.undoManager = undoManager.undoManager
         }
