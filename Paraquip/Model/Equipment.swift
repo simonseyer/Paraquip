@@ -106,6 +106,7 @@ extension Equipment {
         get { name ?? "" }
         set {
             if name != newValue {
+                objectWillChange.send()
                 name = newValue
             }
         }
@@ -115,6 +116,7 @@ extension Equipment {
         get { size ?? "" }
         set {
             if size != newValue {
+                objectWillChange.send()
                 size = newValue
             }
         }
@@ -124,6 +126,7 @@ extension Equipment {
         get { Double(checkCycle) }
         set {
             if checkCycle != Int16(newValue) {
+                objectWillChange.send()
                 checkCycle = Int16(newValue)
             }
         }
@@ -133,6 +136,7 @@ extension Equipment {
         get { brand ?? "" }
         set {
             if brand != newValue {
+                objectWillChange.send()
                 brand = newValue
             }
         }
@@ -146,6 +150,7 @@ extension Equipment {
         set {
             let newWeight = newValue.map { NSNumber(value: $0.converted(to: .baseUnit()).value) }
             if weight != newWeight {
+                objectWillChange.send()
                 weight = newWeight
             }
         }
@@ -156,6 +161,7 @@ extension Equipment {
         set {
             let newWeight = newValue.map { NSNumber(value: $0) }
             if weight != newWeight {
+                objectWillChange.send()
                 weight = newWeight
             }
         }
@@ -166,6 +172,7 @@ extension Equipment {
         set {
             let newWeight = newValue.map { NSNumber(value: $0) }
             if minWeight != newWeight {
+                objectWillChange.send()
                 minWeight = newWeight
             }
         }
@@ -176,6 +183,7 @@ extension Equipment {
         set {
             let newWeight = newValue.map { NSNumber(value: $0) }
             if maxWeight != newWeight {
+                objectWillChange.send()
                 maxWeight = newWeight
             }
         }
@@ -186,6 +194,7 @@ extension Equipment {
         set {
             let newWeight = newValue.map { NSNumber(value: $0) }
             if minRecommendedWeight != newWeight {
+                objectWillChange.send()
                 minRecommendedWeight = newWeight
             }
         }
@@ -196,6 +205,7 @@ extension Equipment {
         set {
             let newWeight = newValue.map { NSNumber(value: $0) }
             if maxRecommendedWeight != newWeight {
+                objectWillChange.send()
                 maxRecommendedWeight = newWeight
             }
         }
@@ -206,6 +216,7 @@ extension Equipment {
         set {
             let newArea = newValue.map { NSNumber(value: $0) }
             if projectedArea != newArea {
+                objectWillChange.send()
                 projectedArea = newArea
             }
         }
