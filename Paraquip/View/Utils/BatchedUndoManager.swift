@@ -10,11 +10,10 @@ import Observation
 import OSLog
 import Combine
 
-@Observable
-class BatchedUndoManager: @unchecked Sendable {
+class BatchedUndoManager: @unchecked Sendable, ObservableObject {
     let undoManager = UndoManager()
-    private(set) var canUndo = false
-    private(set) var canRedo = false
+    @Published private(set) var canUndo = false
+    @Published private(set) var canRedo = false
 
     private var isEditingInProgress = false
     private var endEditingTask: Task<Void, any Error>?

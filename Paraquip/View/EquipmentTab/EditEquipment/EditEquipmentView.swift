@@ -50,7 +50,7 @@ struct EditEquipmentView: View {
     }
 
     @ObservedObject var equipment: Equipment
-    @State private var undoManager = BatchedUndoManager()
+    @StateObject private var undoManager = BatchedUndoManager()
 
     @Environment(\.managedObjectContext) private var managedObjectContext
 
