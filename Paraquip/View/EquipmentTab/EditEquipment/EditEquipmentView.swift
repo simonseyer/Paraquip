@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import Combine
 
 extension NumberFormatter {
     func string(from doubleValue: Double) -> String? {
@@ -61,6 +62,7 @@ struct EditEquipmentView: View {
     @State private var isShowingDeleteEquipment = false
     @State private var validationAlertMessage: LocalizedStringKey?
     @State private var recommendedWeightRangeUndoHandler = UndoHandler<Bool>()
+    @State private var changeSubscription: AnyCancellable?
     @FocusState private var focusedField: Field?
 
     private var isMaxWeightValid: Bool {
@@ -380,9 +382,10 @@ struct EditEquipmentView: View {
         .onChange(of: equipment, initial: true) {
             isShowingRecommendedWeightRange = equipment.hasRecommendedWeightRange
             undoManager.reset()
-        }
-        .onReceive(equipment.objectWillChange) { _ in
-            undoManager.beginEditing()
+
+            changeSubscription = equipment.objectWillChange.sink {[undoManager] in
+                undoManager.beginEditing()
+            }
         }
         .onAppear {
             recommendedWeightRangeUndoHandler.undoManger = undoManager.undoManager
