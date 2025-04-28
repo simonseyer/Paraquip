@@ -104,22 +104,38 @@ extension Equipment {
 
     var equipmentName: String {
         get { name ?? "" }
-        set { name = newValue }
+        set {
+            if name != newValue {
+                name = newValue
+            }
+        }
     }
 
     var equipmentSize: String {
         get { size ?? "" }
-        set { size = newValue }
+        set {
+            if size != newValue {
+                size = newValue
+            }
+        }
     }
 
     var floatingCheckCycle: Double {
         get { Double(checkCycle) }
-        set { checkCycle = Int16(newValue) }
+        set {
+            if checkCycle != Int16(newValue) {
+                checkCycle = Int16(newValue)
+            }
+        }
     }
 
     var brandName: String {
         get { brand ?? "" }
-        set { brand = newValue }
+        set {
+            if brand != newValue {
+                brand = newValue
+            }
+        }
     }
 
     var weightMeasurement: Measurement<UnitMass>? {
@@ -128,39 +144,71 @@ extension Equipment {
             return Measurement<UnitMass>(value: weight, unit: .baseUnit())
         }
         set {
-            guard let weightMeasurement = newValue else { weight = nil; return }
-            weight = NSNumber(value: weightMeasurement.converted(to: .baseUnit()).value)
+            let newWeight = newValue.map { NSNumber(value: $0.converted(to: .baseUnit()).value) }
+            if weight != newWeight {
+                weight = newWeight
+            }
         }
     }
 
     var weightValue: Double? {
         get { weight?.doubleValue }
-        set { weight = .init(value: newValue) }
+        set {
+            let newWeight = newValue.map { NSNumber(value: $0) }
+            if weight != newWeight {
+                weight = newWeight
+            }
+        }
     }
 
     var minWeightValue: Double? {
         get { minWeight?.doubleValue }
-        set { minWeight = .init(value: newValue)}
+        set {
+            let newWeight = newValue.map { NSNumber(value: $0) }
+            if minWeight != newWeight {
+                minWeight = newWeight
+            }
+        }
     }
 
     var maxWeightValue: Double? {
         get { maxWeight?.doubleValue }
-        set { maxWeight = .init(value: newValue) }
+        set {
+            let newWeight = newValue.map { NSNumber(value: $0) }
+            if maxWeight != newWeight {
+                maxWeight = newWeight
+            }
+        }
     }
 
     var minRecommendedWeightValue: Double? {
         get { minRecommendedWeight?.doubleValue }
-        set { minRecommendedWeight = .init(value: newValue) }
+        set {
+            let newWeight = newValue.map { NSNumber(value: $0) }
+            if minRecommendedWeight != newWeight {
+                minRecommendedWeight = newWeight
+            }
+        }
     }
 
     var maxRecommendedWeightValue: Double? {
         get { maxRecommendedWeight?.doubleValue }
-        set { maxRecommendedWeight = .init(value: newValue) }
+        set {
+            let newWeight = newValue.map { NSNumber(value: $0) }
+            if maxRecommendedWeight != newWeight {
+                maxRecommendedWeight = newWeight
+            }
+        }
     }
 
     var projectedAreaValue: Double? {
         get { projectedArea?.doubleValue }
-        set { projectedArea = .init(value: newValue) }
+        set {
+            let newArea = newValue.map { NSNumber(value: $0) }
+            if projectedArea != newArea {
+                projectedArea = newArea
+            }
+        }
     }
 
     var weightRanges: [Double] {
