@@ -18,10 +18,12 @@ class UndoHandler<Value: Equatable & Sendable> {
         if lastUndo == newValue {
             return
         }
+        undoManger?.beginUndoGrouping()
         undoManger?.registerUndo(withTarget: self) { handler in
             handler.registerUndo(from: newValue, to: oldValue)
             handler.lastUndo = oldValue
             handler.binding?.wrappedValue = oldValue
         }
+        undoManger?.endUndoGrouping()
     }
 }
