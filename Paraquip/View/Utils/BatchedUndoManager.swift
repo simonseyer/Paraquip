@@ -8,6 +8,7 @@
 import Foundation
 import Observation
 import OSLog
+import Combine
 
 @Observable
 class BatchedUndoManager: @unchecked Sendable {
@@ -17,15 +18,28 @@ class BatchedUndoManager: @unchecked Sendable {
 
     private var isEditingInProgress = false
     private var endEditingTask: Task<Void, any Error>?
+    private var subscriptions: Set<AnyCancellable> = []
 
     private static let logger = Logger(category: "BatchedUndoManager")
+
+    init() {
+        undoManager.groupsByEvent = false
+
+        NotificationCenter.default.publisher(for: .NSUndoManagerDidUndoChange, object: undoManager)
+            .merge(with: NotificationCenter.default.publisher(for: .NSUndoManagerDidRedoChange, object: undoManager))
+            .merge(with: NotificationCenter.default.publisher(for: .NSUndoManagerDidOpenUndoGroup, object: undoManager))
+            .merge(with: NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup, object: undoManager))
+            .sink { [weak self] _ in
+                self?.updateUndoState()
+            }
+            .store(in: &subscriptions)
+    }
 
     func beginEditing() {
         if !undoManager.isUndoing && !undoManager.isRedoing && !isEditingInProgress {
             Self.logger.debug("Begin undo grouping")
             undoManager.beginUndoGrouping()
             isEditingInProgress = true
-            updateUndoState()
         }
 
         endEditingTask?.cancel()
@@ -44,24 +58,20 @@ class BatchedUndoManager: @unchecked Sendable {
         Self.logger.debug("End undo grouping")
         undoManager.endUndoGrouping()
         isEditingInProgress = false
-        updateUndoState()
     }
 
     func undo() {
         endEditing()
         undoManager.undo()
-        updateUndoState()
     }
 
     func redo() {
         undoManager.redo()
-        updateUndoState()
     }
 
     func reset() {
         endEditing()
         undoManager.removeAllActions()
-        updateUndoState()
     }
 
     private func updateUndoState() {
