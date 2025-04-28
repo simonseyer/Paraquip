@@ -383,6 +383,7 @@ struct EditEquipmentView: View {
             isShowingRecommendedWeightRange = equipment.hasRecommendedWeightRange
             undoManager.reset()
 
+            changeSubscription?.cancel()
             changeSubscription = equipment.objectWillChange.sink {[undoManager] in
                 undoManager.beginEditing()
             }
