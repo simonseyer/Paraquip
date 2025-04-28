@@ -28,6 +28,7 @@ class BatchedUndoManager: @unchecked Sendable, ObservableObject {
             .merge(with: NotificationCenter.default.publisher(for: .NSUndoManagerDidRedoChange, object: undoManager))
             .merge(with: NotificationCenter.default.publisher(for: .NSUndoManagerDidOpenUndoGroup, object: undoManager))
             .merge(with: NotificationCenter.default.publisher(for: .NSUndoManagerDidCloseUndoGroup, object: undoManager))
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.updateUndoState()
             }
