@@ -72,6 +72,7 @@ class BatchedUndoManager: @unchecked Sendable, ObservableObject {
     func reset() {
         endEditing()
         undoManager.removeAllActions()
+        updateUndoState()
     }
 
     private func updateUndoState() {
