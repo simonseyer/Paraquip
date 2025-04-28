@@ -9,7 +9,6 @@ import Foundation
 @preconcurrency import UserNotifications
 import UIKit
 import OSLog
-import Combine
 
 class AppleNotificationPlugin: NSObject, NotificationPlugin, UNUserNotificationCenterDelegate  {
 

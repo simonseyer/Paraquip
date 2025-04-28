@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 enum AuthorizationStatus: String, CustomStringConvertible {
     case notDetermined, denied, authorized

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import OSLog
 import CoreData
 
@@ -53,8 +52,7 @@ class NotificationService: ObservableObject {
     private let notifications: any NotificationPlugin
     private let managedObjectContext: NSManagedObjectContext
     private let logger = Logger(category: "NotificationsStore")
-
-    private var subscriptions: Set<AnyCancellable> = []
+    private var notificationTask: Task<Void, Never>?
 
     private let notificationHour = 9
 
@@ -90,15 +88,16 @@ class NotificationService: ObservableObject {
     }
 
     private func setupNotificationScheduling() {
-        NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: managedObjectContext)
-            .map { _ in () }
-            .prepend(())
-            .sink {[weak self] in
-                Task {[weak self] in
-                    await self?.scheduleNotifications()
-                }
+        notificationTask = Task {[weak self] in
+            await self?.scheduleNotifications()
+
+            let didSave = NotificationCenter.default
+                .notifications(named: .NSManagedObjectContextDidSave)
+                .map { _ in () }
+            for await _ in didSave {
+                await self?.scheduleNotifications()
             }
-            .store(in: &subscriptions)
+        }
     }
 
     private func scheduleNotifications() async {
@@ -203,6 +202,10 @@ class NotificationService: ObservableObject {
 
         await notifications.setBadge(count: badgeCount)
         logger.info("Set badge count: \(badgeCount)")
+    }
+
+    deinit {
+        notificationTask?.cancel()
     }
 }
 
