@@ -301,8 +301,8 @@ extension Equipment {
     }
 
     func clearRecommendedWeightRange() {
-        minRecommendedWeight = nil
-        maxRecommendedWeight = nil
+        minRecommendedWeightValue = nil
+        maxRecommendedWeightValue = nil
     }
 
     public override func validateForInsert() throws {
