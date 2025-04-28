@@ -37,8 +37,8 @@ class BatchedUndoManager: @unchecked Sendable, ObservableObject {
     func beginEditing() {
         if !undoManager.isUndoing && !undoManager.isRedoing && !isEditingInProgress {
             Self.logger.debug("Begin undo grouping")
-            undoManager.beginUndoGrouping()
             isEditingInProgress = true
+            undoManager.beginUndoGrouping()
         }
 
         endEditingTask?.cancel()
